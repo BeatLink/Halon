@@ -1,0 +1,27 @@
+{
+    "name": "halon-theme",
+    "displayName": "Halon",
+    "description": "Slate and blue, with a dark navigation frame. WCAG 2.1 AA in both schemes.",
+    "version": "1.0.0",
+    "publisher": "halon",
+    "engines": {
+        "vscode": "^1.75.0"
+    },
+    "categories": [
+        "Themes"
+    ],
+    "contributes": {
+        "themes": [
+            {
+                "label": "Halon Light",
+                "uiTheme": "vs",
+                "path": "./themes/halon-light-color-theme.json"
+            },
+            {
+                "label": "Halon Dark",
+                "uiTheme": "vs-dark",
+                "path": "./themes/halon-dark-color-theme.json"
+            }
+        ]
+    }
+}

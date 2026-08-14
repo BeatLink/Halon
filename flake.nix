@@ -133,6 +133,7 @@
             node "$root/scripts/build-gtk.mjs" "$@"
             node "$root/scripts/build-cinnamon.mjs" "$@"
             node "$root/scripts/build-cinnamon.mjs" --dark "$@"
+            node "$root/scripts/build-vscode.mjs" "$@"
           '';
         };
 
@@ -151,23 +152,58 @@
           inherit preview-gtk3 preview-gtk4 demo-gtk3 demo-gtk4 demo-adwaita icons-gtk3
             audit lint build shots;
 
-          # The theme as an installable derivation, for home-manager or a NixOS module.
-          halon-gtk-theme = pkgs.stdenvNoCC.mkDerivation {
-            pname = "halon-gtk-theme";
+          # Both theme directories in one derivation: Halon-Dark's stylesheets
+          # import ../Halon/shared, so they must be installed side by side.
+          halon-theme = pkgs.stdenvNoCC.mkDerivation {
+            pname = "halon-theme";
             version = "1.0.0";
-            src = ./gtk/Halon;
+            src = ./gtk;
             dontBuild = true;
             installPhase = ''
-              mkdir -p "$out/share/themes/Halon"
-              cp -r . "$out/share/themes/Halon/"
+              mkdir -p "$out/share/themes"
+              cp -r Halon "$out/share/themes/Halon"
+              cp -r Halon-Dark "$out/share/themes/Halon-Dark"
             '';
             meta = {
-              description = "Slate and blue GTK theme with a dark navigation frame";
+              description = "Halon — slate and blue GTK + Cinnamon theme; navy shell frame, light chrome, white content";
               platforms = nixpkgs.lib.platforms.linux;
             };
           };
 
-          default = self.packages.${system}.halon-gtk-theme;
+          halon-gtk-theme = self.packages.${system}.halon-theme;
+
+          # Installs onto XDG_DATA_DIRS, where Tilix discovers color schemes.
+          halon-tilix-theme = pkgs.stdenvNoCC.mkDerivation {
+            pname = "halon-tilix-theme";
+            version = "1.0.0";
+            src = ./tilix;
+            dontBuild = true;
+            installPhase = ''
+              mkdir -p "$out/share/tilix/schemes"
+              cp ./*.json "$out/share/tilix/schemes/"
+            '';
+            meta = {
+              description = "Slate and blue Tilix color schemes";
+              platforms = nixpkgs.lib.platforms.linux;
+            };
+          };
+
+          # Both schemes as one VS Code extension, generated from the same tokens.
+          halon-vscode-theme = pkgs.stdenvNoCC.mkDerivation {
+            pname = "halon-vscode-theme";
+            version = "1.0.0";
+            src = ./vscode;
+            dontBuild = true;
+            installPhase = ''
+              mkdir -p "$out/share/vscode/extensions/halon.halon-theme"
+              cp -r . "$out/share/vscode/extensions/halon.halon-theme/"
+            '';
+            meta = {
+              description = "Slate and blue VS Code theme with a dark navigation frame";
+            };
+          };
+
+          default = self.packages.${system}.halon-theme;
         };
 
         apps = {
@@ -234,5 +270,45 @@
             echo "  live symlink:  ~/.themes/Halon"
           '';
         };
-      });
+      }) // {
+      overlays.default = final: prev: {
+        halon-theme = self.packages.${final.stdenv.hostPlatform.system}.halon-theme;
+      };
+
+      # NixOS: `imports = [ halon.nixosModules.default ];  themes.halon.enable = true;`
+      nixosModules.default = { config, lib, pkgs, ... }: {
+        options.themes.halon.enable = lib.mkEnableOption "the Halon GTK and Cinnamon theme";
+        config = lib.mkIf config.themes.halon.enable {
+          environment.systemPackages =
+            [ self.packages.${pkgs.stdenv.hostPlatform.system}.halon-theme ];
+        };
+      };
+
+      # home-manager: `imports = [ halon.homeManagerModules.default ];  themes.halon.enable = true;`
+      # setDefaults additionally selects Halon for GTK and the Cinnamon shell.
+      homeManagerModules.default = { config, lib, pkgs, ... }:
+        let cfg = config.themes.halon;
+            pkg = self.packages.${pkgs.stdenv.hostPlatform.system}.halon-theme;
+        in {
+          options.themes.halon = {
+            enable = lib.mkEnableOption "the Halon GTK and Cinnamon theme";
+            setDefaults = lib.mkOption {
+              type = lib.types.bool;
+              default = true;
+              description = "Select Halon as the GTK theme and Cinnamon shell theme.";
+            };
+          };
+          config = lib.mkIf cfg.enable {
+            home.packages = [ pkg ];
+            gtk = lib.mkIf cfg.setDefaults {
+              enable = true;
+              theme = { name = "Halon"; package = pkg; };
+            };
+            dconf.settings = lib.mkIf cfg.setDefaults {
+              "org/cinnamon/theme".name = "Halon";
+              "org/cinnamon/desktop/interface".gtk-theme = "Halon";
+            };
+          };
+        };
+    };
 }

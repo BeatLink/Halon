@@ -24,7 +24,7 @@ const ENTRIES = [
     "gtk-4.0/gtk-dark.css",
 ];
 
-const TOKEN_FILES = /_tokens-(light|dark)\.css$/;
+const TOKEN_FILES = /_tokens-(light|dark)\.css$|\/base\//;
 const AT_KEYWORDS = new Set(["define-color", "import", "media", "keyframes", "supports", "charset"]);
 
 let problems = 0;
@@ -68,14 +68,14 @@ for (const entry of ENTRIES) {
     for (const { path, text } of files) {
         const stripped = text.replace(/\/\*[\s\S]*?\*\//g, "");
         for (const m of stripped.matchAll(/@define-color\s+([\w-]+)\s+([^;]+);/g)) {
-            for (const ref of m[2].matchAll(/@([\w-]+)/g)) {
+            for (const ref of m[2].matchAll(/@([a-zA-Z][\w-]*)/g)) {
                 if (!defined.has(ref[1])) {
                     fail(`${path}: @${ref[1]} used in ${m[1]} before it is defined`);
                 }
             }
             defined.add(m[1]);
         }
-        for (const m of stripped.matchAll(/@([\w-]+)/g)) {
+        for (const m of stripped.matchAll(/@([a-zA-Z][\w-]*)/g)) {
             const name = m[1];
             if (AT_KEYWORDS.has(name) || defined.has(name)) continue;
             const decl = stripped.slice(0, m.index).lastIndexOf("@define-color");

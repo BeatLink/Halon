@@ -1,6 +1,6 @@
 /* Halon-Dark — the dark scheme as its own theme, for desktops that select by name. */
-@import url("resource:///org/gtk/libgtk/theme/Adwaita/gtk-contained-dark.css");
+@import url("../../Halon/shared/base/adwaita3-dark.css");
 @import url("../../Halon/shared/_tokens-dark.css");
 @import url("../../Halon/shared/_gtk3-metrics.css");
-@import url("../../Halon/shared/_reset.css");
+@import url("../../Halon/shared/_icons-dark.css");
 @import url("../../Halon/shared/_components.css");

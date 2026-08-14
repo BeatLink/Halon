@@ -16,6 +16,7 @@
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
+import { boxedSvg, svg as svgTag } from "./assets.mjs";
 
 const root = process.env.HALON_ROOT ?? join(dirname(fileURLToPath(import.meta.url)), "..");
 const dark = process.argv.includes("--dark");
@@ -103,6 +104,9 @@ function neutralize(css) {
             const w = val.match(/\d+(?:\.\d+)?(?:px|em|pt)/);
             return `${prop}: ${w ? w[0] : "1px"} solid transparent`;
         });
+    /* St's applet-specific paint properties. */
+    css = css.replace(/(?<![-\w])(-arrow-box-shadow|-pie-background-color|-pie-border-color|-active-window-background|-active-window-border|-inactive-window-background|-inactive-window-border|-barlevel-border-color|-barlevel-background-color|-barlevel-active-background-color|-barlevel-active-border-color|-barlevel-overdrive-color|-barlevel-amplify-color)\s*:\s*[^;}]*;?/g, "");
+
     /* The few background: shorthands keep only their image. */
     css = css.replace(/(?<![-\w])background\s*:\s*([^;}]+)/g,
         (m, val) => {
@@ -160,20 +164,13 @@ writeFileSync(outPath, out);
  * stock filenames means every stock rule that references them heals itself.
  */
 const colour = (name) => resolve(name);
-const svg = (w, h, body) =>
-    `<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}">${body}</svg>\n`;
+const svg = svgTag;
 
 const ASSETS = {
-    "checkbox.svg": svg(16, 16,
-        `<rect x="1" y="1" width="14" height="14" rx="4" fill="${colour("accent")}"/>` +
-        `<path d="M4.5 8.5 L7 11 L11.5 5.5" fill="none" stroke="${colour("text-on-fill")}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>`),
-    "checkbox-off.svg": svg(16, 16,
-        `<rect x="1.5" y="1.5" width="13" height="13" rx="4" fill="${colour("surface-default")}" stroke="${colour("border-control")}"/>`),
-    "radio.svg": svg(16, 16,
-        `<circle cx="8" cy="8" r="6.5" fill="${colour("accent")}"/>` +
-        `<circle cx="8" cy="8" r="2.5" fill="${colour("text-on-fill")}"/>`),
-    "radio-off.svg": svg(16, 16,
-        `<circle cx="8" cy="8" r="6" fill="${colour("surface-default")}" stroke="${colour("border-control")}"/>`),
+    "checkbox.svg": boxedSvg.check(colour("accent"), colour("text-on-fill")),
+    "checkbox-off.svg": boxedSvg.checkOff(colour("surface-default"), colour("border-control")),
+    "radio.svg": boxedSvg.radio(colour("accent"), colour("text-on-fill")),
+    "radio-off.svg": boxedSvg.radioOff(colour("surface-default"), colour("border-control")),
     "toggle-on.svg": svg(44, 22,
         `<rect width="44" height="22" rx="11" fill="${colour("accent")}"/>` +
         `<circle cx="33" cy="11" r="8" fill="${colour("text-on-fill")}"/>`),
@@ -217,15 +214,15 @@ if (dark) {
     /* Entry files mirror Halon's own: base resource, tokens, reset, components.
        The base import is load-bearing — a named theme replaces the default
        stylesheet — and GTK 4's resources are gtk.css / gtk-dark.css only. */
-    const gtk3Base = "resource:///org/gtk/libgtk/theme/Adwaita/gtk-contained-dark.css";
-    const gtk4Base = "resource:///org/gtk/libgtk/theme/Default/gtk-dark.css";
+    const gtk3Base = "../../Halon/shared/base/adwaita3-dark.css";
+    const gtk4Base = "../../Halon/shared/base/default4-dark.css";
     for (const file of ["gtk-3.0/gtk.css", "gtk-3.0/gtk-dark.css"]) {
         writeFileSync(join(themeDir, file),
             `/* Halon-Dark — the dark scheme as its own theme, for desktops that select by name. */\n` +
             `@import url("${gtk3Base}");\n` +
             `@import url("../../Halon/shared/_tokens-dark.css");\n` +
             `@import url("../../Halon/shared/_gtk3-metrics.css");\n` +
-            `@import url("../../Halon/shared/_reset.css");\n` +
+            `@import url("../../Halon/shared/_icons-dark.css");\n` +
             `@import url("../../Halon/shared/_components.css");\n`);
     }
     for (const file of ["gtk-4.0/gtk.css", "gtk-4.0/gtk-dark.css"]) {
@@ -234,7 +231,7 @@ if (dark) {
             `@import url("${gtk4Base}");\n` +
             `@import url("../../Halon/shared/_tokens-dark.css");\n` +
             `@import url("../../Halon/shared/_adwaita-map.css");\n` +
-            `@import url("../../Halon/shared/_reset.css");\n` +
+            `@import url("../../Halon/shared/_icons-dark.css");\n` +
             `@import url("../../Halon/shared/_components.css");\n`);
     }
 }

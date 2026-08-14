@@ -1,0 +1,8 @@
+/* GENERATED FILE — do not edit. Indicator glyphs for both toolkits, drawn
+ * from the dark tokens by scripts/build-gtk.mjs — url() icon sources
+ * work in GTK 3 and GTK 4 alike, and match the demo's glyph weight. */
+
+check:checked { -gtk-icon-source: url("icons/check-dark.svg"); }
+check:indeterminate { -gtk-icon-source: url("icons/dash-dark.svg"); }
+radio:checked { -gtk-icon-source: url("icons/dot-dark.svg"); }
+radio:indeterminate { -gtk-icon-source: url("icons/dash-dark.svg"); }

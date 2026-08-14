@@ -221,6 +221,18 @@ stage {
     height: 21px;
 }
 
+/* The sound applet's volume bar reads these custom properties. */
+.popup-slider-menu-item,
+.slider {
+    -barlevel-height: 6px;
+    -barlevel-background-color: @surface-secondary;
+    -barlevel-border-color: @border-default;
+    -barlevel-active-background-color: @accent;
+    -barlevel-active-border-color: @accent;
+    -barlevel-overdrive-color: @status-warning;
+    -barlevel-amplify-color: @status-warning;
+}
+
 .popup-slider-menu-item {
     height: 6px;
     -slider-height: 6px;

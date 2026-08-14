@@ -1,15 +1,11 @@
 /* Halon — light scheme.
  *
- * The Adwaita import is load-bearing, not decoration. A theme selected by name
- * REPLACES the default stylesheet; it is not layered over it. Without this line
- * every widget Halon does not explicitly style falls back to GTK's unthemed
- * defaults — raw boxes, no spacing, no arrows — which is why a partial override
- * used as a whole theme looks broken rather than merely incomplete.
- *
- * Adwaita first, then tokens, then our component layer, so our rules win.
+ * The base is Adwaita with its entire palette stripped at build time
+ * (scripts/build-gtk.mjs): geometry only, zero colour literals. Halon's
+ * tokens and component layer are the only paint that can reach the screen.
  */
-@import url("resource:///org/gtk/libgtk/theme/Adwaita/gtk-contained.css");
+@import url("../shared/base/adwaita3-light.css");
 @import url("../shared/_tokens-light.css");
 @import url("../shared/_gtk3-metrics.css");
-@import url("../shared/_reset.css");
+@import url("../shared/_icons-light.css");
 @import url("../shared/_components.css");

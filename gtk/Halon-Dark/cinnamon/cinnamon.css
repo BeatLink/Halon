@@ -396,15 +396,15 @@ stage {
     .workspace-graph .workspace:active {
        }
       .workspace-graph .workspace:active .windows {
-        -active-window-background: rgba(255, 255, 255, 0.3);
-        -active-window-border: rgba(255, 255, 255, 0.35);
-        -inactive-window-background: rgba(255, 255, 255, 0.1);
-        -inactive-window-border: rgba(255, 255, 255, 0.15); }
+        
+        
+        
+         }
     .workspace-graph .workspace .windows {
-      -active-window-background: rgba(255, 255, 255, 0.3);
-      -active-window-border: rgba(255, 255, 255, 0.35);
-      -inactive-window-background: rgba(255, 255, 255, 0.1);
-      -inactive-window-border: rgba(255, 255, 255, 0.15); }
+      
+      
+      
+       }
 
 .system-status-icon {
   icon-size: 1.091em; }
@@ -437,8 +437,8 @@ stage {
   width: 30px;
   height: 30px;
   -pie-border-width: 1px;
-  -pie-border-color: rgba(200, 200, 200, 0.8);
-  -pie-background-color: rgba(140, 140, 140, 0.6); }
+  
+   }
 
 .placeholder {
   spacing: 8px;
@@ -980,7 +980,7 @@ StScrollBar StButton#hhandle {
   
   -arrow-base: 24px;
   -arrow-rise: 12px;
-  -arrow-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5); }
+   }
 
 .candidate-popup-content {
   padding: 0.5em;
@@ -1225,9 +1225,9 @@ StScrollBar StButton#hhandle {
   .media-keys-osd .level {
     min-width: 160px;
     -barlevel-height: 6px;
-    -barlevel-background-color: #303034;
-    -barlevel-active-background-color: white;
-    -barlevel-amplify-color: #f8e45c;
+    
+    
+    
     -barlevel-amplify-separator-width: 3px; }
     .media-keys-osd .level:ltr {
       margin-right: 6px; }
@@ -1923,6 +1923,18 @@ stage {
 .toggle-switch {
     width: 38px;
     height: 21px;
+}
+
+/* The sound applet's volume bar reads these custom properties. */
+.popup-slider-menu-item,
+.slider {
+    -barlevel-height: 6px;
+    -barlevel-background-color: #1e293b;
+    -barlevel-border-color: #334155;
+    -barlevel-active-background-color: #60a5fa;
+    -barlevel-active-border-color: #60a5fa;
+    -barlevel-overdrive-color: #f59e0b;
+    -barlevel-amplify-color: #f59e0b;
 }
 
 .popup-slider-menu-item {

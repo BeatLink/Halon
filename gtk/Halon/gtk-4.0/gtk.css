@@ -1,15 +1,6 @@
-/* Halon — light scheme for GTK 4 and libadwaita.
- *
- * GTK 4's built-in theme is "Default" and its resource files are gtk.css /
- * gtk-dark.css — there is no gtk-light.css, and a bad @import kills the whole
- * provider, which presents as the application refusing to start themed.
- *
- * Only needed when loaded as a named theme; installed as
- * ~/.config/gtk-4.0/gtk.css it layers over the running stylesheet and the
- * import is redundant but harmless.
- */
-@import url("resource:///org/gtk/libgtk/theme/Default/gtk.css");
+/* Halon — light scheme for GTK 4 and libadwaita. Neutralized Default base. */
+@import url("../shared/base/default4-light.css");
 @import url("../shared/_tokens-light.css");
 @import url("../shared/_adwaita-map.css");
-@import url("../shared/_reset.css");
+@import url("../shared/_icons-light.css");
 @import url("../shared/_components.css");
