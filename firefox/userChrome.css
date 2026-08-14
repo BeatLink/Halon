@@ -1,0 +1,145 @@
+/* Halon geometry for the Firefox chrome — §4 of THEME-DESIGN-GUIDE.md.
+ *
+ * The manifest theme carries every colour; this file carries none. A theme
+ * extension cannot set a height, a radius or a padding, and §4 says a port that
+ * gets the palette right and the geometry wrong reads as the host toolkit
+ * wearing the colours. So this is the other half: one control height, the radius
+ * ladder, and the density the theme is built around.
+ *
+ * The only colours referenced are Firefox's own LWT variables, which the theme
+ * manifest populates — so this file stays Layer 2 and never names a literal.
+ *
+ * Install: see firefox/README.md. Needs
+ * toolkit.legacyUserProfileCustomizations.stylesheets = true.
+ */
+
+:root {
+    /* §4.1 metric tokens, the subset the chrome can use */
+    --halon-control-height: 32px;
+    --halon-icon-button-size: 30px;
+    --halon-row-height: 28px;
+    --halon-frame-height: 34px;
+    --halon-space-2: 4px;
+    --halon-space-4: 8px;
+    --halon-space-5: 12px;
+    --halon-radius-small: 4px;
+    --halon-radius-row: 6px;
+    --halon-radius-default: 8px;
+    --halon-text-control: 13px;
+
+    /* §4.2: one control height across the toolbar row */
+    --tab-min-height: var(--halon-row-height) !important;
+    --toolbarbutton-inner-padding: var(--halon-space-4) !important;
+    --toolbarbutton-border-radius: var(--halon-radius-row) !important;
+    --urlbar-min-height: var(--halon-control-height) !important;
+    --urlbar-icon-padding: var(--halon-space-4);
+    --arrowpanel-border-radius: var(--halon-radius-default) !important;
+    --arrowpanel-menuitem-border-radius: var(--halon-radius-small) !important;
+    --panel-border-radius: var(--halon-radius-default) !important;
+
+    /* §4.1: a 3px focus ring, the same width everywhere */
+    --focus-outline-width: 3px;
+
+    /* §4.5: the native stack, not a bundled interface font */
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans",
+        Cantarell, "Helvetica Neue", Arial, sans-serif !important;
+}
+
+/* §4.3: the tab bar and the navigation toolbar are both frame members at 34px.
+   Most of Halon's density is won back from the frame rather than the controls. */
+#TabsToolbar,
+#TabsToolbar > .toolbar-items {
+    min-height: var(--halon-frame-height) !important;
+    max-height: var(--halon-frame-height) !important;
+}
+
+#nav-bar {
+    padding-block: var(--halon-space-2) !important;
+}
+
+/* Tabs — 28px rows on the §4.2 radius ladder; 8px on a 28px row reads as a lozenge. */
+.tabbrowser-tab {
+    font-size: var(--halon-text-control) !important;
+}
+
+.tab-background {
+    border-radius: var(--halon-radius-row) !important;
+    margin-block: 2px !important;
+}
+
+.tab-content {
+    padding-inline: var(--halon-space-4) !important;
+}
+
+/* §6.4: the close button inverts to a danger chip, which the manifest cannot express. */
+.tab-close-button {
+    border-radius: var(--halon-radius-small) !important;
+}
+
+/* The address bar is one --control-height control on the §4.2 radius. */
+#urlbar,
+#searchbar {
+    font-size: var(--halon-text-control) !important;
+}
+
+#urlbar-background,
+#searchbar {
+    border-radius: var(--halon-radius-default) !important;
+}
+
+/* The expanded ("megabar") results panel keeps the control's radius rather than
+   growing its own, so the field and its list read as one object. */
+#urlbar[breakout][breakout-extend] > #urlbar-background {
+    border-radius: var(--halon-radius-default) !important;
+}
+
+/* Toolbar buttons — §4.3: 30px square, row radius, glyph not shrunk with the target. */
+#nav-bar toolbarbutton:not(.titlebar-button) > .toolbarbutton-icon,
+#nav-bar toolbarbutton:not(.titlebar-button) > .toolbarbutton-badge-stack {
+    min-width: var(--halon-icon-button-size) !important;
+    height: var(--halon-icon-button-size) !important;
+    border-radius: var(--halon-radius-row) !important;
+}
+
+/* Bookmarks bar — list rows, so the row radius and row padding, not the button ones. */
+#PersonalToolbar {
+    --toolbarbutton-border-radius: var(--halon-radius-row) !important;
+    padding-inline: var(--halon-space-4) !important;
+}
+
+#PersonalToolbar .bookmark-item {
+    font-size: var(--halon-text-control) !important;
+    padding-block: var(--halon-space-2) !important;
+}
+
+/* Menus and popups — §4.3: 30px items at 5px, a 5px sheet padding. */
+menupopup {
+    --panel-border-radius: var(--halon-radius-default);
+}
+
+menupopup > menuitem,
+menupopup > menu {
+    min-height: var(--halon-icon-button-size) !important;
+    border-radius: var(--halon-radius-small) !important;
+    font-size: var(--halon-text-control) !important;
+}
+
+panel .panel-subview-body,
+menupopup {
+    padding: 5px !important;
+}
+
+/* Sidebar — §4.3: 248px, 13px text, 28px rows. */
+#sidebar-box {
+    font-size: var(--halon-text-control) !important;
+}
+
+#sidebar-header {
+    font-size: var(--halon-text-control) !important;
+    padding: var(--halon-space-4) var(--halon-space-5) !important;
+}
+
+/* Findbar sits on the content surface, so it takes the content metrics. */
+findbar {
+    font-size: var(--halon-text-control) !important;
+}

@@ -59,7 +59,7 @@ stage {
 .applet-box:hover,
 .applet-box:checked {
     background-color: @surface-navigation-hover;
-    color: @text-on-dark;
+    color: @text-heading;
 }
 
 .applet-label {
@@ -78,7 +78,7 @@ stage {
 }
 
 /* ==========================================================================
-   Window list — the active window is the only light element in the frame,
+   Window list — the active window is a raised card on the frame,
    exactly as the active tab is in §6.4.
    ========================================================================== */
 
@@ -99,7 +99,7 @@ stage {
 .grouped-window-list-item-box:hover,
 .window-list-item-box:hover {
     background-color: @surface-navigation-hover;
-    color: @text-on-dark;
+    color: @text-heading;
 }
 
 .grouped-window-list-item-box:active,
@@ -316,8 +316,8 @@ stage {
     border-radius: 8px;
     padding: 7px 11px;
     caret-color: @accent;
-    selection-background-color: @accent-soft;
-    selected-color: @text-on-light;
+    selection-background-color: @accent;
+    selected-color: @text-on-fill;
 }
 
 /* Stock's :focus block re-darkens the field — a pseudo-class outranks the
@@ -368,7 +368,7 @@ stage {
 
 #Tooltip {
     background-color: @surface-navigation;
-    color: @text-on-dark;
+    color: @text-heading;
     border: none;
     border-radius: 6px;
     padding: 5px 9px;
@@ -377,7 +377,7 @@ stage {
 
 .osd-window {
     background-color: @surface-navigation;
-    color: @text-on-dark;
+    color: @text-heading;
     border-radius: 8px;
     padding: 12px;
     spacing: 8px;
@@ -399,7 +399,7 @@ stage {
 
 #notification {
     background-color: @surface-navigation;
-    color: @text-on-dark;
+    color: @text-heading;
     border: none;
     border-radius: 8px;
     padding: 12px;
@@ -409,7 +409,7 @@ stage {
 
 #notification-body,
 #notification .notification-body {
-    color: @text-on-dark;
+    color: @text-heading;
 }
 
 #notification-scrollview {
@@ -419,14 +419,14 @@ stage {
 .notification,
 .notification-with-image {
     background-color: @surface-navigation;
-    color: @text-on-dark;
+    color: @text-heading;
     border: none;
     border-radius: 8px;
     padding: 12px;
     spacing: 8px;
 }
 
-/* Action chips on the navy card, matching the demo toast's close button:
+/* Action chips on the notification card, matching the demo toast's close button:
    quiet frame-hover fills, accent only when pressed. */
 #notification .notification-button,
 #notification .notification-icon-button,
@@ -436,7 +436,7 @@ stage {
     background-gradient-direction: none;
     border: none;
     border-radius: 6px;
-    color: @text-on-dark;
+    color: @text-heading;
     padding: 6px 12px;
     font-size: 13px;
     font-weight: 500;
@@ -447,7 +447,7 @@ stage {
 .notification-button:hover,
 .notification-icon-button:hover {
     background-color: @surface-navigation-hover;
-    color: @text-on-dark;
+    color: @text-heading;
 }
 
 #notification .notification-button:active,
@@ -458,7 +458,7 @@ stage {
 
 #notification .notification-button:focus,
 .notification-button:focus {
-    border: 1px solid @accent-soft;
+    border: 1px solid @accent;
 }
 
 /* ==========================================================================
@@ -528,8 +528,8 @@ stage {
 
 .switcher-list .item-box:outlined,
 .switcher-list .item-box:selected {
-    background-color: @accent-soft;
-    color: @text-on-light;
+    background-color: @accent;
+    color: @text-on-fill;
 }
 
 .switcher-arrow {
@@ -569,7 +569,7 @@ stage {
 .workspace-button:outlined,
 .workspace-button:checked {
     background-color: @surface-navigation-hover;
-    color: @text-on-dark;
+    color: @text-heading;
 }
 
 .workspace-graph .workspace {
@@ -657,8 +657,8 @@ stage {
 
 .calendar-not-today:selected,
 .calendar-day-base:selected {
-    background-color: @accent-soft;
-    color: @text-on-light;
+    background-color: @accent;
+    color: @text-on-fill;
 }
 
 /* ==========================================================================
@@ -1047,7 +1047,7 @@ StScrollView StScrollBar StButton#hhandle:active {
 .workspace-switch-osd,
 .resize-popup {
     background-color: @surface-navigation;
-    color: @text-on-dark;
+    color: @text-heading;
     border: none;
     border-radius: 8px;
     padding: 12px 18px;
@@ -1100,7 +1100,7 @@ StScrollView StScrollBar StButton#hhandle:active {
 /* Expo and Scale overlays. */
 .window-caption {
     background-color: @surface-navigation;
-    color: @text-on-dark;
+    color: @text-heading;
     border: none;
     border-radius: 6px;
     padding: 3px 9px;
@@ -1124,7 +1124,7 @@ StScrollView StScrollBar StButton#hhandle:active {
 
 .vkeyboard-key {
     background-color: @surface-navigation-hover;
-    color: @text-on-dark;
+    color: @text-heading;
     border: none;
     border-radius: 6px;
     font-size: 14px;

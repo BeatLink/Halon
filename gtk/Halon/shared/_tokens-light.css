@@ -6,8 +6,8 @@
 @define-color surface-root             #f1f5f9;
 @define-color surface-default          #ffffff;
 @define-color surface-secondary        #f1f5f9;
-@define-color surface-navigation       #0f172a;
-@define-color surface-navigation-hover #1e3a5f;
+@define-color surface-navigation       @surface-secondary;
+@define-color surface-navigation-hover #e2e8f0;
 @define-color surface-overlay          rgba(15, 23, 42, 0.45);
 
 /* Text on surfaces */
@@ -15,12 +15,11 @@
 @define-color text-body                #1a1a2e;
 @define-color text-secondary           #475569;
 @define-color text-tertiary            #64748b;
-@define-color text-on-navigation       #93c5fd;
+@define-color text-on-navigation       #475569;
 
 /* Text on fills — one token per class of fill, see §3.5 */
 @define-color text-on-fill             #ffffff;
 @define-color text-on-light            #0f172a;
-@define-color text-on-dark             #ffffff;
 
 /* Lines */
 @define-color border-default           #e2e8f0;
@@ -29,7 +28,6 @@
 
 /* Interaction */
 @define-color accent                   #2563eb;
-@define-color accent-soft              #93c5fd;
 @define-color focus-ring               rgba(37, 99, 235, 0.15);
 
 /* Defined after @accent: GTK resolves references in source order. */
@@ -42,7 +40,9 @@
 @define-color status-danger            #dc2626;
 @define-color badge-experimental       #7c3aed;
 
-/* Elevation — GTK has no opacity multiplier, so the shadows are spelled out */
+/* Elevation — slate-900 in both schemes, §5; GTK has no opacity multiplier,
+   so the shadows are spelled out rather than derived from @shadow-base */
+@define-color shadow-base              #0f172a;
 @define-color shadow-item              rgba(15, 23, 42, 0.12);
 @define-color shadow-card              rgba(15, 23, 42, 0.08);
 @define-color shadow-tab               rgba(15, 23, 42, 0.15);

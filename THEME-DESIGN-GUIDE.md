@@ -1,8 +1,8 @@
 # Halon — App Theme Design Guide
 
 A complete, framework-agnostic specification for a **slate + single-blue** application theme with a
-dark navy navigation frame, ghost-first controls, and hairline structure. It defines a token set, a
-palette, component treatments, and a dark mode built by flipping twenty-three values. Every
+recessed navigation frame, ghost-first controls, and hairline structure. It defines a token set, a
+palette, component treatments, and a dark mode built by flipping twenty-two values. Every
 foreground/background pair it specifies meets WCAG 2.1 AA, verified in both schemes.
 
 Nothing here is tied to a particular UI framework. Section 3 is the whole token set; adopt it
@@ -28,10 +28,13 @@ name is a name that will eventually lie.
    action, a neutral bordered button for ordinary actions, and a borderless button for repeated or
    incidental ones that grows a border on hover. Accent fill marks *the* action on a view; if two
    things are filled, neither reads as primary.
-4. **A dark navigation frame around a light body.** Navigation rails, tab bars, and toolbars are dark
-   navy in *both* light and dark mode. This is the most recognizable feature of the theme.
+4. **The frame is recessed, the content is raised.** Navigation rails, tab bars, toolbars and
+   sidebars all sit on the secondary surface — one step *back* from the content surface in both
+   schemes — and the selected thing in them is a raised card, not an accent bar. The frame is a
+   quiet gray strip in light mode and a near-black one in dark; what makes a selection unmissable
+   is elevation and the accent line, never a block of color.
 5. **Everything routes through the token set.** No component rule names a literal color. Dark mode is
-   implemented by re-declaring twenty-three tokens and nothing else.
+   implemented by re-declaring twenty-two tokens and nothing else.
 6. **Contrast is a property of the token set, not of individual rules.** Every pairing the theme
    sanctions is audited (§10). A token whose only safe pairing is unstated is a defect in the palette.
 
@@ -56,7 +59,7 @@ from semantic tokens (`--text-secondary`). Once both were named by role, the spl
 near-identical aliases — a lookup hop that bought nothing, and enough drift that the root surface
 ended up with a different name in each layer. A literal scale layer underneath semantics
 (`--blue-600` → `--accent`, as Radix and Primer do) is a real pattern, but it earns its keep at nine
-shades per hue and several accents. This theme has twenty-seven tokens, one accent, and two colors that
+shades per hue and several accents. This theme has twenty-six tokens, one accent, and two colors that
 sit on no scale at all. One layer is correct here.
 
 **Mapping onto a framework.** If your framework exposes its own theming variables, do not restyle its
@@ -82,12 +85,12 @@ That mapping is a translation table, not a third layer. It contains no colors an
 
 ```css
 :root {
-  /* Surfaces — a three-step elevation ladder, plus the navigation frame and overlay */
+  /* Surfaces — a two-step ladder (recessed, raised), plus the frame's hover and the overlay */
   --surface-root:              #f1f5f9;  /* behind everything */
   --surface-default:           #ffffff;  /* cards, panels, editors, modals */
-  --surface-secondary:         #f1f5f9;  /* sidebars, footers, fills, hovers */
-  --surface-navigation:        #0f172a;  /* rails, tab bars, toolbars */
-  --surface-navigation-hover:  #1e3a5f;
+  --surface-secondary:         #f1f5f9;  /* sidebars, the frame, footers, fills */
+  --surface-navigation:        var(--surface-secondary);  /* rails, tab bars, toolbars */
+  --surface-navigation-hover:  #e2e8f0;  /* hover on the frame and in sidebars */
   --surface-overlay:           rgba(15, 23, 42, 0.45);
 
   /* Text on surfaces */
@@ -95,12 +98,11 @@ That mapping is a translation table, not a third layer. It contains no colors an
   --text-body:                 #1a1a2e;
   --text-secondary:            #475569;  /* secondary text, icons, section labels */
   --text-tertiary:             #64748b;  /* placeholders, shortcut hints */
-  --text-on-navigation:        #93c5fd;
+  --text-on-navigation:        #475569;  /* frame labels and icons at rest */
 
   /* Text on fills — one token per class of fill, see §3.5 */
   --text-on-fill:              #fff;     /* fills that invert: accent, success, danger */
-  --text-on-light:             #0f172a;  /* fills light in both modes: accent-soft, warning */
-  --text-on-dark:              #fff;     /* fills dark in both modes: the navigation frame */
+  --text-on-light:             #0f172a;  /* fills light in both modes: warning */
 
   /* Lines */
   --border-default:            #e2e8f0;  /* decorative hairlines: cards, dividers, table rules */
@@ -110,7 +112,6 @@ That mapping is a translation table, not a third layer. It contains no colors an
 
   /* Interaction */
   --accent:                    #2563eb;  /* links, buttons, focus — the only accent */
-  --accent-soft:               #93c5fd;  /* selected fills, soft highlights */
   --focus-ring:                rgba(37, 99, 235, 0.15);  /* also: text selection */
 
   /* Status */
@@ -126,10 +127,9 @@ That mapping is a translation table, not a third layer. It contains no colors an
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --surface-root:              #0b1220;
+    --surface-root:              #060b14;
     --surface-default:           #16213a;
-    --surface-secondary:         #1e293b;
-    --surface-navigation:        #060b14;
+    --surface-secondary:         #060b14;
     --surface-navigation-hover:  #101b2d;
     --surface-overlay:           rgba(0, 0, 0, 0.6);
 
@@ -137,7 +137,7 @@ That mapping is a translation table, not a third layer. It contains no colors an
     --text-body:                 #e2e8f0;
     --text-secondary:            #cbd5e1;
     --text-tertiary:             #94a3b8;
-    --text-on-navigation:        #7dabf5;
+    --text-on-navigation:        #7dabf5;  /* the frame is near-black here, so its label is blue */
 
     --text-on-fill:              #0b1220;  /* dark-mode fills are light, so this inverts */
 
@@ -146,7 +146,6 @@ That mapping is a translation table, not a third layer. It contains no colors an
     --border-control:            #64748b;
 
     --accent:                    #60a5fa;
-    --accent-soft:               #93c5fd;
     --focus-ring:                rgba(96, 165, 250, 0.28);
 
     --status-success:            #10b981;
@@ -159,35 +158,33 @@ That mapping is a translation table, not a third layer. It contains no colors an
 }
 ```
 
-Twenty-seven tokens; dark mode re-declares twenty-three. The four it leaves alone are the ones that
-carry no mode: `--text-on-light` and `--text-on-dark` sit on fills whose lightness does not change
-between schemes, `--status-warning` is the one fill that is already light in light mode, and
-`--border-focus` is derived from `--accent`, so it flips for free.
+Twenty-six tokens; dark mode re-declares twenty-two. The four it leaves alone are the ones that
+carry no mode: `--text-on-light` sits on fills whose lightness does not change between schemes,
+`--status-warning` is the one fill that is already light in light mode, and `--surface-navigation`
+and `--border-focus` are derived from other tokens, so they flip for free.
 
 ### 3.2 Reference
 
 | Token                          | Light                   | Dark                     | Role                                     |
 | ------------------------------ | ----------------------- | ------------------------ | ---------------------------------------- |
-| `--surface-root`             | `#f1f5f9`             | `#0b1220`              | Application root, behind everything      |
+| `--surface-root`             | `#f1f5f9`             | `#060b14`              | Application root, behind everything      |
 | `--surface-default`          | `#ffffff`             | `#16213a`              | Cards, panels, editors, modals           |
-| `--surface-secondary`        | `#f1f5f9`             | `#1e293b`              | Sidebars, footers, fills, hovers         |
-| `--surface-navigation`       | `#0f172a`             | `#060b14`              | Navigation rail and tab bar base         |
-| `--surface-navigation-hover` | `#1e3a5f`             | `#101b2d`              | Navigation hover, inactive tab hover     |
+| `--surface-secondary`        | `#f1f5f9`             | `#060b14`              | Sidebars, the frame, footers, fills      |
+| `--surface-navigation`       | = secondary           | = secondary            | Navigation rail and tab bar base         |
+| `--surface-navigation-hover` | `#e2e8f0`             | `#101b2d`              | Frame and sidebar hover                  |
 | `--surface-overlay`          | `rgba(15,23,42,.45)`  | `rgba(0,0,0,.6)`       | Modal backdrop                           |
 | `--text-heading`             | `#0f172a`             | `#f8fafc`              | Headings, active and selected labels     |
 | `--text-body`                | `#1a1a2e`             | `#e2e8f0`              | Body text                                |
 | `--text-secondary`           | `#475569`             | `#cbd5e1`              | Secondary text, icons, section labels    |
 | `--text-tertiary`            | `#64748b`             | `#94a3b8`              | Placeholders, shortcut hints             |
-| `--text-on-navigation`       | `#93c5fd`             | `#7dabf5`              | Text and icons on navigation at rest     |
+| `--text-on-navigation`       | `#475569`             | `#7dabf5`              | Text and icons on the frame at rest      |
 | `--text-on-fill`             | `#fff`                | `#0b1220`              | Text on a solid accent or status chip    |
 | `--text-on-light`            | `#0f172a`             | `#0f172a`              | Text on a fill that is light in both     |
-| `--text-on-dark`             | `#fff`                | `#fff`                 | Text on navigation, toasts, tooltips     |
 | `--border-default`           | `#e2e8f0`             | `#334155`              | Decorative hairlines                     |
 | `--border-hover`             | `#cbd5e1`             | `#475569`              | Hover borders, scrollbar thumb           |
 | `--border-control`           | `#8792a3`             | `#64748b`              | Input and select boundaries              |
 | `--border-focus`             | `var(--accent)`       | `var(--accent)`        | Focused field border                     |
 | `--accent`                   | `#2563eb`             | `#60a5fa`              | The single accent: links, buttons, focus |
-| `--accent-soft`              | `#93c5fd`             | `#93c5fd`              | Selected-item fills, soft highlights     |
 | `--focus-ring`               | `rgba(37,99,235,.15)` | `rgba(96,165,250,.28)` | Focus outline, text selection            |
 | `--status-success`           | `#047857`             | `#10b981`              | Positive status only                     |
 | `--status-warning`           | `#f59e0b`             | `#f59e0b`              | Caution fills: chips, tints              |
@@ -200,10 +197,11 @@ The ramp is Tailwind's slate and blue scales, with two deliberate departures:
 
 - **`--text-body` (`#1a1a2e`) is off-ramp.** A slightly warm near-black rather than slate. Headings
   use true slate-900, so body text sits a hair *softer* than headings instead of matching them.
-- **`--surface-navigation-hover` (`#1e3a5f`) is off-ramp.** It reads bluer than slate-800 because it
-  is the second stop of a navy gradient (`#0f172a → #1e3a5f`) — see §6.4.
+- **The dark scheme's near-black (`#060b14`) is off-ramp.** It sits below slate-950 and reads
+  navy rather than neutral, which is what keeps a dark frame from looking like a hole in the
+  screen. It is one value doing three jobs there — root, secondary surface, and frame.
 
-### 3.3 Two things flip direction in dark mode
+### 3.3 One thing flips direction, and one deliberately does not
 
 **Secondary and tertiary text swap positions on the ramp.** Light: secondary is slate-600, tertiary
 the lighter slate-500. Dark: secondary is slate-300, tertiary the darker slate-400. The invariant is
@@ -215,16 +213,23 @@ the obvious ones fail: slate-400 tertiary reaches only 2.56 against white, and t
 placeholders and shortcut hints, which are informational text and subject to the 4.5 threshold. The
 shifted ramp keeps a visible hierarchy while clearing AA at every step.
 
-**The secondary surface changes which side of the default surface it sits on.** In light mode it is
-`#f1f5f9` against a white default — darker, set *into* the page. In dark mode it is `#1e293b` against
-a `#16213a` default — *lighter*, lifted above it. Its job is direction-neutral: differentiate from
-the primary content surface, by whichever direction reads as secondary in that mode.
+**The secondary surface stays recessed, and that is the point.** In light mode it is `#f1f5f9`
+against a white default — darker, set *into* the page. In dark mode it is `#060b14` against a
+`#16213a` default — darker again. Both schemes say the same sentence, "content raised above a
+recessed frame": light is white cards on a gray page, dark is lifted cards on a near-black one.
 
-Note also that the root is level with the secondary surface in light mode (both `#f1f5f9`, with all
-separation coming from borders) and below both in dark mode. Light mode is "white cards on a gray
-page"; dark mode is "lifted cards on a black page." That asymmetry is intentional — it is how each
-mode conventionally signals elevation. It is also exactly why neither of these tokens can be named
-for its appearance.
+An earlier version of this palette had the secondary surface change sides, sitting *above* the
+default surface in dark mode, on the theory that dark interfaces signal elevation by getting
+lighter. They do — but the frame was a separate near-black token then, so the rule only had to
+cover sidebars. Once the frame and the sidebar became one surface (§6.4), a lifted secondary would
+have meant the chrome floating above the content it wraps, which is the wrong relationship in
+either scheme.
+
+The root sits level with the secondary surface in both schemes (`#f1f5f9` and `#060b14`), with all
+separation between them coming from borders. Only two levels carry elevation: recessed and raised.
+Note that this is *not* a licence to name them for their appearance — `--surface-secondary` is
+darker than the default surface in both of today's schemes, but "darker" is a fact about the values,
+not about the job.
 
 ### 3.4 Off-ramp hues
 
@@ -238,24 +243,30 @@ value would be the only fill in the theme that takes white text in dark mode, an
 would have to be remembered by every future reader. Flipping it costs one line and keeps the rule in
 §3.5 universal.
 
-### 3.5 Three tokens for text on fills
+### 3.5 Two tokens for text on fills
 
-`--text-on-fill`, `--text-on-light`, and `--text-on-dark` look redundant. They are not, and collapsing
-them into a single "on-color" is the most likely way to reintroduce a contrast failure.
+`--text-on-fill` and `--text-on-light` look redundant. They are not, and collapsing them into a
+single "on-color" is the most likely way to reintroduce a contrast failure.
 
-A fill's text color is determined by the fill's lightness, and this theme has three classes of fill
+A fill's text color is determined by the fill's lightness, and this theme has two classes of fill
 that behave differently across schemes:
 
 | Class | Light mode | Dark mode | Token |
 |---|---|---|---|
 | Fills that invert — accent, success, danger, experimental | Dark → white text | Light → near-black | `--text-on-fill` |
-| Fills light in both — `--accent-soft`, warning | Light → near-black | Light → near-black | `--text-on-light` |
-| Fills dark in both — the navigation frame | Dark → white | Dark → white | `--text-on-dark` |
+| Fills light in both — warning | Light → near-black | Light → near-black | `--text-on-light` |
 
 Only the first class inverts, which is why only it appears in the dark block. The important negative
-result: **one token cannot serve all three.** Reusing the inverting token on navigation would put
-near-black text on dark navy in dark mode, and reusing white everywhere fails on every dark-mode fill
-by a wide margin — `#fff` on dark-mode success is 2.54.
+result: **one token cannot serve both.** Reusing white everywhere fails on every dark-mode fill by a
+wide margin — `#fff` on dark-mode success is 2.54 — and reusing the near-black everywhere fails on
+the light-mode fills in the first class, where `#0f172a` on the accent is 3.45.
+
+**Surfaces are not fills, and they take ordinary text.** The frame used to be a third class here,
+back when it was dark navy in both schemes and needed a white-in-both token of its own. It is now
+the secondary surface (§6.4), so its text comes off the normal ramp — `--text-on-navigation` at
+rest, `--text-heading` on hover — and the third on-color is gone. If some future element is
+genuinely dark in both schemes, it needs a token of its own, not white typed into a component
+rule.
 
 **Why warning is in the second class rather than the first.** Amber is intrinsically light. Nothing
 that still reads as yellow or orange reaches 4.5 against white — amber-500 is 2.15, amber-600 is
@@ -308,7 +319,7 @@ Where you genuinely cannot show a number, the alternatives, in order of how much
 | Approach | Effect |
 | -------- | ------ |
 | Outline the fill — `inset 0 0 0 1px var(--status-warning-text)` | Keeps the fill bright; reads as fussy at small bar heights |
-| Near-black trough — `background: var(--surface-navigation)` | Clears 3:1 for every fill (3.26–8.31); a heavy look on a light card |
+| Near-black trough — `background: var(--text-heading)`, light mode only | Clears 3:1 for every fill (3.26–8.31); a heavy look on a light card |
 | Dim the fill to `--status-warning-text` | Compliant and plain, but discards the brightness |
 
 Two results worth keeping if you take the trough route. **A mid-slate track is the worst possible
@@ -571,7 +582,7 @@ rather than a grid of grey boxes. The boundary asserts itself exactly when the u
 | Hover | `var(--border-focus)` | `var(--surface-default)` |
 | Focus | `var(--border-focus)` plus a `var(--focus-ring)` outline | `var(--surface-default)` |
 
-Text `--text-body`, placeholder `--text-tertiary`, selection `--accent-soft` behind `--text-on-light`.
+Text `--text-body`, placeholder `--text-tertiary`, selection `--accent` behind `--text-on-fill`.
 Inline action buttons inside a field are `--text-secondary`, going `--accent` on hover.
 
 **What identifies the control at rest, if not the border?** The hairline is 1.23:1 against white —
@@ -610,48 +621,65 @@ Two mechanical warnings:
   `background: <color> <arrow-image>` shorthand. A shorthand override erases the arrow; the longhand
   leaves it intact.
 
-### 6.4 Navigation frame — the dark chrome
+### 6.4 Navigation frame — the recessed chrome
 
-Navigation rails, tab bars, application toolbars, and classic menu bars are dark navy in
-**both** modes — a light strip between a dark titlebar and a dark toolbar is the telltale of a
-frame member that got missed.
+Navigation rails, tab bars, application toolbars, and classic menu bars sit on
+`--surface-navigation`, which is the secondary surface: a quiet gray strip in light mode, a
+near-black one in dark. The frame is one step *back* from the content it wraps, in both schemes,
+and the whole frame is one surface — a strip of some other color between a titlebar and a toolbar
+is the telltale of a frame member that got missed.
 
 **Context mapping.** "The frame" is the outermost navigation chrome of whatever is being themed. In
 a standalone application, that is its own rail and tab bar, as in the reference demo. In a desktop
-OS, the shell panel is the frame — application window chrome (headerbars, toolbars, menu bars) is
-then a *sidebar equivalent* and takes `--surface-secondary` with §6.5's raised-card selection,
-while nearly all content sits on `--surface-default`. One dark frame per screen, never one per
-window:
+OS, the shell panel is the frame, and application window chrome (headerbars, toolbars, menu bars)
+takes the same surface, while nearly all content sits on `--surface-default`. Chrome recedes,
+content advances; that relationship is the same at every level, so it does not matter much where
+you draw the line:
 
-| Part                   | Value                                                                                                    |
-| ---------------------- | -------------------------------------------------------------------------------------------------------- |
-| Background             | `--surface-navigation`                                                                                 |
-| Text and icons at rest | `--text-on-navigation`                                                                                 |
-| Hover background       | `--surface-navigation-hover`                                                                           |
-| Hover text             | `--text-on-dark`                                                                                     |
-| Hover shadow           | none                                                                                                     |
+| Part                   | Value                                                                                            |
+| ---------------------- | ------------------------------------------------------------------------------------------------ |
+| Background             | `--surface-navigation`                                                                         |
+| Text and icons at rest | `--text-on-navigation`                                                                         |
+| Hover background       | `--surface-navigation-hover`                                                                   |
+| Hover text             | `--text-heading`                                                                               |
+| Hover shadow           | none                                                                                             |
 | Active tab             | `--surface-default` fill, `--text-heading` text, `--accent` icon, `0 1px 3px rgba(15,23,42,.15)` |
-| Inactive tab           | transparent,`--text-on-navigation` text, `--surface-navigation-hover` on hover                       |
-| Tab close hover        | `--status-danger` fill, `--text-on-fill` glyph                                                     |
+| Inactive tab           | transparent,`--text-on-navigation` text, `--surface-navigation-hover` on hover               |
+| Tab close hover        | `--status-danger` fill, `--text-on-fill` glyph                                             |
 
-The navigation frame is the theme's signature. The active tab is the *only* light element in it,
-which is what makes tab selection unmissable.
+**The active tab is a raised card, and it has to be read as one.** Its fill is only 1.10:1 against
+the frame in light mode and 1.23:1 in dark — deliberately, because §6.5 selects by elevation rather
+than by color. Selection is therefore carried by three things at once: the lift (the `--shadow-tab`
+shadow), the text going to `--text-heading` from `--text-on-navigation`, and the `--accent` icon or
+tab line. Drop two of the three and the selected tab disappears. This is the one place in the theme
+where a component genuinely depends on more than one signal, and it is why a port that gets tab
+selection right on fill alone is wrong even when it looks fine.
 
-**Use the gradient if you can.** The frame is conceptually `linear-gradient(#0f172a, #1e3a5f)`. If
-your framework exposes these as `background-color` only, you cannot express a gradient — use
-`--surface-navigation` (the darker stop) and accept the flat fill. Where you control the full
-`background`, the gradient is the more faithful rendering.
+**Why the frame is not dark in light mode.** An earlier version of this theme painted the frame
+navy in both schemes and made the active tab the only light element in it. It was the most
+recognizable thing about the theme and also its biggest liability: it forced a third on-color
+(§3.5), it put a hard near-black edge against every light window, and it meant the frame and the
+sidebar — two things doing the same job, one step back from content — were painted in two unrelated
+colors. Collapsing them onto one surface costs the signature and buys a consistent rule: **anything
+that frames content is recessed, anything that carries content is raised.**
 
 ### 6.5 Sidebars and trees
 
-The sidebar sits on `--surface-secondary`, one step off the content surface:
+The sidebar sits on `--surface-secondary` — the same surface as the frame (§6.4), because it does
+the same job — one step off the content surface:
 
-- Item text `--text-body`; hover text `--text-heading`; hover fill `--border-default`.
-- **A selected item is a raised light card:** `--surface-default` fill, `--text-heading` text,
-  `0 1px 2px rgba(15,23,42,.12)`. Selection reads as *elevation*, not as an accent bar.
-- Where a selection *is* painted with `--accent-soft` instead — table rows, search hits — the text is
-  `--text-on-light`, never `--text-heading`. In dark mode a heading-colored label on the soft accent
-  is 2.43:1.
+- Item text `--text-body`; hover text `--text-heading`; hover fill `--surface-navigation-hover`,
+  the same hover the frame uses. Where one list spans both surfaces and the framework offers a
+  single hover color — VS Code's `list.hoverBackground`, for instance — `--border-default` is the
+  value that works on either.
+- **A selected item in a navigation sidebar is a raised light card:** `--surface-default` fill,
+  `--text-heading` text, `0 1px 2px rgba(15,23,42,.12)`. Selection there reads as *elevation*,
+  because a sidebar item is a place you are, not a row you picked.
+- **A selected row in a list, tree or table is a solid `--accent` fill with `--text-on-fill`
+  text**, and any icon in that row takes `--text-on-fill` too — an accent-colored glyph on an
+  accent fill is the icon-vanishing hazard of §6.1 in its most literal form. There is one accent
+  and no softened variant of it, so a selected row and a link are the same blue by construction.
+- Inactive or unfocused selection is the same fill at 25–30% alpha, not a different color.
 - Row action buttons: `--surface-default` fill with a `--text-secondary` glyph, going `--accent` on
   hover, shadowless.
 
@@ -665,8 +693,10 @@ The sidebar sits on `--surface-secondary`, one step off the content surface:
   button is `--surface-secondary` / `--text-secondary` at rest and inverts to `--accent` /
   `--text-on-fill` on hover — the one sanctioned color-swap hover, because a filled accent chip
   carries no icon-vanishing risk.
-- **Toasts and tooltips** use `--surface-navigation` with `--text-on-dark` in both modes, so
-  transient overlays belong to the frame rather than the page.
+- **Toasts and tooltips** use `--surface-navigation` with `--text-heading` in both modes, so
+  transient overlays belong to the frame rather than the page. They are the one case where the
+  frame surface floats above content instead of sitting behind it, so they carry a
+  `rgba(15,23,42,.20)` shadow to say so — without it a toast on a light page is just a gray box.
 
 ### 6.7 Status and badges
 
@@ -692,7 +722,8 @@ change what is legible on it.
 ### 6.8 Scrollbars, gutters, selection
 
 - Scrollbar track transparent; thumb `--border-hover`, `--text-tertiary` on hover.
-- Resize gutters transparent at rest, `--accent-soft` on hover — invisible until grabbed.
+- Resize gutters transparent at rest, `--accent` on hover — invisible until grabbed. Find-match
+  highlights and locked-on controls take the accent too, at an alpha where they read as marks.
 - Text selection uses `--focus-ring`, the same translucent accent as focus outlines, so selection and
   focus read as one system.
 - Content headings (`h1` through `h5`) are `--text-heading`, never the accent. Only links are blue.
@@ -707,14 +738,16 @@ flip:
 1. **Accents get lighter, not darker.** blue-600 → blue-400. Saturated mid-blues lose contrast fast
    on dark ground: blue-500 as link text on the default dark surface is 4.35, which misses AA.
 2. **Status colors move up their ramps too.** emerald-700 → 500, amber-700 → 500, red-600 → red-400.
-   A dark status color on `#0b1220` is barely visible.
+   A dark status color on `#060b14` is barely visible.
 3. **Text on fills inverts with them.** Rules 1 and 2 make the inverting fills light, so
    `--text-on-fill` goes from white to near-black. This is the rule most often missed, and it fails
    loudly: white on dark-mode success is 2.54. Fills that were already light in light mode, like
-   warning, never inverted in the first place and keep `--text-on-light` in both.
-4. **Navigation goes *darker*, not lighter.** `#0f172a → #060b14`. The frame must stay
-   distinguishable from content, and in dark mode content has come down to meet it. Text on it stays
-   white in both schemes, which is why it has its own token.
+   warning, never inverted in the first place and keep `--text-on-light` in both. Surfaces are not
+   fills and are not covered by this rule — text on the frame comes off the ordinary ramp.
+4. **The frame follows the secondary surface down.** `#f1f5f9 → #060b14`, which is darker than the
+   content surface it wraps, exactly as it was lighter-side-recessed in light mode. Its label color
+   is the one thing that does not simply invert: `--text-on-navigation` goes from slate-600 to a
+   light blue, because on near-black a slate label reads as disabled.
 5. **Translucent values gain a lot of alpha.** Focus ring `.15 → .28`; shadow opacity `.15 → .5`.
 6. **The overlay switches from tinted to neutral.** `rgba(15,23,42,.45)` → `rgba(0,0,0,.6)`.
 
@@ -748,6 +781,9 @@ Hazards worth checking for in any implementation:
 - **A single "on-color" for every fill** (§3.5). The most expensive mistake in this palette's history:
   one `#fff` served every chip, which failed on four of five dark-mode fills and two of five in light
   mode. If you add a fill, add it to the audit before you add it to a component.
+- **Treating the frame as a fill.** It is a surface. Text on it comes from the text ramp, not from
+  an on-color, and a component that hardcodes white on it will invert wrongly the moment the frame
+  moves with its scheme (§3.5).
 - **Auditing only one scheme.** Contrast is not preserved across the flip. Lightening a fill for dark
   mode improves it as text on a dark surface and simultaneously ruins it as a background for white
   text. Every pair has to be checked twice.
@@ -768,11 +804,10 @@ Hazards worth checking for in any implementation:
 5. Give inputs the resting hairline, moving to accent on hover and focus; never change the fill on
    hover, and never place an input without a label or placeholder.
 6. Ghost the closed select; leave its open option list on a normal surface.
-7. Paint the navigation frame `--surface-navigation` in **both** modes, with the active item as the
-   only light element in it.
+7. Paint the navigation frame and the sidebar on `--surface-navigation` in **both** modes, and mark
+   the active item by elevation, heading-weight text and the accent — never by fill alone.
 8. Pair every colored fill with the right on-color from §3.5 — `--text-on-fill` for fills that
-   invert, `--text-on-light` for fills light in both schemes, `--text-on-dark` for the navigation
-   frame.
+   invert, `--text-on-light` for fills light in both schemes — and give surfaces ordinary ramp text.
 9. Restrict shadows to the §5 table; use borders for anything that merely delimits a region.
 10. Confirm no component rule contains a literal hex.
 11. Run the §10 audit in both schemes and confirm every pair passes.
@@ -788,23 +823,23 @@ text and non-text interface elements. Ratios are computed from the §3.1 values.
 | Foreground | Background | Light | Dark |
 | ---------- | ---------- | ----- | ---- |
 | `--text-body` | `--surface-default` | 17.06 | 12.98 |
-| `--text-body` | `--surface-secondary` | 15.57 | 11.87 |
+| `--text-body` | `--surface-secondary` | 15.57 | 15.98 |
 | `--text-heading` | `--surface-default` | 17.85 | 15.29 |
 | `--text-secondary` | `--surface-default` | 7.58 | 10.77 |
-| `--text-secondary` | `--surface-secondary` | 6.92 | 9.85 |
+| `--text-secondary` | `--surface-secondary` | 6.92 | 13.27 |
 | `--text-tertiary` | `--surface-default` | 4.76 | 6.24 |
 | `--accent` | `--surface-default` | 5.17 | 6.29 |
-| `--accent` | `--surface-secondary` | 4.72 | 5.75 |
-| `--text-on-fill` | `--accent` | 5.17 | 7.36 |
+| `--accent` | `--surface-secondary` | 4.72 | 7.75 |
+| `--text-on-fill` | `--accent` (filled button, selected row) | 5.17 | 7.36 |
 | `--text-on-fill` | `--status-success` | 5.48 | 7.38 |
 | `--text-on-light` | `--status-warning` | 8.31 | 8.31 |
 | `--status-warning-text` | `--surface-default` | 5.18 | 7.45 |
-| `--status-warning-text` | `--surface-secondary` | 4.73 | 6.81 |
+| `--status-warning-text` | `--surface-secondary` | 4.73 | 9.18 |
 | `--text-on-fill` | `--status-danger` | 4.83 | 6.77 |
 | `--text-on-fill` | `--badge-experimental` | 5.70 | 6.88 |
-| `--text-on-light` | `--accent-soft` | 9.90 | 9.90 |
-| `--text-on-dark` | `--surface-navigation` | 17.85 | 19.71 |
-| `--text-on-navigation` | `--surface-navigation` | 9.90 | 8.46 |
+| `--text-on-navigation` | `--surface-navigation` | 6.92 | 8.46 |
+| `--text-heading` (frame hover, toasts) | `--surface-navigation-hover` | 14.48 | 16.50 |
+| `--accent` (focus boundary in the frame) | `--surface-navigation-hover` | 4.19 | 6.79 |
 | `--border-control` | `--surface-default` | 3.15 | 3.36 |
 | `--border-focus` (hover/focus boundary) | `--surface-default` | 5.17 | 6.29 |
 
@@ -813,9 +848,11 @@ later, and both are excluded from the table because the guide routes around them
 
 - **`--text-tertiary` on the secondary surface is 4.34 in light mode**, just under AA. This is why
   §6.2 forbids swapping an input's fill on hover. Keep tertiary text on the default surface and the
-  case does not arise; if a design genuinely needs muted text on a sidebar, use `--text-secondary`.
-- **`--border-control` on the secondary surface is 2.87 light and 3.07 dark**, straddling 3.0. It
-  now guards only toggles; a toggle sitting directly on a sidebar is the one placement to avoid.
+  case does not arise; if a design genuinely needs muted text on a sidebar or in the frame, use
+  `--text-secondary`.
+- **`--border-control` on the secondary surface is 2.87 in light mode**, just under 3.0 (dark is
+  4.14). It now guards only toggles; a toggle sitting directly on a sidebar or a toolbar is the one
+  placement to avoid.
 
 `--border-default` is deliberately absent. At 1.23 it would fail any threshold, which is correct for
 what it is: a decorative hairline between regions, exempt under 1.4.11. The moment a hairline becomes

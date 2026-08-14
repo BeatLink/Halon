@@ -24,9 +24,12 @@ Then pick **Halon Light** or **Halon Dark** in *Preferences: Color Theme*.
 
 - **The navigation frame (§6.4)** is the activity bar, title bar, tab bar, status bar, debug
   toolbar, banners and notifications — `surface-navigation` with `text-on-navigation` at rest in
-  both schemes. The active tab is the only light element in the frame.
-- **The side bar and panels (§6.5)** sit on `surface-secondary`; the editor and terminal sit on
-  `surface-default`; row hover is `border-default`; accent-soft selections carry `text-on-light`.
+  both schemes. That surface is the secondary one, so the frame and the side bar are the same
+  color; the active tab is a raised card on it, marked by elevation, `text-heading` and the accent
+  rather than by its fill.
+- **The side bar and panels (§6.5)** sit on `surface-secondary` too; the editor and terminal sit on
+  `surface-default`; row hover is `border-default`, the one hover value that works on either
+  surface; a selected row is a solid `accent` fill carrying `text-on-fill`.
 - **Text selection and focus (§6.8)** both use `focus-ring`, so they read as one system.
 - **Diagnostics (§3.6)** use `status-warning-text` for warning squiggles and icons — marks, not
   fills — while the status-bar warning chip is a true `status-warning` fill with `text-on-light`.

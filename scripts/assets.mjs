@@ -10,6 +10,7 @@ export const GLYPH_SIZE = 14;
 export const GLYPH = {
     check: 'M3.5 7.5 L6 10 L10.5 4.5',
     dash: 'M4 7 H10',
+    chevron: 'M3.5 5.5 L7 9 L10.5 5.5',
     dotRadius: 2.8,
     strokeWidth: 1.8,
 };
@@ -26,6 +27,16 @@ export const glyphSvg = {
     dash: (colour) => svg(GLYPH_SIZE, GLYPH_SIZE, stroked(GLYPH.dash, colour)),
     dot: (colour) => svg(GLYPH_SIZE, GLYPH_SIZE,
         `<circle cx="7" cy="7" r="${GLYPH.dotRadius}" fill="${colour}"/>`),
+};
+
+/* Stepper and dropdown arrows, for toolkits whose own arrow is erased when the
+   control it sits on is restyled. Down is the drawn direction; up is mirrored. */
+export const chevronSvg = {
+    down: (colour) => svg(GLYPH_SIZE, GLYPH_SIZE, stroked(GLYPH.chevron, colour)),
+    up: (colour) => svg(GLYPH_SIZE, GLYPH_SIZE,
+        `<g transform="translate(0,${GLYPH_SIZE}) scale(1,-1)">${stroked(GLYPH.chevron, colour)}</g>`),
+    right: (colour) => svg(GLYPH_SIZE, GLYPH_SIZE,
+        `<g transform="rotate(-90 ${GLYPH_SIZE / 2} ${GLYPH_SIZE / 2})">${stroked(GLYPH.chevron, colour)}</g>`),
 };
 
 /* Whole control, for St: a 16px box with the 14px glyph centred inside. */

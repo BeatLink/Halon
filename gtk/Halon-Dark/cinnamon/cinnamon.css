@@ -1763,7 +1763,7 @@ stage {
 .applet-box:hover,
 .applet-box:checked {
     background-color: #101b2d;
-    color: #ffffff;
+    color: #f8fafc;
 }
 
 .applet-label {
@@ -1782,7 +1782,7 @@ stage {
 }
 
 /* ==========================================================================
-   Window list — the active window is the only light element in the frame,
+   Window list — the active window is a raised card on the frame,
    exactly as the active tab is in §6.4.
    ========================================================================== */
 
@@ -1803,7 +1803,7 @@ stage {
 .grouped-window-list-item-box:hover,
 .window-list-item-box:hover {
     background-color: #101b2d;
-    color: #ffffff;
+    color: #f8fafc;
 }
 
 .grouped-window-list-item-box:active,
@@ -1877,7 +1877,7 @@ stage {
 .popup-menu-item:hover,
 .popup-menu-item:active,
 .popup-menu-item.selected {
-    background-color: #1e293b;
+    background-color: #060b14;
     color: #f8fafc;
 }
 
@@ -1929,7 +1929,7 @@ stage {
 .popup-slider-menu-item,
 .slider {
     -barlevel-height: 6px;
-    -barlevel-background-color: #1e293b;
+    -barlevel-background-color: #060b14;
     -barlevel-border-color: #334155;
     -barlevel-active-background-color: #60a5fa;
     -barlevel-active-border-color: #60a5fa;
@@ -1940,7 +1940,7 @@ stage {
 .popup-slider-menu-item {
     height: 6px;
     -slider-height: 6px;
-    -slider-background-color: #1e293b;
+    -slider-background-color: #060b14;
     -slider-border-color: transparent;
     -slider-active-background-color: #60a5fa;
     -slider-active-border-color: transparent;
@@ -1964,7 +1964,7 @@ stage {
 }
 
 .menu-favorites-box {
-    background-color: #1e293b;
+    background-color: #060b14;
     padding: 8px;
     border-radius: 8px;
     margin: 8px;
@@ -1982,7 +1982,7 @@ stage {
 .menu-category-button-selected,
 .menu-application-button:hover,
 .menu-category-button:hover {
-    background-color: #1e293b;
+    background-color: #060b14;
     color: #f8fafc;
 }
 
@@ -2020,8 +2020,8 @@ stage {
     border-radius: 8px;
     padding: 7px 11px;
     caret-color: #60a5fa;
-    selection-background-color: #93c5fd;
-    selected-color: #0f172a;
+    selection-background-color: #60a5fa;
+    selected-color: #0b1220;
 }
 
 /* Stock's :focus block re-darkens the field — a pseudo-class outranks the
@@ -2041,7 +2041,7 @@ stage {
 #menu-search-entry:insensitive,
 #appmenu-search-entry:insensitive,
 .run-dialog-entry:insensitive {
-    background-color: #1e293b;
+    background-color: #060b14;
     color: #94a3b8;
 }
 
@@ -2072,7 +2072,7 @@ stage {
 
 #Tooltip {
     background-color: #060b14;
-    color: #ffffff;
+    color: #f8fafc;
     border: none;
     border-radius: 6px;
     padding: 5px 9px;
@@ -2081,7 +2081,7 @@ stage {
 
 .osd-window {
     background-color: #060b14;
-    color: #ffffff;
+    color: #f8fafc;
     border-radius: 8px;
     padding: 12px;
     spacing: 8px;
@@ -2103,7 +2103,7 @@ stage {
 
 #notification {
     background-color: #060b14;
-    color: #ffffff;
+    color: #f8fafc;
     border: none;
     border-radius: 8px;
     padding: 12px;
@@ -2113,7 +2113,7 @@ stage {
 
 #notification-body,
 #notification .notification-body {
-    color: #ffffff;
+    color: #f8fafc;
 }
 
 #notification-scrollview {
@@ -2123,14 +2123,14 @@ stage {
 .notification,
 .notification-with-image {
     background-color: #060b14;
-    color: #ffffff;
+    color: #f8fafc;
     border: none;
     border-radius: 8px;
     padding: 12px;
     spacing: 8px;
 }
 
-/* Action chips on the navy card, matching the demo toast's close button:
+/* Action chips on the notification card, matching the demo toast's close button:
    quiet frame-hover fills, accent only when pressed. */
 #notification .notification-button,
 #notification .notification-icon-button,
@@ -2140,7 +2140,7 @@ stage {
     background-gradient-direction: none;
     border: none;
     border-radius: 6px;
-    color: #ffffff;
+    color: #f8fafc;
     padding: 6px 12px;
     font-size: 13px;
     font-weight: 500;
@@ -2151,7 +2151,7 @@ stage {
 .notification-button:hover,
 .notification-icon-button:hover {
     background-color: #101b2d;
-    color: #ffffff;
+    color: #f8fafc;
 }
 
 #notification .notification-button:active,
@@ -2162,7 +2162,7 @@ stage {
 
 #notification .notification-button:focus,
 .notification-button:focus {
-    border: 1px solid #93c5fd;
+    border: 1px solid #60a5fa;
 }
 
 /* ==========================================================================
@@ -2232,8 +2232,8 @@ stage {
 
 .switcher-list .item-box:outlined,
 .switcher-list .item-box:selected {
-    background-color: #93c5fd;
-    color: #0f172a;
+    background-color: #60a5fa;
+    color: #0b1220;
 }
 
 .switcher-arrow {
@@ -2247,7 +2247,7 @@ stage {
 }
 
 .workspace-thumbnail {
-    background-color: #1e293b;
+    background-color: #060b14;
     border-radius: 6px;
 }
 
@@ -2273,7 +2273,7 @@ stage {
 .workspace-button:outlined,
 .workspace-button:checked {
     background-color: #101b2d;
-    color: #ffffff;
+    color: #f8fafc;
 }
 
 .workspace-graph .workspace {
@@ -2314,7 +2314,7 @@ stage {
 
 .calendar-change-month-back:hover,
 .calendar-change-month-forward:hover {
-    background-color: #1e293b;
+    background-color: #060b14;
     color: #f8fafc;
 }
 
@@ -2361,8 +2361,8 @@ stage {
 
 .calendar-not-today:selected,
 .calendar-day-base:selected {
-    background-color: #93c5fd;
-    color: #0f172a;
+    background-color: #60a5fa;
+    color: #0b1220;
 }
 
 /* ==========================================================================
@@ -2468,7 +2468,7 @@ StScrollView StScrollBar StButton#hhandle:active {
 /* Only a true sidebar is the secondary surface; the two-pane content area is
    a primary sheet and stays on the default one. */
 .appmenu-sidebar {
-    background-color: #1e293b;
+    background-color: #060b14;
     border-radius: 8px;
 }
 
@@ -2531,7 +2531,7 @@ StScrollView StScrollBar StButton#hhandle:active {
 .appmenu-system-button:hover,
 .appmenu-application-button-selected,
 .appmenu-category-button-selected {
-    background-color: #1e293b;
+    background-color: #060b14;
     color: #f8fafc;
 }
 
@@ -2602,7 +2602,7 @@ StScrollView StScrollBar StButton#hhandle:active {
 }
 
 .calendar-event-button:hover {
-    background-color: #1e293b;
+    background-color: #060b14;
     color: #f8fafc;
 }
 
@@ -2740,7 +2740,7 @@ StScrollView StScrollBar StButton#hhandle:active {
 }
 
 .sound-player-generic-coverart {
-    background-color: #1e293b;
+    background-color: #060b14;
     color: #94a3b8;
     border-radius: 6px;
 }
@@ -2751,7 +2751,7 @@ StScrollView StScrollBar StButton#hhandle:active {
 .workspace-switch-osd,
 .resize-popup {
     background-color: #060b14;
-    color: #ffffff;
+    color: #f8fafc;
     border: none;
     border-radius: 8px;
     padding: 12px 18px;
@@ -2804,7 +2804,7 @@ StScrollView StScrollBar StButton#hhandle:active {
 /* Expo and Scale overlays. */
 .window-caption {
     background-color: #060b14;
-    color: #ffffff;
+    color: #f8fafc;
     border: none;
     border-radius: 6px;
     padding: 3px 9px;
@@ -2828,7 +2828,7 @@ StScrollView StScrollBar StButton#hhandle:active {
 
 .vkeyboard-key {
     background-color: #101b2d;
-    color: #ffffff;
+    color: #f8fafc;
     border: none;
     border-radius: 6px;
     font-size: 14px;

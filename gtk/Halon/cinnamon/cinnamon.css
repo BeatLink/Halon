@@ -1727,26 +1727,26 @@ stage {
 }
 
 #panel {
-    background-color: #0f172a;
-    color: #93c5fd;
+    background-color: #f1f5f9;
+    color: #475569;
     border: none;
     font-size: 13px;
 }
 
 #panel.panel-top {
-    border-bottom: 1px solid #0f172a;
+    border-bottom: 1px solid #f1f5f9;
 }
 
 #panel.panel-bottom {
-    border-top: 1px solid #0f172a;
+    border-top: 1px solid #f1f5f9;
 }
 
 #panel:highlight {
-    background-color: #1e3a5f;
+    background-color: #e2e8f0;
 }
 
 .panel-top, .panel-bottom, .panel-left, .panel-right {
-    background-color: #0f172a;
+    background-color: #f1f5f9;
 }
 
 /* ==========================================================================
@@ -1754,7 +1754,7 @@ stage {
    ========================================================================== */
 
 .applet-box {
-    color: #93c5fd;
+    color: #475569;
     padding: 0 6px;
     border-radius: 6px;
     transition-duration: 120ms;
@@ -1762,8 +1762,8 @@ stage {
 
 .applet-box:hover,
 .applet-box:checked {
-    background-color: #1e3a5f;
-    color: #ffffff;
+    background-color: #e2e8f0;
+    color: #0f172a;
 }
 
 .applet-label {
@@ -1778,11 +1778,11 @@ stage {
 
 .panel-status-button {
     border: none;
-    color: #93c5fd;
+    color: #475569;
 }
 
 /* ==========================================================================
-   Window list — the active window is the only light element in the frame,
+   Window list — the active window is a raised card on the frame,
    exactly as the active tab is in §6.4.
    ========================================================================== */
 
@@ -1793,7 +1793,7 @@ stage {
 
 .grouped-window-list-item-box,
 .window-list-item-box {
-    color: #93c5fd;
+    color: #475569;
     border-radius: 6px;
     padding: 1px 8px;
     margin: 2px 1px;
@@ -1802,8 +1802,8 @@ stage {
 
 .grouped-window-list-item-box:hover,
 .window-list-item-box:hover {
-    background-color: #1e3a5f;
-    color: #ffffff;
+    background-color: #e2e8f0;
+    color: #0f172a;
 }
 
 .grouped-window-list-item-box:active,
@@ -2020,8 +2020,8 @@ stage {
     border-radius: 8px;
     padding: 7px 11px;
     caret-color: #2563eb;
-    selection-background-color: #93c5fd;
-    selected-color: #0f172a;
+    selection-background-color: #2563eb;
+    selected-color: #ffffff;
 }
 
 /* Stock's :focus block re-darkens the field — a pseudo-class outranks the
@@ -2071,8 +2071,8 @@ stage {
    ========================================================================== */
 
 #Tooltip {
-    background-color: #0f172a;
-    color: #ffffff;
+    background-color: #f1f5f9;
+    color: #0f172a;
     border: none;
     border-radius: 6px;
     padding: 5px 9px;
@@ -2080,8 +2080,8 @@ stage {
 }
 
 .osd-window {
-    background-color: #0f172a;
-    color: #ffffff;
+    background-color: #f1f5f9;
+    color: #0f172a;
     border-radius: 8px;
     padding: 12px;
     spacing: 8px;
@@ -2090,7 +2090,7 @@ stage {
 .osd-window .level {
     height: 6px;
     border-radius: 3px;
-    background-color: #1e3a5f;
+    background-color: #e2e8f0;
     color: #2563eb;
 }
 
@@ -2102,8 +2102,8 @@ stage {
    ========================================================================== */
 
 #notification {
-    background-color: #0f172a;
-    color: #ffffff;
+    background-color: #f1f5f9;
+    color: #0f172a;
     border: none;
     border-radius: 8px;
     padding: 12px;
@@ -2113,7 +2113,7 @@ stage {
 
 #notification-body,
 #notification .notification-body {
-    color: #ffffff;
+    color: #0f172a;
 }
 
 #notification-scrollview {
@@ -2122,25 +2122,25 @@ stage {
 
 .notification,
 .notification-with-image {
-    background-color: #0f172a;
-    color: #ffffff;
+    background-color: #f1f5f9;
+    color: #0f172a;
     border: none;
     border-radius: 8px;
     padding: 12px;
     spacing: 8px;
 }
 
-/* Action chips on the navy card, matching the demo toast's close button:
+/* Action chips on the notification card, matching the demo toast's close button:
    quiet frame-hover fills, accent only when pressed. */
 #notification .notification-button,
 #notification .notification-icon-button,
 .notification-button,
 .notification-icon-button {
-    background-color: #1e3a5f;
+    background-color: #e2e8f0;
     background-gradient-direction: none;
     border: none;
     border-radius: 6px;
-    color: #ffffff;
+    color: #0f172a;
     padding: 6px 12px;
     font-size: 13px;
     font-weight: 500;
@@ -2150,8 +2150,8 @@ stage {
 #notification .notification-icon-button:hover,
 .notification-button:hover,
 .notification-icon-button:hover {
-    background-color: #1e3a5f;
-    color: #ffffff;
+    background-color: #e2e8f0;
+    color: #0f172a;
 }
 
 #notification .notification-button:active,
@@ -2162,7 +2162,7 @@ stage {
 
 #notification .notification-button:focus,
 .notification-button:focus {
-    border: 1px solid #93c5fd;
+    border: 1px solid #2563eb;
 }
 
 /* ==========================================================================
@@ -2232,8 +2232,8 @@ stage {
 
 .switcher-list .item-box:outlined,
 .switcher-list .item-box:selected {
-    background-color: #93c5fd;
-    color: #0f172a;
+    background-color: #2563eb;
+    color: #ffffff;
 }
 
 .switcher-arrow {
@@ -2265,20 +2265,20 @@ stage {
 }
 
 .workspace-button {
-    color: #93c5fd;
+    color: #475569;
     border-radius: 6px;
     padding: 2px 6px;
 }
 
 .workspace-button:outlined,
 .workspace-button:checked {
-    background-color: #1e3a5f;
-    color: #ffffff;
+    background-color: #e2e8f0;
+    color: #0f172a;
 }
 
 .workspace-graph .workspace {
-    background-color: #1e3a5f;
-    border: 1px solid #0f172a;
+    background-color: #e2e8f0;
+    border: 1px solid #f1f5f9;
 }
 
 .workspace-graph .workspace:active {
@@ -2361,8 +2361,8 @@ stage {
 
 .calendar-not-today:selected,
 .calendar-day-base:selected {
-    background-color: #93c5fd;
-    color: #0f172a;
+    background-color: #2563eb;
+    color: #ffffff;
 }
 
 /* ==========================================================================
@@ -2630,7 +2630,7 @@ StScrollView StScrollBar StButton#hhandle:active {
 }
 
 .applet-separator-line {
-    background-color: #1e3a5f;
+    background-color: #e2e8f0;
     width: 1px;
 }
 
@@ -2750,8 +2750,8 @@ StScrollView StScrollBar StButton#hhandle:active {
 .info-osd,
 .workspace-switch-osd,
 .resize-popup {
-    background-color: #0f172a;
-    color: #ffffff;
+    background-color: #f1f5f9;
+    color: #0f172a;
     border: none;
     border-radius: 8px;
     padding: 12px 18px;
@@ -2803,8 +2803,8 @@ StScrollView StScrollBar StButton#hhandle:active {
 
 /* Expo and Scale overlays. */
 .window-caption {
-    background-color: #0f172a;
-    color: #ffffff;
+    background-color: #f1f5f9;
+    color: #0f172a;
     border: none;
     border-radius: 6px;
     padding: 3px 9px;
@@ -2823,12 +2823,12 @@ StScrollView StScrollBar StButton#hhandle:active {
 
 /* On-screen keyboard: frame chrome, tabs-like keys. */
 #virtual-keyboard {
-    background-color: #0f172a;
+    background-color: #f1f5f9;
 }
 
 .vkeyboard-key {
-    background-color: #1e3a5f;
-    color: #ffffff;
+    background-color: #e2e8f0;
+    color: #0f172a;
     border: none;
     border-radius: 6px;
     font-size: 14px;
@@ -2841,7 +2841,7 @@ StScrollView StScrollBar StButton#hhandle:active {
 }
 
 .vkeyboard-subkeys {
-    background-color: #0f172a;
+    background-color: #f1f5f9;
     border-radius: 8px;
     -boxpointer-gap: 4px;
 }
@@ -2916,7 +2916,7 @@ StScrollView StScrollBar StButton#hhandle:active {
 }
 
 .screen-shield {
-    background-color: #0f172a;
+    background-color: #f1f5f9;
 }
 
 .system-status-icon {

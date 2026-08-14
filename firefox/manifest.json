@@ -1,0 +1,109 @@
+{
+    "manifest_version": 2,
+    "name": "Halon",
+    "version": "1.0.0",
+    "description": "Slate and blue, one accent, hairline structure. WCAG 2.1 AA in both schemes.",
+    "browser_specific_settings": {
+        "gecko": {
+            "id": "halon@halon.theme"
+        }
+    },
+    "icons": {
+        "48": "icon.svg",
+        "96": "icon.svg"
+    },
+    "theme": {
+        "colors": {
+            "frame": "#f1f5f9",
+            "frame_inactive": "#f1f5f9",
+            "toolbar": "#f1f5f9",
+            "toolbar_text": "#475569",
+            "bookmark_text": "#475569",
+            "icons": "#475569",
+            "icons_attention": "#2563eb",
+            "tab_background_text": "#475569",
+            "tab_selected": "#ffffff",
+            "tab_text": "#0f172a",
+            "tab_line": "#2563eb",
+            "tab_loading": "#2563eb",
+            "tab_background_separator": "#e2e8f0",
+            "toolbar_top_separator": "#f1f5f9",
+            "toolbar_bottom_separator": "#f1f5f9",
+            "toolbar_vertical_separator": "#e2e8f0",
+            "button_background_hover": "#e2e8f0",
+            "button_background_active": "rgba(37, 99, 235, 0.25)",
+            "toolbar_field": "#e2e8f0",
+            "toolbar_field_text": "#0f172a",
+            "toolbar_field_border": "#e2e8f0",
+            "toolbar_field_focus": "#e2e8f0",
+            "toolbar_field_text_focus": "#0f172a",
+            "toolbar_field_border_focus": "#2563eb",
+            "toolbar_field_highlight": "#2563eb",
+            "toolbar_field_highlight_text": "#0f172a",
+            "popup": "#ffffff",
+            "popup_text": "#1a1a2e",
+            "popup_border": "#e2e8f0",
+            "popup_highlight": "#f1f5f9",
+            "popup_highlight_text": "#0f172a",
+            "sidebar": "#f1f5f9",
+            "sidebar_text": "#1a1a2e",
+            "sidebar_border": "#e2e8f0",
+            "sidebar_highlight": "#2563eb",
+            "sidebar_highlight_text": "#ffffff",
+            "ntp_background": "#f1f5f9",
+            "ntp_card_background": "#ffffff",
+            "ntp_text": "#1a1a2e"
+        },
+        "properties": {
+            "color_scheme": "light",
+            "content_color_scheme": "light"
+        }
+    },
+    "dark_theme": {
+        "colors": {
+            "frame": "#060b14",
+            "frame_inactive": "#060b14",
+            "toolbar": "#060b14",
+            "toolbar_text": "#7dabf5",
+            "bookmark_text": "#7dabf5",
+            "icons": "#7dabf5",
+            "icons_attention": "#60a5fa",
+            "tab_background_text": "#7dabf5",
+            "tab_selected": "#16213a",
+            "tab_text": "#f8fafc",
+            "tab_line": "#60a5fa",
+            "tab_loading": "#60a5fa",
+            "tab_background_separator": "#101b2d",
+            "toolbar_top_separator": "#060b14",
+            "toolbar_bottom_separator": "#060b14",
+            "toolbar_vertical_separator": "#101b2d",
+            "button_background_hover": "#101b2d",
+            "button_background_active": "rgba(96, 165, 250, 0.25)",
+            "toolbar_field": "#101b2d",
+            "toolbar_field_text": "#f8fafc",
+            "toolbar_field_border": "#101b2d",
+            "toolbar_field_focus": "#101b2d",
+            "toolbar_field_text_focus": "#f8fafc",
+            "toolbar_field_border_focus": "#60a5fa",
+            "toolbar_field_highlight": "#60a5fa",
+            "toolbar_field_highlight_text": "#0f172a",
+            "popup": "#16213a",
+            "popup_text": "#e2e8f0",
+            "popup_border": "#334155",
+            "popup_highlight": "#060b14",
+            "popup_highlight_text": "#f8fafc",
+            "sidebar": "#060b14",
+            "sidebar_text": "#e2e8f0",
+            "sidebar_border": "#334155",
+            "sidebar_highlight": "#60a5fa",
+            "sidebar_highlight_text": "#0b1220",
+            "ntp_background": "#060b14",
+            "ntp_card_background": "#16213a",
+            "ntp_text": "#e2e8f0"
+        },
+        "properties": {
+            "color_scheme": "dark",
+            "content_color_scheme": "dark"
+        }
+    }
+}

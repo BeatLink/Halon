@@ -12,14 +12,14 @@
 @define-color theme_base_color          @surface-default;
 @define-color theme_fg_color            @text-body;
 @define-color theme_text_color          @text-body;
-@define-color theme_selected_bg_color   @accent-soft;
-@define-color theme_selected_fg_color   @text-on-light;
+@define-color theme_selected_bg_color   @accent;
+@define-color theme_selected_fg_color   @text-on-fill;
 @define-color theme_unfocused_bg_color  @surface-default;
 @define-color theme_unfocused_base_color @surface-default;
 @define-color theme_unfocused_fg_color  @text-secondary;
 @define-color theme_unfocused_text_color @text-secondary;
-@define-color theme_unfocused_selected_bg_color @accent-soft;
-@define-color theme_unfocused_selected_fg_color @text-on-light;
+@define-color theme_unfocused_selected_bg_color @accent;
+@define-color theme_unfocused_selected_fg_color @text-on-fill;
 @define-color insensitive_bg_color      @surface-secondary;
 @define-color insensitive_fg_color      @text-tertiary;
 @define-color insensitive_base_color    @surface-secondary;
@@ -30,7 +30,7 @@
 @define-color success_color             @status-success;
 @define-color content_view_bg           @surface-default;
 @define-color theme_tooltip_bg_color    @surface-navigation;
-@define-color theme_tooltip_fg_color    @text-on-dark;
+@define-color theme_tooltip_fg_color    @text-heading;
 /* Legacy GTK2-era names. Plenty of applications still read these directly, and a
    theme that omits them gets the stock grey for its main surfaces no matter what
    the modern names say. */
@@ -38,8 +38,8 @@
 @define-color fg_color                  @text-body;
 @define-color base_color                @surface-default;
 @define-color text_color                @text-body;
-@define-color selected_bg_color         @accent-soft;
-@define-color selected_fg_color         @text-on-light;
+@define-color selected_bg_color         @accent;
+@define-color selected_fg_color         @text-on-fill;
 @define-color placeholder_text_color    @text-tertiary;
 
 /* Window manager decorations. Under a server-side-decorated desktop such as
@@ -185,7 +185,7 @@ decoration:backdrop {
     box-shadow: none;
 }
 
-/* The frame has to follow the window, or the navy corners overhang the rounding. */
+/* The frame has to follow the window, or its corners overhang the rounding. */
 window.csd headerbar:first-child,
 window.csd .titlebar:first-child {
     border-top-left-radius: 10px;
@@ -258,12 +258,13 @@ link,
     color: @accent;
 }
 
-/* Selection uses the translucent accent, so it reads as the same system as focus. */
+/* A selected item is a solid accent fill, per §6.5. Text selection is a different
+   thing and stays translucent, so it reads as the same system as focus. */
 selection,
 *:selected:focus,
 *:selected {
-    background-color: @accent-soft;
-    color: @text-on-light;
+    background-color: @accent;
+    color: @text-on-fill;
 }
 
 textview text selection,
@@ -279,7 +280,7 @@ separator {
 }
 
 /* ==========================================================================
-   Navigation frame — headerbar, per §6.4. Dark navy in BOTH schemes.
+   Navigation frame — headerbar, per §6.4. The secondary surface in BOTH schemes.
    ========================================================================== */
 
 headerbar,
@@ -359,20 +360,20 @@ button:disabled {
     opacity: 1;
 }
 
-/* A control that is on but locked: soft accent, so the state survives. */
+/* A control that is on but locked: the accent fill, so the state survives. */
 button:checked:disabled,
 button:active:disabled {
-    background-color: @accent-soft;
-    border-color: @accent-soft;
-    color: @text-on-light;
+    background-color: @accent;
+    border-color: @accent;
+    color: @text-on-fill;
     opacity: 1;
 }
 
 button.suggested-action:disabled,
 button.destructive-action:disabled {
-    background-color: @accent-soft;
-    border-color: @accent-soft;
-    color: @text-on-light;
+    background-color: @accent;
+    border-color: @accent;
+    color: @text-on-fill;
 }
 
 button.destructive-action:disabled {
@@ -435,9 +436,9 @@ button.circular {
 
 /* ==========================================================================
    Controls inside the navigation frame — rebuilt as one section so no generic
-   rule can strand dark text on navy. Everything here follows §6.4: quiet
-   navigation colours at rest, the hover fill, and the active page as the one
-   light element.
+   rule can strand a base-theme fill in it. Everything here follows §6.4: quiet
+   navigation colours at rest, the hover fill, and the active page raised onto
+   the content surface.
    ========================================================================== */
 
 headerbar button,
@@ -500,7 +501,7 @@ toolbar button.image-button {
 }
 
 /* Titlebuttons are glyphs, not buttons: no border, ever — the hairline reads
-   as a pale ring on navy. */
+   as a ring floating in the frame. */
 headerbar button.titlebutton,
 .titlebar button.titlebutton {
     background-color: transparent;
@@ -522,8 +523,8 @@ headerbar button.titlebutton.close:hover,
     color: @text-on-fill;
 }
 
-/* A switcher inside the frame is a tab bar, per §6.4 — the active page is the
-   only light element in it. */
+/* A switcher inside the frame is a tab bar, per §6.4 — the active page is a
+   raised card on the frame, not a coloured block. */
 headerbar stackswitcher button,
 headerbar stackswitcher button:backdrop,
 .titlebar stackswitcher button {
@@ -955,7 +956,7 @@ notebook > header > tabs > tab:hover {
     box-shadow: none;
 }
 
-/* The active tab is the only light element in the frame — and it must carry no
+/* The active tab is a raised card on the frame — and it must carry no
    base-theme indicator, in or out of window focus. */
 notebook > header.top > tabs > tab:checked,
 notebook > header.bottom > tabs > tab:checked,
@@ -1033,16 +1034,17 @@ placessidebar list row:selected {
 }
 
 list row:selected {
-    background-color: @accent-soft;
-    color: @text-on-light;
+    background-color: @accent;
+    color: @text-on-fill;
 }
 
 list row image {
     color: @text-secondary;
 }
 
+/* The icon cannot stay accent-coloured on an accent fill — it would vanish. */
 list row:selected image {
-    color: @accent;
+    color: @text-on-fill;
 }
 
 /* ==========================================================================
@@ -1061,8 +1063,8 @@ treeview.view:hover {
 }
 
 treeview.view:selected {
-    background-color: @accent-soft;
-    color: @text-on-light;
+    background-color: @accent;
+    color: @text-on-fill;
 }
 
 treeview.view header button {
@@ -1158,14 +1160,14 @@ popover modelbutton arrow {
 tooltip,
 tooltip.background {
     background-color: @surface-navigation;
-    color: @text-on-dark;
+    color: @text-heading;
     border: none;
     border-radius: 6px;
     box-shadow: 0 2px 8px @shadow-floating;
 }
 
 tooltip label {
-    color: @text-on-dark;
+    color: @text-heading;
     padding: 2px 4px;
 }
 
@@ -1256,7 +1258,7 @@ paned > separator {
 
 paned > separator:hover,
 paned > separator:selected {
-    background-color: @accent-soft;
+    background-color: @accent;
 }
 
 frame,
@@ -1284,7 +1286,7 @@ statusbar {
 
 .osd {
     background-color: @surface-navigation;
-    color: @text-on-dark;
+    color: @text-heading;
     border-radius: 8px;
 }
 

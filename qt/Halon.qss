@@ -1,0 +1,720 @@
+/* GENERATED FILE — do not edit.
+ * Halon for Qt, light scheme. Built from gtk/Halon/shared/_tokens-light.css
+ * by scripts/build-qt.mjs; edit the mapping there, then rebuild.
+ *
+ * Geometry is THEME-DESIGN-GUIDE.md §4: one 32px control height, 28px rows, a
+ * 34px frame, and the radius ladder. Load it over the Fusion style — it assumes
+ * Fusion's element structure for everything it does not restyle.
+ */
+
+/* ---------- base ---------- */
+
+QWidget {
+    color: #1a1a2e;
+    font-size: 13px;
+    selection-background-color: #2563eb;
+    selection-color: #ffffff;
+}
+
+QWidget:disabled {
+    color: #64748b;
+}
+
+QMainWindow,
+QDialog,
+QDockWidget {
+    background-color: #f1f5f9;
+}
+
+/* Content views are the raised surface, §6.2 — everything else recedes. */
+QAbstractScrollArea,
+QAbstractItemView,
+QTextEdit,
+QPlainTextEdit,
+QTextBrowser {
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+}
+
+/* ---------- the frame — §6.4 ---------- */
+
+QMenuBar,
+QToolBar,
+QStatusBar {
+    background-color: #f1f5f9;
+    color: #475569;
+    border: none;
+}
+
+QMenuBar,
+QToolBar {
+    min-height: 34px;
+    padding: 2px 8px;
+    spacing: 4px;
+}
+
+QStatusBar {
+    min-height: 27px;
+    padding: 0px 12px;
+}
+
+QStatusBar::item {
+    border: none;
+}
+
+QMenuBar::item {
+    background-color: transparent;
+    color: #475569;
+    padding: 6px 9px;
+    border-radius: 5px;
+}
+
+QMenuBar::item:selected,
+QMenuBar::item:pressed {
+    background-color: #e2e8f0;
+    color: #0f172a;
+}
+
+QToolBar::separator {
+    background-color: #e2e8f0;
+    width: 1px;
+    margin: 6px 4px;
+}
+
+/* ---------- buttons — §6.1, three weights ---------- */
+
+QPushButton {
+    background-color: transparent;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    color: #1a1a2e;
+    font-weight: 500;
+    min-height: 16px;
+    padding: 7px 14px;
+}
+
+QPushButton:hover {
+    border-color: #2563eb;
+}
+
+QPushButton:focus {
+    border-color: #2563eb;
+    outline: none;
+}
+
+/* The one primary action on a view. Qt marks it for us; nothing else is filled. */
+QPushButton:default {
+    background-color: #2563eb;
+    border-color: #2563eb;
+    color: #ffffff;
+}
+
+QPushButton:default:hover {
+    background-color: rgba(37, 99, 235, 0.85);
+    border-color: rgba(37, 99, 235, 0.85);
+}
+
+QPushButton:disabled {
+    border-color: #e2e8f0;
+    color: #64748b;
+}
+
+QPushButton:default:disabled {
+    background-color: #e2e8f0;
+    border-color: #e2e8f0;
+}
+
+/* Tool buttons are the flat weight: no border until hover, never a fill swap,
+   because a fill swap can paint out an independently-coloured icon (§6.1). */
+QToolButton {
+    background-color: transparent;
+    border: 1px solid transparent;
+    border-radius: 6px;
+    color: #475569;
+    min-width: 22px;
+    min-height: 22px;
+    padding: 4px;
+}
+
+QToolButton:hover {
+    border-color: #e2e8f0;
+    color: #0f172a;
+}
+
+QToolButton:pressed,
+QToolButton:checked {
+    background-color: #e2e8f0;
+    color: #0f172a;
+}
+
+/* In the frame, a tool button takes the frame's own label colour. */
+QToolBar > QToolButton {
+    color: #475569;
+}
+
+QToolBar > QToolButton:hover {
+    border-color: #e2e8f0;
+    color: #0f172a;
+}
+
+/* ---------- inputs — §6.2 ---------- */
+
+QLineEdit,
+QSpinBox,
+QDoubleSpinBox,
+QDateEdit,
+QTimeEdit,
+QDateTimeEdit {
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    color: #1a1a2e;
+    min-height: 16px;
+    padding: 7px 11px;
+    selection-background-color: #2563eb;
+    selection-color: #ffffff;
+}
+
+/* The fill never moves — only the boundary does. Dropping the field to the
+   secondary surface on hover would put the placeholder at 4.34:1. */
+QLineEdit:hover,
+QSpinBox:hover,
+QDoubleSpinBox:hover,
+QDateTimeEdit:hover,
+QLineEdit:focus,
+QSpinBox:focus,
+QDoubleSpinBox:focus,
+QDateTimeEdit:focus,
+QTextEdit:focus,
+QPlainTextEdit:focus {
+    border-color: #2563eb;
+}
+
+QLineEdit:disabled,
+QSpinBox:disabled,
+QDoubleSpinBox:disabled,
+QDateTimeEdit:disabled {
+    background-color: #f1f5f9;
+    color: #64748b;
+}
+
+/* §6.3's hazard reaches the stepper too, not just the combo box: restyling the
+   field's background drops the base style's button behind each arrow, and what
+   is left is the bare arrow, positioned against a box it no longer fits — it
+   lands outside the rounded border. A stepper cannot be left unstyled the way
+   an arrow can, so its geometry is stated here and the glyph comes off the
+   shared chevron. The right padding is the room the two buttons need. */
+QSpinBox,
+QDoubleSpinBox,
+QDateEdit,
+QTimeEdit,
+QDateTimeEdit {
+    padding-right: 26px;
+}
+
+QSpinBox::up-button,
+QSpinBox::down-button,
+QDoubleSpinBox::up-button,
+QDoubleSpinBox::down-button,
+QDateEdit::up-button,
+QDateEdit::down-button,
+QTimeEdit::up-button,
+QTimeEdit::down-button,
+QDateTimeEdit::up-button,
+QDateTimeEdit::down-button {
+    background-color: transparent;
+    border: none;
+    subcontrol-origin: border;
+    width: 20px;
+}
+
+QSpinBox::up-button,
+QDoubleSpinBox::up-button,
+QDateEdit::up-button,
+QTimeEdit::up-button,
+QDateTimeEdit::up-button {
+    subcontrol-position: top right;
+    margin: 3px 5px 0px 0px;
+}
+
+QSpinBox::down-button,
+QDoubleSpinBox::down-button,
+QDateEdit::down-button,
+QTimeEdit::down-button,
+QDateTimeEdit::down-button {
+    subcontrol-position: bottom right;
+    margin: 0px 5px 3px 0px;
+}
+
+QSpinBox::up-arrow,
+QDoubleSpinBox::up-arrow,
+QDateEdit::up-arrow,
+QTimeEdit::up-arrow,
+QDateTimeEdit::up-arrow {
+    image: url(assets/light/chevron-up.svg);
+    width: 10px;
+    height: 10px;
+}
+
+QSpinBox::down-arrow,
+QDoubleSpinBox::down-arrow,
+QDateEdit::down-arrow,
+QTimeEdit::down-arrow,
+QDateTimeEdit::down-arrow {
+    image: url(assets/light/chevron-down.svg);
+    width: 10px;
+    height: 10px;
+}
+
+/* A closed combo box is an action affordance, not a text field — §6.3. The
+   arrow is left to the base style: overriding it here is how ports lose it. */
+QComboBox {
+    background-color: transparent;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    color: #2563eb;
+    font-weight: 500;
+    min-height: 16px;
+    padding: 7px 11px;
+}
+
+QComboBox:hover,
+QComboBox:focus,
+QComboBox:on {
+    border-color: #2563eb;
+}
+
+QComboBox:disabled {
+    color: #64748b;
+}
+
+/* The open list is a normal readable surface, whatever the closed control does. */
+QComboBox QAbstractItemView {
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    color: #1a1a2e;
+    padding: 5px;
+    selection-background-color: #2563eb;
+    selection-color: #ffffff;
+}
+
+/* ---------- toggles — §6.2: the boundary is the control, so it clears 3:1 ---------- */
+
+QCheckBox,
+QRadioButton {
+    color: #1a1a2e;
+    spacing: 8px;
+}
+
+QCheckBox::indicator,
+QRadioButton::indicator {
+    width: 16px;
+    height: 16px;
+}
+
+QCheckBox::indicator:unchecked        { image: url(assets/light/check-off.svg); }
+QCheckBox::indicator:checked          { image: url(assets/light/check-on.svg); }
+QCheckBox::indicator:indeterminate    { image: url(assets/light/check-mixed.svg); }
+QRadioButton::indicator:unchecked     { image: url(assets/light/radio-off.svg); }
+QRadioButton::indicator:checked       { image: url(assets/light/radio-on.svg); }
+
+QCheckBox::indicator:unchecked:disabled     { image: url(assets/light/check-off-disabled.svg); }
+QCheckBox::indicator:checked:disabled       { image: url(assets/light/check-on-disabled.svg); }
+QCheckBox::indicator:indeterminate:disabled { image: url(assets/light/check-mixed-disabled.svg); }
+QRadioButton::indicator:unchecked:disabled  { image: url(assets/light/radio-off-disabled.svg); }
+QRadioButton::indicator:checked:disabled    { image: url(assets/light/radio-on-disabled.svg); }
+
+QCheckBox:disabled,
+QRadioButton:disabled {
+    color: #64748b;
+}
+
+/* ---------- lists, trees, tables — §6.5 ---------- */
+
+QAbstractItemView {
+    alternate-background-color: #f1f5f9;
+    outline: none;
+    selection-background-color: #2563eb;
+    selection-color: #ffffff;
+}
+
+QAbstractItemView::item {
+    min-height: 22px;
+    padding: 3px 8px;
+}
+
+QAbstractItemView::item:hover {
+    background-color: #e2e8f0;
+    color: #0f172a;
+}
+
+/* A selected row is a solid accent fill; its icon must not stay accent-coloured. */
+QAbstractItemView::item:selected {
+    background-color: #2563eb;
+    color: #ffffff;
+}
+
+/* Inactive selection is left to the palette, which already carries it at 30%
+   (§6.5) in its inactive colour group. A :!active rule here would fight it
+   rather than help: the style sheet's :active follows widget focus while the
+   indent column beside it follows window activation, so the two disagree the
+   moment a view is merely unfocused — and the row splits into a pale band with
+   a full-strength block welded to its left. One authority, no seam. */
+
+/* Qt paints ::item per cell, not per row, so a radius here cuts a multi-column
+   row into one chip per column with a gap at every boundary. Only a view that
+   is single-column by construction can carry the row radius; a tree or a table
+   takes a square fill and reads as one continuous band. The padding is what
+   keeps the rounded ends off the frame, which would otherwise clip them flat. */
+QListView {
+    padding: 4px;
+}
+
+QListView::item {
+    border-radius: 6px;
+}
+
+QTreeView::item,
+QTableView::item {
+    border-radius: 0px;
+}
+
+/* The indent column is outside ::item, so the style paints it from the palette:
+   left alone it fills at full-strength Highlight while the row beside it is the
+   30% inactive fill, which reads as a stray block welded to the row. It is held
+   transparent in every state instead, so the selection band is exactly the row.
+   ::branch honours :selected but not :!active, so matching the fill is not an
+   option — only clearing it is.
+
+   Styling ::branch at all is §6.3's hazard in its exact form: the moment there
+   is a rule here, the base style stops drawing the expander and the tree loses
+   the one control that opens it. That is why the arrows are restated below
+   rather than left to Fusion — off the same chevron as the stepper. */
+QTreeView::branch:has-children:!has-siblings:closed,
+QTreeView::branch:closed:has-children:has-siblings {
+    image: url(assets/light/branch-closed.svg);
+}
+
+QTreeView::branch:open:has-children:!has-siblings,
+QTreeView::branch:open:has-children:has-siblings {
+    image: url(assets/light/branch-open.svg);
+}
+
+/* On a selected row the indent takes the accent fill, so the arrow has to
+   invert with it — the muted glyph is 1.7:1 on that blue and disappears. */
+QTreeView::branch:has-children:!has-siblings:closed:selected,
+QTreeView::branch:closed:has-children:has-siblings:selected {
+    image: url(assets/light/branch-closed-selected.svg);
+}
+
+QTreeView::branch:open:has-children:!has-siblings:selected,
+QTreeView::branch:open:has-children:has-siblings:selected {
+    image: url(assets/light/branch-open-selected.svg);
+}
+
+/* Last, and stated at every specificity the arrow rules above reach: Qt resolves
+   ::branch by the most specific match, so a plain :selected rule placed first is
+   discarded for exactly the rows that have an arrow — which is all of them.
+   Transparent is not enough — the base style has already painted the highlight
+   underneath by then, so the selected states name the fill they want. */
+QTreeView::branch,
+QTreeView::branch:hover {
+    background-color: transparent;
+}
+
+QTreeView::branch:selected,
+QTreeView::branch:has-children:selected,
+QTreeView::branch:has-siblings:selected,
+QTreeView::branch:open:has-children:selected,
+QTreeView::branch:open:has-children:has-siblings:selected,
+QTreeView::branch:open:has-children:!has-siblings:selected,
+QTreeView::branch:closed:has-children:selected,
+QTreeView::branch:closed:has-children:has-siblings:selected,
+QTreeView::branch:has-children:!has-siblings:closed:selected {
+    background-color: #2563eb;
+}
+
+QHeaderView {
+    background-color: transparent;
+    border: none;
+}
+
+QHeaderView::section {
+    background-color: #f1f5f9;
+    border: none;
+    border-bottom: 1px solid #e2e8f0;
+    border-right: 1px solid #e2e8f0;
+    color: #475569;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 6px 12px;
+}
+
+/* The header meets the view's 8px frame, so its outer sections carry the same
+   corner — a square section against a rounded frame leaves a visible notch. A
+   tree's first section is its own top-left corner; a table's is the corner
+   button below, because the row header owns that column. */
+QTreeView QHeaderView::section:first {
+    border-top-left-radius: 8px;
+}
+
+QHeaderView::section:horizontal:last {
+    border-top-right-radius: 8px;
+}
+
+/* The square between the two headers, and the one between the two scroll bars. */
+QTableCornerButton::section {
+    background-color: #f1f5f9;
+    border: none;
+    border-bottom: 1px solid #e2e8f0;
+    border-right: 1px solid #e2e8f0;
+    border-top-left-radius: 8px;
+}
+
+QAbstractScrollArea::corner {
+    background-color: transparent;
+    border: none;
+}
+
+QTableView {
+    gridline-color: #e2e8f0;
+}
+
+/* ---------- menus — §6.6 ---------- */
+
+QMenu {
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    color: #1a1a2e;
+    padding: 5px;
+}
+
+QMenu::item {
+    border-radius: 5px;
+    min-height: 20px;
+    padding: 6px 24px 6px 9px;
+}
+
+QMenu::item:selected {
+    background-color: #2563eb;
+    color: #ffffff;
+}
+
+QMenu::item:disabled {
+    color: #64748b;
+}
+
+QMenu::separator {
+    background-color: #e2e8f0;
+    height: 1px;
+    margin: 5px 9px;
+}
+
+QMenu::icon {
+    padding-left: 9px;
+}
+
+QToolTip {
+    background-color: #f1f5f9;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    color: #0f172a;
+    padding: 5px 9px;
+}
+
+/* ---------- tabs — §6.4: a raised card, marked by lift, text and the accent ---------- */
+
+QTabWidget::pane {
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    top: -1px;
+}
+
+QTabBar {
+    background-color: transparent;
+    qproperty-drawBase: 0;
+}
+
+/* Only the top corners round. The selected tab is marked by an accent
+   border-bottom, and a radius on that edge bends the underline up into a U. */
+QTabBar::tab {
+    background-color: transparent;
+    border: 1px solid transparent;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    color: #475569;
+    margin: 3px 1px;
+    min-height: 20px;
+    padding: 4px 10px;
+}
+
+QTabBar::tab:hover {
+    background-color: #e2e8f0;
+    color: #0f172a;
+}
+
+QTabBar::tab:selected {
+    background-color: #ffffff;
+    border-bottom: 2px solid #2563eb;
+    color: #0f172a;
+}
+
+QTabBar::close-button:hover {
+    background-color: #dc2626;
+    border-radius: 4px;
+}
+
+/* ---------- scrollbars — §6.8 ---------- */
+
+QScrollBar:vertical,
+QScrollBar:horizontal {
+    background-color: transparent;
+    border: none;
+    margin: 0px;
+}
+
+QScrollBar:vertical   { width: 10px; }
+QScrollBar:horizontal { height: 10px; }
+
+QScrollBar::handle:vertical,
+QScrollBar::handle:horizontal {
+    background-color: #cbd5e1;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+
+QScrollBar::handle:vertical   { min-height: 28px; }
+QScrollBar::handle:horizontal { min-width: 28px; }
+
+QScrollBar::handle:hover {
+    background-color: #64748b;
+}
+
+QScrollBar::add-line,
+QScrollBar::sub-line,
+QScrollBar::add-page,
+QScrollBar::sub-page {
+    background: none;
+    border: none;
+    height: 0px;
+    width: 0px;
+}
+
+/* ---------- progress, sliders, splitters ---------- */
+
+/* The track is a line on a surface, not a fill on the frame: at
+   surface-secondary it is the same colour as the window it usually sits on and
+   the unfilled part of the bar disappears. §4.3 sets the 6px height, and §3.6
+   puts the value in a label beside the bar rather than inside it — 6px cannot
+   hold text, and Qt draws it clipped across the middle if it is left visible. */
+QProgressBar {
+    background-color: #e2e8f0;
+    border: none;
+    border-radius: 3px;
+    color: transparent;
+    max-height: 6px;
+}
+
+QProgressBar::chunk {
+    background-color: #2563eb;
+    border-radius: 3px;
+}
+
+QSlider::groove:horizontal {
+    background-color: #e2e8f0;
+    border-radius: 3px;
+    height: 6px;
+}
+
+QSlider::sub-page:horizontal {
+    background-color: #2563eb;
+    border-radius: 3px;
+}
+
+/* Sub-controls are drawn by the style sheet, so the palette's disabled ramp
+   never reaches them and a locked slider is otherwise identical to a live one. */
+QSlider::sub-page:horizontal:disabled {
+    background-color: #cbd5e1;
+}
+
+QSlider::handle:horizontal:disabled {
+    background-color: #f1f5f9;
+    border-color: #cbd5e1;
+}
+
+QProgressBar::chunk:disabled {
+    background-color: #cbd5e1;
+}
+
+QSlider::handle:horizontal {
+    background-color: #ffffff;
+    border: 1px solid #8792a3;
+    border-radius: 8px;
+    height: 16px;
+    margin: -6px 0px;
+    width: 16px;
+}
+
+QSlider::handle:horizontal:hover {
+    border-color: #2563eb;
+}
+
+/* Gutters are invisible until grabbed, §6.8. */
+QSplitter::handle {
+    background-color: transparent;
+}
+
+QSplitter::handle:hover,
+QSplitter::handle:pressed {
+    background-color: #2563eb;
+}
+
+/* ---------- containers ---------- */
+
+QGroupBox {
+    background-color: transparent;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    color: #0f172a;
+    font-weight: 600;
+    margin-top: 12px;
+    padding: 16px;
+}
+
+QGroupBox::title {
+    color: #475569;
+    font-size: 12px;
+    left: 12px;
+    padding: 0px 4px;
+    subcontrol-origin: margin;
+    subcontrol-position: top left;
+}
+
+QDockWidget {
+    color: #475569;
+    titlebar-close-icon: none;
+    titlebar-normal-icon: none;
+}
+
+QDockWidget::title {
+    background-color: #f1f5f9;
+    border-bottom: 1px solid #e2e8f0;
+    padding: 7px 12px;
+    text-align: left;
+}
+
+QFrame[frameShape="4"] {
+    background-color: #e2e8f0;
+    border: none;
+    max-height: 1px;
+}
+
+QFrame[frameShape="5"] {
+    background-color: #e2e8f0;
+    border: none;
+    max-width: 1px;
+}

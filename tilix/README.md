@@ -44,7 +44,7 @@ out of `result/share/tilix/schemes/`.
 | Background | `--surface-default` (terminals are editor surfaces) |
 | Foreground | `--text-body` |
 | Cursor | `--accent` fill with `--text-on-fill` text |
-| Selection | `--accent-soft` behind `--text-on-light` (§6.2 text selection) |
+| Selection | `--accent` behind `--text-on-fill` (§6.2 text selection) |
 | Badge | `--badge-experimental` |
 
 ANSI colors take the status and accent tokens per mode: red is `--status-danger`, green is

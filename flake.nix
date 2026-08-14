@@ -134,6 +134,8 @@
             node "$root/scripts/build-cinnamon.mjs" "$@"
             node "$root/scripts/build-cinnamon.mjs" --dark "$@"
             node "$root/scripts/build-vscode.mjs" "$@"
+            node "$root/scripts/build-firefox.mjs" "$@"
+            node "$root/scripts/build-qt.mjs" "$@"
           '';
         };
 
@@ -165,7 +167,7 @@
               cp -r Halon-Dark "$out/share/themes/Halon-Dark"
             '';
             meta = {
-              description = "Halon — slate and blue GTK + Cinnamon theme; navy shell frame, light chrome, white content";
+              description = "Halon — slate and blue GTK + Cinnamon theme; recessed chrome, raised content";
               platforms = nixpkgs.lib.platforms.linux;
             };
           };
@@ -199,7 +201,44 @@
               cp -r . "$out/share/vscode/extensions/halon.halon-theme/"
             '';
             meta = {
-              description = "Slate and blue VS Code theme with a dark navigation frame";
+              description = "Slate and blue VS Code theme; recessed chrome, raised content";
+            };
+          };
+
+          # The unpacked static theme; Firefox loads it from about:debugging or as a signed xpi.
+          halon-firefox-theme = pkgs.stdenvNoCC.mkDerivation {
+            pname = "halon-firefox-theme";
+            version = "1.0.0";
+            src = ./firefox;
+            dontBuild = true;
+            installPhase = ''
+              mkdir -p "$out/share/halon/firefox"
+              cp manifest.json icon.svg userChrome.css "$out/share/halon/firefox/"
+            '';
+            meta = {
+              description = "Slate and blue Firefox theme; recessed chrome, raised content";
+            };
+          };
+
+          # Colour schemes go where qt5ct and qt6ct look for them; the style sheet
+          # keeps its own directory, with its url() paths rewritten to absolute —
+          # Qt resolves them against the working directory, not the sheet.
+          halon-qt-theme = pkgs.stdenvNoCC.mkDerivation {
+            pname = "halon-qt-theme";
+            version = "1.0.0";
+            src = ./qt;
+            dontBuild = true;
+            installPhase = ''
+              mkdir -p "$out/share/qt5ct/colors" "$out/share/qt6ct/colors" "$out/share/halon/qt"
+              cp colors/qt5ct/*.conf "$out/share/qt5ct/colors/"
+              cp colors/qt6ct/*.conf "$out/share/qt6ct/colors/"
+              cp -r assets ./*.qss "$out/share/halon/qt/"
+              substituteInPlace "$out"/share/halon/qt/*.qss \
+                --replace-fail "url(assets/" "url($out/share/halon/qt/assets/"
+            '';
+            meta = {
+              description = "Slate and blue Qt colour schemes and style sheet";
+              platforms = nixpkgs.lib.platforms.linux;
             };
           };
 

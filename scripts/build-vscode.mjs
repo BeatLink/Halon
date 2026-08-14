@@ -6,8 +6,8 @@
  * token names and substituting at build time. Both schemes come from the same
  * mapping; only the token file differs. The workbench mapping follows the
  * component treatments in THEME-DESIGN-GUIDE.md §6 (navigation frame → activity
- * bar, title bar, tab bar, status bar; the active tab is the only light element
- * in the frame). Syntax highlighting has no precedent in the guide, so it stays
+ * bar, title bar, tab bar, status bar; the active tab is a raised card on it,
+ * marked by elevation, heading text and the accent rather than by its fill). Syntax highlighting has no precedent in the guide, so it stays
  * inside §1.1's palette: slate carries structure, weight carries names, the
  * accent carries keywords, and the §3.4 off-ramp violet carries literals.
  *
@@ -80,7 +80,7 @@ function theme(scheme) {
         "widget.shadow": t("shadow-floating"),
         "widget.border": t("border-default"),
         "selection.background": t("focus-ring"),
-        "sash.hoverBorder": t("accent-soft"),
+        "sash.hoverBorder": t("accent"),
         "toolbar.hoverBackground": a("text-tertiary", 0.20),
         "toolbar.activeBackground": a("text-tertiary", 0.30),
 
@@ -88,7 +88,7 @@ function theme(scheme) {
         "textLink.foreground": t("accent"),
         "textLink.activeForeground": t("accent"),
         "textBlockQuote.background": t("surface-secondary"),
-        "textBlockQuote.border": t("accent-soft"),
+        "textBlockQuote.border": t("accent"),
         "textCodeBlock.background": t("surface-secondary"),
         "textPreformat.foreground": t("text-body"),
         "textPreformat.background": t("surface-secondary"),
@@ -130,14 +130,15 @@ function theme(scheme) {
         "dropdown.foreground": t("text-body"),
         "dropdown.border": t("border-default"),
 
-        /* Lists and trees — §6.5: accent-soft selection carries text-on-light, hover fill is border-default */
-        "list.activeSelectionBackground": t("accent-soft"),
-        "list.activeSelectionForeground": t("text-on-light"),
-        "list.activeSelectionIconForeground": t("text-on-light"),
-        "list.focusBackground": t("accent-soft"),
-        "list.focusForeground": t("text-on-light"),
-        "list.focusHighlightForeground": t("text-on-light"),
-        "list.inactiveSelectionBackground": a("accent-soft", tr(0.40, 0.25)),
+        /* Lists and trees — §6.5: a selected row is a solid accent fill carrying text-on-fill,
+           hover fill is border-default (the one hover that works on either surface) */
+        "list.activeSelectionBackground": t("accent"),
+        "list.activeSelectionForeground": t("text-on-fill"),
+        "list.activeSelectionIconForeground": t("text-on-fill"),
+        "list.focusBackground": t("accent"),
+        "list.focusForeground": t("text-on-fill"),
+        "list.focusHighlightForeground": t("text-on-fill"),
+        "list.inactiveSelectionBackground": a("accent", tr(0.25, 0.30)),
         "list.hoverBackground": t("border-default"),
         "list.hoverForeground": t("text-heading"),
         "list.highlightForeground": t("accent"),
@@ -153,7 +154,7 @@ function theme(scheme) {
 
         /* Activity bar — the navigation rail, §6.4 */
         "activityBar.background": t("surface-navigation"),
-        "activityBar.foreground": t("text-on-dark"),
+        "activityBar.foreground": t("text-heading"),
         "activityBar.inactiveForeground": t("text-on-navigation"),
         "activityBar.activeBorder": t("accent"),
         "activityBar.activeBackground": t("surface-navigation-hover"),
@@ -169,7 +170,7 @@ function theme(scheme) {
         "sideBarSectionHeader.foreground": t("text-secondary"),
         "sideBarSectionHeader.border": t("border-default"),
 
-        /* Editor tabs — §6.4: the active tab is the only light element in the frame */
+        /* Editor tabs — §6.4: the active tab is a raised card, not a light block */
         "editorGroupHeader.tabsBackground": t("surface-navigation"),
         "editorGroupHeader.noTabsBackground": t("surface-navigation"),
         "editorGroupHeader.tabsBorder": TRANSPARENT,
@@ -183,7 +184,7 @@ function theme(scheme) {
         "tab.inactiveBackground": t("surface-navigation"),
         "tab.inactiveForeground": t("text-on-navigation"),
         "tab.hoverBackground": t("surface-navigation-hover"),
-        "tab.hoverForeground": t("text-on-dark"),
+        "tab.hoverForeground": t("text-heading"),
         "tab.unfocusedActiveBackground": t("surface-default"),
         "tab.unfocusedActiveForeground": t("text-secondary"),
         "tab.unfocusedInactiveForeground": a("text-on-navigation", 0.60),
@@ -199,9 +200,9 @@ function theme(scheme) {
         "editor.selectionHighlightBackground": a("accent", tr(0.07, 0.14)),
         "editor.wordHighlightBackground": a("accent", tr(0.06, 0.12)),
         "editor.wordHighlightStrongBackground": a("accent", tr(0.10, 0.20)),
-        "editor.findMatchBackground": tr(t("accent-soft"), a("accent", 0.40)),
+        "editor.findMatchBackground": tr(a("accent", 0.40), a("accent", 0.40)),
         "editor.findMatchBorder": tr(TRANSPARENT, t("accent")),
-        "editor.findMatchHighlightBackground": tr(a("accent-soft", 0.45), a("accent", 0.22)),
+        "editor.findMatchHighlightBackground": tr(a("accent", 0.22), a("accent", 0.22)),
         "editor.findRangeHighlightBackground": a("accent", tr(0.04, 0.08)),
         "editor.hoverHighlightBackground": a("accent", tr(0.08, 0.16)),
         "editor.rangeHighlightBackground": a("accent", tr(0.04, 0.08)),
@@ -218,7 +219,7 @@ function theme(scheme) {
         "editorInlayHint.background": t("surface-secondary"),
         "editorInlayHint.foreground": t("text-tertiary"),
         "editorBracketMatch.background": a("accent", 0.10),
-        "editorBracketMatch.border": t("accent-soft"),
+        "editorBracketMatch.border": t("accent"),
         "editorBracketHighlight.foreground1": t("text-secondary"),
         "editorBracketHighlight.foreground2": t("accent"),
         "editorBracketHighlight.foreground3": t("badge-experimental"),
@@ -274,7 +275,7 @@ function theme(scheme) {
         "scrollbarSlider.activeBackground": a("text-tertiary", 0.80),
 
         /* Minimap */
-        "minimap.selectionHighlight": t("accent-soft"),
+        "minimap.selectionHighlight": t("accent"),
         "minimap.findMatchHighlight": t("accent"),
         "minimap.errorHighlight": t("status-danger"),
         "minimap.warningHighlight": t("status-warning-text"),
@@ -289,10 +290,10 @@ function theme(scheme) {
         "editorSuggestWidget.background": t("surface-default"),
         "editorSuggestWidget.border": t("border-default"),
         "editorSuggestWidget.foreground": t("text-body"),
-        "editorSuggestWidget.selectedBackground": t("accent-soft"),
-        "editorSuggestWidget.selectedForeground": t("text-on-light"),
-        "editorSuggestWidget.selectedIconForeground": t("text-on-light"),
-        "editorSuggestWidget.focusHighlightForeground": t("text-on-light"),
+        "editorSuggestWidget.selectedBackground": t("accent"),
+        "editorSuggestWidget.selectedForeground": t("text-on-fill"),
+        "editorSuggestWidget.selectedIconForeground": t("text-on-fill"),
+        "editorSuggestWidget.focusHighlightForeground": t("text-on-fill"),
         "editorSuggestWidget.highlightForeground": t("accent"),
         "editorHoverWidget.background": t("surface-default"),
         "editorHoverWidget.foreground": t("text-body"),
@@ -305,13 +306,13 @@ function theme(scheme) {
         "peekView.border": t("accent"),
         "peekViewEditor.background": t("surface-secondary"),
         "peekViewEditorGutter.background": t("surface-secondary"),
-        "peekViewEditor.matchHighlightBackground": tr(a("accent-soft", 0.50), a("accent", 0.30)),
+        "peekViewEditor.matchHighlightBackground": tr(a("accent", 0.30), a("accent", 0.30)),
         "peekViewResult.background": t("surface-secondary"),
         "peekViewResult.fileForeground": t("text-heading"),
         "peekViewResult.lineForeground": t("text-secondary"),
-        "peekViewResult.matchHighlightBackground": tr(a("accent-soft", 0.50), a("accent", 0.30)),
-        "peekViewResult.selectionBackground": t("accent-soft"),
-        "peekViewResult.selectionForeground": t("text-on-light"),
+        "peekViewResult.matchHighlightBackground": tr(a("accent", 0.30), a("accent", 0.30)),
+        "peekViewResult.selectionBackground": t("accent"),
+        "peekViewResult.selectionForeground": t("text-on-fill"),
         "peekViewTitle.background": t("surface-secondary"),
         "peekViewTitleLabel.foreground": t("text-heading"),
         "peekViewTitleDescription.foreground": t("text-secondary"),
@@ -335,10 +336,10 @@ function theme(scheme) {
         "statusBar.debuggingForeground": t("text-on-fill"),
         "statusBar.focusBorder": t("accent"),
         "statusBarItem.hoverBackground": t("surface-navigation-hover"),
-        "statusBarItem.hoverForeground": t("text-on-dark"),
+        "statusBarItem.hoverForeground": t("text-heading"),
         "statusBarItem.activeBackground": t("surface-navigation-hover"),
         "statusBarItem.prominentBackground": t("surface-navigation-hover"),
-        "statusBarItem.prominentForeground": t("text-on-dark"),
+        "statusBarItem.prominentForeground": t("text-heading"),
         "statusBarItem.prominentHoverBackground": t("surface-navigation-hover"),
         "statusBarItem.remoteBackground": t("accent"),
         "statusBarItem.remoteForeground": t("text-on-fill"),
@@ -354,7 +355,7 @@ function theme(scheme) {
         "titleBar.inactiveForeground": a("text-on-navigation", 0.60),
         "titleBar.border": TRANSPARENT,
         "menubar.selectionBackground": t("surface-navigation-hover"),
-        "menubar.selectionForeground": t("text-on-dark"),
+        "menubar.selectionForeground": t("text-heading"),
 
         /* Menus — §6.6 */
         "menu.background": t("surface-default"),
@@ -369,9 +370,9 @@ function theme(scheme) {
         "quickInput.background": t("surface-default"),
         "quickInput.foreground": t("text-body"),
         "quickInputTitle.background": t("surface-secondary"),
-        "quickInputList.focusBackground": t("accent-soft"),
-        "quickInputList.focusForeground": t("text-on-light"),
-        "quickInputList.focusIconForeground": t("text-on-light"),
+        "quickInputList.focusBackground": t("accent"),
+        "quickInputList.focusForeground": t("text-on-fill"),
+        "quickInputList.focusIconForeground": t("text-on-fill"),
         "pickerGroup.foreground": t("text-secondary"),
         "pickerGroup.border": t("border-default"),
         "keybindingLabel.background": t("surface-secondary"),
@@ -381,18 +382,18 @@ function theme(scheme) {
 
         /* Notifications — toasts belong to the frame, §6.6 */
         "notifications.background": t("surface-navigation"),
-        "notifications.foreground": t("text-on-dark"),
+        "notifications.foreground": t("text-heading"),
         "notifications.border": t("surface-navigation-hover"),
         "notificationToast.border": t("surface-navigation-hover"),
         "notificationCenter.border": t("surface-navigation-hover"),
         "notificationCenterHeader.background": t("surface-navigation"),
-        "notificationCenterHeader.foreground": t("text-on-dark"),
+        "notificationCenterHeader.foreground": t("text-heading"),
         "notificationLink.foreground": t("text-on-navigation"),
         "notificationsErrorIcon.foreground": t("status-danger"),
         "notificationsWarningIcon.foreground": t("status-warning"),
         "notificationsInfoIcon.foreground": t("text-on-navigation"),
         "banner.background": t("surface-navigation"),
-        "banner.foreground": t("text-on-dark"),
+        "banner.foreground": t("text-heading"),
         "banner.iconForeground": t("text-on-navigation"),
 
         /* Breadcrumbs */
@@ -405,9 +406,9 @@ function theme(scheme) {
         /* Terminal */
         "terminal.background": t("surface-default"),
         "terminal.foreground": t("text-body"),
-        "terminal.selectionBackground": t("accent-soft"),
+        "terminal.selectionBackground": a("accent", 0.40),
         "terminal.selectionForeground": t("text-on-light"),
-        "terminal.inactiveSelectionBackground": a("accent-soft", tr(0.40, 0.25)),
+        "terminal.inactiveSelectionBackground": a("accent", tr(0.40, 0.25)),
         "terminalCursor.foreground": t("accent"),
         "terminal.ansiBlack": ansi[0],
         "terminal.ansiRed": ansi[1],

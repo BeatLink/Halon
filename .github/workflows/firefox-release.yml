@@ -1,0 +1,136 @@
+# Signs and publishes the Firefox theme.
+#
+# The theme is a generated artifact, so the first job is not "package it" but
+# "prove it still matches the tokens it claims to come from" — a signed build of
+# a stale manifest is worse than no build, because it looks authoritative.
+#
+# Triggered by a `firefox-v*` tag. Every port in this repository versions
+# independently, so the tag names the port; `firefox-v1.0.1` must match the
+# version in firefox/manifest.json, which comes from VERSION in
+# scripts/build-firefox.mjs.
+#
+# Secrets, both from https://addons.mozilla.org/developers/addon/api/key/:
+#   AMO_JWT_ISSUER   the JWT issuer ("user:12345:67")
+#   AMO_JWT_SECRET   the JWT secret
+# A tag run needs them and fails without them. A manual run defaults to not
+# signing, so a fork with no secrets can still lint and package the theme.
+
+name: Publish Firefox theme
+
+on:
+  push:
+    tags:
+      - "firefox-v*"
+  workflow_dispatch:
+    inputs:
+      channel:
+        description: "AMO channel"
+        type: choice
+        default: unlisted
+        options: [unlisted, listed]
+      sign:
+        description: "Sign through AMO (needs the AMO secrets)"
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    env:
+      # A tag run always signs; a manual run signs only when asked.
+      CHANNEL: ${{ inputs.channel || 'unlisted' }}
+      SIGN: ${{ github.event_name == 'push' || inputs.sign }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      # The generated files are committed, so CI's job is to catch drift rather
+      # than to produce them. --check fails if the tokens have moved since.
+      - name: Verify the theme is current
+        run: |
+          node scripts/build-firefox.mjs --check
+          node scripts/audit.mjs
+
+      - name: Verify the tag matches the manifest
+        if: github.event_name == 'push'
+        run: |
+          manifest=$(node -p "require('./firefox/manifest.json').version")
+          tag="${GITHUB_REF_NAME#firefox-v}"
+          if [ "$manifest" != "$tag" ]; then
+            echo "::error::tag $GITHUB_REF_NAME wants version $tag, but firefox/manifest.json says $manifest."
+            echo "::error::Bump VERSION in scripts/build-firefox.mjs, rebuild, and commit before tagging."
+            exit 1
+          fi
+          echo "version $manifest"
+
+      # README.md and userChrome.css live beside the manifest for the reader's
+      # benefit; neither belongs inside the packaged extension.
+      - name: Lint the extension
+        run: >
+          npx --yes web-ext@10 lint
+          --source-dir firefox
+          --ignore-files README.md userChrome.css
+
+      - name: Build the unsigned package
+        run: >
+          npx --yes web-ext@10 build
+          --source-dir firefox
+          --ignore-files README.md userChrome.css
+          --overwrite-dest
+
+      - name: Sign through AMO
+        if: env.SIGN == 'true'
+        env:
+          AMO_JWT_ISSUER: ${{ secrets.AMO_JWT_ISSUER }}
+          AMO_JWT_SECRET: ${{ secrets.AMO_JWT_SECRET }}
+        run: |
+          if [ -z "$AMO_JWT_ISSUER" ] || [ -z "$AMO_JWT_SECRET" ]; then
+            echo "::error::AMO_JWT_ISSUER and AMO_JWT_SECRET are not set — cannot sign."
+            exit 1
+          fi
+          # A listed submission enters review and returns no file, so the
+          # unsigned build from the previous step stays as the artifact.
+          npx --yes web-ext@10 sign \
+            --source-dir firefox \
+            --ignore-files README.md userChrome.css \
+            --channel "$CHANNEL" \
+            --api-key "$AMO_JWT_ISSUER" \
+            --api-secret "$AMO_JWT_SECRET"
+
+      # `build` writes a .zip and `sign` writes the signed .xpi beside it, so an
+      # unsigned run still leaves something installable-by-hand to download.
+      - uses: actions/upload-artifact@v4
+        with:
+          name: halon-firefox-theme
+          path: web-ext-artifacts/*
+          if-no-files-found: error
+
+      # Unlisted signing returns a self-hostable .xpi; that is the file users
+      # install, so it belongs on the release rather than in a CI artifact that
+      # expires. A listed submission has nothing to attach and is skipped.
+      - name: Attach to the release
+        if: github.event_name == 'push' && env.CHANNEL == 'unlisted'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          xpi=""
+          for candidate in web-ext-artifacts/*.xpi; do
+            [ -e "$candidate" ] && xpi="$candidate" && break
+          done
+          if [ -z "$xpi" ]; then
+            echo "::error::signing produced no .xpi — nothing to attach."
+            exit 1
+          fi
+          gh release view "$GITHUB_REF_NAME" >/dev/null 2>&1 ||
+            gh release create "$GITHUB_REF_NAME" \
+              --title "Halon for Firefox ${GITHUB_REF_NAME#firefox-v}" \
+              --generate-notes
+          gh release upload "$GITHUB_REF_NAME" "$xpi" --clobber

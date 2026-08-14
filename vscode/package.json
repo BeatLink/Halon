@@ -1,7 +1,7 @@
 {
     "name": "halon-theme",
     "displayName": "Halon",
-    "description": "Slate and blue, with a dark navigation frame. WCAG 2.1 AA in both schemes.",
+    "description": "Slate and blue, one accent, hairline structure. WCAG 2.1 AA in both schemes.",
     "version": "1.0.0",
     "publisher": "halon",
     "engines": {

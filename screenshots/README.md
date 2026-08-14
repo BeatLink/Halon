@@ -6,11 +6,11 @@ are cropped from the live session.
 
 ## Surface architecture shown here
 
-- **Shell panel** — navy (`surface-navigation`); the one dark frame per screen
+- **Shell panel** — the frame (`surface-navigation`), one step back from content in both schemes
 - **Window chrome** — headerbars, toolbars, menu bars, tab strips on
   `surface-secondary`, selection as a raised white card
 - **Content** — `surface-default` white
-- **Transients** — notifications, tooltips, OSDs keep the navy frame colours
+- **Transients** — notifications, tooltips, OSDs keep the frame colours
 
 ## Files
 
@@ -25,8 +25,8 @@ are cropped from the live session.
 | `nemo-light.png` | A real application under the theme | Xvfb, manual |
 | `cinnamon-menu.png` | Main menu applet | live session crop |
 | `cinnamon-calendar.png` | Calendar applet popup | live session crop |
-| `cinnamon-notification.png` | Notification banner (navy toast, per §6.6) | live session crop |
-| `cinnamon-panel.png` | The panel — the navy frame itself | live session crop |
+| `cinnamon-notification.png` | Notification banner (a floating frame surface, per §6.6) | live session crop |
+| `cinnamon-panel.png` | The panel — the frame itself | live session crop |
 
 ## Regenerating
 
