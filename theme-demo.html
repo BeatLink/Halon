@@ -1,0 +1,2229 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="system">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Theme Design Guide — Reference Implementation</title>
+<style>
+/* ==========================================================================
+   LAYER 1 — THEME TOKENS
+   The only place literal colors appear, per §2 of the design guide.
+   light-dark() collapses both modes into one declaration; the guide's
+   @media (prefers-color-scheme: dark) form is exactly equivalent.
+   ========================================================================== */
+
+:root {
+    color-scheme: light dark;
+
+    /* Surfaces */
+    --surface-root:             light-dark(#f1f5f9, #0b1220);
+    --surface-default:          light-dark(#ffffff, #16213a);
+    --surface-secondary:        light-dark(#f1f5f9, #1e293b);
+    --surface-navigation:       light-dark(#0f172a, #060b14);
+    --surface-navigation-hover: light-dark(#1e3a5f, #101b2d);
+    --surface-overlay:          light-dark(rgba(15, 23, 42, 0.45), rgba(0, 0, 0, 0.6));
+
+    /* Text on surfaces */
+    --text-heading:             light-dark(#0f172a, #f8fafc);
+    --text-body:                light-dark(#1a1a2e, #e2e8f0);
+    --text-secondary:           light-dark(#475569, #cbd5e1);
+    --text-tertiary:            light-dark(#64748b, #94a3b8);
+    --text-on-navigation:       light-dark(#93c5fd, #7dabf5);
+
+    /* Text on fills — one token per class of fill, per §3.5. */
+    --text-on-fill:             light-dark(#fff, #0b1220);  /* fills that invert */
+    --text-on-light:            #0f172a;  /* fills light in both: accent-soft, warning */
+    --text-on-dark:             #fff;     /* fills dark in both: the navigation frame */
+
+    /* Lines */
+    --border-default:           light-dark(#e2e8f0, #334155);
+    --border-hover:             light-dark(#cbd5e1, #475569);
+    --border-control:           light-dark(#8792a3, #64748b);
+    --border-focus:             var(--accent);
+
+    /* Interaction */
+    --accent:                   light-dark(#2563eb, #60a5fa);
+    --accent-soft:              #93c5fd;
+    --focus-ring:               light-dark(rgba(37, 99, 235, 0.15), rgba(96, 165, 250, 0.28));
+
+    /* Status */
+    --status-success:           light-dark(#047857, #10b981);
+    --status-warning:           #f59e0b;  /* the fill: bright in both schemes */
+    --status-warning-text:      light-dark(#c2410c, #f59e0b);  /* icons, dots, bars, words */
+    --status-danger:            light-dark(#dc2626, #f87171);
+
+    /* The one sanctioned off-ramp hue, per §3.4 — it flips like every other fill. */
+    --badge-experimental:       light-dark(#7c3aed, #a78bfa);
+
+    /* Elevation — §5, with dark-mode alpha raised roughly 3.3x. */
+    --shadow-item:     light-dark(0 1px 2px rgba(15, 23, 42, .12), 0 1px 2px rgba(15, 23, 42, .5));
+    --shadow-card:     light-dark(0 1px 3px rgba(15, 23, 42, .08), 0 1px 3px rgba(15, 23, 42, .27)),
+                       light-dark(0 1px 2px rgba(15, 23, 42, .06), 0 1px 2px rgba(15, 23, 42, .2));
+    --shadow-code:     light-dark(0 1px 3px rgba(15, 23, 42, .10), 0 1px 3px rgba(15, 23, 42, .33));
+    --shadow-tab:      light-dark(0 1px 3px rgba(15, 23, 42, .15), 0 1px 3px rgba(15, 23, 42, .5));
+    --shadow-floating: light-dark(0 2px 8px rgba(15, 23, 42, .20), 0 2px 8px rgba(15, 23, 42, .6));
+    --shadow-modal:    light-dark(0 8px 32px rgba(15, 23, 42, .25), 0 8px 32px rgba(15, 23, 42, .7));
+
+    /* Typography and shape — §4. */
+    --font-family-interface:
+        system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+        "Noto Sans", Cantarell, "Helvetica Neue", Arial, sans-serif,
+        "Apple Color Emoji", "Segoe UI Emoji";
+    --font-family-code: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas,
+        "Liberation Mono", monospace;
+    --radius-default: 8px;
+    --spacing-gutter: 0.2rem;
+
+    --sidebar-width: 248px;
+
+    /* The arrow is drawn in the accent color, so its two variants belong in the token block. */
+    --select-arrow: light-dark(
+        url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%232563eb' stroke-width='1.6' stroke-linecap='round'/%3E%3C/svg%3E"),
+        url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%2360a5fa' stroke-width='1.6' stroke-linecap='round'/%3E%3C/svg%3E")
+    );
+}
+
+/* The manual toggle from §7 — the attribute wins over the system preference in both directions. */
+:root[data-theme="light"] { color-scheme: light; }
+:root[data-theme="dark"]  { color-scheme: dark; }
+
+/* ==========================================================================
+   LAYER 2 — COMPONENT RULES
+   No literal colors below this line.
+   ========================================================================== */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    height: 100vh;
+    overflow: hidden;
+    font-family: var(--font-family-interface);
+    font-size: 14px;
+    line-height: 1.55;
+    color: var(--text-body);
+    background: var(--surface-root);
+    -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+    background: var(--focus-ring);
+    color: var(--text-heading);
+}
+
+:focus-visible {
+    outline: 3px solid var(--focus-ring);
+    outline-offset: 1px;
+}
+
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+    background: var(--border-hover);
+    border-radius: 6px;
+    border: 2px solid transparent;
+    background-clip: content-box;
+}
+::-webkit-scrollbar-thumb:hover { background: var(--text-tertiary); background-clip: content-box; }
+
+.legacy-warning { display: none; }
+@supports not (color: light-dark(#fff, #000)) {
+    .legacy-warning {
+        display: block;
+        padding: 12px 20px;
+        background: var(--status-danger);
+        color: var(--text-on-fill);
+        font-weight: 500;
+    }
+}
+
+/* ---------- Shell ---------- */
+
+.app-shell { display: flex; height: 100vh; }
+
+.app-body { display: flex; flex-direction: column; flex: 1; min-width: 0; }
+
+.workspace { display: flex; flex: 1; min-height: 0; }
+
+/* ---------- Navigation rail — §6.4 ---------- */
+
+.navigation-rail {
+    width: 52px;
+    flex-shrink: 0;
+    background: var(--surface-navigation);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: 8px 0;
+}
+
+.rail-button {
+    width: 36px;
+    height: 36px;
+    display: grid;
+    place-items: center;
+    border: none;
+    border-radius: var(--radius-default);
+    background: transparent;
+    color: var(--text-on-navigation);
+    font-size: 17px;
+    cursor: pointer;
+    transition: background-color .12s, color .12s;
+}
+
+.rail-button:hover, .rail-button[aria-current="true"] {
+    background: var(--surface-navigation-hover);
+    color: var(--text-on-dark);
+}
+
+.rail-spacer { flex: 1; }
+
+.rail-badge {
+    position: relative;
+}
+
+.rail-badge::after {
+    content: "";
+    position: absolute;
+    top: 5px; right: 5px;
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--status-success);
+    border: 2px solid var(--surface-navigation);
+}
+
+/* ---------- Tab bar — §6.4 ---------- */
+
+.tab-bar {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    padding: var(--spacing-gutter);
+    background: var(--surface-navigation);
+    overflow-x: auto;
+    scrollbar-width: none;
+}
+.tab-bar::-webkit-scrollbar { display: none; }
+
+.tab {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 10px;
+    border: none;
+    border-radius: var(--radius-default);
+    background: transparent;
+    color: var(--text-on-navigation);
+    font: inherit;
+    font-size: 13px;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: background-color .12s;
+}
+
+.tab:hover { background: var(--surface-navigation-hover); }
+
+.tab[aria-selected="true"] {
+    background: var(--surface-default);
+    color: var(--text-heading);
+    box-shadow: var(--shadow-tab);
+}
+
+.tab[aria-selected="true"] .tab-icon { color: var(--accent); }
+
+.tab-close {
+    display: grid;
+    place-items: center;
+    width: 16px; height: 16px;
+    border: none;
+    border-radius: 4px;
+    background: transparent;
+    color: inherit;
+    font-size: 11px;
+    line-height: 1;
+    cursor: pointer;
+    opacity: .6;
+}
+
+.tab-close:hover {
+    background: var(--status-danger);
+    color: var(--text-on-fill);
+    opacity: 1;
+}
+
+.new-tab-button {
+    flex-shrink: 0;
+    width: 28px; height: 28px;
+    border: none;
+    border-radius: var(--radius-default);
+    background: transparent;
+    color: var(--text-on-navigation);
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.new-tab-button:hover {
+    background: var(--surface-navigation-hover);
+    color: var(--text-on-dark);
+}
+
+/* ---------- Sidebar and tree — §6.5 ---------- */
+
+.sidebar {
+    width: var(--sidebar-width);
+    flex-shrink: 0;
+    background: var(--surface-secondary);
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+}
+
+.sidebar-search { padding: 10px; }
+
+.tree {
+    flex: 1;
+    overflow-y: auto;
+    padding: 0 8px 16px;
+    list-style: none;
+    margin: 0;
+}
+
+.tree-group-label {
+    padding: 12px 8px 4px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+}
+
+.tree-item {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    width: 100%;
+    padding: 5px 8px;
+    margin-bottom: 1px;
+    border: none;
+    border-radius: 6px;
+    background: transparent;
+    color: var(--text-body);
+    font: inherit;
+    font-size: 13px;
+    text-align: left;
+    cursor: pointer;
+}
+
+.tree-item:hover { background: var(--border-default); color: var(--text-heading); }
+
+/* A selected row is a raised light card, not an accent bar. */
+.tree-item[aria-current="true"] {
+    background: var(--surface-default);
+    color: var(--text-heading);
+    box-shadow: var(--shadow-item);
+    font-weight: 500;
+}
+
+.tree-item-icon { color: var(--text-secondary); font-size: 13px; width: 15px; text-align: center; }
+.tree-item[aria-current="true"] .tree-item-icon { color: var(--accent); }
+.tree-item-label { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+.tree-item-action {
+    display: none;
+    place-items: center;
+    width: 19px; height: 19px;
+    border: none;
+    border-radius: 4px;
+    background: var(--surface-default);
+    color: var(--text-secondary);
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.tree-item:hover .tree-item-action { display: grid; }
+.tree-item-action:hover { color: var(--accent); }
+
+.tree-toggle {
+    border: none;
+    background: transparent;
+    color: var(--text-secondary);
+    cursor: pointer;
+    padding: 0;
+    width: 12px;
+    font-size: 9px;
+    transition: transform .15s;
+}
+.tree-toggle[aria-expanded="false"] { transform: rotate(-90deg); }
+
+.tree-children { list-style: none; margin: 0; padding-left: 14px; }
+.tree-children[hidden] { display: none; }
+
+/* ---------- Gutter — §6.8 ---------- */
+
+.gutter {
+    width: 5px;
+    flex-shrink: 0;
+    cursor: col-resize;
+    background: transparent;
+    transition: background-color .12s;
+}
+.gutter:hover, .gutter.is-dragging { background: var(--accent-soft); }
+
+/* ---------- Content ---------- */
+
+.content {
+    flex: 1;
+    min-width: 0;
+    overflow-y: auto;
+    background: var(--surface-default);
+    border-radius: var(--radius-default);
+    margin: var(--spacing-gutter);
+    padding: 28px 32px 80px;
+    scroll-behavior: smooth;
+}
+
+.content h1, .content h2, .content h3, .content h4 {
+    color: var(--text-heading);
+    line-height: 1.25;
+    margin: 0 0 8px;
+}
+.content h1 { font-size: 26px; letter-spacing: -.01em; }
+.content h2 { font-size: 19px; margin-top: 0; }
+.content h3 { font-size: 15px; margin-top: 20px; }
+.content p { margin: 0 0 14px; max-width: 68ch; }
+.content a { color: var(--accent); text-decoration-color: var(--accent-soft); }
+.content a:hover { background: var(--focus-ring); border-radius: 3px; }
+
+.lede { color: var(--text-secondary); font-size: 15px; }
+
+/* Scrolls with the document — the always-reachable scheme toggle lives in the navigation rail. */
+.content-header { margin-bottom: 18px; }
+.content-header h1 { margin-bottom: 0; }
+.content-header .lede { margin: 10px 0 0; }
+
+.section {
+    padding: 24px 0;
+    border-top: 1px solid var(--border-default);
+    scroll-margin-top: 12px;
+}
+.section:first-of-type { border-top: none; padding-top: 8px; }
+
+.section-note {
+    color: var(--text-secondary);
+    font-size: 13px;
+    margin: -4px 0 16px;
+    max-width: 72ch;
+}
+
+.row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-bottom: 14px; }
+.stack { display: flex; flex-direction: column; gap: 10px; }
+.grid { display: grid; gap: 12px; }
+.label-small {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    margin-bottom: 6px;
+}
+
+/* ---------- Buttons — §6.1 ---------- */
+
+.button {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    background: transparent;
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    padding: 8px 14px;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1;
+    border-radius: var(--radius-default);
+    cursor: pointer;
+    transition: opacity .12s;
+}
+
+/* Hover is opacity-only so an icon glyph can never merge into the background. */
+.button:hover { opacity: .85; }
+.button:disabled { opacity: .5; cursor: not-allowed; }
+
+.button-filled {
+    background: var(--accent);
+    color: var(--text-on-fill);
+    box-shadow: var(--shadow-item);
+}
+
+.button-danger { border-color: var(--status-danger); color: var(--status-danger); }
+
+.button-quiet { border-color: var(--border-default); color: var(--text-secondary); }
+.button-quiet:hover { border-color: var(--border-hover); }
+
+.button-group {
+    display: inline-flex;
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-default);
+    overflow: hidden;
+}
+
+.button-group .button {
+    border: none;
+    border-radius: 0;
+    color: var(--text-secondary);
+}
+.button-group .button + .button { border-left: 1px solid var(--border-default); }
+.button-group .button[aria-pressed="true"] {
+    background: var(--accent);
+    color: var(--text-on-fill);
+}
+
+.icon-button {
+    display: grid;
+    place-items: center;
+    width: 30px; height: 30px;
+    border: 1px solid transparent;
+    border-radius: 6px;
+    background: transparent;
+    color: var(--text-secondary);
+    font-size: 14px;
+    cursor: pointer;
+}
+.icon-button:hover { background: var(--surface-secondary); color: var(--text-heading); }
+
+.keyboard-shortcut {
+    font-family: var(--font-family-code);
+    font-size: 11px;
+    padding: 2px 5px;
+    border: 1px solid var(--border-default);
+    border-radius: 4px;
+    background: var(--surface-secondary);
+    color: var(--text-body);
+}
+
+/* ---------- Inputs — §6.2 ---------- */
+
+.field { display: flex; flex-direction: column; gap: 5px; min-width: 200px; }
+.field-label { font-size: 12px; font-weight: 500; color: var(--text-secondary); }
+
+.input, .textarea {
+    font-family: inherit;
+    font-size: 13px;
+    padding: 8px 11px;
+    border: 1px solid var(--border-control);
+    border-radius: var(--radius-default);
+    background: var(--surface-default);
+    color: var(--text-body);
+    transition: border-color .12s;
+}
+
+.input::placeholder, .textarea::placeholder { color: var(--text-tertiary); }
+
+/* The fill deliberately does not change on hover — it would push the placeholder under AA. */
+.input:hover, .textarea:hover { border-color: var(--border-focus); }
+
+.input:focus, .textarea:focus {
+    outline: 3px solid var(--focus-ring);
+    outline-offset: 0;
+    border-color: var(--border-focus);
+    background: var(--surface-default);
+}
+
+.textarea { resize: vertical; min-height: 76px; }
+
+.input-group { display: flex; align-items: center; position: relative; }
+.input-group .input { flex: 1; padding-right: 32px; }
+.input-group-action {
+    position: absolute;
+    right: 6px;
+    border: none;
+    background: transparent;
+    color: var(--text-secondary);
+    cursor: pointer;
+    font-size: 13px;
+    padding: 2px;
+}
+.input-group-action:hover { color: var(--accent); }
+
+/* A closed select is an action affordance, so it reads as a ghost button. */
+.select {
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 500;
+    padding: 8px 30px 8px 12px;
+    border: 1px solid var(--accent);
+    border-radius: var(--radius-default);
+    color: var(--accent);
+    cursor: pointer;
+    appearance: none;
+    background-color: transparent;
+    background-image: var(--select-arrow);
+    background-repeat: no-repeat;
+    background-position: right 11px center;
+    transition: opacity .12s;
+}
+.select:hover { opacity: .85; }
+.select option { background: var(--surface-default); color: var(--text-body); font-weight: 400; }
+
+.checkbox-row { display: flex; align-items: center; gap: 8px; font-size: 13px; }
+.checkbox-row input { accent-color: var(--accent); width: 15px; height: 15px; }
+
+.switch {
+    position: relative;
+    width: 38px; height: 21px;
+    border-radius: 11px;
+    border: 1px solid var(--border-hover);
+    background: var(--surface-secondary);
+    cursor: pointer;
+    transition: background-color .15s, border-color .15s;
+}
+.switch::after {
+    content: "";
+    position: absolute;
+    top: 2px; left: 2px;
+    width: 15px; height: 15px;
+    border-radius: 50%;
+    background: var(--text-tertiary);
+    transition: transform .15s, background-color .15s;
+}
+.switch[aria-checked="true"] { background: var(--accent); border-color: var(--accent); }
+.switch[aria-checked="true"]::after { transform: translateX(17px); background: var(--text-on-fill); }
+
+.range { accent-color: var(--accent); width: 180px; }
+
+/* ---------- Cards — §5 ---------- */
+
+.card {
+    background: var(--surface-default);
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-default);
+    padding: 14px 16px;
+    box-shadow: var(--shadow-card);
+}
+
+.card-flat { box-shadow: none; background: var(--surface-secondary); }
+
+.card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin: -14px -16px 12px;
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--border-default);
+    border-radius: 0;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: .03em;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+}
+
+.card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(215px, 1fr)); gap: 12px; }
+
+/* ---------- Badges — §6.7 ---------- */
+
+.badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 2px 8px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: .02em;
+    background: var(--surface-secondary);
+    color: var(--text-secondary);
+}
+
+.badge-success      { background: var(--status-success);      color: var(--text-on-fill); }
+.badge-danger       { background: var(--status-danger);       color: var(--text-on-fill); }
+.badge-warning      { background: var(--status-warning);      color: var(--text-on-light); }
+.badge-accent       { background: var(--accent);              color: var(--text-on-fill); }
+.badge-experimental { background: var(--badge-experimental);  color: var(--text-on-fill); }
+
+.alert-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    border-radius: var(--radius-default);
+    background: color-mix(in srgb, var(--status-warning) 15%, transparent);
+    color: var(--text-body);
+    font-size: 13px;
+    margin-bottom: 14px;
+}
+.alert-bar-icon { color: var(--status-warning-text); }
+
+.alert-bar-accent { background: var(--focus-ring); }
+.alert-bar-accent .alert-bar-icon { color: var(--accent); }
+
+/* ---------- Table ---------- */
+
+.table-wrap {
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-default);
+    overflow: auto;
+}
+
+table { width: 100%; border-collapse: collapse; font-size: 13px; }
+
+thead th {
+    position: sticky;
+    top: 0;
+    text-align: left;
+    padding: 9px 12px;
+    background: var(--surface-secondary);
+    color: var(--text-secondary);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--border-default);
+}
+
+tbody td { padding: 9px 12px; border-bottom: 1px solid var(--border-default); }
+tbody tr:last-child td { border-bottom: none; }
+tbody tr:hover td { background: var(--surface-secondary); }
+tbody tr[aria-selected="true"] td { background: var(--accent-soft); color: var(--text-on-light); }
+
+.numeric { font-family: var(--font-family-code); font-variant-numeric: tabular-nums; }
+
+/* ---------- Code — §5 ---------- */
+
+.code-block {
+    font-family: var(--font-family-code);
+    font-size: 12.5px;
+    line-height: 1.65;
+    background: var(--surface-secondary);
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-default);
+    padding: 13px 15px;
+    overflow-x: auto;
+    box-shadow: var(--shadow-code);
+    margin: 0 0 14px;
+    color: var(--text-body);
+}
+
+code.inline {
+    font-family: var(--font-family-code);
+    font-size: .92em;
+    padding: 1px 5px;
+    border-radius: 4px;
+    background: var(--surface-secondary);
+    color: var(--text-body);
+}
+
+blockquote {
+    margin: 0 0 14px;
+    padding: 2px 0 2px 14px;
+    border-left: 3px solid var(--accent-soft);
+    color: var(--text-secondary);
+}
+
+/* ---------- Swatches ---------- */
+
+.swatch-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(178px, 1fr)); gap: 8px; }
+
+.swatch {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 7px;
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-default);
+    background: var(--surface-default);
+    cursor: pointer;
+    text-align: left;
+    font: inherit;
+    transition: border-color .12s;
+}
+.swatch:hover { border-color: var(--border-hover); }
+
+.swatch-chip {
+    width: 34px; height: 34px;
+    flex-shrink: 0;
+    border-radius: 6px;
+    border: 1px solid var(--border-default);
+}
+
+.swatch-name {
+    font-family: var(--font-family-code);
+    font-size: 11px;
+    color: var(--text-body);
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.swatch-value { font-family: var(--font-family-code); font-size: 10.5px; color: var(--text-tertiary); }
+
+/* ---------- Menu — §6.6 ---------- */
+
+.menu {
+    min-width: 216px;
+    padding: 5px;
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-default);
+    background: var(--surface-default);
+    box-shadow: var(--shadow-floating);
+}
+
+.menu-static { position: static; display: block; }
+
+.menu-group-header {
+    padding: 6px 9px 3px;
+    font-size: 10.5px;
+    font-weight: 600;
+    letter-spacing: .05em;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+}
+
+.menu-item {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    width: 100%;
+    padding: 6px 9px;
+    border: none;
+    border-radius: 5px;
+    background: transparent;
+    color: var(--text-body);
+    font: inherit;
+    font-size: 13px;
+    text-align: left;
+    cursor: pointer;
+}
+.menu-item:hover { background: var(--surface-secondary); color: var(--text-heading); }
+.menu-item:disabled { opacity: .5; cursor: not-allowed; background: transparent; }
+.menu-item-icon { color: var(--text-secondary); width: 15px; text-align: center; font-size: 13px; }
+.menu-item-danger { color: var(--status-danger); }
+.menu-item-danger .menu-item-icon { color: var(--status-danger); }
+.menu-item-shortcut { margin-left: auto; font-size: 11px; color: var(--text-tertiary); font-family: var(--font-family-code); }
+.menu-item-arrow { margin-left: auto; color: var(--text-secondary); font-size: 10px; }
+.menu-separator { height: 1px; margin: 5px 3px; background: var(--border-default); }
+
+.menu-section {
+    margin: 5px -5px -5px;
+    padding: 8px 14px;
+    background: var(--surface-secondary);
+    border-top: 1px solid var(--border-default);
+    border-radius: 0 0 7px 7px;
+    font-size: 11.5px;
+    color: var(--text-secondary);
+}
+
+.context-menu { position: fixed; z-index: 60; }
+.context-menu[hidden] { display: none; }
+
+/* ---------- Inspector ---------- */
+
+.inspector {
+    width: 268px;
+    flex-shrink: 0;
+    overflow-y: auto;
+    padding: var(--spacing-gutter) calc(5px + var(--spacing-gutter)) var(--spacing-gutter) 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-gutter);
+}
+
+.inspector .card { padding: 12px 13px; }
+.inspector-heading {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    margin: 0 0 9px;
+}
+
+.attribute-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 5px 0;
+    font-size: 12.5px;
+    border-bottom: 1px solid var(--border-default);
+}
+.attribute-row:last-child { border-bottom: none; }
+.attribute-key { color: var(--text-secondary); }
+.attribute-value { color: var(--text-body); font-weight: 500; }
+
+/* ---------- Status bar ---------- */
+
+.status-bar {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 5px 14px;
+    border-top: 1px solid var(--border-default);
+    background: var(--surface-default);
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+.status-bar-spacer { flex: 1; }
+.status-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--status-success); display: inline-block; }
+.status-dot-error { background: var(--status-danger); animation: pulse 1.6s ease-in-out infinite; }
+@keyframes pulse { 50% { opacity: .25; } }
+
+/* ---------- Calendar ---------- */
+
+.calendar { max-width: 268px; }
+.calendar-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+.calendar-title { font-weight: 600; color: var(--text-heading); font-size: 13px; }
+.calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; }
+.calendar-weekday { text-align: center; font-size: 10.5px; font-weight: 600; color: var(--text-secondary); padding-bottom: 4px; }
+.calendar-day {
+    aspect-ratio: 1;
+    display: grid;
+    place-items: center;
+    border: none;
+    border-radius: 6px;
+    background: transparent;
+    color: var(--text-body);
+    font: inherit;
+    font-size: 12px;
+    cursor: pointer;
+}
+.calendar-day:hover { background: var(--accent); color: var(--text-on-fill); }
+.calendar-day.is-outside { color: var(--text-tertiary); }
+.calendar-day.is-marked { background: var(--focus-ring); }
+.calendar-day[aria-current="date"] { border: 1px solid var(--accent); color: var(--accent); font-weight: 600; }
+
+/* ---------- Timeline ---------- */
+
+.timeline { list-style: none; margin: 0; padding: 0 0 0 6px; }
+.timeline-item { position: relative; padding: 0 0 18px 22px; border-left: 2px solid var(--border-default); }
+.timeline-item:last-child { border-left-color: transparent; padding-bottom: 0; }
+.timeline-item.is-active { border-left-color: var(--accent-soft); }
+.timeline-item::before {
+    content: "";
+    position: absolute;
+    left: -6px; top: 3px;
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: var(--accent-soft);
+    border: 2px solid var(--surface-default);
+}
+.timeline-item:hover::before { background: var(--accent); }
+.timeline-time { font-size: 11px; color: var(--text-tertiary); font-family: var(--font-family-code); }
+.timeline-title { font-size: 13px; color: var(--text-heading); font-weight: 500; }
+
+/* ---------- Progress ---------- */
+
+/* Bright amber is 1.96:1 on this track, so every bar states its value in text and the bar is
+   redundant reinforcement — the 1.4.11 exemption for graphics that duplicate available text. */
+.progress {
+    height: 6px;
+    border-radius: 3px;
+    background: var(--surface-secondary);
+    overflow: hidden;
+}
+.progress-fill { height: 100%; background: var(--accent); border-radius: 3px; transition: width .3s; }
+.progress-fill-success { background: var(--status-success); }
+.progress-fill-warning { background: var(--status-warning); }
+
+.progress-label { display: flex; justify-content: space-between; align-items: baseline; }
+.progress-value { font-family: var(--font-family-code); font-size: 11px; color: var(--text-secondary); }
+
+/* ---------- Modal — §6.6 ---------- */
+
+.modal-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 80;
+    background: var(--surface-overlay);
+    display: grid;
+    place-items: center;
+    padding: 20px;
+}
+.modal-backdrop[hidden] { display: none; }
+
+.modal {
+    width: min(520px, 100%);
+    background: var(--surface-default);
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-default);
+    box-shadow: var(--shadow-modal);
+    overflow: hidden;
+}
+
+.modal-title-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 13px 16px;
+    border-bottom: 1px solid var(--border-default);
+}
+.modal-title { margin: 0; font-size: 15px; color: var(--text-heading); }
+
+.modal-control-button {
+    display: grid;
+    place-items: center;
+    width: 26px; height: 26px;
+    border: none;
+    border-radius: 6px;
+    background: var(--surface-secondary);
+    color: var(--text-secondary);
+    cursor: pointer;
+    font-size: 13px;
+}
+/* The one sanctioned color-swap hover — a filled accent chip has no icon-vanishing risk. */
+.modal-control-button:hover { background: var(--accent); color: var(--text-on-fill); }
+
+.modal-body { padding: 16px; }
+
+.modal-footer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
+    padding: 11px 16px;
+    background: var(--surface-secondary);
+    border-top: 1px solid var(--border-default);
+    color: var(--text-secondary);
+    font-size: 12px;
+}
+.modal-footer-note { margin-right: auto; }
+
+/* ---------- Toast and tooltip — §6.6 ---------- */
+
+.toast-region {
+    position: fixed;
+    bottom: 18px; right: 18px;
+    z-index: 90;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: flex-end;
+}
+
+.toast {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 13px;
+    border-radius: var(--radius-default);
+    background: var(--surface-navigation);
+    color: var(--text-on-dark);
+    box-shadow: var(--shadow-floating);
+    font-size: 13px;
+    animation: toast-in .18s ease-out;
+}
+@keyframes toast-in { from { opacity: 0; transform: translateY(6px); } }
+.toast.is-leaving { opacity: 0; transform: translateY(6px); transition: opacity .18s, transform .18s; }
+
+.toast-close {
+    display: grid;
+    place-items: center;
+    width: 19px; height: 19px;
+    border: none;
+    border-radius: 4px;
+    background: color-mix(in srgb, var(--text-on-dark) 15%, transparent);
+    color: inherit;
+    cursor: pointer;
+    font-size: 11px;
+}
+
+.tooltip {
+    position: fixed;
+    z-index: 95;
+    padding: 5px 9px;
+    border-radius: 6px;
+    background: var(--surface-navigation);
+    color: var(--text-on-dark);
+    box-shadow: var(--shadow-floating);
+    font-size: 12px;
+    pointer-events: none;
+}
+.tooltip[hidden] { display: none; }
+
+/* ---------- Floating action button ---------- */
+
+.floating-button {
+    position: absolute;
+    right: 292px;
+    bottom: 44px;
+    display: grid;
+    place-items: center;
+    width: 38px; height: 38px;
+    border: 1px solid var(--border-default);
+    border-radius: 50%;
+    background: var(--surface-default);
+    color: var(--accent);
+    box-shadow: var(--shadow-floating);
+    cursor: pointer;
+    font-size: 16px;
+    transition: opacity .12s;
+}
+.floating-button:hover { opacity: .85; background: var(--surface-secondary); }
+
+/* ---------- Contrast audit ---------- */
+
+.audit-pass { color: var(--status-success); font-weight: 600; }
+.audit-fail { color: var(--status-danger); font-weight: 600; }
+.audit-sample { padding: 2px 8px; border-radius: 4px; font-size: 12px; white-space: nowrap; }
+
+/* ---------- Editor ---------- */
+
+.editor-row {
+    display: grid;
+    grid-template-columns: 1fr 34px;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-family-code);
+    font-size: 11.5px;
+    color: var(--text-body);
+}
+.editor-row input[type="color"] {
+    width: 34px; height: 26px;
+    padding: 0;
+    border: 1px solid var(--border-default);
+    border-radius: 5px;
+    background: transparent;
+    cursor: pointer;
+}
+</style>
+</head>
+<body>
+
+<div class="legacy-warning">
+    This browser does not support <code>light-dark()</code>, so the theme tokens will not resolve.
+    Use a current version of Chrome, Firefox, or Safari.
+</div>
+
+<div class="app-shell">
+
+    <!-- Navigation rail -->
+    <nav class="navigation-rail" aria-label="Primary">
+        <button class="rail-button" aria-current="true" data-tooltip="Workspace">◧</button>
+        <button class="rail-button" data-tooltip="Search">⌕</button>
+        <button class="rail-button rail-badge" data-tooltip="Updates available">↧</button>
+        <button class="rail-button" data-tooltip="History">↺</button>
+        <button class="rail-button" data-tooltip="Bookmarks">★</button>
+        <div class="rail-spacer"></div>
+        <button class="rail-button" data-tooltip="Protected session">⚿</button>
+        <button class="rail-button" id="rail-scheme" data-tooltip="Toggle light and dark">☾</button>
+        <button class="rail-button" id="rail-settings" data-tooltip="Settings">⚙</button>
+    </nav>
+
+    <div class="app-body">
+
+        <!-- Tab bar -->
+        <div class="tab-bar" id="tab-bar" role="tablist">
+            <button class="tab" role="tab" aria-selected="true">
+                <span class="tab-icon">◧</span> Design guide
+                <span class="tab-close" role="button" aria-label="Close tab">✕</span>
+            </button>
+            <button class="tab" role="tab" aria-selected="false">
+                <span class="tab-icon">✎</span> Release notes
+                <span class="tab-close" role="button" aria-label="Close tab">✕</span>
+            </button>
+            <button class="tab" role="tab" aria-selected="false">
+                <span class="tab-icon">⌗</span> tokens.css
+                <span class="tab-close" role="button" aria-label="Close tab">✕</span>
+            </button>
+            <button class="tab" role="tab" aria-selected="false">
+                <span class="tab-icon">⚑</span> Contrast audit
+                <span class="tab-close" role="button" aria-label="Close tab">✕</span>
+            </button>
+            <button class="new-tab-button" id="new-tab" aria-label="New tab">+</button>
+        </div>
+
+        <div class="workspace">
+
+            <!-- Sidebar -->
+            <aside class="sidebar" aria-label="Sections">
+                <div class="sidebar-search">
+                    <div class="input-group">
+                        <input class="input" type="text" placeholder="Filter sections…" id="tree-filter">
+                        <button class="input-group-action" aria-label="Clear" id="tree-filter-clear">✕</button>
+                    </div>
+                </div>
+                <ul class="tree" id="tree">
+                    <li class="tree-group-label">Foundations</li>
+                    <li>
+                        <button class="tree-item" aria-current="true" data-target="tokens">
+                            <span class="tree-toggle" aria-expanded="true" role="button">▾</span>
+                            <span class="tree-item-icon">◆</span>
+                            <span class="tree-item-label">Tokens</span>
+                            <span class="tree-item-action" role="button" aria-label="More">⋯</span>
+                        </button>
+                        <ul class="tree-children">
+                            <li><button class="tree-item" data-target="tokens"><span class="tree-item-icon">·</span><span class="tree-item-label">Surfaces</span></button></li>
+                            <li><button class="tree-item" data-target="tokens"><span class="tree-item-icon">·</span><span class="tree-item-label">Text</span></button></li>
+                            <li><button class="tree-item" data-target="tokens"><span class="tree-item-icon">·</span><span class="tree-item-label">Status</span></button></li>
+                        </ul>
+                    </li>
+                    <li><button class="tree-item" data-target="typography"><span class="tree-item-icon">A</span><span class="tree-item-label">Typography</span><span class="tree-item-action" role="button" aria-label="More">⋯</span></button></li>
+                    <li><button class="tree-item" data-target="elevation"><span class="tree-item-icon">▤</span><span class="tree-item-label">Elevation</span><span class="tree-item-action" role="button" aria-label="More">⋯</span></button></li>
+
+                    <li class="tree-group-label">Components</li>
+                    <li><button class="tree-item" data-target="buttons"><span class="tree-item-icon">▭</span><span class="tree-item-label">Buttons</span><span class="tree-item-action" role="button" aria-label="More">⋯</span></button></li>
+                    <li><button class="tree-item" data-target="inputs"><span class="tree-item-icon">▯</span><span class="tree-item-label">Inputs and selects</span><span class="tree-item-action" role="button" aria-label="More">⋯</span></button></li>
+                    <li><button class="tree-item" data-target="menus"><span class="tree-item-icon">☰</span><span class="tree-item-label">Menus</span><span class="tree-item-action" role="button" aria-label="More">⋯</span></button></li>
+                    <li><button class="tree-item" data-target="overlays"><span class="tree-item-icon">▣</span><span class="tree-item-label">Overlays</span><span class="tree-item-action" role="button" aria-label="More">⋯</span></button></li>
+                    <li><button class="tree-item" data-target="status"><span class="tree-item-icon">●</span><span class="tree-item-label">Status and badges</span><span class="tree-item-action" role="button" aria-label="More">⋯</span></button></li>
+                    <li><button class="tree-item" data-target="data"><span class="tree-item-icon">▦</span><span class="tree-item-label">Data display</span><span class="tree-item-action" role="button" aria-label="More">⋯</span></button></li>
+                    <li><button class="tree-item" data-target="editorial"><span class="tree-item-icon">¶</span><span class="tree-item-label">Editorial</span><span class="tree-item-action" role="button" aria-label="More">⋯</span></button></li>
+                    <li><button class="tree-item" data-target="temporal"><span class="tree-item-icon">◷</span><span class="tree-item-label">Calendar and timeline</span><span class="tree-item-action" role="button" aria-label="More">⋯</span></button></li>
+
+                    <li class="tree-group-label">Verification</li>
+                    <li><button class="tree-item" data-target="audit"><span class="tree-item-icon">⚑</span><span class="tree-item-label">Contrast audit</span><span class="tree-item-action" role="button" aria-label="More">⋯</span></button></li>
+                    <li><button class="tree-item" data-target="tree-colors"><span class="tree-item-icon">◑</span><span class="tree-item-label">Lightness clamping</span><span class="tree-item-action" role="button" aria-label="More">⋯</span></button></li>
+                </ul>
+            </aside>
+
+            <div class="gutter" id="gutter" role="separator" aria-orientation="vertical"></div>
+
+            <!-- Content -->
+            <main class="content" id="content">
+
+                <header class="content-header">
+                    <div class="row" style="justify-content: space-between; margin-bottom: 0;">
+                        <h1>Theme reference implementation</h1>
+                        <div class="button-group" role="group" aria-label="Color scheme">
+                            <button class="button" data-scheme="light" aria-pressed="false">☀ Light</button>
+                            <button class="button" data-scheme="system" aria-pressed="true">◐ System</button>
+                            <button class="button" data-scheme="dark" aria-pressed="false">☾ Dark</button>
+                        </div>
+                    </div>
+                    <p class="lede">
+                        Every component below is built from the token set in §3 of the design guide, and
+                        no rule outside the token block names a literal color. Switch schemes with the
+                        control above, or leave it on <strong>System</strong> and toggle your operating
+                        system's appearance to exercise <code class="inline">prefers-color-scheme</code>.
+                    </p>
+                </header>
+
+                <!-- Tokens -->
+                <section class="section" id="tokens">
+                    <h2>Tokens</h2>
+                    <p class="section-note">
+                        Resolved live from the stylesheet in the current scheme. Click any swatch to copy
+                        its name.
+                    </p>
+                    <div class="swatch-grid" id="swatch-grid"></div>
+                </section>
+
+                <!-- Typography -->
+                <section class="section" id="typography">
+                    <h2>Typography</h2>
+                    <p class="section-note">
+                        The native interface stack, never a webfont. Headings take
+                        <code class="inline">--text-heading</code> and are never accent-colored — only
+                        links are blue.
+                    </p>
+                    <h1 style="font-size:26px">Heading one · 26px</h1>
+                    <h2 style="font-size:19px">Heading two · 19px</h2>
+                    <h3 style="font-size:15px">Heading three · 15px</h3>
+                    <p>
+                        Body text at 14px on <code class="inline">--text-body</code>, a slightly warm
+                        near-black that sits a hair softer than headings. It contains
+                        <a href="#typography">an inline link</a>, some
+                        <code class="inline">inline code</code>, and a
+                        <span class="keyboard-shortcut">Ctrl</span>
+                        <span class="keyboard-shortcut">K</span> shortcut pair.
+                    </p>
+                    <p style="color: var(--text-secondary)">
+                        Secondary text — captions, metadata, section labels. Always the more legible of
+                        the two muted tokens, in both schemes.
+                    </p>
+                    <p style="color: var(--text-tertiary)">
+                        Tertiary text — placeholders and shortcut hints only. See the contrast audit for
+                        why this token must never carry body copy.
+                    </p>
+                </section>
+
+                <!-- Elevation -->
+                <section class="section" id="elevation">
+                    <h2>Elevation</h2>
+                    <p class="section-note">
+                        Slate shadows at low alpha, never neutral black. Dark mode keeps the color and
+                        raises the alpha roughly threefold.
+                    </p>
+                    <div class="card-grid">
+                        <div class="card" style="box-shadow: var(--shadow-item)">
+                            <div class="label-small">Selected item</div>
+                            <code class="inline">0 1px 2px / .12</code>
+                        </div>
+                        <div class="card">
+                            <div class="label-small">Card</div>
+                            <code class="inline">0 1px 3px / .08 + .06</code>
+                        </div>
+                        <div class="card" style="box-shadow: var(--shadow-tab)">
+                            <div class="label-small">Active tab</div>
+                            <code class="inline">0 1px 3px / .15</code>
+                        </div>
+                        <div class="card" style="box-shadow: var(--shadow-floating)">
+                            <div class="label-small">Floating</div>
+                            <code class="inline">0 2px 8px / .20</code>
+                        </div>
+                        <div class="card" style="box-shadow: var(--shadow-modal)">
+                            <div class="label-small">Modal</div>
+                            <code class="inline">0 8px 32px / .25</code>
+                        </div>
+                        <div class="card card-flat">
+                            <div class="label-small">Shadowless</div>
+                            <code class="inline">border only</code>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Buttons -->
+                <section class="section" id="buttons">
+                    <h2>Buttons</h2>
+                    <p class="section-note">
+                        Ghost by default: transparent, accent border, accent text, and an opacity-only
+                        hover. Hover a button with an icon — the glyph fades with the label rather than
+                        merging into a filled background.
+                    </p>
+                    <div class="row">
+                        <button class="button">Default</button>
+                        <button class="button">⟳ With icon</button>
+                        <button class="button button-filled">Active toggle</button>
+                        <button class="button button-danger">⌫ Delete</button>
+                        <button class="button button-quiet">Quiet</button>
+                        <button class="button" disabled>Disabled</button>
+                    </div>
+                    <div class="row">
+                        <div class="button-group" role="group" aria-label="View">
+                            <button class="button" aria-pressed="true">List</button>
+                            <button class="button" aria-pressed="false">Grid</button>
+                            <button class="button" aria-pressed="false">Table</button>
+                        </div>
+                        <button class="icon-button" data-tooltip="Bold">B</button>
+                        <button class="icon-button" data-tooltip="Italic">I</button>
+                        <button class="icon-button" data-tooltip="Link">⚭</button>
+                        <button class="button" id="open-modal">Open modal…</button>
+                        <button class="button" id="fire-toast">Fire toast</button>
+                    </div>
+                </section>
+
+                <!-- Inputs -->
+                <section class="section" id="inputs">
+                    <h2>Inputs and selects</h2>
+                    <p class="section-note">
+                        Inputs carry a visible border at all times, ramping default → hover → focus. The
+                        closed select is a ghost button; its open option list reverts to a normal
+                        readable surface.
+                    </p>
+                    <div class="row" style="align-items: flex-start">
+                        <div class="field">
+                            <label class="field-label" for="i1">Text input</label>
+                            <input class="input" id="i1" type="text" value="Design guide">
+                        </div>
+                        <div class="field">
+                            <label class="field-label" for="i2">Placeholder</label>
+                            <input class="input" id="i2" type="text" placeholder="Untitled note">
+                        </div>
+                        <div class="field">
+                            <label class="field-label" for="i3">With action</label>
+                            <div class="input-group">
+                                <input class="input" id="i3" type="password" value="correct-horse">
+                                <button class="input-group-action" data-tooltip="Reveal">◉</button>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label class="field-label" for="s1">Select</label>
+                            <select class="select" id="s1">
+                                <option>Ghost button styling</option>
+                                <option>Second option</option>
+                                <option>Third option</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row" style="align-items: flex-start">
+                        <div class="field" style="flex:1; min-width:280px">
+                            <label class="field-label" for="t1">Textarea</label>
+                            <textarea class="textarea" id="t1">Focus me to see the border go accent with a translucent ring behind it. The ring uses the same token as text selection, so focus and selection read as one system.</textarea>
+                        </div>
+                        <div class="field">
+                            <div class="label-small">Toggles</div>
+                            <label class="checkbox-row"><input type="checkbox" checked> Checkbox, checked</label>
+                            <label class="checkbox-row"><input type="checkbox"> Checkbox, unchecked</label>
+                            <label class="checkbox-row"><input type="radio" name="r" checked> Radio, selected</label>
+                            <label class="checkbox-row"><input type="radio" name="r"> Radio, unselected</label>
+                            <div class="checkbox-row" style="margin-top:6px">
+                                <button class="switch" role="switch" aria-checked="true"></button> Switch
+                            </div>
+                            <div class="checkbox-row" style="margin-top:6px">
+                                <input class="range" type="range" value="65">
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Menus -->
+                <section class="section" id="menus">
+                    <h2>Menus</h2>
+                    <p class="section-note">
+                        Shown open for inspection. Right-click anywhere in this content pane for the same
+                        menu as a live context menu.
+                    </p>
+                    <div class="row" style="align-items: flex-start">
+                        <div class="menu menu-static">
+                            <div class="menu-group-header">Note</div>
+                            <button class="menu-item"><span class="menu-item-icon">✎</span> Rename<span class="menu-item-shortcut">F2</span></button>
+                            <button class="menu-item"><span class="menu-item-icon">⧉</span> Duplicate<span class="menu-item-shortcut">⌘D</span></button>
+                            <button class="menu-item"><span class="menu-item-icon">↗</span> Move to…<span class="menu-item-arrow">▸</span></button>
+                            <div class="menu-separator"></div>
+                            <div class="menu-group-header">Export</div>
+                            <button class="menu-item"><span class="menu-item-icon">↧</span> Markdown</button>
+                            <button class="menu-item" disabled><span class="menu-item-icon">↧</span> PDF (unavailable)</button>
+                            <div class="menu-separator"></div>
+                            <button class="menu-item menu-item-danger"><span class="menu-item-icon">⌫</span> Delete<span class="menu-item-shortcut">⌦</span></button>
+                            <div class="menu-section">Last edited 4 minutes ago</div>
+                        </div>
+                        <div class="stack" style="flex:1; min-width:260px">
+                            <div class="alert-bar">
+                                <span class="alert-bar-icon">⚠</span>
+                                Alert bars tint the status color to 15%. Fills are solid; regions are tinted.
+                            </div>
+                            <div class="alert-bar alert-bar-accent">
+                                <span class="alert-bar-icon">ⓘ</span>
+                                The informational variant reuses the focus ring rather than adding a token.
+                            </div>
+                            <div class="card card-flat">
+                                <div class="label-small">Menu tokens</div>
+                                <p style="margin:0; font-size:12.5px; color: var(--text-secondary)">
+                                    Surface for the sheet, secondary for the footer strip, secondary text
+                                    for icons and group headers, tertiary for shortcut hints, default
+                                    border for dividers, and 50% opacity for disabled rows.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Overlays -->
+                <section class="section" id="overlays">
+                    <h2>Overlays</h2>
+                    <p class="section-note">
+                        Toasts and tooltips take the navigation colors in both schemes, so transient
+                        surfaces belong to the frame rather than the page.
+                    </p>
+                    <div class="row">
+                        <button class="button" id="open-modal-2">Open modal</button>
+                        <button class="button" id="fire-toast-2">Fire toast</button>
+                        <button class="button" data-tooltip="This tooltip is positioned by script">Hover for tooltip</button>
+                        <span class="badge" data-tooltip="Tooltips attach to anything with data-tooltip">Also me</span>
+                    </div>
+                </section>
+
+                <!-- Status -->
+                <section class="section" id="status">
+                    <h2>Status and badges</h2>
+                    <p class="section-note">
+                        One accent, three status colors, and exactly one off-ramp hue for a state that
+                        must not read as success, warning, or danger.
+                    </p>
+                    <div class="row">
+                        <span class="badge">Neutral</span>
+                        <span class="badge badge-success">Synced</span>
+                        <span class="badge badge-danger">Read-only</span>
+                        <span class="badge badge-warning">Deprecated</span>
+                        <span class="badge badge-accent">Linked</span>
+                        <span class="badge badge-experimental">Experimental</span>
+                    </div>
+                    <p class="section-note" style="margin-top:14px">
+                        Each bar states its value in text. That is deliberate: bright amber is 1.96:1
+                        against the track, and a graphic that duplicates adjacent text is exempt from
+                        the 3:1 requirement. Without the number, the bar would have to be dimmed,
+                        outlined, or set in a near-black trough.
+                    </p>
+                    <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(190px,1fr))">
+                        <div>
+                            <div class="progress-label"><span class="label-small">Accent</span><span class="progress-value">68%</span></div>
+                            <div class="progress"><div class="progress-fill" style="width:68%"></div></div>
+                        </div>
+                        <div>
+                            <div class="progress-label"><span class="label-small">Success</span><span class="progress-value">100%</span></div>
+                            <div class="progress"><div class="progress-fill progress-fill-success" style="width:100%"></div></div>
+                        </div>
+                        <div>
+                            <div class="progress-label"><span class="label-small">Warning</span><span class="progress-value">34%</span></div>
+                            <div class="progress"><div class="progress-fill progress-fill-warning" style="width:34%"></div></div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Data -->
+                <section class="section" id="data">
+                    <h2>Data display</h2>
+                    <p class="section-note">
+                        Row hover uses the secondary surface; a selected row uses the soft accent behind
+                        heading-colored text. Click a row to select it.
+                    </p>
+                    <div class="table-wrap">
+                        <table id="demo-table">
+                            <thead>
+                                <tr><th>Token</th><th>Consumers</th><th class="numeric">Contrast</th><th>State</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td><code class="inline">--surface-default</code></td><td>Cards, editors, modals</td><td class="numeric">—</td><td><span class="badge badge-success">Stable</span></td></tr>
+                                <tr aria-selected="true"><td><code class="inline">--accent</code></td><td>Links, buttons, focus</td><td class="numeric">5.17</td><td><span class="badge badge-success">Stable</span></td></tr>
+                                <tr><td><code class="inline">--text-tertiary</code></td><td>Placeholders</td><td class="numeric">4.76</td><td><span class="badge badge-success">Raised</span></td></tr>
+                                <tr><td><code class="inline">--status-warning</code></td><td>Alert bars, chips</td><td class="numeric">8.31</td><td><span class="badge badge-warning">Dark text</span></td></tr>
+                                <tr><td><code class="inline">--border-default</code></td><td>Decorative hairlines</td><td class="numeric">1.23</td><td><span class="badge">Exempt</span></td></tr>
+                                <tr><td><code class="inline">--badge-experimental</code></td><td>One badge</td><td class="numeric">5.70</td><td><span class="badge badge-experimental">Off-ramp</span></td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- Editorial -->
+                <section class="section" id="editorial">
+                    <h2>Editorial</h2>
+                    <p class="section-note">Long-form content inside the default surface.</p>
+                    <blockquote>
+                        An appearance name is a name that will eventually lie. The secondary surface is
+                        darker than the default one in light mode and lighter in dark.
+                    </blockquote>
+                    <pre class="code-block">:root {
+  --surface-default:   light-dark(#ffffff, #16213a);
+  --surface-secondary: light-dark(#f1f5f9, #1e293b);
+
+  /* Three on-colors, because a fill's text follows the fill's lightness. */
+  --text-on-fill:  light-dark(#fff, #0b1220);  /* accent, success, danger */
+  --text-on-light: #0f172a;                    /* accent-soft, warning */
+  --text-on-dark:  #fff;                       /* the navigation frame */
+}
+
+.button:hover { opacity: .85; }  /* never a background swap */</pre>
+                </section>
+
+                <!-- Temporal -->
+                <section class="section" id="temporal">
+                    <h2>Calendar and timeline</h2>
+                    <div class="row" style="align-items: flex-start; gap: 32px">
+                        <div class="calendar">
+                            <div class="calendar-header">
+                                <button class="icon-button" id="cal-prev" aria-label="Previous month">‹</button>
+                                <span class="calendar-title" id="cal-title"></span>
+                                <button class="icon-button" id="cal-next" aria-label="Next month">›</button>
+                            </div>
+                            <div class="calendar-grid" id="cal-grid"></div>
+                        </div>
+                        <ul class="timeline" style="flex:1; min-width:240px">
+                            <li class="timeline-item is-active">
+                                <div class="timeline-time">09:14</div>
+                                <div class="timeline-title">Token layers collapsed to one</div>
+                            </li>
+                            <li class="timeline-item is-active">
+                                <div class="timeline-time">09:02</div>
+                                <div class="timeline-title">Renamed the secondary surface</div>
+                            </li>
+                            <li class="timeline-item">
+                                <div class="timeline-time">08:47</div>
+                                <div class="timeline-title">Added the Linux font fallback</div>
+                            </li>
+                            <li class="timeline-item">
+                                <div class="timeline-time">08:20</div>
+                                <div class="timeline-title">Dropped framework-specific naming</div>
+                            </li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- Audit -->
+                <section class="section" id="audit">
+                    <h2>Contrast audit</h2>
+                    <p class="section-note">
+                        Computed live from the resolved token values, recalculated whenever the scheme or
+                        an override changes. Thresholds are WCAG 2.1: <strong>4.5</strong> for body text,
+                        <strong>3.0</strong> for large text and non-text interface elements. Every pair
+                        passes in both schemes; if one ever fails here, it is a real finding in the
+                        palette, not a rendering artifact. Drive the overrides in the inspector to watch
+                        a passing palette break.
+                    </p>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Foreground</th><th>Background</th><th>Sample</th>
+                                    <th class="numeric">Ratio</th><th class="numeric">Target</th><th>Result</th>
+                                </tr>
+                            </thead>
+                            <tbody id="audit-body"></tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- Tree colors -->
+                <section class="section" id="tree-colors">
+                    <h2>Lightness clamping</h2>
+                    <p class="section-note">
+                        Applications that let users color items usually clamp lightness for legibility.
+                        The left column is the raw user color; the right is the same hue clamped to a
+                        light-mode ceiling of 78 and a dark-mode floor of 58, computed in CIELAB.
+                    </p>
+                    <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(210px,1fr))" id="clamp-grid"></div>
+                </section>
+
+            </main>
+
+            <!-- Inspector -->
+            <aside class="inspector" aria-label="Inspector">
+                <div class="card">
+                    <div class="card-header">Properties</div>
+                    <div class="attribute-row"><span class="attribute-key">Type</span><span class="attribute-value">Stylesheet</span></div>
+                    <div class="attribute-row"><span class="attribute-key">Tokens</span><span class="attribute-value">26</span></div>
+                    <div class="attribute-row"><span class="attribute-key">Flipped in dark</span><span class="attribute-value">23</span></div>
+                    <div class="attribute-row"><span class="attribute-key">Accents</span><span class="attribute-value">1</span></div>
+                    <div class="attribute-row"><span class="attribute-key">Scheme</span><span class="attribute-value" id="scheme-readout">system</span></div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">Live overrides</div>
+                    <p style="margin:0 0 10px; font-size:11.5px; color: var(--text-secondary)">
+                        Writes a flat value over the token, replacing both schemes. Everything downstream
+                        follows immediately — that is the whole argument for the token layer.
+                    </p>
+                    <div class="stack" id="editor-rows"></div>
+                    <button class="button button-quiet" id="reset-tokens" style="margin-top:12px; width:100%; justify-content:center">Reset overrides</button>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">Audit summary</div>
+                    <div class="attribute-row"><span class="attribute-key">Pairs checked</span><span class="attribute-value" id="audit-total">—</span></div>
+                    <div class="attribute-row"><span class="attribute-key">Passing</span><span class="attribute-value" id="audit-pass">—</span></div>
+                    <div class="attribute-row"><span class="attribute-key">Failing</span><span class="attribute-value" id="audit-failcount">—</span></div>
+                </div>
+
+                <div class="card card-flat">
+                    <div class="inspector-heading">Shortcuts</div>
+                    <div class="attribute-row"><span class="attribute-key">Toggle scheme</span><span class="keyboard-shortcut">D</span></div>
+                    <div class="attribute-row"><span class="attribute-key">Open modal</span><span class="keyboard-shortcut">M</span></div>
+                    <div class="attribute-row"><span class="attribute-key">Fire toast</span><span class="keyboard-shortcut">T</span></div>
+                    <div class="attribute-row"><span class="attribute-key">Close overlay</span><span class="keyboard-shortcut">Esc</span></div>
+                </div>
+            </aside>
+        </div>
+
+        <!-- Status bar -->
+        <div class="status-bar">
+            <span><span class="status-dot"></span> Synced</span>
+            <span>26 tokens</span>
+            <span id="status-audit">Audit: —</span>
+            <span class="status-bar-spacer"></span>
+            <span><span class="status-dot status-dot-error"></span> 1 pending conflict</span>
+            <span id="status-scheme">system</span>
+        </div>
+    </div>
+</div>
+
+<button class="floating-button" id="scroll-top" data-tooltip="Back to top">↑</button>
+
+<!-- Modal -->
+<div class="modal-backdrop" id="modal" hidden>
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+        <div class="modal-title-bar">
+            <h3 class="modal-title" id="modal-title">Apply theme overrides</h3>
+            <button class="modal-control-button" id="modal-close" aria-label="Close">✕</button>
+        </div>
+        <div class="modal-body">
+            <p style="margin-top:0">
+                The close button above is the one sanctioned color-swap hover in the whole theme: a
+                filled accent chip carries no icon-vanishing risk, because the glyph is explicitly
+                recolored along with the background.
+            </p>
+            <div class="field" style="margin-bottom:12px">
+                <label class="field-label" for="modal-input">Theme name</label>
+                <input class="input" id="modal-input" type="text" value="Slate and blue">
+            </div>
+            <label class="checkbox-row"><input type="checkbox" checked> Follow system appearance</label>
+            <label class="checkbox-row"><input type="checkbox"> Bundle an interface font</label>
+        </div>
+        <div class="modal-footer">
+            <span class="modal-footer-note">Footer strip on the secondary surface</span>
+            <button class="button button-quiet" id="modal-cancel">Cancel</button>
+            <button class="button button-filled" id="modal-confirm">Apply</button>
+        </div>
+    </div>
+</div>
+
+<!-- Context menu -->
+<div class="menu context-menu" id="context-menu" hidden>
+    <button class="menu-item"><span class="menu-item-icon">⧉</span> Copy<span class="menu-item-shortcut">⌘C</span></button>
+    <button class="menu-item"><span class="menu-item-icon">⎘</span> Paste<span class="menu-item-shortcut">⌘V</span></button>
+    <div class="menu-separator"></div>
+    <button class="menu-item"><span class="menu-item-icon">◆</span> Inspect token</button>
+    <button class="menu-item menu-item-danger"><span class="menu-item-icon">⌫</span> Remove</button>
+</div>
+
+<div class="tooltip" id="tooltip" hidden></div>
+<div class="toast-region" id="toast-region"></div>
+
+<script>
+"use strict";
+
+/* ---------- Token resolution ----------
+   getPropertyValue returns raw token text such as "light-dark(#fff, #16213a)",
+   so values are resolved by letting the engine compute them on a probe element. */
+
+const probe = document.createElement("span");
+probe.style.cssText = "position:absolute;visibility:hidden;pointer-events:none";
+document.body.appendChild(probe);
+
+function resolveColor(token) {
+    probe.style.color = "";
+    probe.style.color = "var(" + token + ")";
+    return getComputedStyle(probe).color;
+}
+
+function parseRgb(value) {
+    const nums = value.match(/[\d.]+/g);
+    if (!nums) return null;
+    return {
+        r: +nums[0], g: +nums[1], b: +nums[2],
+        a: nums.length > 3 ? +nums[3] : 1
+    };
+}
+
+function toHex(c) {
+    const part = (n) => Math.round(n).toString(16).padStart(2, "0");
+    return "#" + part(c.r) + part(c.g) + part(c.b);
+}
+
+/* Composites a translucent color over an opaque one so alpha tokens can be audited. */
+function flatten(fg, bg) {
+    if (fg.a >= 1) return fg;
+    return {
+        r: fg.r * fg.a + bg.r * (1 - fg.a),
+        g: fg.g * fg.a + bg.g * (1 - fg.a),
+        b: fg.b * fg.a + bg.b * (1 - fg.a),
+        a: 1
+    };
+}
+
+function relativeLuminance(c) {
+    const channel = (v) => {
+        v /= 255;
+        return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
+    };
+    return 0.2126 * channel(c.r) + 0.7152 * channel(c.g) + 0.0722 * channel(c.b);
+}
+
+function contrastRatio(fg, bg) {
+    const a = relativeLuminance(flatten(fg, bg));
+    const b = relativeLuminance(bg);
+    const light = Math.max(a, b), dark = Math.min(a, b);
+    return (light + 0.05) / (dark + 0.05);
+}
+
+/* ---------- Token catalogue ---------- */
+
+const TOKENS = [
+    ["--surface-root", "Application root"],
+    ["--surface-default", "Cards, panels, editors"],
+    ["--surface-secondary", "Sidebars, fills, hovers"],
+    ["--surface-navigation", "Rails, tab bars"],
+    ["--surface-navigation-hover", "Navigation hover"],
+    ["--surface-overlay", "Modal backdrop"],
+    ["--text-heading", "Headings, selected labels"],
+    ["--text-body", "Body text"],
+    ["--text-secondary", "Secondary text, icons"],
+    ["--text-tertiary", "Placeholders, hints"],
+    ["--text-on-navigation", "Text on navigation"],
+    ["--text-on-fill", "Text on fills that invert"],
+    ["--text-on-light", "Text on fills light in both"],
+    ["--text-on-dark", "Text on navigation and toasts"],
+    ["--border-default", "Decorative hairline"],
+    ["--border-hover", "Hover borders, thumbs"],
+    ["--border-control", "Input and select boundaries"],
+    ["--border-focus", "Focused field border"],
+    ["--accent", "The single accent"],
+    ["--accent-soft", "Selected fills"],
+    ["--focus-ring", "Focus, text selection"],
+    ["--status-success", "Positive status"],
+    ["--status-warning", "Caution fills"],
+    ["--status-warning-text", "Caution marks and words"],
+    ["--status-danger", "Destructive, errors"],
+    ["--badge-experimental", "One off-ramp badge"]
+];
+
+const swatchGrid = document.getElementById("swatch-grid");
+
+function renderSwatches() {
+    swatchGrid.innerHTML = "";
+    for (const [token, role] of TOKENS) {
+        const resolved = resolveColor(token);
+        const parsed = parseRgb(resolved);
+        const button = document.createElement("button");
+        button.className = "swatch";
+        button.title = role;
+        button.innerHTML =
+            '<span class="swatch-chip" style="background:' + resolved + '"></span>' +
+            '<span style="min-width:0"><span class="swatch-name">' + token + "</span>" +
+            '<span class="swatch-value">' + (parsed && parsed.a < 1 ? resolved : toHex(parsed)) + "</span></span>";
+        button.addEventListener("click", () => {
+            navigator.clipboard?.writeText(token);
+            showToast("Copied " + token);
+        });
+        swatchGrid.appendChild(button);
+    }
+}
+
+/* ---------- Contrast audit ---------- */
+
+const AUDIT_PAIRS = [
+    ["--text-body", "--surface-default", 4.5, "Body on default surface"],
+    ["--text-body", "--surface-secondary", 4.5, "Body on secondary surface"],
+    ["--text-heading", "--surface-default", 4.5, "Heading on default surface"],
+    ["--text-secondary", "--surface-default", 4.5, "Secondary on default surface"],
+    ["--text-secondary", "--surface-secondary", 4.5, "Secondary on secondary surface"],
+    ["--text-tertiary", "--surface-default", 4.5, "Tertiary on default surface"],
+    ["--accent", "--surface-default", 4.5, "Link on default surface"],
+    ["--accent", "--surface-secondary", 4.5, "Link on secondary surface"],
+    ["--text-on-fill", "--accent", 4.5, "Filled accent button"],
+    ["--text-on-light", "--accent-soft", 4.5, "Selected row"],
+    ["--text-on-navigation", "--surface-navigation", 4.5, "Navigation at rest"],
+    ["--text-on-dark", "--surface-navigation", 4.5, "Toast and tooltip"],
+    ["--text-on-fill", "--status-success", 4.5, "Success chip"],
+    ["--text-on-light", "--status-warning", 4.5, "Warning chip"],
+    ["--status-warning-text", "--surface-default", 4.5, "Warning icon or label"],
+    ["--text-on-fill", "--status-danger", 4.5, "Danger chip"],
+    ["--text-on-fill", "--badge-experimental", 4.5, "Experimental chip"],
+    ["--border-control", "--surface-default", 3.0, "Control border on default surface"]
+];
+
+const auditBody = document.getElementById("audit-body");
+
+function renderAudit() {
+    auditBody.innerHTML = "";
+    let passing = 0;
+    for (const [fgToken, bgToken, target, label] of AUDIT_PAIRS) {
+        const bg = parseRgb(resolveColor(bgToken));
+        const fg = parseRgb(resolveColor(fgToken));
+        const ratio = contrastRatio(fg, bg);
+        const pass = ratio >= target;
+        if (pass) passing++;
+        const row = document.createElement("tr");
+        row.innerHTML =
+            "<td><code class=\"inline\">" + fgToken + "</code></td>" +
+            "<td><code class=\"inline\">" + bgToken + "</code></td>" +
+            '<td><span class="audit-sample" style="background:var(' + bgToken + ');color:var(' + fgToken + ')">' + label + "</span></td>" +
+            '<td class="numeric">' + ratio.toFixed(2) + "</td>" +
+            '<td class="numeric">' + target.toFixed(1) + "</td>" +
+            '<td class="' + (pass ? "audit-pass" : "audit-fail") + '">' + (pass ? "Pass" : "Fail") + "</td>";
+        auditBody.appendChild(row);
+    }
+    const total = AUDIT_PAIRS.length;
+    document.getElementById("audit-total").textContent = total;
+    document.getElementById("audit-pass").textContent = passing;
+    document.getElementById("audit-failcount").textContent = total - passing;
+    document.getElementById("status-audit").textContent =
+        "Audit: " + passing + "/" + total + " pass";
+}
+
+/* ---------- Lightness clamping demo ---------- */
+
+function srgbToLinear(v) {
+    v /= 255;
+    return v <= 0.04045 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
+}
+function linearToSrgb(v) {
+    const out = v <= 0.0031308 ? v * 12.92 : 1.055 * Math.pow(v, 1 / 2.4) - 0.055;
+    return Math.min(255, Math.max(0, Math.round(out * 255)));
+}
+function rgbToLab(c) {
+    const r = srgbToLinear(c.r), g = srgbToLinear(c.g), b = srgbToLinear(c.b);
+    let x = (0.4124 * r + 0.3576 * g + 0.1805 * b) / 0.95047;
+    let y = (0.2126 * r + 0.7152 * g + 0.0722 * b);
+    let z = (0.0193 * r + 0.1192 * g + 0.9505 * b) / 1.08883;
+    const f = (t) => t > 0.008856 ? Math.cbrt(t) : (7.787 * t) + 16 / 116;
+    x = f(x); y = f(y); z = f(z);
+    return { l: 116 * y - 16, a: 500 * (x - y), b: 200 * (y - z) };
+}
+function labToRgb(lab) {
+    const y = (lab.l + 16) / 116, x = lab.a / 500 + y, z = y - lab.b / 200;
+    const g = (t) => { const c = t * t * t; return c > 0.008856 ? c : (t - 16 / 116) / 7.787; };
+    const X = g(x) * 0.95047, Y = g(y), Z = g(z) * 1.08883;
+    return {
+        r: linearToSrgb(3.2406 * X - 1.5372 * Y - 0.4986 * Z),
+        g: linearToSrgb(-0.9689 * X + 1.8758 * Y + 0.0415 * Z),
+        b: linearToSrgb(0.0557 * X - 0.2040 * Y + 1.0570 * Z),
+        a: 1
+    };
+}
+function clampLightness(hex, max, min) {
+    probe.style.color = hex;
+    const c = parseRgb(getComputedStyle(probe).color);
+    const lab = rgbToLab(c);
+    lab.l = Math.min(max, Math.max(min, lab.l));
+    return toHex(labToRgb(lab));
+}
+
+const CLAMP_SAMPLES = ["gold", "lime", "orange", "cyan", "magenta", "tomato"];
+const clampGrid = document.getElementById("clamp-grid");
+
+function renderClamp() {
+    const dark = currentlyDark();
+    const max = dark ? 100 : 78;
+    const min = dark ? 58 : 0;
+    clampGrid.innerHTML = "";
+    for (const name of CLAMP_SAMPLES) {
+        probe.style.color = name;
+        const raw = toHex(parseRgb(getComputedStyle(probe).color));
+        const clamped = clampLightness(name, max, min);
+        const card = document.createElement("div");
+        card.className = "card card-flat";
+        card.innerHTML =
+            '<div class="label-small">' + name + "</div>" +
+            '<div style="display:flex;gap:8px;align-items:center">' +
+              '<span style="flex:1;color:' + raw + '">Raw ' + raw + "</span>" +
+              '<span style="flex:1;color:' + clamped + '">Clamped ' + clamped + "</span>" +
+            "</div>";
+        clampGrid.appendChild(card);
+    }
+}
+
+/* ---------- Scheme switching ---------- */
+
+const root = document.documentElement;
+const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+
+function currentlyDark() {
+    const setting = root.dataset.theme;
+    if (setting === "dark") return true;
+    if (setting === "light") return false;
+    return mediaQuery.matches;
+}
+
+function setScheme(scheme) {
+    root.dataset.theme = scheme;
+    document.querySelectorAll("[data-scheme]").forEach((button) => {
+        button.setAttribute("aria-pressed", String(button.dataset.scheme === scheme));
+    });
+    const readout = scheme === "system" ? "system (" + (mediaQuery.matches ? "dark" : "light") + ")" : scheme;
+    document.getElementById("scheme-readout").textContent = readout;
+    document.getElementById("status-scheme").textContent = readout;
+    const rail = document.getElementById("rail-scheme");
+    rail.textContent = currentlyDark() ? "☀" : "☾";
+    rail.dataset.tooltip = currentlyDark() ? "Switch to light" : "Switch to dark";
+    refresh();
+}
+
+document.querySelectorAll("[data-scheme]").forEach((button) => {
+    button.addEventListener("click", () => setScheme(button.dataset.scheme));
+});
+
+mediaQuery.addEventListener("change", () => { if (root.dataset.theme === "system") setScheme("system"); });
+
+function refresh() {
+    renderSwatches();
+    renderAudit();
+    renderClamp();
+}
+
+/* ---------- Live token editor ---------- */
+
+const EDITABLE = ["--accent", "--surface-default", "--surface-secondary", "--surface-navigation", "--text-body", "--text-on-fill", "--status-danger"];
+const editorRows = document.getElementById("editor-rows");
+
+for (const token of EDITABLE) {
+    const row = document.createElement("label");
+    row.className = "editor-row";
+    const input = document.createElement("input");
+    input.type = "color";
+    input.value = toHex(parseRgb(resolveColor(token)));
+    input.addEventListener("input", () => {
+        root.style.setProperty(token, input.value);
+        refresh();
+    });
+    row.append(token, input);
+    editorRows.appendChild(row);
+}
+
+document.getElementById("reset-tokens").addEventListener("click", () => {
+    EDITABLE.forEach((token) => root.style.removeProperty(token));
+    editorRows.querySelectorAll("input").forEach((input, index) => {
+        input.value = toHex(parseRgb(resolveColor(EDITABLE[index])));
+    });
+    refresh();
+    showToast("Overrides cleared");
+});
+
+/* ---------- Toast ---------- */
+
+const toastRegion = document.getElementById("toast-region");
+
+function showToast(message) {
+    const toast = document.createElement("div");
+    toast.className = "toast";
+    toast.innerHTML = "<span>" + message + '</span><button class="toast-close" aria-label="Dismiss">✕</button>';
+    const dismiss = () => {
+        toast.classList.add("is-leaving");
+        setTimeout(() => toast.remove(), 200);
+    };
+    toast.querySelector(".toast-close").addEventListener("click", dismiss);
+    toastRegion.appendChild(toast);
+    setTimeout(dismiss, 3200);
+}
+
+document.getElementById("fire-toast").addEventListener("click", () => showToast("Toast uses the navigation surface"));
+document.getElementById("fire-toast-2").addEventListener("click", () => showToast("Same in both schemes"));
+
+/* ---------- Modal ---------- */
+
+const modal = document.getElementById("modal");
+const openModal = () => { modal.hidden = false; document.getElementById("modal-input").focus(); };
+const closeModal = () => { modal.hidden = true; };
+
+document.getElementById("open-modal").addEventListener("click", openModal);
+document.getElementById("open-modal-2").addEventListener("click", openModal);
+document.getElementById("modal-close").addEventListener("click", closeModal);
+document.getElementById("modal-cancel").addEventListener("click", closeModal);
+document.getElementById("modal-confirm").addEventListener("click", () => { closeModal(); showToast("Applied"); });
+modal.addEventListener("click", (event) => { if (event.target === modal) closeModal(); });
+
+/* ---------- Tooltip ---------- */
+
+const tooltip = document.getElementById("tooltip");
+
+document.addEventListener("mouseover", (event) => {
+    const host = event.target.closest("[data-tooltip]");
+    if (!host) return;
+    tooltip.textContent = host.dataset.tooltip;
+    tooltip.hidden = false;
+    const box = host.getBoundingClientRect();
+    const tip = tooltip.getBoundingClientRect();
+    let left = box.left + box.width / 2 - tip.width / 2;
+    left = Math.max(6, Math.min(left, window.innerWidth - tip.width - 6));
+    let top = box.top - tip.height - 7;
+    if (top < 6) top = box.bottom + 7;
+    tooltip.style.left = left + "px";
+    tooltip.style.top = top + "px";
+});
+
+document.addEventListener("mouseout", (event) => {
+    if (event.target.closest("[data-tooltip]")) tooltip.hidden = true;
+});
+
+/* ---------- Context menu ---------- */
+
+const contextMenu = document.getElementById("context-menu");
+
+document.getElementById("content").addEventListener("contextmenu", (event) => {
+    event.preventDefault();
+    contextMenu.hidden = false;
+    const box = contextMenu.getBoundingClientRect();
+    contextMenu.style.left = Math.min(event.clientX, window.innerWidth - box.width - 8) + "px";
+    contextMenu.style.top = Math.min(event.clientY, window.innerHeight - box.height - 8) + "px";
+});
+
+document.addEventListener("click", () => { contextMenu.hidden = true; });
+
+/* ---------- Tabs ---------- */
+
+const tabBar = document.getElementById("tab-bar");
+
+tabBar.addEventListener("click", (event) => {
+    const close = event.target.closest(".tab-close");
+    if (close) {
+        const tab = close.closest(".tab");
+        const wasSelected = tab.getAttribute("aria-selected") === "true";
+        const sibling = tab.nextElementSibling?.classList.contains("tab")
+            ? tab.nextElementSibling
+            : tab.previousElementSibling;
+        tab.remove();
+        if (wasSelected && sibling?.classList.contains("tab")) sibling.setAttribute("aria-selected", "true");
+        return;
+    }
+    const tab = event.target.closest(".tab");
+    if (!tab) return;
+    tabBar.querySelectorAll(".tab").forEach((t) => t.setAttribute("aria-selected", String(t === tab)));
+});
+
+let untitledCount = 0;
+document.getElementById("new-tab").addEventListener("click", () => {
+    untitledCount++;
+    const tab = document.createElement("button");
+    tab.className = "tab";
+    tab.setAttribute("role", "tab");
+    tab.setAttribute("aria-selected", "false");
+    tab.innerHTML = '<span class="tab-icon">◇</span> Untitled ' + untitledCount +
+        '<span class="tab-close" role="button" aria-label="Close tab">✕</span>';
+    tabBar.insertBefore(tab, document.getElementById("new-tab"));
+});
+
+/* ---------- Tree ---------- */
+
+const tree = document.getElementById("tree");
+
+tree.addEventListener("click", (event) => {
+    if (event.target.closest(".tree-item-action")) {
+        event.stopPropagation();
+        showToast("Row action — accent on hover, shadowless");
+        return;
+    }
+    const toggle = event.target.closest(".tree-toggle");
+    if (toggle) {
+        event.stopPropagation();
+        const expanded = toggle.getAttribute("aria-expanded") === "true";
+        toggle.setAttribute("aria-expanded", String(!expanded));
+        const children = toggle.closest("li").querySelector(".tree-children");
+        if (children) children.hidden = expanded;
+        return;
+    }
+    const item = event.target.closest(".tree-item");
+    if (!item) return;
+    tree.querySelectorAll(".tree-item").forEach((i) => i.removeAttribute("aria-current"));
+    item.setAttribute("aria-current", "true");
+    const target = document.getElementById(item.dataset.target);
+    if (target) target.scrollIntoView({ block: "start" });
+});
+
+const treeFilter = document.getElementById("tree-filter");
+treeFilter.addEventListener("input", () => {
+    const term = treeFilter.value.toLowerCase();
+    tree.querySelectorAll(".tree-item").forEach((item) => {
+        const label = item.querySelector(".tree-item-label").textContent.toLowerCase();
+        item.closest("li").style.display = label.includes(term) ? "" : "none";
+    });
+});
+document.getElementById("tree-filter-clear").addEventListener("click", () => {
+    treeFilter.value = "";
+    treeFilter.dispatchEvent(new Event("input"));
+});
+
+/* Highlights the sidebar row for whichever section is nearest the top of the viewport. */
+const observer = new IntersectionObserver((entries) => {
+    for (const entry of entries) {
+        if (!entry.isIntersecting) continue;
+        const match = tree.querySelector('.tree-item[data-target="' + entry.target.id + '"]');
+        if (!match) continue;
+        tree.querySelectorAll(".tree-item").forEach((i) => i.removeAttribute("aria-current"));
+        match.setAttribute("aria-current", "true");
+    }
+}, { rootMargin: "0px 0px -75% 0px" });
+
+document.querySelectorAll(".section").forEach((section) => observer.observe(section));
+
+/* ---------- Table selection ---------- */
+
+document.getElementById("demo-table").addEventListener("click", (event) => {
+    const row = event.target.closest("tbody tr");
+    if (!row) return;
+    row.parentElement.querySelectorAll("tr").forEach((r) => r.removeAttribute("aria-selected"));
+    row.setAttribute("aria-selected", "true");
+});
+
+/* ---------- Switch ---------- */
+
+document.querySelectorAll('[role="switch"]').forEach((sw) => {
+    sw.addEventListener("click", () => {
+        sw.setAttribute("aria-checked", String(sw.getAttribute("aria-checked") !== "true"));
+    });
+});
+
+/* ---------- Button group ---------- */
+
+document.querySelectorAll('.button-group[aria-label="View"] .button').forEach((button, _, all) => {
+    button.addEventListener("click", () => {
+        all.forEach((b) => b.setAttribute("aria-pressed", String(b === button)));
+    });
+});
+
+/* ---------- Sidebar resize ---------- */
+
+const gutter = document.getElementById("gutter");
+let dragging = false;
+
+gutter.addEventListener("mousedown", (event) => {
+    dragging = true;
+    gutter.classList.add("is-dragging");
+    document.body.style.userSelect = "none";
+    event.preventDefault();
+});
+
+window.addEventListener("mousemove", (event) => {
+    if (!dragging) return;
+    const width = Math.min(420, Math.max(170, event.clientX - 52));
+    root.style.setProperty("--sidebar-width", width + "px");
+});
+
+window.addEventListener("mouseup", () => {
+    dragging = false;
+    gutter.classList.remove("is-dragging");
+    document.body.style.userSelect = "";
+});
+
+/* ---------- Calendar ---------- */
+
+const calendarGrid = document.getElementById("cal-grid");
+const calendarTitle = document.getElementById("cal-title");
+const today = new Date();
+let viewYear = today.getFullYear();
+let viewMonth = today.getMonth();
+
+function renderCalendar() {
+    const first = new Date(viewYear, viewMonth, 1);
+    const startDay = (first.getDay() + 6) % 7;
+    const daysInMonth = new Date(viewYear, viewMonth + 1, 0).getDate();
+    const daysInPrev = new Date(viewYear, viewMonth, 0).getDate();
+
+    calendarTitle.textContent = first.toLocaleString(undefined, { month: "long", year: "numeric" });
+    calendarGrid.innerHTML = "";
+
+    for (const day of ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"]) {
+        const cell = document.createElement("div");
+        cell.className = "calendar-weekday";
+        cell.textContent = day;
+        calendarGrid.appendChild(cell);
+    }
+
+    const addDay = (number, outside, marked, isToday) => {
+        const cell = document.createElement("button");
+        cell.className = "calendar-day" + (outside ? " is-outside" : "") + (marked ? " is-marked" : "");
+        if (isToday) cell.setAttribute("aria-current", "date");
+        cell.textContent = number;
+        calendarGrid.appendChild(cell);
+    };
+
+    for (let i = startDay - 1; i >= 0; i--) addDay(daysInPrev - i, true, false, false);
+    for (let d = 1; d <= daysInMonth; d++) {
+        const isToday = d === today.getDate() && viewMonth === today.getMonth() && viewYear === today.getFullYear();
+        addDay(d, false, d % 7 === 3, isToday);
+    }
+    const filled = startDay + daysInMonth;
+    for (let d = 1; filled + d <= 42 && (filled + d) % 7 !== 1; d++) addDay(d, true, false, false);
+}
+
+document.getElementById("cal-prev").addEventListener("click", () => {
+    viewMonth--; if (viewMonth < 0) { viewMonth = 11; viewYear--; }
+    renderCalendar();
+});
+document.getElementById("cal-next").addEventListener("click", () => {
+    viewMonth++; if (viewMonth > 11) { viewMonth = 0; viewYear++; }
+    renderCalendar();
+});
+
+/* ---------- Misc ---------- */
+
+document.getElementById("scroll-top").addEventListener("click", () => {
+    document.getElementById("content").scrollTo({ top: 0, behavior: "smooth" });
+});
+
+document.getElementById("rail-settings").addEventListener("click", openModal);
+
+const railScheme = document.getElementById("rail-scheme");
+railScheme.addEventListener("click", () => setScheme(currentlyDark() ? "light" : "dark"));
+
+document.addEventListener("keydown", (event) => {
+    if (event.target.matches("input, textarea, select")) return;
+    if (event.key === "Escape") { closeModal(); contextMenu.hidden = true; tooltip.hidden = true; }
+    if (event.key.toLowerCase() === "d") setScheme(currentlyDark() ? "light" : "dark");
+    if (event.key.toLowerCase() === "m") openModal();
+    if (event.key.toLowerCase() === "t") showToast("Fired from the keyboard");
+});
+
+renderCalendar();
+setScheme("system");
+</script>
+</body>
+</html>
