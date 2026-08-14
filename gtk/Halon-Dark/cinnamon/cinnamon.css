@@ -1,0 +1,2912 @@
+/* GENERATED FILE — do not edit.
+ *
+ * Built from cinnamon/_template.css with the dark token set by
+ * scripts/build-cinnamon.mjs. Edit the template, then rebuild.
+ * Base: /run/current-system/sw/share/cinnamon/theme/cinnamon.css
+ */
+
+/* ---------- base: /run/current-system/sw/share/cinnamon/theme/cinnamon.css (palette-neutralized) ----------
+   Stock geometry only: paddings, spacing, arrows, radii. Every colour,
+   shadow and gradient was stripped at build time so unstyled widgets
+   inherit Halon's palette instead of the stock dark theme's. */
+
+stage {
+   }
+
+#menu-search-entry, #appmenu-search-entry, .expo-workspaces-name-entry, .screen-shield .prompt-dialog-password-entry, .prompt-dialog-password-entry, .run-dialog-entry {
+  min-height: 22px;
+  border-radius: 8px;
+  padding: 6px 9px;
+  border: 1px solid transparent;
+  
+  
+  
+  caret-size: 1px; }
+
+.notification-icon-button, .notification-button, .icon-button, .button, .sound-player StButton {
+  border-radius: 8px;
+  padding: 6px 36px;
+  font-weight: bold; }
+
+.notification-icon-button, .notification-button, .icon-button, .button, .sound-player StButton {
+  
+   }
+  .notification-icon-button:focus, .notification-button:focus, .icon-button:focus, .button:focus, .sound-player StButton:focus {
+    
+    
+     }
+  .notification-icon-button:hover, .notification-button:hover, .icon-button:hover, .button:hover, .sound-player StButton:hover {
+    
+     }
+  .notification-icon-button:active, .notification-button:active, .icon-button:active, .button:active, .sound-player StButton:active {
+    
+     }
+  .notification-icon-button:insensitive, .notification-button:insensitive, .icon-button:insensitive, .button:insensitive, .sound-player StButton:insensitive {
+    
+     }
+
+.polkit-dialog-user-combo, .icon-button.flat, .button.flat, .sound-player StButton:small {
+  
+   }
+  .polkit-dialog-user-combo:focus, .icon-button.flat:focus, .button.flat:focus, .sound-player StButton:focus:small {
+    
+    
+     }
+  .polkit-dialog-user-combo:hover, .icon-button.flat:hover, .button.flat:hover, .sound-player StButton:hover:small {
+    
+     }
+  .polkit-dialog-user-combo:insensitive, .icon-button.flat:insensitive, .button.flat:insensitive, .sound-player StButton:insensitive:small {
+    
+     }
+  .polkit-dialog-user-combo:selected, .icon-button.flat:selected, .button.flat:selected, .sound-player StButton:selected:small, .polkit-dialog-user-combo:active, .icon-button.flat:active, .button.flat:active, .sound-player StButton:active:small {
+    
+     }
+  .polkit-dialog-user-combo:checked, .icon-button.flat:checked, .button.flat:checked, .sound-player StButton:checked:small {
+    
+     }
+
+#menu-search-entry, #appmenu-search-entry, .expo-workspaces-name-entry, .screen-shield .prompt-dialog-password-entry, .prompt-dialog-password-entry, .run-dialog-entry {
+  
+  
+   }
+  #menu-search-entry:focus, #appmenu-search-entry:focus, .expo-workspaces-name-entry:focus, .prompt-dialog-password-entry:focus, .run-dialog-entry:focus {
+    
+    
+     }
+  #menu-search-entry:insensitive, #appmenu-search-entry:insensitive, .expo-workspaces-name-entry:insensitive, .prompt-dialog-password-entry:insensitive, .run-dialog-entry:insensitive {
+    
+     }
+  #menu-search-entry StLabel.hint-text, #appmenu-search-entry StLabel.hint-text, .expo-workspaces-name-entry StLabel.hint-text, .prompt-dialog-password-entry StLabel.hint-text, .run-dialog-entry StLabel.hint-text {
+     }
+  #menu-search-entry .capslock-warning, #appmenu-search-entry .capslock-warning, .expo-workspaces-name-entry .capslock-warning, .prompt-dialog-password-entry .capslock-warning, .run-dialog-entry .capslock-warning {
+    icon-size: 1.091em; }
+  #menu-search-entry StIcon.peek-password, #appmenu-search-entry StIcon.peek-password, .expo-workspaces-name-entry StIcon.peek-password, .prompt-dialog-password-entry StIcon.peek-password, .run-dialog-entry StIcon.peek-password {
+    icon-size: 16px;
+     }
+
+.dialog .dialog-button, .dialog .dialog-button:destructive-action, .dialog .dialog-button:default {
+  font-weight: bold;
+  padding: 12px;
+  border-radius: 12px;
+  
+   }
+  .dialog .dialog-button:focus {
+    
+    
+     }
+  .dialog .dialog-button:hover {
+    
+     }
+  .dialog .dialog-button:active {
+    
+     }
+  .dialog .dialog-button:checked {
+    
+     }
+  .dialog .dialog-button:insensitive {
+    
+     }
+
+.dialog .dialog-button:default {
+  
+   }
+  .dialog .dialog-button:hover:default {
+    
+     }
+  .dialog .dialog-button:active:default {
+    
+     }
+  .dialog .dialog-button:checked:default {
+    
+     }
+  .dialog .dialog-button:insensitive:default {
+    
+    
+     }
+
+.dialog .dialog-button:destructive-action {
+  
+   }
+  .dialog .dialog-button:hover:destructive-action {
+    
+     }
+  .dialog .dialog-button:active:destructive-action {
+    
+     }
+  .dialog .dialog-button:checked:destructive-action {
+    
+     }
+  .dialog .dialog-button:insensitive:destructive-action {
+    
+    
+     }
+
+.popup-combobox-item, .popup-sub-menu .popup-menu-item, .popup-menu-item {
+  font-weight: normal;
+  spacing: 6px;
+  transition-duration: 100ms;
+  padding: 8px 12px;
+  margin: 0 4px;
+  border-radius: 8px; }
+
+/* General Typography */
+.overview-empty-placeholder {
+  font-weight: 300;
+  font-size: 2.182em; }
+
+.screen-shield .clock-widget .clock-date-label {
+  font-weight: 800;
+  font-size: 1.818em; }
+
+.autorun-dialog .dialog-content-box .autorun-dialog-heading, .message-dialog-content .message-dialog-title, .dialog .confirm-dialog-title {
+  font-weight: 800;
+  font-size: 1.364em; }
+
+.screen-shield .albumart-widget .albumart-track-info-box .albumart-title, .calendar-events-no-events-label, .calendar-today-date-label, .placeholder .placeholder-label {
+  font-weight: 700;
+  font-size: 1.364em; }
+
+.workspace-switch-osd, .media-keys-osd, .screen-shield .albumart-widget .albumart-track-info-box .albumart-artist, .autorun-dialog .dialog-content-box .autorun-dialog-subheading, .message-dialog-content .message-dialog-title.lightweight, .calendar-events-date-label, .calendar-today-day-label {
+  font-weight: 700;
+  font-size: 1.182em; }
+
+.menu-selected-app-title, .popup-device-menu-item, .screen-shield .albumart-widget .albumart-track-info-box .albumart-album, .polkit-dialog-user-combo, .dialog-list .dialog-list-title, .calendar-event-time-future, .calendar-event-time-present:all-day, .calendar-event-time-present, .calendar-event-time-past, .calendar-month-label, .device-box .device-labels .primary-label {
+  font-weight: 700;
+  font-size: 1em; }
+
+.appmenu-application-button-description, .prompt-dialog-error-label, .prompt-dialog-info-label, .prompt-dialog-null-label, .run-dialog-description, .message-dialog-content .message-dialog-caption, .dialog-list .dialog-list-box .dialog-list-item .dialog-list-item-description, .calendar-event-countdown, .caps-lock-warning-label {
+  font-weight: 400;
+  font-size: 0.818em; }
+
+.popup-slider-menu-item, .slider {
+  height: 1em;
+  min-width: 15em;
+  -slider-height: 0.3em;
+  
+  
+  
+  
+  -slider-border-width: 1px;
+  -slider-handle-radius: 0.5em; }
+
+.resize-popup, .workspace-switch-osd, .info-osd, .media-keys-osd, #Tooltip, #LookingGlassDialog {
+  
+  
+  border: 1px solid transparent;
+  border-radius: 8px;
+  text-align: center;
+  padding: 24px; }
+
+#altTabPopup {
+  padding: 8px;
+  spacing: 16px; }
+
+.switcher-list {
+  
+  border: 1px solid transparent;
+  border-radius: 16px;
+  
+  padding: 18px; }
+  .switcher-list-item-container {
+    spacing: 12px; }
+  .switcher-list .item-box {
+    padding: 8px;
+    border: 1px solid transparent;
+    border-radius: 8px;
+     }
+    .switcher-list .item-box:outlined {
+       }
+    .switcher-list .item-box:selected {
+      
+       }
+  .switcher-list .thumbnail-box {
+    padding: 0;
+    spacing: 4px; }
+  .switcher-list .thumbnail {
+    width: 256px; }
+
+.switcher-preview-backdrop {
+   }
+
+.switcher-arrow {
+  
+  
+   }
+
+.thumbnail-scroll-gradient-left {
+  
+  
+  
+  border-radius: 16px;
+  border-radius-topright: 0px;
+  border-radius-bottomright: 0px;
+  width: 60px; }
+
+.thumbnail-scroll-gradient-right {
+  
+  
+  
+  border-radius: 16px;
+  border-radius-topleft: 0px;
+  border-radius-bottomleft: 0px;
+  width: 60px; }
+
+.applet-box {
+  padding: 0 6px;
+  spacing: 6px;
+  text-align: center; }
+  .applet-box.vertical {
+    padding: 6px 0; }
+  .applet-box:hover {
+     }
+  .applet-box:highlight {
+     }
+
+.applet-label {
+  font-weight: bold; }
+
+.applet-separator {
+  padding: 1px 4px; }
+  .applet-separator.vertical {
+    padding: 4px 1px; }
+
+.applet-separator-line {
+  width: 1px;
+  ; }
+  .applet-separator-line-vertical {
+    height: 1px;
+    ; }
+
+.applet-cornerbar {
+  width: 8px;
+  
+  border: 1px solid transparent; }
+  .applet-cornerbar.vertical {
+    height: 8px; }
+  .applet-cornerbar-box {
+    ; }
+
+.applet-cornerbar-box:hover > .applet-cornerbar {
+   }
+
+.notification-applet-padding {
+  padding: 4px 0 4px 4px; }
+
+.panel-launchers {
+  spacing: 2px; }
+  .panel-launchers .launcher {
+    padding: 0 2px; }
+    .panel-launchers .launcher:hover {
+       }
+  .panel-launchers.vertical {
+    padding: 2px 0; }
+    .panel-launchers.vertical .launcher {
+      padding: 2px 0; }
+
+.device-box .device-icon {
+  icon-size: 1.637em;
+   }
+
+.device-box .device-labels {
+  margin-left: 8px;
+  spacing: 4px; }
+  .device-box .device-labels .primary-label {
+     }
+  .device-box .device-labels .status-label {
+     }
+
+.sound-player > StBoxLayout:first-child {
+  spacing: 4px;
+  padding: 0 6px; }
+
+.sound-player StButton {
+  width: 18px;
+  height: 18px;
+  padding: 6px; }
+  .sound-player StButton StIcon {
+    icon-size: 1em; }
+  .sound-player StButton:small {
+    width: 16px;
+    height: 16px; }
+    .sound-player StButton:small StIcon {
+      icon-size: 1.2em; }
+
+.sound-player-generic-coverart {
+   }
+
+.sound-player-overlay {
+  width: 290px;
+  padding: 12px;
+  spacing: 4px;
+   }
+  .sound-player-overlay StBoxLayout {
+    padding-top: 2px; }
+  .sound-player-overlay > StBoxLayout {
+    spacing: 6px; }
+  .sound-player-overlay StBin > StBoxLayout {
+    spacing: 6px; }
+
+.sound-player .slider {
+  height: 6px;
+  -slider-height: 6px;
+  
+  
+  
+  
+  -slider-border-width: 0;
+  -slider-handle-radius: 0; }
+
+.spacer-box {
+  border: 1px solid transparent; }
+  .spacer-box:highlight {
+     }
+  .spacer-box.edit-mode {
+    border: 1px solid transparent; }
+
+.systray {
+  padding: 0; }
+
+.panel-top .workspace-switcher,
+.panel-bottom .workspace-switcher {
+  padding: 0 4px; }
+
+.workspace-button {
+  border: 1px solid transparent;
+  width: 2em;
+  
+   }
+  .workspace-button.vertical {
+    height: 2em; }
+  .workspace-button:outlined {
+    
+     }
+    .workspace-button:outlined:hover {
+       }
+  .workspace-button:hover {
+     }
+  .workspace-button:shaded {
+     }
+
+.workspace-graph {
+  padding: 4px;
+  spacing: 4px; }
+  .workspace-graph .workspace {
+    border: 1px solid transparent;
+     }
+    .workspace-graph .workspace:active {
+       }
+      .workspace-graph .workspace:active .windows {
+        -active-window-background: rgba(255, 255, 255, 0.3);
+        -active-window-border: rgba(255, 255, 255, 0.35);
+        -inactive-window-background: rgba(255, 255, 255, 0.1);
+        -inactive-window-border: rgba(255, 255, 255, 0.15); }
+    .workspace-graph .workspace .windows {
+      -active-window-background: rgba(255, 255, 255, 0.3);
+      -active-window-border: rgba(255, 255, 255, 0.35);
+      -inactive-window-background: rgba(255, 255, 255, 0.1);
+      -inactive-window-border: rgba(255, 255, 255, 0.15); }
+
+.system-status-icon {
+  icon-size: 1.091em; }
+
+.flashspot {
+   }
+
+.caps-lock-warning-label {
+  text-align: center;
+  padding-bottom: 8px;
+   }
+
+.cinnamon-link {
+   }
+  .cinnamon-link:hover {
+     }
+
+.lightbox {
+   }
+
+#LookingGlassDialog {
+  spacing: 4px; }
+
+.magnifier-zoom-region {
+  border: 2px solid transparent; }
+  .magnifier-zoom-region.full-screen {
+    border-width: 0; }
+
+.pie-timer {
+  width: 30px;
+  height: 30px;
+  -pie-border-width: 1px;
+  -pie-border-color: rgba(200, 200, 200, 0.8);
+  -pie-background-color: rgba(140, 140, 140, 0.6); }
+
+.placeholder {
+  spacing: 8px;
+  padding: 12px; }
+  .placeholder .placeholder-icon {
+     }
+  .placeholder .placeholder-label {
+    text-align: center;
+    
+    padding-top: 8px; }
+  .placeholder .placeholder-description {
+    
+    text-align: center; }
+
+.ripple-pointer-location {
+  width: 50px;
+  height: 50px;
+  border-radius: 25px;
+  
+   }
+
+.ripple-box {
+  width: 104px;
+  height: 104px;
+  background-image: url("corner-ripple.png"); }
+  .ripple-box:rtl {
+    background-image: url("corner-ripple.png"); }
+
+StScrollView.vfade {
+  -st-vfade-offset: 68px; }
+
+StScrollView StScrollBar {
+  min-height: 8px;
+  min-width: 8px; }
+
+StScrollBar StBin#trough {
+  
+  border-radius: 8px; }
+
+StScrollBar StButton#vhandle,
+StScrollBar StButton#hhandle {
+  
+  border-radius: 8px; }
+  StScrollBar StButton#vhandle:hover,
+  StScrollBar StButton#hhandle:hover {
+     }
+
+.separator {
+  -gradient-height: 1px;
+  
+  
+  -margin-horizontal: 0;
+  height: 1px; }
+
+.tile-preview {
+  
+  border: 1px solid transparent; }
+
+#Tooltip {
+  padding: 12px;
+  margin: 4px; }
+
+.user-icon {
+  background-size: contain;
+  border-radius: 99px;
+  
+   }
+  .user-icon StIcon {
+    padding: 12px;
+    border: 1px solid transparent;
+    border-radius: 99px; }
+  .user-icon.user-avatar {
+    border: 1px solid transparent;
+    border-radius: 99px; }
+  .user-icon StIcon.highlighted {
+    border: 1px solid transparent;
+    border-radius: 99px; }
+
+.user-widget.horizontal {
+  spacing: 6px; }
+
+.user-widget.vertical {
+  spacing: 6px; }
+
+.user-widget.vertical .user-widget-label {
+  font-weight: 700;
+  font-size: 1.182em;
+  
+  text-align: center; }
+
+.button {
+  min-height: 22px; }
+
+.icon-button {
+  border-radius: 9999px;
+  padding: 6px;
+  min-height: 16px; }
+  .icon-button StIcon {
+    icon-size: 16px; }
+
+.calendar {
+  margin-top: 20px;
+  spacing-rows: 2px;
+  spacing-columns: 2px; }
+  .calendar-main-box {
+    margin: 8px; }
+  .calendar-events-main-box {
+    height: 300px;
+    margin-right: 16px;
+    min-width: 350px;
+    border-right-width: 1px;
+     }
+  .calendar-today-home-button, .calendar-today-home-button-enabled {
+    margin-left: 12px;
+    padding: 8px 12px;
+    border-radius: 8px; }
+    .calendar-today-home-button:hover, .calendar-today-home-button-enabled:hover {
+       }
+  .calendar-today-day-label {
+    text-align: center; }
+  .calendar-change-month-back, .calendar-change-month-forward:rtl {
+    width: 16px;
+    height: 16px;
+    
+    background-image: url("calendar-arrow-left.svg"); }
+    .calendar-change-month-back:hover, .calendar-change-month-forward:rtl:hover {
+      background-image: url("calendar-arrow-left-hover.svg"); }
+  .calendar-change-month-forward, .calendar-change-month-back:rtl {
+    width: 16px;
+    height: 16px;
+    
+    background-image: url("calendar-arrow-right.svg"); }
+    .calendar-change-month-forward:hover, .calendar-change-month-back:rtl:hover {
+      background-image: url("calendar-arrow-right-hover.svg"); }
+  .calendar-day-event-dot-box {
+    margin-top: 1.7em;
+    max-rows: 1; }
+  .calendar-day-event-dot {
+    margin: 1px;
+    border-radius: 2px;
+    width: 4px;
+    height: 4px; }
+  .calendar-day-base {
+    text-align: center;
+    width: 2.4em;
+    height: 2.4em;
+    border-radius: 9999px;
+     }
+    .calendar-day-base:hover {
+       }
+  .calendar-day-heading {
+    
+    margin-top: 12px;
+    height: 1.6em; }
+  .calendar-work-day {
+     }
+  .calendar-nonwork-day {
+     }
+  .calendar-today {
+    
+     }
+    .calendar-today:hover {
+       }
+  .calendar-other-month-day {
+     }
+  .calendar-not-today:selected {
+     }
+  .calendar-events-date-label {
+    text-align: center; }
+  .calendar-events-no-events-button {
+    margin: 6px 0;
+    padding: 6px;
+    border-radius: 8px;
+     }
+    .calendar-events-no-events-button:hover {
+       }
+  .calendar-events-no-events-icon {
+    
+    icon-size: 128px; }
+  .calendar-events-no-events-label {
+    text-align: center;
+    margin-top: 16px; }
+  .calendar-events-scrollbox {
+    margin-top: 8px; }
+  .calendar-events-main-box .separator {
+    -margin-horizontal: 1em;
+    -gradient-height: 1px;
+    
+     }
+  .calendar-event-button {
+    margin: 3px 0;
+    border-radius: 8px;
+    border: 1px solid transparent; }
+    .calendar-event-button:hover {
+      
+       }
+  .calendar-event-color-strip {
+    width: 1px; }
+  .calendar-event-row-content {
+    margin: 7px; }
+  .calendar-event-time-past {
+     }
+  .calendar-event-time-present {
+     }
+  .calendar-event-time-present:all-day {
+     }
+  .calendar-event-countdown {
+     }
+    .calendar-event-countdown:soon {
+       }
+    .calendar-event-countdown:imminent {
+       }
+    .calendar-event-countdown:current {
+       }
+  .calendar-event-time-future {
+     }
+  .calendar-event-summary {
+     }
+
+.desklet:highlight {
+  border: 2px solid transparent;
+  border-radius: 8px; }
+
+.desklet-with-borders {
+  border: 1px solid transparent;
+  border-radius: 8px;
+   }
+
+.desklet-with-borders-and-header {
+  border: 1px solid transparent;
+  border-radius: 0 0 8px 8px;
+  border-top-width: 0;
+  
+  padding: 12px; }
+
+.desklet-header {
+  border: 1px solid transparent;
+  border-radius: 8px 8px 0 0;
+  
+  padding: 6px; }
+
+.desklet-drag-placeholder {
+  border: 1px solid transparent; }
+
+.photoframe-box {
+  border: 1px solid transparent;
+  border-radius: 8px;
+  
+  padding: 6px; }
+
+.dialog {
+  
+  
+  border-radius: 18px;
+  border: 1px solid transparent;
+  padding: 18px; }
+  .dialog .dialog-content-box {
+    margin-top: 8px;
+    margin-bottom: 16px;
+    spacing: 32px;
+    max-width: 28em; }
+  .dialog .confirm-dialog-title {
+    text-align: center; }
+
+.dialog-list {
+  spacing: 18px; }
+  .dialog-list .dialog-list-title {
+    text-align: center; }
+  .dialog-list .dialog-list-scrollview {
+    max-height: 200px; }
+  .dialog-list .dialog-list-box {
+    spacing: 1em;
+    border-radius: 8px; }
+    .dialog-list .dialog-list-box .dialog-list-item {
+      spacing: 1em;
+      border-radius: 8px;
+      padding: 6px 12px;
+      transition-duration: 100ms; }
+      .dialog-list .dialog-list-box .dialog-list-item:hover {
+         }
+      .dialog-list .dialog-list-box .dialog-list-item:selected {
+         }
+      .dialog-list .dialog-list-box .dialog-list-item .dialog-list-item-title {
+        font-weight: bold; }
+      .dialog-list .dialog-list-box .dialog-list-item .dialog-list-item-description {
+         }
+
+.end-session-dialog {
+  min-width: 40em; }
+  .end-session-dialog .dialog-content-box {
+    spacing: 0; }
+  .end-session-dialog .dialog-list {
+    spacing: 0; }
+    .end-session-dialog .dialog-list .dialog-list-title {
+      
+      
+      padding: 9px;
+      border-radius: 8px;
+      margin: 4px 0; }
+
+.message-dialog-content {
+  spacing: 18px; }
+  .message-dialog-content .message-dialog-title {
+    text-align: center; }
+  .message-dialog-content .message-dialog-description {
+    text-align: center; }
+  .message-dialog-content .message-dialog-caption {
+    text-align: center; }
+
+.run-dialog .dialog-content-box {
+  margin: 4px; }
+
+.run-dialog-description {
+  text-align: center;
+   }
+  .run-dialog-description.error {
+     }
+
+.run-dialog-completion-box {
+  padding-top: 6px;
+  padding-left: 12px; }
+
+.run-dialog-entry {
+  width: 20em;
+  height: 1.2em; }
+
+.prompt-dialog {
+  width: 26em; }
+  .prompt-dialog .dialog-content-box {
+    spacing: 16px;
+    margin-bottom: 12px; }
+  .prompt-dialog-password-entry {
+    width: 20em; }
+  .prompt-dialog-password-layout {
+    spacing: 8px; }
+  .prompt-dialog-error-label, .prompt-dialog-info-label, .prompt-dialog-null-label {
+    text-align: center; }
+  .prompt-dialog-error-label {
+     }
+
+.polkit-dialog-user-layout {
+  text-align: center;
+  spacing: 2px; }
+
+.polkit-dialog-user-combo {
+  border-radius: 8px;
+  padding: 6px 36px; }
+  .polkit-dialog-user-combo:insensitive {
+     }
+
+.autorun-dialog .dialog-content-box .dialog-list .dialog-list-box, .processes-dialog .dialog-content-box .dialog-list .dialog-list-box {
+  
+  spacing: 0; }
+  .autorun-dialog .dialog-content-box .dialog-list .dialog-list-box .dialog-list-item, .processes-dialog .dialog-content-box .dialog-list .dialog-list-box .dialog-list-item {
+    border-radius: 0; }
+    .autorun-dialog .dialog-content-box .dialog-list .dialog-list-box .dialog-list-item:first-child, .processes-dialog .dialog-content-box .dialog-list .dialog-list-box .dialog-list-item:first-child {
+      border-radius: 8px 8px 0 0; }
+    .autorun-dialog .dialog-content-box .dialog-list .dialog-list-box .dialog-list-item:last-child, .processes-dialog .dialog-content-box .dialog-list .dialog-list-box .dialog-list-item:last-child {
+      border-radius: 0 0 8px 8px; }
+
+.autorun-dialog {
+  min-width: 30em; }
+  .autorun-dialog .dialog-content-box {
+    margin-top: 4px;
+    margin-bottom: 12px;
+    spacing: 12px;
+    max-width: 28em; }
+    .autorun-dialog .dialog-content-box .autorun-dialog-heading {
+      text-align: center; }
+    .autorun-dialog .dialog-content-box .autorun-dialog-subheading {
+      text-align: center; }
+
+.screen-shield {
+   }
+  .screen-shield .screen-shield-background {
+     }
+  .screen-shield .icon-button {
+    padding: 1.091em;
+    border: 1px solid transparent;
+    
+    margin-left: 6px;
+    margin-right: 6px; }
+  .screen-shield .prompt-dialog {
+    width: 34em;
+    
+    border: none;
+    padding: 0;
+    spacing: 24px; }
+    .screen-shield .prompt-dialog .user-widget-label {
+      font-weight: 400;
+      font-size: 1.818em;
+      margin-bottom: .75em; }
+    .screen-shield .prompt-dialog .user-icon {
+      icon-size: 128px;
+      border: 2px solid transparent; }
+      .screen-shield .prompt-dialog .user-icon StIcon {
+        padding: 30px; }
+    .screen-shield .prompt-dialog-password-entry {
+      width: 20em;
+      
+       }
+  .screen-shield .clock-widget {
+    padding: 6px;
+    spacing: 6px; }
+    .screen-shield .clock-widget .clock-time-label {
+      font-size: 6.546em;
+       }
+    .screen-shield .clock-widget .clock-date-label {
+       }
+    .screen-shield .clock-widget .clock-message-label {
+      font-size: 14pt;
+      
+      margin-top: 4px; }
+    .screen-shield .clock-widget .clock-message-author {
+      font-size: 12pt;
+      
+      text-align: center; }
+  .screen-shield .albumart-widget {
+    padding: 12px;
+    spacing: 12px;
+    min-width: 400px;
+    
+    border: 1px solid transparent;
+    border-radius: 18px; }
+    .screen-shield .albumart-widget .albumart-track-info-box {
+      spacing: 3px;
+      max-width: 300px; }
+      .screen-shield .albumart-widget .albumart-track-info-box .albumart-title {
+        font-weight: bold; }
+      .screen-shield .albumart-widget .albumart-track-info-box .albumart-controls {
+        spacing: 6px;
+        padding-top: 6px; }
+        .screen-shield .albumart-widget .albumart-track-info-box .albumart-controls .icon-button {
+          padding: 0.546em;
+          border: 1px solid transparent;
+           }
+      .screen-shield .albumart-widget .albumart-track-info-box .albumart-volume-box {
+        spacing: 6px; }
+        .screen-shield .albumart-widget .albumart-track-info-box .albumart-volume-box .albumart-volume-icon {
+          icon-size: 16px; }
+        .screen-shield .albumart-widget .albumart-track-info-box .albumart-volume-box .albumart-volume-slider {
+          height: 20px;
+          min-width: 280px;
+          -slider-height: 4px;
+          
+          
+          
+          
+          -slider-border-width: 0;
+          -slider-handle-radius: 8px; }
+  .screen-shield .info-panel {
+    padding: 8px;
+    spacing: 12px; }
+    .screen-shield .info-panel .notification-widget {
+      spacing: 4px; }
+      .screen-shield .info-panel .notification-widget .notification-widget-label {
+        
+        font-size: 12pt;
+        font-weight: bold;
+         }
+      .screen-shield .info-panel .notification-widget .notification-widget-icon {
+        
+         }
+    .screen-shield .info-panel .power-widget-icon {
+      
+       }
+      .screen-shield .info-panel .power-widget-icon-critical {
+         }
+
+.workspace-thumbnails {
+  spacing: 26px; }
+
+.workspace-thumbnails-background {
+  padding: 8px; }
+
+.workspace-overview-background-shade {
+   }
+
+.workspace-add-button {
+  background-image: url("add-workspace.svg");
+  height: 200px;
+  width: 35px;
+  transition-duration: 150; }
+  .workspace-add-button:hover {
+    background-image: url("add-workspace-hover.svg");
+    transition-duration: 150; }
+
+.workspace-close-button {
+  background-image: url("close.svg");
+  height: 26px;
+  width: 26px;
+  -cinnamon-close-overlap: 13px; }
+
+.expo-background {
+   }
+
+.expo-workspace-thumbnail-frame {
+  border: 1px solid transparent; }
+  .expo-workspace-thumbnail-frame#active {
+    
+    border-width: 2px; }
+
+.expo-workspaces-name-entry {
+  height: 1.5em; }
+
+.window-close-area {
+  background-image: url("trash-icon.svg");
+  height: 120px;
+  width: 400px; }
+
+.window-close {
+  background-image: url("close.svg");
+  height: 26px;
+  width: 26px;
+  -cinnamon-close-overlap: 13px; }
+
+.window-border {
+  border: 3px solid transparent;
+  border-radius: 8px; }
+
+.window-caption {
+  min-height: 22px;
+  border-radius: 8px;
+  padding: 6px 9px;
+  spacing: 4px;
+  border: 1px solid transparent;
+  
+  -cinnamon-caption-spacing: 6px; }
+  .window-caption:focus {
+     }
+
+#overview {
+  spacing: 12px; }
+
+.candidate-popup-boxpointer {
+  -arrow-border-radius: 12px;
+  
+  -arrow-border-width: 1px;
+  
+  -arrow-base: 24px;
+  -arrow-rise: 12px;
+  -arrow-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5); }
+
+.candidate-popup-content {
+  padding: 0.5em;
+  spacing: 0.3em; }
+
+.candidate-index {
+  padding: 0 0.5em 0 0;
+   }
+
+.candidate-box {
+  padding: 0.3em 0.5em 0.3em 0.5em;
+  border-radius: 8px;
+   }
+  .candidate-box:selected, .candidate-box:hover {
+     }
+
+.candidate-page-button-box {
+  height: 2em; }
+  .vertical .candidate-page-button-box {
+    padding-top: 0.5em; }
+  .horizontal .candidate-page-button-box {
+    padding-left: 0.5em; }
+
+.candidate-page-button {
+  padding: 4px; }
+
+.candidate-page-button-previous {
+  border-radius: 8px 0px 0px 8px;
+  border-right-width: 0; }
+
+.candidate-page-button-next {
+  border-radius: 0px 8px 8px 0px; }
+
+.candidate-page-button-icon {
+  icon-size: 1em; }
+
+/* On-screen Keyboard */
+#virtual-keyboard {
+   }
+
+.vkeyboard-key-container {
+  padding: 4px;
+  spacing: 4px; }
+
+.vkeyboard-key {
+  
+  
+  font-size: 1.364em;
+  border-width: 1px;
+  border-style: solid;
+  border-radius: 11px;
+   }
+  .vkeyboard-key:focus {
+    
+    
+     }
+  .vkeyboard-key:hover, .vkeyboard-key:checked {
+    
+     }
+  .vkeyboard-key:active {
+    
+     }
+  .vkeyboard-key.shift-key-lowercase, .vkeyboard-key.escape-key, .vkeyboard-key.hide-key, .vkeyboard-key.non-alpha-key {
+     }
+    .vkeyboard-key.shift-key-lowercase:focus, .vkeyboard-key.escape-key:focus, .vkeyboard-key.hide-key:focus, .vkeyboard-key.non-alpha-key:focus {
+      
+      
+       }
+    .vkeyboard-key.shift-key-lowercase:hover, .vkeyboard-key.shift-key-lowercase:checked, .vkeyboard-key.escape-key:hover, .vkeyboard-key.escape-key:checked, .vkeyboard-key.hide-key:hover, .vkeyboard-key.hide-key:checked, .vkeyboard-key.non-alpha-key:hover, .vkeyboard-key.non-alpha-key:checked {
+      
+       }
+    .vkeyboard-key.shift-key-lowercase:active, .vkeyboard-key.escape-key:active, .vkeyboard-key.hide-key:active, .vkeyboard-key.non-alpha-key:active {
+      
+       }
+  .vkeyboard-key.shift-key-uppercase {
+     }
+  .vkeyboard-key.enter-key {
+     }
+  .vkeyboard-key.modifier-key {
+     }
+    .vkeyboard-key.modifier-key:hover, .vkeyboard-key.modifier-key:checked {
+      
+       }
+    .vkeyboard-key.modifier-key:latched {
+       }
+  .vkeyboard-key StIcon {
+    icon-size: 1.125em; }
+
+.vkeyboard-subkeys {
+  
+  -arrow-border-radius: 8px;
+  
+  -arrow-border-width: 1px;
+  
+  -arrow-base: 20px;
+  -arrow-rise: 10px;
+  -boxpointer-gap: 6px; }
+
+.word-suggestions {
+  font-size: 1.227em;
+  spacing: 20px;
+  min-height: 20pt; }
+
+.menu {
+  min-width: 15em;
+  
+  padding: 6px; }
+
+.popup-menu-content {
+  padding: 6px;
+  
+  border-radius: 16px;
+  border: 1px solid transparent;
+   }
+
+.popup-menu-item:active {
+   }
+
+.popup-menu-item:insensitive {
+  
+  ; }
+
+.popup-menu-item .check-box StBoxLayout,
+.popup-menu-item .radiobutton StBoxLayout {
+  spacing: 0; }
+
+.popup-menu-arrow,
+.popup-menu-icon {
+  icon-size: 1.091em; }
+
+.popup-inhibitor-menu-item .popup-menu-icon {
+  icon-size: 1.637em; }
+
+.popup-sub-menu {
+  border-radius: 9px;
+  margin: 0 4px;
+  margin-bottom: 6px;
+  border: 1px solid transparent; }
+  .popup-sub-menu .popup-menu-item {
+    border-radius: 0;
+    
+    margin: 0;
+    padding: 8px 0 8px 12px; }
+    .popup-sub-menu .popup-menu-item:active {
+       }
+    .popup-sub-menu .popup-menu-item:first-child {
+      border-radius: 8px 8px 0 0; }
+    .popup-sub-menu .popup-menu-item:last-child {
+      border-radius: 0 0 8px 8px; }
+    .popup-sub-menu .popup-menu-item:only-child, .popup-sub-menu .popup-menu-item:first-child:last-child {
+      border-radius: 8px; }
+  .popup-sub-menu StScrollBar {
+    padding: 4px; }
+    .popup-sub-menu StScrollBar StBin#trough, .popup-sub-menu StScrollBar StBin#vhandle {
+      border-width: 0; }
+
+.popup-separator-menu-item {
+  -gradient-height: 1px;
+  
+  
+  -margin-horizontal: 0;
+  height: 1px; }
+
+.popup-combo-menu {
+  padding: 6px;
+  
+  border-radius: 16px;
+  border: 1px solid transparent;
+   }
+
+.popup-combobox-item {
+  padding: 0 12px; }
+
+.popup-alternating-menu-item:alternate {
+  font-weight: normal; }
+
+.popup-device-menu-item {
+  spacing: .5em;
+   }
+  .popup-device-menu-item:insensitive {
+     }
+  .popup-device-menu-item .popup-inactive-menu-item {
+    font-weight: normal;
+     }
+
+.popup-printer-menu-item {
+  spacing-columns: 8px; }
+
+.popup-subtitle-menu-item {
+  font-weight: normal; }
+
+.nm-menu-item-icons {
+  spacing: .5em; }
+
+.wireless-active:insensitive {
+   }
+
+#notification {
+  width: 34em;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  
+  
+  padding: 12px;
+  margin-from-right-edge-of-screen: 20px;
+  spacing-rows: 10px;
+  spacing-columns: 10px; }
+  #notification.multi-line-notification {
+    padding-bottom: 12px;
+     }
+  #notification-body {
+    spacing: 6px; }
+  #notification-actions {
+    spacing: 12px; }
+
+.notification {
+  /* We use row-span = 2 for the image cell, which prevents its height preferences to be
+    taken into account during allocation, so its height ends up being limited by the height
+    of the content in the other rows. To avoid showing a stretched image, we set the minimum
+    height of the table to be ICON_SIZE + IMAGE_SIZE + spacing-rows = 24 + 125 + 10 = 159 */ }
+  .notification-with-image {
+    min-height: 159px; }
+  .notification-button {
+    padding: 6px 12px; }
+  .notification-icon-button {
+    padding: 6px; }
+
+.media-keys-osd {
+  margin-bottom: 1em;
+  border-radius: 9999px;
+  font-weight: bold;
+  spacing: 12px;
+  padding: 12px 24px; }
+  .media-keys-osd > * {
+    spacing: 12px; }
+  .media-keys-osd StIcon {
+    icon-size: 32px; }
+  .media-keys-osd StLabel:ltr {
+    margin-right: 6px; }
+  .media-keys-osd StLabel:rtl {
+    margin-left: 6px; }
+  .media-keys-osd .level {
+    min-width: 160px;
+    -barlevel-height: 6px;
+    -barlevel-background-color: #303034;
+    -barlevel-active-background-color: white;
+    -barlevel-amplify-color: #f8e45c;
+    -barlevel-amplify-separator-width: 3px; }
+    .media-keys-osd .level:ltr {
+      margin-right: 6px; }
+    .media-keys-osd .level:rtl {
+      margin-left: 6px; }
+  .media-keys-osd .level-bar {
+    border-radius: 8px;
+     }
+
+.info-osd {
+  font-size: 1.2em;
+  font-weight: 700;
+  text-align: center; }
+
+.workspace-switch-osd {
+  min-width: 140px;
+  margin-bottom: 1em;
+  border-radius: 9999px;
+  font-weight: bold;
+  padding: 12px 36px 0 36px; }
+  .workspace-switch-osd-indicator-box {
+    spacing: 12px; }
+  .workspace-switch-osd-indicator {
+    
+    padding: 2.66667px;
+    margin: 13.33333px;
+    border-radius: 32px; }
+    .workspace-switch-osd-indicator:active {
+      
+      padding: 5.33333px;
+      margin: 10.66667px; }
+
+.resize-popup {
+  padding: 12px; }
+
+.panel-top, .panel-bottom, .panel-left, .panel-right {
+  font-weight: bold;
+  
+   }
+
+.panelLeft {
+  spacing: 4px; }
+  .panelLeft:dnd {
+     }
+  .panelLeft:ltr {
+    padding-right: 4px; }
+  .panelLeft:rtl {
+    padding-left: 4px; }
+  .panelLeft.vertical {
+    padding: 0; }
+    .panelLeft.vertical:ltr {
+      padding-right: 0px; }
+    .panelLeft.vertical:rtl {
+      padding-left: 0px; }
+
+.panelRight:dnd {
+   }
+
+.panelRight:ltr {
+  padding-left: 4px;
+  spacing: 0; }
+
+.panelRight:rtl {
+  padding-right: 4px;
+  spacing: 0; }
+
+.panelRight.vertical {
+  padding: 0; }
+  .panelRight.vertical:ltr {
+    padding-left: 0;
+    spacing: 0; }
+  .panelRight.vertical:rtl {
+    padding-right: 0;
+    spacing: 0; }
+
+.panelCenter {
+  spacing: 4px; }
+  .panelCenter:dnd {
+     }
+  .panelCenter.vertical {
+    padding-left: 0;
+    padding-right: 0; }
+
+.panel-top {
+   }
+
+.panel-bottom {
+   }
+
+.panel-left {
+   }
+
+.panel-right {
+   }
+
+.panel-dummy {
+   }
+  .panel-dummy:entered {
+     }
+
+#panel:highlight {
+   }
+
+.appmenu-category-button-greyed, .appmenu-category-button-selected, .appmenu-category-button, .appmenu-application-button-selected, .appmenu-application-button, .appmenu-sidebar-button {
+  padding: 6px;
+  spacing: 4px;
+  border-radius: 8px; }
+
+.appmenu-background .popup-menu-content {
+  padding: 0; }
+
+.appmenu-main-box {
+  spacing: 10px; }
+
+.appmenu-right-box {
+  spacing: 5px;
+  padding: 10px 10px; }
+
+.appmenu-categories-applications-box {
+  spacing: 15px; }
+  .appmenu-categories-applications-box:top {
+    padding-top: 5px; }
+
+.appmenu-applications-box {
+  padding-right: 5px; }
+
+.appmenu-search-box {
+  spacing: 10px; }
+
+.appmenu-sidebar {
+  padding: 10px 0px;
+  
+  border-radius: 16px 0 0 16px;
+  border-right-width: 1px;
+   }
+  .appmenu-sidebar .appmenu-system-button {
+     }
+    .appmenu-sidebar .appmenu-system-button-lock:hover {
+       }
+    .appmenu-sidebar .appmenu-system-button-logout:hover {
+       }
+    .appmenu-sidebar .appmenu-system-button-shutdown {
+       }
+    .appmenu-sidebar .appmenu-system-button-shutdown:hover {
+       }
+
+.appmenu-system-box {
+  spacing: 10px; }
+
+.appmenu-sidebar-button {
+  padding: 3px 6px 3px 6px;
+  margin: 0 10px 0 10px; }
+  .appmenu-sidebar-button:hover {
+    
+     }
+
+.appmenu-system-button {
+  padding: 8.4px;
+  border: 1px solid transparent;
+  border-radius: 9999px;
+   }
+  .appmenu-system-button-shutdown {
+     }
+  .appmenu-system-button-lock:hover {
+     }
+  .appmenu-system-button-logout:hover {
+     }
+  .appmenu-system-button-shutdown:hover {
+     }
+
+.appmenu-application-button-label {
+  padding: 0; }
+
+.appmenu-application-button-description {
+   }
+
+.appmenu-application-button:highlighted {
+  font-weight: bold; }
+
+.appmenu-application-button-selected {
+   }
+  .appmenu-application-button-selected:highlighted {
+    font-weight: bold; }
+
+.appmenu-category-button-label {
+  padding: 0; }
+
+.appmenu-category-button:hover {
+   }
+
+.appmenu-category-button-selected {
+   }
+
+.appmenu-category-button-greyed {
+  
+  font-style: italic; }
+  .appmenu-category-button-greyed StIcon {
+    opacity: 0.5; }
+
+.appmenu-search-entry-icon {
+  icon-size: 1.091em; }
+
+.toggle-switch {
+  height: 26px;
+  width: 46px;
+  background-size: contain;
+  background-image: url("toggle-off.svg"); }
+  .toggle-switch:checked {
+    background-image: url("toggle-on.svg"); }
+
+.check-box StBoxLayout {
+  spacing: 0.8em; }
+
+.check-box StBin {
+  width: 20px;
+  height: 20px;
+  background-image: url("checkbox-off.svg"); }
+
+.check-box:focus StBin {
+  background-image: url("checkbox-off.svg"); }
+
+.check-box:checked StBin {
+  background-image: url("checkbox.svg"); }
+
+.check-box:focus:checked StBin {
+  background-image: url("checkbox.svg"); }
+
+.radiobutton StBoxLayout {
+  spacing: 0.8em; }
+
+.radiobutton StBin {
+  width: 20px;
+  height: 20px;
+  background-image: url("radio-off.svg"); }
+
+.radiobutton:focus StBin {
+  background-image: url("radio-off.svg"); }
+
+.radiobutton:checked StBin {
+  background-image: url("radio.svg"); }
+
+.radiobutton:focus:checked StBin {
+  background-image: url("radio.svg"); }
+
+.grouped-window-list-item-label {
+  width: 15em;
+  min-width: 5px; }
+
+.grouped-window-list-item-box {
+  padding: 0 6px; }
+  .grouped-window-list-item-box.top, .grouped-window-list-item-box.bottom {
+    border-bottom-width: 2px; }
+  .grouped-window-list-item-box.right {
+    padding-left: 0;
+    padding-right: 0;
+    border-right-width: 2px; }
+    .grouped-window-list-item-box.right StBin {
+      padding-right: 0; }
+  .grouped-window-list-item-box.left {
+    padding-left: 0;
+    padding-right: 0;
+    border-left-width: 2px; }
+    .grouped-window-list-item-box.left StBin {
+      padding-left: 1px; }
+  .grouped-window-list-item-box:hover {
+     }
+  .grouped-window-list-item-box:focus {
+     }
+  .grouped-window-list-item-box:active {
+     }
+  .grouped-window-list-item-box .progress {
+     }
+
+.grouped-window-list-item-demands-attention {
+   }
+
+.grouped-window-list-thumbnail-label {
+  padding-left: 4px; }
+
+.grouped-window-list-thumbnail-alert {
+  ; }
+
+.grouped-window-list-thumbnail-menu {
+  border: 1px solid transparent;
+  margin: 6px;
+  
+  border-radius: 8px;
+   }
+  .grouped-window-list-thumbnail-menu > StBoxLayout {
+    padding: 4px; }
+  .grouped-window-list-thumbnail-menu .item-box {
+    padding: 10px;
+    spacing: 4px;
+    border-radius: 0; }
+    .grouped-window-list-thumbnail-menu .item-box:first-child {
+      border-radius: 8px 0 0 8px; }
+    .grouped-window-list-thumbnail-menu .item-box:last-child {
+      border-radius: 0 8px 8px 0; }
+    .grouped-window-list-thumbnail-menu .item-box:outlined {
+      border: 2px solid transparent; }
+      .grouped-window-list-thumbnail-menu .item-box:outlined:first-child {
+        border-radius: 8px 0 0 8px; }
+      .grouped-window-list-thumbnail-menu .item-box:outlined:last-child {
+        border-radius: 0 8px 8px 0; }
+    .grouped-window-list-thumbnail-menu .item-box:selected {
+       }
+      .grouped-window-list-thumbnail-menu .item-box:selected:only-child, .grouped-window-list-thumbnail-menu .item-box:selected:first-child:last-child {
+        border-radius: 8px; }
+      .grouped-window-list-thumbnail-menu .item-box:selected:first-child {
+        border-radius: 8px 0 0 8px; }
+      .grouped-window-list-thumbnail-menu .item-box:selected:last-child {
+        border-radius: 0 8px 8px 0; }
+  .grouped-window-list-thumbnail-menu .thumbnail {
+    width: 256px; }
+  .grouped-window-list-thumbnail-menu .separator {
+    width: 1px;
+     }
+
+.grouped-window-list-button-label {
+  padding-left: 4px; }
+
+.grouped-window-list-number-label {
+  font-size: 12px; }
+
+.grouped-window-list-badge {
+  border-radius: 99px;
+  
+   }
+
+.grouped-window-list-notifications-badge {
+  border-radius: 99px;
+  
+   }
+
+.grouped-window-list-notifications-badge-label {
+  font-size: 12px; }
+
+.grouped-window-list-scrollbox-scrollview.vfade {
+  -st-vfade-offset: 68px;
+  -st-hfade-offset: 0; }
+
+.grouped-window-list-scrollbox-scrollview.hfade {
+  -st-hfade-offset: 68px;
+  -st-vfade-offset: 0; }
+
+.grouped-window-list-scrollbox-button {
+  transition-duration: 100ms; }
+  .grouped-window-list-scrollbox-button-icon {
+    icon-size: 1.091em;
+     }
+  .grouped-window-list-scrollbox-button-start {
+    margin-right: 1px; }
+    .grouped-window-list-scrollbox-button-start.vertical {
+      margin-right: 0;
+      margin-bottom: 1px; }
+  .grouped-window-list-scrollbox-button-end {
+    margin-left: 1px; }
+    .grouped-window-list-scrollbox-button-end.vertical {
+      margin-left: 0;
+      margin-top: 1px; }
+  .grouped-window-list-scrollbox-button:hover {
+    
+     }
+  .grouped-window-list-scrollbox-button:active {
+    
+     }
+
+.window-list-box {
+  spacing: 6px;
+  padding-left: 6px;
+  padding-top: 1px; }
+  .window-list-box.vertical {
+    spacing: 4px;
+    padding: 6px 0; }
+  .window-list-box:highlight {
+     }
+
+.window-list-item-box {
+  padding: 0 6px;
+   }
+  .window-list-item-box.top, .window-list-item-box.bottom {
+    border-bottom-width: 2px; }
+    .window-list-item-box.top StLabel, .window-list-item-box.bottom StLabel {
+      padding-left: 2px; }
+  .window-list-item-box.right {
+    padding-left: 0;
+    padding-right: 0;
+    border-right-width: 2px; }
+    .window-list-item-box.right StBin {
+      padding-right: 0;
+      padding-left: 5px; }
+  .window-list-item-box.left {
+    padding-left: 0;
+    padding-right: 0;
+    border-left-width: 2px; }
+    .window-list-item-box.left StBin {
+      padding-left: 0;
+      padding-right: 5px; }
+  .window-list-item-box:hover {
+     }
+  .window-list-item-box:focus {
+    
+     }
+  .window-list-item-box .progress {
+     }
+
+.window-list-item-demands-attention {
+   }
+
+.window-list-preview {
+  border: 1px solid transparent;
+  
+  border-radius: 8px;
+  padding: 12px;
+  spacing: 4px;
+   }
+
+.menu-category-button-greyed, .menu-category-button-selected, .menu-category-button, .menu-application-button-selected, .menu-application-button {
+  padding: 6px;
+  spacing: 4px;
+  border-radius: 8px; }
+
+.menu-favorites-box {
+  padding: 9px;
+  
+  border: 1px solid transparent;
+  border-radius: 8px; }
+
+.menu-favorites-button {
+  padding: 9px;
+  border-radius: 8px; }
+  .menu-favorites-button:hover {
+     }
+
+.menu-categories-box {
+  padding: 9px 24px; }
+
+.menu-applications-box {
+  padding: 9px; }
+
+.menu-applications-inner-box:ltr {
+  padding-left: 24px; }
+
+.menu-applications-inner-box:rtl {
+  padding-right: 24px; }
+
+.menu-application-button-label {
+  padding: 0; }
+
+.menu-application-button:highlighted {
+  font-weight: bold; }
+
+.menu-application-button-selected {
+   }
+  .menu-application-button-selected:highlighted {
+    font-weight: bold; }
+
+.menu-category-button-label {
+  padding: 0; }
+
+.menu-category-button:hover {
+   }
+
+.menu-category-button-selected {
+   }
+
+.menu-category-button-greyed {
+  
+  font-style: italic; }
+  .menu-category-button-greyed StIcon {
+    opacity: 0.5; }
+
+.menu-selected-app-box {
+  padding-right: 24px;
+  padding-left: 24px;
+  text-align: right; }
+
+.menu-selected-app-description {
+   }
+
+.menu-search-box {
+  padding: 0 0 6px 9px; }
+
+.menu-search-entry-icon {
+  icon-size: 1.091em; }
+
+
+/* ---------- Halon ---------- */
+
+/* ==========================================================================
+   Stage and panel — the panel is the navigation frame, dark in every scheme.
+   ========================================================================== */
+
+stage {
+    font-size: 13px;
+    color: #e2e8f0;
+}
+
+#panel {
+    background-color: #060b14;
+    color: #7dabf5;
+    border: none;
+    font-size: 13px;
+}
+
+#panel.panel-top {
+    border-bottom: 1px solid #060b14;
+}
+
+#panel.panel-bottom {
+    border-top: 1px solid #060b14;
+}
+
+#panel:highlight {
+    background-color: #101b2d;
+}
+
+.panel-top, .panel-bottom, .panel-left, .panel-right {
+    background-color: #060b14;
+}
+
+/* ==========================================================================
+   Applets — ghost by default, hover is a frame-coloured fill.
+   ========================================================================== */
+
+.applet-box {
+    color: #7dabf5;
+    padding: 0 6px;
+    border-radius: 6px;
+    transition-duration: 120ms;
+}
+
+.applet-box:hover,
+.applet-box:checked {
+    background-color: #101b2d;
+    color: #ffffff;
+}
+
+.applet-label {
+    color: inherit;
+    font-weight: normal;
+}
+
+.applet-icon {
+    color: inherit;
+    icon-size: 16px;
+}
+
+.panel-status-button {
+    border: none;
+    color: #7dabf5;
+}
+
+/* ==========================================================================
+   Window list — the active window is the only light element in the frame,
+   exactly as the active tab is in §6.4.
+   ========================================================================== */
+
+.window-list-box {
+    spacing: 2px;
+    padding: 0 2px;
+}
+
+.grouped-window-list-item-box,
+.window-list-item-box {
+    color: #7dabf5;
+    border-radius: 6px;
+    padding: 1px 8px;
+    margin: 2px 1px;
+    transition-duration: 120ms;
+}
+
+.grouped-window-list-item-box:hover,
+.window-list-item-box:hover {
+    background-color: #101b2d;
+    color: #ffffff;
+}
+
+.grouped-window-list-item-box:active,
+.grouped-window-list-item-box:checked,
+.grouped-window-list-item-box:focus,
+.window-list-item-box:active,
+.window-list-item-box:focus {
+    background-color: #16213a;
+    color: #f8fafc;
+    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.50);
+}
+
+.grouped-window-list-item-box:hover:active,
+.grouped-window-list-item-box:hover:checked {
+    background-color: #16213a;
+    color: #f8fafc;
+}
+
+.grouped-window-list-badge {
+    background-color: #60a5fa;
+    color: #0b1220;
+    border-radius: 9999px;
+}
+
+.grouped-window-list-number-label {
+    color: #0b1220;
+    font-size: 11px;
+}
+
+.window-list-preview {
+    background-color: #16213a;
+    color: #e2e8f0;
+    border: 1px solid #334155;
+    border-radius: 8px;
+    padding: 8px;
+}
+
+/* ==========================================================================
+   Popup menus — the content surface, not the frame.
+   ========================================================================== */
+
+.popup-menu-boxpointer {
+    -arrow-border-radius: 8px;
+    -arrow-background-color: #16213a;
+    -arrow-border-color: #334155;
+    -arrow-border-width: 1px;
+    -arrow-base: 16px;
+    -arrow-rise: 8px;
+    -boxpointer-gap: 4px;
+}
+
+.popup-menu {
+    color: #e2e8f0;
+    padding: 4px 0;
+}
+
+.popup-menu-content {
+    background-color: #16213a;
+    border-radius: 8px;
+    padding: 5px;
+}
+
+.popup-menu-item {
+    padding: 6px 9px;
+    spacing: 9px;
+    border-radius: 6px;
+    color: #e2e8f0;
+    transition-duration: 100ms;
+}
+
+.popup-menu-item:hover,
+.popup-menu-item:active,
+.popup-menu-item.selected {
+    background-color: #1e293b;
+    color: #f8fafc;
+}
+
+.popup-menu-item:insensitive {
+    color: #94a3b8;
+}
+
+.popup-inactive-menu-item {
+    color: #e2e8f0;
+}
+
+.popup-inactive-menu-item:insensitive {
+    color: #94a3b8;
+}
+
+.popup-menu-icon {
+    color: #cbd5e1;
+    icon-size: 16px;
+}
+
+.popup-separator-menu-item {
+    height: 1px;
+    margin: 4px 6px;
+    background-color: #334155;
+}
+
+/* A submenu is more content, not a recessed footer — it stays on the sheet
+   surface and reads as part of the same menu. */
+.popup-sub-menu {
+    background-color: #16213a;
+    border-radius: 6px;
+}
+
+.popup-menu-arrow {
+    color: #cbd5e1;
+}
+
+.popup-menu-item-label {
+    color: inherit;
+}
+
+/* Toggles inside menus */
+.toggle-switch {
+    width: 38px;
+    height: 21px;
+}
+
+.popup-slider-menu-item {
+    height: 6px;
+    -slider-height: 6px;
+    -slider-background-color: #1e293b;
+    -slider-border-color: transparent;
+    -slider-active-background-color: #60a5fa;
+    -slider-active-border-color: transparent;
+    -slider-border-width: 0;
+    -slider-handle-radius: 8px;
+}
+
+/* ==========================================================================
+   Main menu applet
+   ========================================================================== */
+
+.menu {
+    background-color: #16213a;
+    border: 1px solid #334155;
+    border-radius: 8px;
+    color: #e2e8f0;
+}
+
+.menu-categories-box {
+    padding: 8px;
+}
+
+.menu-favorites-box {
+    background-color: #1e293b;
+    padding: 8px;
+    border-radius: 8px;
+    margin: 8px;
+}
+
+.menu-application-button,
+.menu-category-button {
+    padding: 5px 8px;
+    border-radius: 6px;
+    color: #e2e8f0;
+    spacing: 8px;
+}
+
+.menu-application-button-selected,
+.menu-category-button-selected,
+.menu-application-button:hover,
+.menu-category-button:hover {
+    background-color: #1e293b;
+    color: #f8fafc;
+}
+
+.menu-application-button-label,
+.menu-category-button-label {
+    color: inherit;
+    padding-left: 6px;
+}
+
+.menu-favorites-button {
+    padding: 6px;
+    border-radius: 6px;
+}
+
+.menu-favorites-button:hover {
+    background-color: #334155;
+}
+
+.menu-search-box {
+    padding: 8px;
+}
+
+/* The stock stylesheet targets these by ID, and in St an ID outranks any
+   class rule — the override must reuse the same selectors or the stock
+   dark-grey entry shows through inside a white menu. */
+#menu-search-entry,
+#appmenu-search-entry,
+.menu-search-entry,
+.expo-workspaces-name-entry,
+.prompt-dialog-password-entry,
+.run-dialog-entry {
+    background-color: #16213a;
+    color: #e2e8f0;
+    border: 1px solid #334155;
+    border-radius: 8px;
+    padding: 7px 11px;
+    caret-color: #60a5fa;
+    selection-background-color: #93c5fd;
+    selected-color: #0f172a;
+}
+
+/* Stock's :focus block re-darkens the field — a pseudo-class outranks the
+   base rule, so the focus override must restate the surface, not only the
+   border. This is why the search box stayed dark exactly while focused. */
+#menu-search-entry:focus,
+#appmenu-search-entry:focus,
+.menu-search-entry:focus,
+.expo-workspaces-name-entry:focus,
+.prompt-dialog-password-entry:focus,
+.run-dialog-entry:focus {
+    background-color: #16213a;
+    color: #e2e8f0;
+    border: 1px solid #60a5fa;
+}
+
+#menu-search-entry:insensitive,
+#appmenu-search-entry:insensitive,
+.run-dialog-entry:insensitive {
+    background-color: #1e293b;
+    color: #94a3b8;
+}
+
+#menu-search-entry StLabel.hint-text,
+#appmenu-search-entry StLabel.hint-text,
+.prompt-dialog-password-entry StLabel.hint-text,
+.run-dialog-entry StLabel.hint-text {
+    color: #94a3b8;
+}
+
+.menu-search-entry-icon {
+    color: #cbd5e1;
+}
+
+.menu-selected-app-box {
+    padding: 8px;
+    color: #cbd5e1;
+}
+
+.menu-selected-app-title {
+    color: #f8fafc;
+    font-weight: bold;
+}
+
+/* ==========================================================================
+   Tooltips and OSD — frame colours, per §6.6.
+   ========================================================================== */
+
+#Tooltip {
+    background-color: #060b14;
+    color: #ffffff;
+    border: none;
+    border-radius: 6px;
+    padding: 5px 9px;
+    font-size: 12px;
+}
+
+.osd-window {
+    background-color: #060b14;
+    color: #ffffff;
+    border-radius: 8px;
+    padding: 12px;
+    spacing: 8px;
+}
+
+.osd-window .level {
+    height: 6px;
+    border-radius: 3px;
+    background-color: #101b2d;
+    color: #60a5fa;
+}
+
+/* ==========================================================================
+   Notifications — a banner is a toast, and per §6.6 toasts belong to the
+   frame: navigation surface, white text, in both schemes. The banner node is
+   the #notification ID; styling only .notification misses it entirely and
+   the stock grey shows through.
+   ========================================================================== */
+
+#notification {
+    background-color: #060b14;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    padding: 12px;
+    spacing-rows: 6px;
+    spacing-columns: 10px;
+}
+
+#notification-body,
+#notification .notification-body {
+    color: #ffffff;
+}
+
+#notification-scrollview {
+    background-color: transparent;
+}
+
+.notification,
+.notification-with-image {
+    background-color: #060b14;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    padding: 12px;
+    spacing: 8px;
+}
+
+/* Action chips on the navy card, matching the demo toast's close button:
+   quiet frame-hover fills, accent only when pressed. */
+#notification .notification-button,
+#notification .notification-icon-button,
+.notification-button,
+.notification-icon-button {
+    background-color: #101b2d;
+    background-gradient-direction: none;
+    border: none;
+    border-radius: 6px;
+    color: #ffffff;
+    padding: 6px 12px;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+#notification .notification-button:hover,
+#notification .notification-icon-button:hover,
+.notification-button:hover,
+.notification-icon-button:hover {
+    background-color: #101b2d;
+    color: #ffffff;
+}
+
+#notification .notification-button:active,
+.notification-button:active {
+    background-color: #60a5fa;
+    color: #0b1220;
+}
+
+#notification .notification-button:focus,
+.notification-button:focus {
+    border: 1px solid #93c5fd;
+}
+
+/* ==========================================================================
+   Modal dialogs
+   ========================================================================== */
+
+.modal-dialog {
+    background-color: #16213a;
+    color: #e2e8f0;
+    border: 1px solid #334155;
+    border-radius: 8px;
+    padding: 16px;
+}
+
+.modal-dialog-button-box {
+    spacing: 8px;
+    padding-top: 12px;
+}
+
+.modal-dialog-button,
+.dialog-button {
+    background-color: transparent;
+    border: 1px solid #60a5fa;
+    border-radius: 8px;
+    color: #60a5fa;
+    padding: 7px 14px;
+    font-weight: 500;
+}
+
+.modal-dialog-button:hover,
+.dialog-button:hover {
+    background-color: transparent;
+    color: #60a5fa;
+}
+
+.modal-dialog-button:focus,
+.dialog-button:focus {
+    border: 1px solid #60a5fa;
+    background-color: rgba(96, 165, 250, 0.28);
+}
+
+.modal-dialog-button:active {
+    background-color: #60a5fa;
+    color: #0b1220;
+}
+
+/* ==========================================================================
+   Alt-tab switcher and Expo
+   ========================================================================== */
+
+.switcher-list {
+    background-color: #16213a;
+    border: 1px solid #334155;
+    border-radius: 8px;
+    padding: 12px;
+    color: #e2e8f0;
+}
+
+.switcher-list-item-container {
+    spacing: 8px;
+}
+
+.switcher-list .item-box {
+    padding: 8px;
+    border-radius: 6px;
+}
+
+.switcher-list .item-box:outlined,
+.switcher-list .item-box:selected {
+    background-color: #93c5fd;
+    color: #0f172a;
+}
+
+.switcher-arrow {
+    border-color: transparent;
+    color: #cbd5e1;
+}
+
+.expo-workspaces-name-entry,
+.expo-background {
+    color: #e2e8f0;
+}
+
+.workspace-thumbnail {
+    background-color: #1e293b;
+    border-radius: 6px;
+}
+
+.workspace-thumbnail:active,
+.workspace-thumbnail:hover {
+    border: 1px solid #60a5fa;
+}
+
+/* ==========================================================================
+   Workspace switcher applet
+   ========================================================================== */
+
+.workspace-switcher {
+    spacing: 2px;
+}
+
+.workspace-button {
+    color: #7dabf5;
+    border-radius: 6px;
+    padding: 2px 6px;
+}
+
+.workspace-button:outlined,
+.workspace-button:checked {
+    background-color: #101b2d;
+    color: #ffffff;
+}
+
+.workspace-graph .workspace {
+    background-color: #101b2d;
+    border: 1px solid #060b14;
+}
+
+.workspace-graph .workspace:active {
+    background-color: #60a5fa;
+}
+
+/* ==========================================================================
+   Calendar applet
+   ========================================================================== */
+
+.calendar {
+    background-color: #16213a;
+    border: 1px solid #334155;
+    border-radius: 8px;
+    padding: 8px;
+    color: #e2e8f0;
+    spacing-rows: 2px;
+    spacing-columns: 2px;
+}
+
+.calendar-month-label {
+    color: #f8fafc;
+    font-weight: bold;
+    padding: 4px 0;
+}
+
+.calendar-change-month-back,
+.calendar-change-month-forward {
+    color: #cbd5e1;
+    border-radius: 6px;
+    padding: 4px;
+}
+
+.calendar-change-month-back:hover,
+.calendar-change-month-forward:hover {
+    background-color: #1e293b;
+    color: #f8fafc;
+}
+
+.calendar-day-base {
+    border-radius: 6px;
+    padding: 4px;
+    color: #e2e8f0;
+    font-size: 12px;
+}
+
+.calendar-day-base:hover {
+    background-color: #60a5fa;
+    color: #0b1220;
+}
+
+.calendar-day-heading {
+    color: #cbd5e1;
+    font-size: 11px;
+    font-weight: bold;
+}
+
+.calendar-nonwork-day {
+    color: #cbd5e1;
+}
+
+.calendar-other-month-day {
+    color: #94a3b8;
+}
+
+/* Stock gives today a grey fill plus an inset blue glow; both must be
+   overridden, not just the border. Today is the accent fill, per the demo. */
+.calendar-today {
+    background-color: #60a5fa;
+    color: #0b1220;
+    border: none;
+    box-shadow: none;
+    font-weight: bold;
+}
+
+.calendar-today:hover {
+    background-color: #60a5fa;
+    color: #0b1220;
+}
+
+.calendar-not-today:selected,
+.calendar-day-base:selected {
+    background-color: #93c5fd;
+    color: #0f172a;
+}
+
+/* ==========================================================================
+   Desklets and the run dialog
+   ========================================================================== */
+
+.desklet {
+    color: #e2e8f0;
+}
+
+.desklet-with-borders {
+    background-color: #16213a;
+    border: 1px solid #334155;
+    border-radius: 8px;
+    color: #e2e8f0;
+}
+
+.desklet-header-label {
+    color: #f8fafc;
+    font-weight: bold;
+}
+
+.run-dialog {
+    background-color: #16213a;
+    border: 1px solid #334155;
+    border-radius: 8px;
+    padding: 16px;
+    color: #e2e8f0;
+}
+
+.run-dialog-entry {
+    background-color: #16213a;
+    border: 1px solid #334155;
+    border-radius: 8px;
+    padding: 7px 11px;
+    color: #e2e8f0;
+    caret-color: #60a5fa;
+}
+
+.run-dialog-error-label {
+    color: #f87171;
+}
+
+/* ==========================================================================
+   Scrollbars — per §6.8
+   ========================================================================== */
+
+StScrollBar {
+    padding: 2px;
+}
+
+StScrollView StScrollBar StBin#trough {
+    background-color: transparent;
+}
+
+StScrollView StScrollBar StButton#vhandle,
+StScrollView StScrollBar StButton#hhandle {
+    background-color: #475569;
+    border-radius: 9999px;
+    border: none;
+    margin: 2px;
+}
+
+StScrollView StScrollBar StButton#vhandle:hover,
+StScrollView StScrollBar StButton#hhandle:hover {
+    background-color: #94a3b8;
+}
+
+StScrollView StScrollBar StButton#vhandle:active,
+StScrollView StScrollBar StButton#hhandle:active {
+    background-color: #60a5fa;
+}
+
+/* ==========================================================================
+   Status colours
+   ========================================================================== */
+
+.error {
+    color: #f87171;
+}
+
+.warning {
+    color: #f59e0b;
+}
+
+.success {
+    color: #10b981;
+}
+
+/* ==========================================================================
+   Modern menu applet (appmenu-*) — Cinnamon 6's default menu. The base
+   stylesheet covers its geometry; these are the colours.
+   ========================================================================== */
+
+.appmenu-background,
+.appmenu-main-box {
+    background-color: #16213a;
+    border: 1px solid #334155;
+    border-radius: 8px;
+    color: #e2e8f0;
+}
+
+/* Only a true sidebar is the secondary surface; the two-pane content area is
+   a primary sheet and stays on the default one. */
+.appmenu-sidebar {
+    background-color: #1e293b;
+    border-radius: 8px;
+}
+
+.appmenu-categories-applications-box,
+.appmenu-system-box {
+    background-color: #16213a;
+}
+
+.appmenu-right-box,
+.appmenu-applications-box {
+    background-color: #16213a;
+}
+
+/* Session and power controls. Stock paints these through the bare class and
+   per-action variants, so the override mirrors that exactly. The power button
+   is the one danger fill in the menu; lock and logout stay quiet. */
+.appmenu-system-button {
+    background-color: #16213a;
+    border: 1px solid #334155;
+    border-radius: 9999px;
+    color: #cbd5e1;
+}
+
+.appmenu-system-button:hover {
+    border: 1px solid #60a5fa;
+    color: #f8fafc;
+}
+
+.appmenu-system-button-lock:hover,
+.appmenu-system-button-logout:hover {
+    background-color: #334155;
+    border: 1px solid #334155;
+    color: #f8fafc;
+}
+
+.appmenu-system-button-shutdown {
+    background-color: #f87171;
+    border: 1px solid #f87171;
+    color: #0b1220;
+}
+
+.appmenu-system-button-shutdown:hover {
+    background-color: #f87171;
+    border: 1px solid #f87171;
+    color: #0b1220;
+}
+
+.appmenu-application-button,
+.appmenu-category-button,
+.appmenu-sidebar-button,
+.appmenu-system-button {
+    color: #e2e8f0;
+    border-radius: 6px;
+    padding: 5px 8px;
+}
+
+.appmenu-application-button:hover,
+.appmenu-category-button:hover,
+.appmenu-sidebar-button:hover,
+.appmenu-system-button:hover,
+.appmenu-application-button-selected,
+.appmenu-category-button-selected {
+    background-color: #1e293b;
+    color: #f8fafc;
+}
+
+.appmenu-application-button-label,
+.appmenu-category-button-label {
+    color: inherit;
+}
+
+.appmenu-application-button-description {
+    color: #cbd5e1;
+    font-size: 12px;
+}
+
+.appmenu-category-button-greyed {
+    color: #94a3b8;
+}
+
+.appmenu-search-box .menu-search-entry,
+.appmenu-search-box StEntry {
+    background-color: #16213a;
+    border: 1px solid #334155;
+    border-radius: 8px;
+    color: #e2e8f0;
+    padding: 7px 11px;
+}
+
+.appmenu-search-entry-icon {
+    color: #cbd5e1;
+}
+
+/* ==========================================================================
+   Calendar events pane
+   ========================================================================== */
+
+.calendar-main-box,
+.calendar-events-main-box {
+    background-color: #16213a;
+    color: #e2e8f0;
+}
+
+.calendar-today-day-label,
+.calendar-today-date-label {
+    color: #f8fafc;
+}
+
+.calendar-today-home-button-enabled {
+    color: #60a5fa;
+}
+
+.calendar-week-number {
+    color: #94a3b8;
+    font-size: 11px;
+}
+
+.calendar-not-today {
+    color: #e2e8f0;
+}
+
+.calendar-day-event-dot {
+    background-color: #60a5fa;
+    border-radius: 9999px;
+}
+
+.calendar-event-button {
+    border-radius: 6px;
+    padding: 6px 8px;
+    color: #e2e8f0;
+}
+
+.calendar-event-button:hover {
+    background-color: #1e293b;
+    color: #f8fafc;
+}
+
+.calendar-event-color-strip {
+    background-color: #60a5fa;
+    border-radius: 2px;
+}
+
+.calendar-events-date-label {
+    color: #cbd5e1;
+    font-weight: bold;
+}
+
+.calendar-events-no-events-label,
+.calendar-events-no-events-icon {
+    color: #94a3b8;
+}
+
+/* ==========================================================================
+   Applet separators and the corner bar
+   ========================================================================== */
+
+.applet-separator {
+    padding: 0 4px;
+}
+
+.applet-separator-line {
+    background-color: #101b2d;
+    width: 1px;
+}
+
+.applet-cornerbar,
+.applet-cornerbar-box {
+    background-color: transparent;
+}
+
+#altTabPopup {
+    padding: 8px;
+}
+
+/* ==========================================================================
+   Stock leak-through — everything below exists in the prepended base with
+   dark-theme colours and no Halon override until now. Ordered by visibility.
+   ========================================================================== */
+
+/* The global St button family: end-session and polkit dialogs, the sound
+   player, anything with .button. Halon default weight, per §6.1. */
+.button,
+.icon-button,
+.sound-player StButton {
+    background-color: transparent;
+    background-gradient-direction: none;
+    border: 1px solid #334155;
+    border-radius: 8px;
+    color: #e2e8f0;
+    padding: 6px 14px;
+    font-weight: 500;
+}
+
+.button:hover,
+.icon-button:hover,
+.sound-player StButton:hover {
+    background-color: transparent;
+    border: 1px solid #60a5fa;
+    color: #e2e8f0;
+}
+
+.button:active,
+.icon-button:active,
+.sound-player StButton:active {
+    background-color: #60a5fa;
+    border: 1px solid #60a5fa;
+    color: #0b1220;
+}
+
+.button:focus,
+.icon-button:focus,
+.sound-player StButton:focus {
+    border: 1px solid #60a5fa;
+    box-shadow: none;
+}
+
+.button:insensitive,
+.icon-button:insensitive {
+    color: #94a3b8;
+    border: 1px solid #334155;
+}
+
+/* St dialogs beyond .modal-dialog: session end, polkit, autorun, prompts. */
+.dialog,
+.prompt-dialog,
+.end-session-dialog,
+.autorun-dialog {
+    background-color: #16213a;
+    color: #e2e8f0;
+    border: 1px solid #334155;
+    border-radius: 8px;
+    padding: 16px;
+}
+
+.message-dialog-content {
+    spacing: 10px;
+}
+
+.dialog-list {
+    spacing: 10px;
+    max-height: 300px;
+}
+
+.run-dialog-description {
+    color: #cbd5e1;
+    font-size: 12px;
+}
+
+.caps-lock-warning-label {
+    color: #f59e0b;
+}
+
+.polkit-dialog-user-layout {
+    spacing: 8px;
+    padding: 8px;
+}
+
+/* Sound player applet: a content card, not a black slab. */
+.sound-player {
+    padding: 4px 0;
+}
+
+.sound-player-overlay {
+    background-color: #16213a;
+    color: #e2e8f0;
+    border: none;
+    padding: 12px;
+    spacing: 8px;
+}
+
+.sound-player-generic-coverart {
+    background-color: #1e293b;
+    color: #94a3b8;
+    border-radius: 6px;
+}
+
+/* Transient OSDs are toasts and take the frame colours, per §6.6. */
+.media-keys-osd,
+.info-osd,
+.workspace-switch-osd,
+.resize-popup {
+    background-color: #060b14;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 18px;
+    font-weight: 500;
+}
+
+/* Window snapping and tiling previews use the translucent accent, the same
+   token as focus and selection. */
+.tile-preview,
+.window-close-area {
+    background-color: rgba(96, 165, 250, 0.28);
+    border: 1px solid #60a5fa;
+    border-radius: 8px;
+}
+
+/* Window list extras. */
+.grouped-window-list-item-label,
+.grouped-window-list-button-label {
+    color: inherit;
+}
+
+.grouped-window-list-thumbnail-menu {
+    background-color: #16213a;
+    color: #e2e8f0;
+    border: 1px solid #334155;
+    border-radius: 8px;
+    padding: 8px;
+}
+
+.grouped-window-list-thumbnail-label {
+    color: #e2e8f0;
+}
+
+.grouped-window-list-item-demands-attention,
+.window-list-item-demands-attention {
+    background-color: #f59e0b;
+    color: #0f172a;
+}
+
+.grouped-window-list-notifications-badge {
+    background-color: #60a5fa;
+    border-radius: 9999px;
+}
+
+.grouped-window-list-notifications-badge-label {
+    color: #0b1220;
+    font-size: 10px;
+}
+
+/* Expo and Scale overlays. */
+.window-caption {
+    background-color: #060b14;
+    color: #ffffff;
+    border: none;
+    border-radius: 6px;
+    padding: 3px 9px;
+    font-size: 12px;
+}
+
+.window-border,
+.expo-workspace-thumbnail-frame {
+    border: 2px solid #60a5fa;
+    border-radius: 8px;
+}
+
+.workspace-overview-background-shade {
+    background-color: rgba(0, 0, 0, 0.6);
+}
+
+/* On-screen keyboard: frame chrome, tabs-like keys. */
+#virtual-keyboard {
+    background-color: #060b14;
+}
+
+.vkeyboard-key {
+    background-color: #101b2d;
+    color: #ffffff;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+.vkeyboard-key:hover,
+.vkeyboard-key:focus {
+    background-color: #60a5fa;
+    color: #0b1220;
+}
+
+.vkeyboard-subkeys {
+    background-color: #060b14;
+    border-radius: 8px;
+    -boxpointer-gap: 4px;
+}
+
+/* Popup menu variants the base styles separately. */
+.popup-combo-menu {
+    background-color: #16213a;
+    color: #e2e8f0;
+    border: 1px solid #334155;
+    border-radius: 8px;
+    padding: 5px;
+}
+
+.popup-combobox-item {
+    spacing: 8px;
+}
+
+.popup-subtitle-menu-item {
+    color: #cbd5e1;
+    font-weight: normal;
+}
+
+.popup-device-menu-item,
+.popup-printer-menu-item,
+.popup-inhibitor-menu-item {
+    color: #e2e8f0;
+}
+
+.popup-alternating-menu-item:alternate {
+    font-weight: normal;
+    color: #cbd5e1;
+}
+
+/* St toggles draw from the generated SVG assets; the box only needs a size. */
+.toggle-switch,
+.toggle-switch-us,
+.toggle-switch-intl {
+    width: 44px;
+    height: 22px;
+    background-size: contain;
+}
+
+.check-box StBin,
+.radiobutton StBin {
+    width: 16px;
+    height: 16px;
+}
+
+.check-box StLabel,
+.radiobutton StLabel {
+    color: #e2e8f0;
+}
+
+/* Old-menu odds and ends. */
+.menu-selected-app-description {
+    color: #cbd5e1;
+    font-size: 12px;
+}
+
+.menu-category-button-greyed {
+    color: #94a3b8;
+}
+
+/* Miscellany. */
+.cinnamon-link {
+    color: #60a5fa;
+}
+
+.separator {
+    background-color: #334155;
+    height: 1px;
+}
+
+.screen-shield {
+    background-color: #060b14;
+}
+
+.system-status-icon {
+    icon-size: 16px;
+}

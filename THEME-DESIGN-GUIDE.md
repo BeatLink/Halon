@@ -1,4 +1,4 @@
-# App Theme Design Guide
+# Halon — App Theme Design Guide
 
 A complete, framework-agnostic specification for a **slate + single-blue** application theme with a
 dark navy navigation frame, ghost-first controls, and hairline structure. It defines a token set, a
@@ -24,8 +24,10 @@ name is a name that will eventually lie.
    a status signal, it does not belong.
 2. **Flat surfaces, hairline separation.** Structure comes from 1px borders and a three-step surface
    scale, not from shadows. Shadows appear only where an element genuinely floats.
-3. **Ghost-first interaction.** Non-primary actions are transparent with an accent border and accent
-   text. Hover is an opacity fade — never a background/foreground color swap.
+3. **Three button weights, and the accent is the scarcest.** Filled accent for the one primary
+   action, a neutral bordered button for ordinary actions, and a borderless button for repeated or
+   incidental ones that grows a border on hover. Accent fill marks *the* action on a view; if two
+   things are filled, neither reads as primary.
 4. **A dark navigation frame around a light body.** Navigation rails, tab bars, and toolbars are dark
    navy in *both* light and dark mode. This is the most recognizable feature of the theme.
 5. **Everything routes through the token set.** No component rule names a literal color. Dark mode is
@@ -103,7 +105,7 @@ That mapping is a translation table, not a third layer. It contains no colors an
   /* Lines */
   --border-default:            #e2e8f0;  /* decorative hairlines: cards, dividers, table rules */
   --border-hover:              #cbd5e1;
-  --border-control:            #8792a3;  /* input and select boundaries; must clear 3:1 */
+  --border-control:            #8792a3;  /* toggle boundaries (check, radio, switch); must clear 3:1 */
   --border-focus:              var(--accent);
 
   /* Interaction */
@@ -324,7 +326,13 @@ work as marks and as fills from a single token. Only the intrinsically light hue
 
 ---
 
-## 4. Typography and shape
+## 4. Typography, space, and size
+
+Color is only half the theme. Every metric below is part of the specification: a port that gets the
+palette right and the geometry wrong does not look like this theme, it looks like the host toolkit
+wearing its colors.
+
+### 4.1 Metric tokens
 
 ```css
 :root {
@@ -332,10 +340,132 @@ work as marks and as fills from a single token. Only the intrinsically light hue
     system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
     "Noto Sans", Cantarell, "Helvetica Neue", Arial, sans-serif,
     "Apple Color Emoji", "Segoe UI Emoji";
-  --radius-default:        8px;
-  --spacing-gutter:        0.2rem;
+
+  /* Spacing — a 4px scale. Nothing may use a value that is not on it. */
+  --space-1:  2px;   /* badge padding, hairline gaps */
+  --space-2:  4px;   /* icon to label */
+  --space-3:  6px;   /* control inner vertical */
+  --space-4:  8px;   /* related controls, list row padding */
+  --space-5: 12px;   /* groups within a panel */
+  --space-6: 16px;   /* panel padding */
+  --space-7: 24px;   /* between sections */
+  --space-8: 32px;   /* page margins */
+
+  /* Geometry — one control height, so everything on a row aligns */
+  --control-height:       32px;   /* 13px text + 8px padding + 1px border, doubled */
+  --control-padding-x:    14px;
+  --icon-button-size:     30px;
+  --row-height:           28px;   /* list and tree rows */
+  --frame-height:         34px;   /* headerbars, tab bars, toolbars */
+  --border-width:          1px;
+  --focus-ring-width:      3px;
+
+  /* Radii — proportional to what they round */
+  --radius-small:    4px;      /* check boxes, keyboard keys, inline code */
+  --radius-row:      6px;      /* list rows, menu items, icon buttons */
+  --radius-default:  8px;      /* buttons, inputs, cards, panels, popovers */
+  --radius-window:  10px;      /* client-side window corners */
+  --radius-pill:  9999px;      /* badges, switches, scrollbar thumbs */
+
+  /* Type scale */
+  --text-label:    11px;       /* uppercase section labels, weight 600 */
+  --text-caption:  12px;       /* captions, footers, shortcut hints */
+  --text-control:  13px;       /* buttons, inputs, menus, list rows, tabs */
+  --text-body:     14px;       /* prose */
+  --text-h3:       15px;
+  --text-h2:       19px;
+  --text-h1:       26px;
+
+  --line-height-body: 1.55;
+  --line-height-ui:   1.2;
+  --measure:          68ch;    /* maximum prose line length */
 }
 ```
+
+### 4.2 The three rules that matter
+
+**One control height.** Buttons, text inputs, selects, and combo boxes are all
+`--control-height`. This is the single most visible metric in the theme: when a toolbar mixes a
+34px button with a 30px entry, the row looks broken no matter how good the colors are. The 32px
+figure is exact arithmetic, not a round number — 13px of text, `--space-4` above and below, and two
+1px borders. Change the type size and this has to be recomputed.
+
+**Radius is proportional to what it rounds.** `--radius-default` for controls, cards and panels;
+`--radius-row` for things that repeat in a list, because 8px on a 28px row reads as a lozenge;
+`--radius-small` for controls under 20px; `--radius-window` for the window itself, which is large
+enough to carry a bigger corner; `--radius-pill` for badges and switches. Nothing else. A header
+flush inside an already-rounded container takes `border-radius: 0` rather than a sixth value.
+
+The ladder matters more than any single value: keeping one radius across a 16px checkbox and a
+600px window makes the small things look bulbous and the large ones look sharp.
+
+**Spacing comes off the scale.** If a gap is not a `--space-*` value, it is wrong. The scale is
+deliberately short — eight steps, no 10px, no 20px — because the alternative is a codebase where
+every panel is padded slightly differently and no two agree.
+
+### 4.3 Component metrics
+
+These are the values in `theme-demo.html`, which is the reference implementation: if a number here
+and a number there ever disagree, the demo is right and this table is stale. Enough to port without
+guessing:
+
+| Component | Height | Padding | Radius | Text |
+| --------- | ------ | ------- | ------ | ---- |
+| Button | 32px | `8px 14px` | default | 13px / 500 |
+| Icon button | 30px square | `--space-3` | row | icon 14px |
+| Text input, textarea | 32px | `8px 11px` | default | 13px / 400 |
+| Select | 32px | `8px 30px 8px 12px` | default | 13px / 500 |
+| List, tree row | 28px | `5px --space-4` | row | 13px |
+| Menu item | 30px | `6px 9px` | 5px | 13px |
+| Menu sheet, popover | — | `5px` | default | — |
+| Tab | 28px | `6px 10px` | default | 13px |
+| Card, panel | — | `14px --space-6` | default | — |
+| Card header | — | `10px --space-6` | 0 | 12px / 600 caps |
+| Table cell | — | `9px --space-5` | 0 | 13px |
+| Badge | — | `--space-1 --space-4` | pill | 11px / 600 |
+| Toolbar, headerbar, tab bar | `--frame-height` = 34px | `--space-1 --space-4` | 0 | — |
+| Navigation rail | 52px wide | `--space-4 0` | 0 | icon 17px |
+| Rail button | 36px square | — | default | — |
+| Sidebar | 248px | `0 --space-4` | 0 | 13px |
+| Status bar | 27px | `5px --space-5` | 0 | 12px |
+| Scrollbar | 10px, 8px thumb | 3px transparent border | pill | — |
+| Progress, meter | 6px | — | 3px | — |
+| Content padding | — | `28px --space-8` | — | — |
+| Section gap | `--space-7` | — | — | — |
+
+### 4.4 Density
+
+**The theme is dense on purpose.** 32px controls, 28px rows, a 34px frame. It is built for
+tool-shaped software — editors, consoles, file managers, anything where the window is full of
+controls and the user is there all day. Screen space spent on padding is screen space not spent on
+content.
+
+This is a deliberate break from the platform defaults it sits next to. Adwaita runs roughly 34px
+controls in a 46px headerbar, and its type is larger; those conventions are tuned for occasional use
+and touch-adjacent hardware. Halon is tighter through the vertical, most of it won back from the
+frame and from row padding rather than from the controls themselves.
+
+**Density comes from type size and padding, not from shrinking hit targets.** This is the part that
+is easy to get wrong. Dropping controls to 26px feels tighter for about a minute and then reads as
+cramped, because the text inside stops having room to breathe and every control starts to look like
+a chip. The 13px interface type and the 8px vertical padding are what make this compact; the 32px
+target is what keeps it usable.
+
+Density is not the same as cramped, and three things hold the line:
+
+- **Hit targets stay honest.** 26px with a 1px border is still a comfortable pointer target, and
+  icon buttons stay square at 24px rather than shrinking to the glyph.
+- **Space between groups does not shrink.** The tightening is inside controls and between rows.
+  Gaps between *sections* stay at `--space-6`, because that is what keeps a dense layout readable
+  instead of undifferentiated.
+- **Type size does not drop.** 13px controls and 14px prose. Shrinking text to gain density is the
+  one move that trades legibility for it, and this theme does not make it.
+
+Retargeting for touch is a two-token change, which is the point of tokenizing metrics at all: set
+`--control-height` and `--icon-button-size` to 44px. Do not scale the type with them — larger touch
+targets need more space, not bigger labels.
+
+### 4.5 Typography notes
 
 - **System font stack, deliberately.** Many application frameworks ship a bundled interface font
   (Inter is common). Overriding it back to the native stack is a large part of what distinguishes
@@ -352,13 +482,10 @@ work as marks and as fills from a single token. Only the intrinsically light hue
   before the generic fallback. The trailing emoji faces keep emoji in titles and badges consistent
   across platforms. Broad script coverage needs no entry here — browsers fall back per glyph to
   whatever the operating system provides.
-- **8px radius everywhere** — panes, cards, panels, buttons, inputs. Sharp corners appear only where
-  a header must sit flush inside an already-rounded container: `.panel-header { border-radius: 0 }`.
-- **Button type scale:** 13px, weight 500, `8px 14px` padding, with any framework-imposed minimum
-  width removed. Compact and bordered, not chunky.
-- **One gutter unit.** `--spacing-gutter` for tab-row margins, panel padding, panel margins. Where a
-  panel must clear a scrollbar, `calc(5px + var(--spacing-gutter))`. Do not introduce a second unit
-  for the same job.
+- **Interface text is 13px, prose is 14px.** Controls, menus, list rows, and tabs take
+  `--text-control`; only running text takes `--text-body`. Mixing the two is what makes an interface
+  feel loose.
+- **Headings are never accent-colored** (§6.8), and prose is capped at `--measure`.
 
 ---
 
@@ -386,59 +513,87 @@ a slate shadow on near-black ground needs far more alpha to register.
 
 ## 6. Component treatments
 
-### 6.1 Buttons — ghost by default
+### 6.1 Buttons — three weights
+
+An interface dense with actions cannot afford to shout on every one of them. The weight carries the
+hierarchy; the accent is spent only at the top of it.
+
+| Weight | Rest | Hover | Use |
+| ------ | ---- | ----- | --- |
+| **Filled** | `--accent` fill, `--text-on-fill` | opacity `.85` | The one primary action on a view |
+| **Default** | transparent, `--border-default` hairline, `--text-body` | border to `--accent` | Ordinary actions |
+| **Flat** | transparent, no border, `--text-secondary` | hairline appears, text to `--text-heading` | Toolbars, list rows, anything repeated |
 
 ```css
 .button {
   background: transparent;
-  border: 1px solid var(--accent);
-  color: var(--accent);
+  border: 1px solid var(--border-default);
+  color: var(--text-body);
   padding: 8px 14px;
   font: 500 13px/1 var(--font-family-interface);
   border-radius: var(--radius-default);
 }
-.button:hover    { opacity: .85; }  /* nothing else changes */
+.button:hover { border-color: var(--accent); }
+
+.button-flat { border-color: transparent; color: var(--text-secondary); }
+.button-flat:hover { border-color: var(--border-default); color: var(--text-heading); }
+
+.button-filled { background: var(--accent); color: var(--text-on-fill); border-color: var(--accent); }
+.button-filled:hover { opacity: .85; }
+
 .button:disabled { opacity: .5; }
 ```
 
-**Hover is opacity-only.** This is a hard rule, and it is not merely stylistic — it prevents a real
-class of bug. When a button contains an icon glyph in a child element, frameworks commonly color
-that icon independently of the label and never give it a hover color. A hover that swaps the
-background to the accent color then paints the background the same color as the icon, and **the icon
-disappears**. An opacity fade cannot produce that failure, because it never changes any color
-relationship.
+**Why the default button is not accent-bordered.** An earlier version of this theme gave every
+non-primary button an accent border and accent text. In a toolbar with eight buttons that produces
+eight blue rectangles, and the accent stops meaning "this is the action" — it just means "this is a
+button," which the shape already said. Neutral borders return the accent to signalling something.
 
-Filled buttons are reserved for a genuinely active toggle state: `--accent` background,
-`--text-on-fill` text, `rgba(15,23,42,.2)` shadow.
+**Why flat buttons grow a border rather than a background.** Reserving hover for a border keeps §6.1's
+original hazard closed: a background-swap hover on a control with an independently coloured icon can
+paint the background the same colour as the glyph and the icon vanishes. A border cannot do that, and
+it reads as the control gaining definition rather than lighting up.
 
-### 6.2 Inputs — always visibly bordered
+**Filled buttons hover by opacity only,** for the same reason — the fill and the glyph are already
+different colours, and any change that moves one without the other risks collapsing them.
 
-Many base themes render text inputs with no border at rest and only a focus ring. This theme does
-the opposite: an input carries a visible border at all times.
+Destructive actions take `--status-danger` in place of the border and text colour at whichever weight
+they sit at, and the filled form uses `--text-on-fill` over the danger fill.
 
-| State | Border                                                       | Fill                         |
-| ----- | ------------------------------------------------------------ | ---------------------------- |
-| Rest  | `1px solid var(--border-control)`                          | `var(--surface-default)`   |
-| Hover | `var(--border-focus)`                                      | `var(--surface-default)`   |
-| Focus | `var(--border-focus)` plus a `var(--focus-ring)` outline | `var(--surface-default)`   |
+### 6.2 Inputs — fill-defined at rest, border-defined on interaction
+
+Controls share the card hairline (`--border-default`) at rest, so a form reads as one quiet surface
+rather than a grid of grey boxes. The boundary asserts itself exactly when the user engages:
+
+| State | Border | Fill |
+| ----- | ------ | ---- |
+| Rest  | `1px solid var(--border-default)` | `var(--surface-default)` |
+| Hover | `var(--border-focus)` | `var(--surface-default)` |
+| Focus | `var(--border-focus)` plus a `var(--focus-ring)` outline | `var(--surface-default)` |
 
 Text `--text-body`, placeholder `--text-tertiary`, selection `--accent-soft` behind `--text-on-light`.
 Inline action buttons inside a field are `--text-secondary`, going `--accent` on hover.
 
+**What identifies the control at rest, if not the border?** The hairline is 1.23:1 against white —
+decorative. The control is identified by its label, its placeholder or value text, and its fill
+sitting on the surrounding surface; the 1.4.11 boundary requirement applies when a boundary is the
+*only* indicator, which is exactly the situation this design avoids. The corollary is a hard rule:
+**an input at rest must always carry a visible label or placeholder.** A bare unlabelled field with
+a hairline border is invisible, and that is a bug in the screen that placed it, not in the theme.
+
+**Toggles are the exception and keep `--border-control`.** A checkbox, radio or switch has no label
+text of its own inside it and no fill contrast when unchecked — the boundary genuinely is the
+control, so it must clear 3:1. This is now the token's whole job.
+
 Two details worth not improvising on:
 
-- **The border is `--border-control`, not `--border-default`.** A hairline is 1.23:1 against white —
-  decorative, and fine for a card edge or a table rule, but an input's border *is* what identifies it
-  as an input, which puts it under the 3:1 requirement for non-text interface elements.
-  `--border-control` exists solely to clear that bar.
 - **The fill does not change on hover.** An earlier version dropped the field to
   `--surface-secondary` on hover, which pushed the placeholder to 4.34:1 — below AA, in a state the
   user is actively pointing at. Moving the border conveys hover just as clearly and keeps the text on
   a surface it is audited against.
-
-> If the base you are overriding sets `border: unset`, a `border-color` override on `:hover` or
-> `:focus` will silently do nothing — there is no border to recolor. Declare the rest-state `border`
-> shorthand first, or use the shorthand in every state.
+- If the base you are overriding sets `border: unset`, a `border-color` override on `:hover` or
+  `:focus` will silently do nothing — there is no border to recolor. Declare the rest-state `border`
+  shorthand first, or use the shorthand in every state.
 
 ### 6.3 Selects — ghost, like buttons
 
@@ -457,7 +612,16 @@ Two mechanical warnings:
 
 ### 6.4 Navigation frame — the dark chrome
 
-Navigation rails, tab bars, and application toolbars are dark navy in **both** modes:
+Navigation rails, tab bars, application toolbars, and classic menu bars are dark navy in
+**both** modes — a light strip between a dark titlebar and a dark toolbar is the telltale of a
+frame member that got missed.
+
+**Context mapping.** "The frame" is the outermost navigation chrome of whatever is being themed. In
+a standalone application, that is its own rail and tab bar, as in the reference demo. In a desktop
+OS, the shell panel is the frame — application window chrome (headerbars, toolbars, menu bars) is
+then a *sidebar equivalent* and takes `--surface-secondary` with §6.5's raised-card selection,
+while nearly all content sits on `--surface-default`. One dark frame per screen, never one per
+window:
 
 | Part                   | Value                                                                                                    |
 | ---------------------- | -------------------------------------------------------------------------------------------------------- |
@@ -601,8 +765,8 @@ Hazards worth checking for in any implementation:
 3. Set the system font stack, an 8px radius, and one gutter unit — without these the result reads as
    stock-with-new-colors.
 4. Make every non-primary button a bordered ghost with opacity-only hover.
-5. Give inputs a resting `--border-control` border, moving to accent on hover and focus. Do not
-   change the fill on hover.
+5. Give inputs the resting hairline, moving to accent on hover and focus; never change the fill on
+   hover, and never place an input without a label or placeholder.
 6. Ghost the closed select; leave its open option list on a normal surface.
 7. Paint the navigation frame `--surface-navigation` in **both** modes, with the active item as the
    only light element in it.
@@ -642,6 +806,7 @@ text and non-text interface elements. Ratios are computed from the §3.1 values.
 | `--text-on-dark` | `--surface-navigation` | 17.85 | 19.71 |
 | `--text-on-navigation` | `--surface-navigation` | 9.90 | 8.46 |
 | `--border-control` | `--surface-default` | 3.15 | 3.36 |
+| `--border-focus` (hover/focus boundary) | `--surface-default` | 5.17 | 6.29 |
 
 Two pairings sit close enough to their threshold to be worth knowing about rather than discovering
 later, and both are excluded from the table because the guide routes around them:
@@ -649,9 +814,8 @@ later, and both are excluded from the table because the guide routes around them
 - **`--text-tertiary` on the secondary surface is 4.34 in light mode**, just under AA. This is why
   §6.2 forbids swapping an input's fill on hover. Keep tertiary text on the default surface and the
   case does not arise; if a design genuinely needs muted text on a sidebar, use `--text-secondary`.
-- **`--border-control` on the secondary surface is 2.87 light and 3.07 dark**, straddling 3.0. A
-  control sitting directly on a sidebar or footer should take the accent border its focus state
-  already uses, rather than relying on the resting one.
+- **`--border-control` on the secondary surface is 2.87 light and 3.07 dark**, straddling 3.0. It
+  now guards only toggles; a toggle sitting directly on a sidebar is the one placement to avoid.
 
 `--border-default` is deliberately absent. At 1.23 it would fail any threshold, which is correct for
 what it is: a decorative hairline between regions, exempt under 1.4.11. The moment a hairline becomes

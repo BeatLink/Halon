@@ -1,0 +1,1208 @@
+/* Halon for Cinnamon — SOURCE TEMPLATE, not the shipped file.
+ *
+ * St (Cinnamon's toolkit) has no custom properties and no @define-color, so the
+ * two-layer rule from §2 cannot survive in the output: every colour has to be a
+ * literal. Rather than abandon the architecture, this template keeps @token
+ * references and `scripts/build-cinnamon.mjs` substitutes them from the same
+ * _tokens-{light,dark}.css the GTK theme uses.
+ *
+ * Edit this file. Never edit the generated cinnamon.css.
+ *
+ * St also lacks: box-shadow spread, outline, calc(), and most pseudo-classes
+ * beyond :hover/:active/:focus/:checked. Gradients use the -st-background-gradient
+ * properties rather than the background-image shorthand.
+ */
+
+/* ==========================================================================
+   Stage and panel — the panel is the navigation frame, dark in every scheme.
+   ========================================================================== */
+
+stage {
+    font-size: 13px;
+    color: @text-body;
+}
+
+#panel {
+    background-color: @surface-navigation;
+    color: @text-on-navigation;
+    border: none;
+    font-size: 13px;
+}
+
+#panel.panel-top {
+    border-bottom: 1px solid @surface-navigation;
+}
+
+#panel.panel-bottom {
+    border-top: 1px solid @surface-navigation;
+}
+
+#panel:highlight {
+    background-color: @surface-navigation-hover;
+}
+
+.panel-top, .panel-bottom, .panel-left, .panel-right {
+    background-color: @surface-navigation;
+}
+
+/* ==========================================================================
+   Applets — ghost by default, hover is a frame-coloured fill.
+   ========================================================================== */
+
+.applet-box {
+    color: @text-on-navigation;
+    padding: 0 6px;
+    border-radius: 6px;
+    transition-duration: 120ms;
+}
+
+.applet-box:hover,
+.applet-box:checked {
+    background-color: @surface-navigation-hover;
+    color: @text-on-dark;
+}
+
+.applet-label {
+    color: inherit;
+    font-weight: normal;
+}
+
+.applet-icon {
+    color: inherit;
+    icon-size: 16px;
+}
+
+.panel-status-button {
+    border: none;
+    color: @text-on-navigation;
+}
+
+/* ==========================================================================
+   Window list — the active window is the only light element in the frame,
+   exactly as the active tab is in §6.4.
+   ========================================================================== */
+
+.window-list-box {
+    spacing: 2px;
+    padding: 0 2px;
+}
+
+.grouped-window-list-item-box,
+.window-list-item-box {
+    color: @text-on-navigation;
+    border-radius: 6px;
+    padding: 1px 8px;
+    margin: 2px 1px;
+    transition-duration: 120ms;
+}
+
+.grouped-window-list-item-box:hover,
+.window-list-item-box:hover {
+    background-color: @surface-navigation-hover;
+    color: @text-on-dark;
+}
+
+.grouped-window-list-item-box:active,
+.grouped-window-list-item-box:checked,
+.grouped-window-list-item-box:focus,
+.window-list-item-box:active,
+.window-list-item-box:focus {
+    background-color: @surface-default;
+    color: @text-heading;
+    box-shadow: 0 1px 3px @shadow-tab;
+}
+
+.grouped-window-list-item-box:hover:active,
+.grouped-window-list-item-box:hover:checked {
+    background-color: @surface-default;
+    color: @text-heading;
+}
+
+.grouped-window-list-badge {
+    background-color: @accent;
+    color: @text-on-fill;
+    border-radius: 9999px;
+}
+
+.grouped-window-list-number-label {
+    color: @text-on-fill;
+    font-size: 11px;
+}
+
+.window-list-preview {
+    background-color: @surface-default;
+    color: @text-body;
+    border: 1px solid @border-default;
+    border-radius: 8px;
+    padding: 8px;
+}
+
+/* ==========================================================================
+   Popup menus — the content surface, not the frame.
+   ========================================================================== */
+
+.popup-menu-boxpointer {
+    -arrow-border-radius: 8px;
+    -arrow-background-color: @surface-default;
+    -arrow-border-color: @border-default;
+    -arrow-border-width: 1px;
+    -arrow-base: 16px;
+    -arrow-rise: 8px;
+    -boxpointer-gap: 4px;
+}
+
+.popup-menu {
+    color: @text-body;
+    padding: 4px 0;
+}
+
+.popup-menu-content {
+    background-color: @surface-default;
+    border-radius: 8px;
+    padding: 5px;
+}
+
+.popup-menu-item {
+    padding: 6px 9px;
+    spacing: 9px;
+    border-radius: 6px;
+    color: @text-body;
+    transition-duration: 100ms;
+}
+
+.popup-menu-item:hover,
+.popup-menu-item:active,
+.popup-menu-item.selected {
+    background-color: @surface-secondary;
+    color: @text-heading;
+}
+
+.popup-menu-item:insensitive {
+    color: @text-tertiary;
+}
+
+.popup-inactive-menu-item {
+    color: @text-body;
+}
+
+.popup-inactive-menu-item:insensitive {
+    color: @text-tertiary;
+}
+
+.popup-menu-icon {
+    color: @text-secondary;
+    icon-size: 16px;
+}
+
+.popup-separator-menu-item {
+    height: 1px;
+    margin: 4px 6px;
+    background-color: @border-default;
+}
+
+/* A submenu is more content, not a recessed footer — it stays on the sheet
+   surface and reads as part of the same menu. */
+.popup-sub-menu {
+    background-color: @surface-default;
+    border-radius: 6px;
+}
+
+.popup-menu-arrow {
+    color: @text-secondary;
+}
+
+.popup-menu-item-label {
+    color: inherit;
+}
+
+/* Toggles inside menus */
+.toggle-switch {
+    width: 38px;
+    height: 21px;
+}
+
+.popup-slider-menu-item {
+    height: 6px;
+    -slider-height: 6px;
+    -slider-background-color: @surface-secondary;
+    -slider-border-color: transparent;
+    -slider-active-background-color: @accent;
+    -slider-active-border-color: transparent;
+    -slider-border-width: 0;
+    -slider-handle-radius: 8px;
+}
+
+/* ==========================================================================
+   Main menu applet
+   ========================================================================== */
+
+.menu {
+    background-color: @surface-default;
+    border: 1px solid @border-default;
+    border-radius: 8px;
+    color: @text-body;
+}
+
+.menu-categories-box {
+    padding: 8px;
+}
+
+.menu-favorites-box {
+    background-color: @surface-secondary;
+    padding: 8px;
+    border-radius: 8px;
+    margin: 8px;
+}
+
+.menu-application-button,
+.menu-category-button {
+    padding: 5px 8px;
+    border-radius: 6px;
+    color: @text-body;
+    spacing: 8px;
+}
+
+.menu-application-button-selected,
+.menu-category-button-selected,
+.menu-application-button:hover,
+.menu-category-button:hover {
+    background-color: @surface-secondary;
+    color: @text-heading;
+}
+
+.menu-application-button-label,
+.menu-category-button-label {
+    color: inherit;
+    padding-left: 6px;
+}
+
+.menu-favorites-button {
+    padding: 6px;
+    border-radius: 6px;
+}
+
+.menu-favorites-button:hover {
+    background-color: @border-default;
+}
+
+.menu-search-box {
+    padding: 8px;
+}
+
+/* The stock stylesheet targets these by ID, and in St an ID outranks any
+   class rule — the override must reuse the same selectors or the stock
+   dark-grey entry shows through inside a white menu. */
+#menu-search-entry,
+#appmenu-search-entry,
+.menu-search-entry,
+.expo-workspaces-name-entry,
+.prompt-dialog-password-entry,
+.run-dialog-entry {
+    background-color: @surface-default;
+    color: @text-body;
+    border: 1px solid @border-default;
+    border-radius: 8px;
+    padding: 7px 11px;
+    caret-color: @accent;
+    selection-background-color: @accent-soft;
+    selected-color: @text-on-light;
+}
+
+/* Stock's :focus block re-darkens the field — a pseudo-class outranks the
+   base rule, so the focus override must restate the surface, not only the
+   border. This is why the search box stayed dark exactly while focused. */
+#menu-search-entry:focus,
+#appmenu-search-entry:focus,
+.menu-search-entry:focus,
+.expo-workspaces-name-entry:focus,
+.prompt-dialog-password-entry:focus,
+.run-dialog-entry:focus {
+    background-color: @surface-default;
+    color: @text-body;
+    border: 1px solid @accent;
+}
+
+#menu-search-entry:insensitive,
+#appmenu-search-entry:insensitive,
+.run-dialog-entry:insensitive {
+    background-color: @surface-secondary;
+    color: @text-tertiary;
+}
+
+#menu-search-entry StLabel.hint-text,
+#appmenu-search-entry StLabel.hint-text,
+.prompt-dialog-password-entry StLabel.hint-text,
+.run-dialog-entry StLabel.hint-text {
+    color: @text-tertiary;
+}
+
+.menu-search-entry-icon {
+    color: @text-secondary;
+}
+
+.menu-selected-app-box {
+    padding: 8px;
+    color: @text-secondary;
+}
+
+.menu-selected-app-title {
+    color: @text-heading;
+    font-weight: bold;
+}
+
+/* ==========================================================================
+   Tooltips and OSD — frame colours, per §6.6.
+   ========================================================================== */
+
+#Tooltip {
+    background-color: @surface-navigation;
+    color: @text-on-dark;
+    border: none;
+    border-radius: 6px;
+    padding: 5px 9px;
+    font-size: 12px;
+}
+
+.osd-window {
+    background-color: @surface-navigation;
+    color: @text-on-dark;
+    border-radius: 8px;
+    padding: 12px;
+    spacing: 8px;
+}
+
+.osd-window .level {
+    height: 6px;
+    border-radius: 3px;
+    background-color: @surface-navigation-hover;
+    color: @accent;
+}
+
+/* ==========================================================================
+   Notifications — a banner is a toast, and per §6.6 toasts belong to the
+   frame: navigation surface, white text, in both schemes. The banner node is
+   the #notification ID; styling only .notification misses it entirely and
+   the stock grey shows through.
+   ========================================================================== */
+
+#notification {
+    background-color: @surface-navigation;
+    color: @text-on-dark;
+    border: none;
+    border-radius: 8px;
+    padding: 12px;
+    spacing-rows: 6px;
+    spacing-columns: 10px;
+}
+
+#notification-body,
+#notification .notification-body {
+    color: @text-on-dark;
+}
+
+#notification-scrollview {
+    background-color: transparent;
+}
+
+.notification,
+.notification-with-image {
+    background-color: @surface-navigation;
+    color: @text-on-dark;
+    border: none;
+    border-radius: 8px;
+    padding: 12px;
+    spacing: 8px;
+}
+
+/* Action chips on the navy card, matching the demo toast's close button:
+   quiet frame-hover fills, accent only when pressed. */
+#notification .notification-button,
+#notification .notification-icon-button,
+.notification-button,
+.notification-icon-button {
+    background-color: @surface-navigation-hover;
+    background-gradient-direction: none;
+    border: none;
+    border-radius: 6px;
+    color: @text-on-dark;
+    padding: 6px 12px;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+#notification .notification-button:hover,
+#notification .notification-icon-button:hover,
+.notification-button:hover,
+.notification-icon-button:hover {
+    background-color: @surface-navigation-hover;
+    color: @text-on-dark;
+}
+
+#notification .notification-button:active,
+.notification-button:active {
+    background-color: @accent;
+    color: @text-on-fill;
+}
+
+#notification .notification-button:focus,
+.notification-button:focus {
+    border: 1px solid @accent-soft;
+}
+
+/* ==========================================================================
+   Modal dialogs
+   ========================================================================== */
+
+.modal-dialog {
+    background-color: @surface-default;
+    color: @text-body;
+    border: 1px solid @border-default;
+    border-radius: 8px;
+    padding: 16px;
+}
+
+.modal-dialog-button-box {
+    spacing: 8px;
+    padding-top: 12px;
+}
+
+.modal-dialog-button,
+.dialog-button {
+    background-color: transparent;
+    border: 1px solid @accent;
+    border-radius: 8px;
+    color: @accent;
+    padding: 7px 14px;
+    font-weight: 500;
+}
+
+.modal-dialog-button:hover,
+.dialog-button:hover {
+    background-color: transparent;
+    color: @accent;
+}
+
+.modal-dialog-button:focus,
+.dialog-button:focus {
+    border: 1px solid @accent;
+    background-color: @focus-ring;
+}
+
+.modal-dialog-button:active {
+    background-color: @accent;
+    color: @text-on-fill;
+}
+
+/* ==========================================================================
+   Alt-tab switcher and Expo
+   ========================================================================== */
+
+.switcher-list {
+    background-color: @surface-default;
+    border: 1px solid @border-default;
+    border-radius: 8px;
+    padding: 12px;
+    color: @text-body;
+}
+
+.switcher-list-item-container {
+    spacing: 8px;
+}
+
+.switcher-list .item-box {
+    padding: 8px;
+    border-radius: 6px;
+}
+
+.switcher-list .item-box:outlined,
+.switcher-list .item-box:selected {
+    background-color: @accent-soft;
+    color: @text-on-light;
+}
+
+.switcher-arrow {
+    border-color: transparent;
+    color: @text-secondary;
+}
+
+.expo-workspaces-name-entry,
+.expo-background {
+    color: @text-body;
+}
+
+.workspace-thumbnail {
+    background-color: @surface-secondary;
+    border-radius: 6px;
+}
+
+.workspace-thumbnail:active,
+.workspace-thumbnail:hover {
+    border: 1px solid @accent;
+}
+
+/* ==========================================================================
+   Workspace switcher applet
+   ========================================================================== */
+
+.workspace-switcher {
+    spacing: 2px;
+}
+
+.workspace-button {
+    color: @text-on-navigation;
+    border-radius: 6px;
+    padding: 2px 6px;
+}
+
+.workspace-button:outlined,
+.workspace-button:checked {
+    background-color: @surface-navigation-hover;
+    color: @text-on-dark;
+}
+
+.workspace-graph .workspace {
+    background-color: @surface-navigation-hover;
+    border: 1px solid @surface-navigation;
+}
+
+.workspace-graph .workspace:active {
+    background-color: @accent;
+}
+
+/* ==========================================================================
+   Calendar applet
+   ========================================================================== */
+
+.calendar {
+    background-color: @surface-default;
+    border: 1px solid @border-default;
+    border-radius: 8px;
+    padding: 8px;
+    color: @text-body;
+    spacing-rows: 2px;
+    spacing-columns: 2px;
+}
+
+.calendar-month-label {
+    color: @text-heading;
+    font-weight: bold;
+    padding: 4px 0;
+}
+
+.calendar-change-month-back,
+.calendar-change-month-forward {
+    color: @text-secondary;
+    border-radius: 6px;
+    padding: 4px;
+}
+
+.calendar-change-month-back:hover,
+.calendar-change-month-forward:hover {
+    background-color: @surface-secondary;
+    color: @text-heading;
+}
+
+.calendar-day-base {
+    border-radius: 6px;
+    padding: 4px;
+    color: @text-body;
+    font-size: 12px;
+}
+
+.calendar-day-base:hover {
+    background-color: @accent;
+    color: @text-on-fill;
+}
+
+.calendar-day-heading {
+    color: @text-secondary;
+    font-size: 11px;
+    font-weight: bold;
+}
+
+.calendar-nonwork-day {
+    color: @text-secondary;
+}
+
+.calendar-other-month-day {
+    color: @text-tertiary;
+}
+
+/* Stock gives today a grey fill plus an inset blue glow; both must be
+   overridden, not just the border. Today is the accent fill, per the demo. */
+.calendar-today {
+    background-color: @accent;
+    color: @text-on-fill;
+    border: none;
+    box-shadow: none;
+    font-weight: bold;
+}
+
+.calendar-today:hover {
+    background-color: @accent;
+    color: @text-on-fill;
+}
+
+.calendar-not-today:selected,
+.calendar-day-base:selected {
+    background-color: @accent-soft;
+    color: @text-on-light;
+}
+
+/* ==========================================================================
+   Desklets and the run dialog
+   ========================================================================== */
+
+.desklet {
+    color: @text-body;
+}
+
+.desklet-with-borders {
+    background-color: @surface-default;
+    border: 1px solid @border-default;
+    border-radius: 8px;
+    color: @text-body;
+}
+
+.desklet-header-label {
+    color: @text-heading;
+    font-weight: bold;
+}
+
+.run-dialog {
+    background-color: @surface-default;
+    border: 1px solid @border-default;
+    border-radius: 8px;
+    padding: 16px;
+    color: @text-body;
+}
+
+.run-dialog-entry {
+    background-color: @surface-default;
+    border: 1px solid @border-default;
+    border-radius: 8px;
+    padding: 7px 11px;
+    color: @text-body;
+    caret-color: @accent;
+}
+
+.run-dialog-error-label {
+    color: @status-danger;
+}
+
+/* ==========================================================================
+   Scrollbars — per §6.8
+   ========================================================================== */
+
+StScrollBar {
+    padding: 2px;
+}
+
+StScrollView StScrollBar StBin#trough {
+    background-color: transparent;
+}
+
+StScrollView StScrollBar StButton#vhandle,
+StScrollView StScrollBar StButton#hhandle {
+    background-color: @border-hover;
+    border-radius: 9999px;
+    border: none;
+    margin: 2px;
+}
+
+StScrollView StScrollBar StButton#vhandle:hover,
+StScrollView StScrollBar StButton#hhandle:hover {
+    background-color: @text-tertiary;
+}
+
+StScrollView StScrollBar StButton#vhandle:active,
+StScrollView StScrollBar StButton#hhandle:active {
+    background-color: @accent;
+}
+
+/* ==========================================================================
+   Status colours
+   ========================================================================== */
+
+.error {
+    color: @status-danger;
+}
+
+.warning {
+    color: @status-warning-text;
+}
+
+.success {
+    color: @status-success;
+}
+
+/* ==========================================================================
+   Modern menu applet (appmenu-*) — Cinnamon 6's default menu. The base
+   stylesheet covers its geometry; these are the colours.
+   ========================================================================== */
+
+.appmenu-background,
+.appmenu-main-box {
+    background-color: @surface-default;
+    border: 1px solid @border-default;
+    border-radius: 8px;
+    color: @text-body;
+}
+
+/* Only a true sidebar is the secondary surface; the two-pane content area is
+   a primary sheet and stays on the default one. */
+.appmenu-sidebar {
+    background-color: @surface-secondary;
+    border-radius: 8px;
+}
+
+.appmenu-categories-applications-box,
+.appmenu-system-box {
+    background-color: @surface-default;
+}
+
+.appmenu-right-box,
+.appmenu-applications-box {
+    background-color: @surface-default;
+}
+
+/* Session and power controls. Stock paints these through the bare class and
+   per-action variants, so the override mirrors that exactly. The power button
+   is the one danger fill in the menu; lock and logout stay quiet. */
+.appmenu-system-button {
+    background-color: @surface-default;
+    border: 1px solid @border-default;
+    border-radius: 9999px;
+    color: @text-secondary;
+}
+
+.appmenu-system-button:hover {
+    border: 1px solid @accent;
+    color: @text-heading;
+}
+
+.appmenu-system-button-lock:hover,
+.appmenu-system-button-logout:hover {
+    background-color: @border-default;
+    border: 1px solid @border-default;
+    color: @text-heading;
+}
+
+.appmenu-system-button-shutdown {
+    background-color: @status-danger;
+    border: 1px solid @status-danger;
+    color: @text-on-fill;
+}
+
+.appmenu-system-button-shutdown:hover {
+    background-color: @status-danger;
+    border: 1px solid @status-danger;
+    color: @text-on-fill;
+}
+
+.appmenu-application-button,
+.appmenu-category-button,
+.appmenu-sidebar-button,
+.appmenu-system-button {
+    color: @text-body;
+    border-radius: 6px;
+    padding: 5px 8px;
+}
+
+.appmenu-application-button:hover,
+.appmenu-category-button:hover,
+.appmenu-sidebar-button:hover,
+.appmenu-system-button:hover,
+.appmenu-application-button-selected,
+.appmenu-category-button-selected {
+    background-color: @surface-secondary;
+    color: @text-heading;
+}
+
+.appmenu-application-button-label,
+.appmenu-category-button-label {
+    color: inherit;
+}
+
+.appmenu-application-button-description {
+    color: @text-secondary;
+    font-size: 12px;
+}
+
+.appmenu-category-button-greyed {
+    color: @text-tertiary;
+}
+
+.appmenu-search-box .menu-search-entry,
+.appmenu-search-box StEntry {
+    background-color: @surface-default;
+    border: 1px solid @border-default;
+    border-radius: 8px;
+    color: @text-body;
+    padding: 7px 11px;
+}
+
+.appmenu-search-entry-icon {
+    color: @text-secondary;
+}
+
+/* ==========================================================================
+   Calendar events pane
+   ========================================================================== */
+
+.calendar-main-box,
+.calendar-events-main-box {
+    background-color: @surface-default;
+    color: @text-body;
+}
+
+.calendar-today-day-label,
+.calendar-today-date-label {
+    color: @text-heading;
+}
+
+.calendar-today-home-button-enabled {
+    color: @accent;
+}
+
+.calendar-week-number {
+    color: @text-tertiary;
+    font-size: 11px;
+}
+
+.calendar-not-today {
+    color: @text-body;
+}
+
+.calendar-day-event-dot {
+    background-color: @accent;
+    border-radius: 9999px;
+}
+
+.calendar-event-button {
+    border-radius: 6px;
+    padding: 6px 8px;
+    color: @text-body;
+}
+
+.calendar-event-button:hover {
+    background-color: @surface-secondary;
+    color: @text-heading;
+}
+
+.calendar-event-color-strip {
+    background-color: @accent;
+    border-radius: 2px;
+}
+
+.calendar-events-date-label {
+    color: @text-secondary;
+    font-weight: bold;
+}
+
+.calendar-events-no-events-label,
+.calendar-events-no-events-icon {
+    color: @text-tertiary;
+}
+
+/* ==========================================================================
+   Applet separators and the corner bar
+   ========================================================================== */
+
+.applet-separator {
+    padding: 0 4px;
+}
+
+.applet-separator-line {
+    background-color: @surface-navigation-hover;
+    width: 1px;
+}
+
+.applet-cornerbar,
+.applet-cornerbar-box {
+    background-color: transparent;
+}
+
+#altTabPopup {
+    padding: 8px;
+}
+
+/* ==========================================================================
+   Stock leak-through — everything below exists in the prepended base with
+   dark-theme colours and no Halon override until now. Ordered by visibility.
+   ========================================================================== */
+
+/* The global St button family: end-session and polkit dialogs, the sound
+   player, anything with .button. Halon default weight, per §6.1. */
+.button,
+.icon-button,
+.sound-player StButton {
+    background-color: transparent;
+    background-gradient-direction: none;
+    border: 1px solid @border-default;
+    border-radius: 8px;
+    color: @text-body;
+    padding: 6px 14px;
+    font-weight: 500;
+}
+
+.button:hover,
+.icon-button:hover,
+.sound-player StButton:hover {
+    background-color: transparent;
+    border: 1px solid @accent;
+    color: @text-body;
+}
+
+.button:active,
+.icon-button:active,
+.sound-player StButton:active {
+    background-color: @accent;
+    border: 1px solid @accent;
+    color: @text-on-fill;
+}
+
+.button:focus,
+.icon-button:focus,
+.sound-player StButton:focus {
+    border: 1px solid @accent;
+    box-shadow: none;
+}
+
+.button:insensitive,
+.icon-button:insensitive {
+    color: @text-tertiary;
+    border: 1px solid @border-default;
+}
+
+/* St dialogs beyond .modal-dialog: session end, polkit, autorun, prompts. */
+.dialog,
+.prompt-dialog,
+.end-session-dialog,
+.autorun-dialog {
+    background-color: @surface-default;
+    color: @text-body;
+    border: 1px solid @border-default;
+    border-radius: 8px;
+    padding: 16px;
+}
+
+.message-dialog-content {
+    spacing: 10px;
+}
+
+.dialog-list {
+    spacing: 10px;
+    max-height: 300px;
+}
+
+.run-dialog-description {
+    color: @text-secondary;
+    font-size: 12px;
+}
+
+.caps-lock-warning-label {
+    color: @status-warning-text;
+}
+
+.polkit-dialog-user-layout {
+    spacing: 8px;
+    padding: 8px;
+}
+
+/* Sound player applet: a content card, not a black slab. */
+.sound-player {
+    padding: 4px 0;
+}
+
+.sound-player-overlay {
+    background-color: @surface-default;
+    color: @text-body;
+    border: none;
+    padding: 12px;
+    spacing: 8px;
+}
+
+.sound-player-generic-coverart {
+    background-color: @surface-secondary;
+    color: @text-tertiary;
+    border-radius: 6px;
+}
+
+/* Transient OSDs are toasts and take the frame colours, per §6.6. */
+.media-keys-osd,
+.info-osd,
+.workspace-switch-osd,
+.resize-popup {
+    background-color: @surface-navigation;
+    color: @text-on-dark;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 18px;
+    font-weight: 500;
+}
+
+/* Window snapping and tiling previews use the translucent accent, the same
+   token as focus and selection. */
+.tile-preview,
+.window-close-area {
+    background-color: @focus-ring;
+    border: 1px solid @accent;
+    border-radius: 8px;
+}
+
+/* Window list extras. */
+.grouped-window-list-item-label,
+.grouped-window-list-button-label {
+    color: inherit;
+}
+
+.grouped-window-list-thumbnail-menu {
+    background-color: @surface-default;
+    color: @text-body;
+    border: 1px solid @border-default;
+    border-radius: 8px;
+    padding: 8px;
+}
+
+.grouped-window-list-thumbnail-label {
+    color: @text-body;
+}
+
+.grouped-window-list-item-demands-attention,
+.window-list-item-demands-attention {
+    background-color: @status-warning;
+    color: @text-on-light;
+}
+
+.grouped-window-list-notifications-badge {
+    background-color: @accent;
+    border-radius: 9999px;
+}
+
+.grouped-window-list-notifications-badge-label {
+    color: @text-on-fill;
+    font-size: 10px;
+}
+
+/* Expo and Scale overlays. */
+.window-caption {
+    background-color: @surface-navigation;
+    color: @text-on-dark;
+    border: none;
+    border-radius: 6px;
+    padding: 3px 9px;
+    font-size: 12px;
+}
+
+.window-border,
+.expo-workspace-thumbnail-frame {
+    border: 2px solid @accent;
+    border-radius: 8px;
+}
+
+.workspace-overview-background-shade {
+    background-color: @surface-overlay;
+}
+
+/* On-screen keyboard: frame chrome, tabs-like keys. */
+#virtual-keyboard {
+    background-color: @surface-navigation;
+}
+
+.vkeyboard-key {
+    background-color: @surface-navigation-hover;
+    color: @text-on-dark;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+.vkeyboard-key:hover,
+.vkeyboard-key:focus {
+    background-color: @accent;
+    color: @text-on-fill;
+}
+
+.vkeyboard-subkeys {
+    background-color: @surface-navigation;
+    border-radius: 8px;
+    -boxpointer-gap: 4px;
+}
+
+/* Popup menu variants the base styles separately. */
+.popup-combo-menu {
+    background-color: @surface-default;
+    color: @text-body;
+    border: 1px solid @border-default;
+    border-radius: 8px;
+    padding: 5px;
+}
+
+.popup-combobox-item {
+    spacing: 8px;
+}
+
+.popup-subtitle-menu-item {
+    color: @text-secondary;
+    font-weight: normal;
+}
+
+.popup-device-menu-item,
+.popup-printer-menu-item,
+.popup-inhibitor-menu-item {
+    color: @text-body;
+}
+
+.popup-alternating-menu-item:alternate {
+    font-weight: normal;
+    color: @text-secondary;
+}
+
+/* St toggles draw from the generated SVG assets; the box only needs a size. */
+.toggle-switch,
+.toggle-switch-us,
+.toggle-switch-intl {
+    width: 44px;
+    height: 22px;
+    background-size: contain;
+}
+
+.check-box StBin,
+.radiobutton StBin {
+    width: 16px;
+    height: 16px;
+}
+
+.check-box StLabel,
+.radiobutton StLabel {
+    color: @text-body;
+}
+
+/* Old-menu odds and ends. */
+.menu-selected-app-description {
+    color: @text-secondary;
+    font-size: 12px;
+}
+
+.menu-category-button-greyed {
+    color: @text-tertiary;
+}
+
+/* Miscellany. */
+.cinnamon-link {
+    color: @accent;
+}
+
+.separator {
+    background-color: @border-default;
+    height: 1px;
+}
+
+.screen-shield {
+    background-color: @surface-navigation;
+}
+
+.system-status-icon {
+    icon-size: 16px;
+}

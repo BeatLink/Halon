@@ -1,0 +1,74 @@
+/* Framework mapping for libadwaita — the §2 translation table, GTK 4 edition.
+   Contains no colors and no decisions: every value is a token defined by the
+   token file imported before this one.
+
+   Worth noticing: libadwaita's own naming already splits every status colour into
+   a *_bg_color (the fill), a *_fg_color (text on that fill) and a bare *_color
+   (the same status drawn as text or an icon on a surface). That is exactly the
+   split §3.5 and §3.6 arrive at, including the awkward warning case — so the
+   mapping is one-to-one rather than a compromise. */
+
+/* Windows and views */
+@define-color window_bg_color              @surface-default;
+@define-color window_fg_color              @text-body;
+@define-color view_bg_color                @surface-default;
+@define-color view_fg_color                @text-body;
+
+/* Application chrome — the secondary surface; only the shell panel stays dark */
+@define-color headerbar_bg_color           @surface-secondary;
+@define-color headerbar_fg_color           @text-body;
+@define-color headerbar_border_color       @border-default;
+@define-color headerbar_backdrop_color     @surface-secondary;
+@define-color headerbar_shade_color        alpha(@surface-navigation, 0.36);
+@define-color headerbar_darker_shade_color alpha(@surface-navigation, 0.9);
+
+/* Sidebars sit one step off the content surface, per §6.5 */
+@define-color sidebar_bg_color             @surface-secondary;
+@define-color sidebar_fg_color             @text-body;
+@define-color sidebar_backdrop_color       @surface-secondary;
+@define-color sidebar_border_color         @border-default;
+@define-color sidebar_shade_color          alpha(@surface-navigation, 0.07);
+
+@define-color secondary_sidebar_bg_color        @surface-secondary;
+@define-color secondary_sidebar_fg_color        @text-body;
+@define-color secondary_sidebar_backdrop_color  @surface-secondary;
+@define-color secondary_sidebar_border_color    @border-default;
+@define-color secondary_sidebar_shade_color     alpha(@surface-navigation, 0.07);
+
+/* Raised containers */
+@define-color card_bg_color                @surface-default;
+@define-color card_fg_color                @text-body;
+@define-color card_shade_color             alpha(@surface-navigation, 0.07);
+@define-color dialog_bg_color              @surface-default;
+@define-color dialog_fg_color              @text-body;
+@define-color popover_bg_color             @surface-default;
+@define-color popover_fg_color             @text-body;
+@define-color popover_shade_color          alpha(@surface-navigation, 0.07);
+@define-color thumbnail_bg_color           @surface-default;
+@define-color thumbnail_fg_color           @text-body;
+
+@define-color shade_color                  alpha(@surface-navigation, 0.07);
+@define-color scrollbar_outline_color      @border-default;
+
+/* Accent — bg is the fill, fg is text on that fill, bare is the accent as text */
+@define-color accent_bg_color              @accent;
+@define-color accent_fg_color              @text-on-fill;
+@define-color accent_color                 @accent;
+
+@define-color destructive_bg_color         @status-danger;
+@define-color destructive_fg_color         @text-on-fill;
+@define-color destructive_color            @status-danger;
+
+@define-color success_bg_color             @status-success;
+@define-color success_fg_color             @text-on-fill;
+@define-color success_color                @status-success;
+
+/* The one triplet where fg is not white and the bare colour is not the fill:
+   bright amber needs near-black text, and needs a darker step to work as a mark. */
+@define-color warning_bg_color             @status-warning;
+@define-color warning_fg_color             @text-on-light;
+@define-color warning_color                @status-warning-text;
+
+@define-color error_bg_color               @status-danger;
+@define-color error_fg_color               @text-on-fill;
+@define-color error_color                  @status-danger;

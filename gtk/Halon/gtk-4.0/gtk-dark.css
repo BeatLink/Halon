@@ -1,0 +1,6 @@
+/* Halon — dark scheme for GTK 4 and libadwaita. */
+@import url("resource:///org/gtk/libgtk/theme/Default/gtk-dark.css");
+@import url("../shared/_tokens-dark.css");
+@import url("../shared/_adwaita-map.css");
+@import url("../shared/_reset.css");
+@import url("../shared/_components.css");

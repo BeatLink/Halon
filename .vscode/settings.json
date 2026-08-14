@@ -1,0 +1,7 @@
+{
+  "//": "GTK CSS uses @define-color and @token references, which the web CSS validator rejects.",
+  "css.validate": false,
+  "files.associations": {
+    "gtk/**/*.css": "css"
+  }
+}

@@ -430,13 +430,14 @@ body {
 
 /* ---------- Buttons — §6.1 ---------- */
 
+/* Three weights, per §6.1. The accent is spent on the filled one only. */
 .button {
     display: inline-flex;
     align-items: center;
     gap: 7px;
     background: transparent;
-    border: 1px solid var(--accent);
-    color: var(--accent);
+    border: 1px solid var(--border-default);
+    color: var(--text-body);
     padding: 8px 14px;
     font-family: inherit;
     font-size: 13px;
@@ -444,23 +445,28 @@ body {
     line-height: 1;
     border-radius: var(--radius-default);
     cursor: pointer;
-    transition: opacity .12s;
+    transition: border-color .12s, color .12s, opacity .12s;
 }
 
-/* Hover is opacity-only so an icon glyph can never merge into the background. */
-.button:hover { opacity: .85; }
+/* Hover moves the border, never the background — a background swap can paint the
+   fill the same colour as an independently coloured icon glyph. */
+.button:hover { border-color: var(--accent); }
 .button:disabled { opacity: .5; cursor: not-allowed; }
 
 .button-filled {
     background: var(--accent);
+    border-color: var(--accent);
     color: var(--text-on-fill);
     box-shadow: var(--shadow-item);
 }
+.button-filled:hover { opacity: .85; border-color: var(--accent); }
 
 .button-danger { border-color: var(--status-danger); color: var(--status-danger); }
+.button-danger:hover { border-color: var(--status-danger); opacity: .85; }
 
-.button-quiet { border-color: var(--border-default); color: var(--text-secondary); }
-.button-quiet:hover { border-color: var(--border-hover); }
+/* The quietest weight: text only until pointed at. */
+.button-quiet { border-color: transparent; color: var(--text-secondary); }
+.button-quiet:hover { border-color: var(--border-default); color: var(--text-heading); }
 
 .button-group {
     display: inline-flex;
@@ -474,6 +480,7 @@ body {
     border-radius: 0;
     color: var(--text-secondary);
 }
+.button-group .button:hover { border: none; color: var(--text-heading); }
 .button-group .button + .button { border-left: 1px solid var(--border-default); }
 .button-group .button[aria-pressed="true"] {
     background: var(--accent);
@@ -512,7 +519,7 @@ body {
     font-family: inherit;
     font-size: 13px;
     padding: 8px 11px;
-    border: 1px solid var(--border-control);
+    border: 1px solid var(--border-default);
     border-radius: var(--radius-default);
     background: var(--surface-default);
     color: var(--text-body);
@@ -553,7 +560,7 @@ body {
     font-size: 13px;
     font-weight: 500;
     padding: 8px 30px 8px 12px;
-    border: 1px solid var(--accent);
+    border: 1px solid var(--border-default);
     border-radius: var(--radius-default);
     color: var(--accent);
     cursor: pointer;
@@ -564,7 +571,7 @@ body {
     background-position: right 11px center;
     transition: opacity .12s;
 }
-.select:hover { opacity: .85; }
+.select:hover { border-color: var(--accent); }
 .select option { background: var(--surface-default); color: var(--text-body); font-weight: 400; }
 
 .checkbox-row { display: flex; align-items: center; gap: 8px; font-size: 13px; }
@@ -591,7 +598,29 @@ body {
 .switch[aria-checked="true"] { background: var(--accent); border-color: var(--accent); }
 .switch[aria-checked="true"]::after { transform: translateX(17px); background: var(--text-on-fill); }
 
-.range { accent-color: var(--accent); width: 180px; }
+.range {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 180px;
+    height: 6px;
+    border-radius: 3px;
+    background: var(--surface-secondary);
+    border: 1px solid var(--border-default);
+}
+.range::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 15px; height: 15px;
+    border-radius: 50%;
+    background: var(--accent);
+    border: 2px solid var(--surface-default);
+    box-shadow: var(--shadow-item);
+}
+.range::-moz-range-thumb {
+    width: 15px; height: 15px;
+    border-radius: 50%;
+    background: var(--accent);
+    border: 2px solid var(--surface-default);
+}
 
 /* ---------- Cards — §5 ---------- */
 
@@ -920,6 +949,7 @@ blockquote {
     height: 6px;
     border-radius: 3px;
     background: var(--surface-secondary);
+    border: 1px solid var(--border-default);
     overflow: hidden;
 }
 .progress-fill { height: 100%; background: var(--accent); border-radius: 3px; transition: width .3s; }
@@ -1277,16 +1307,17 @@ blockquote {
                 <section class="section" id="buttons">
                     <h2>Buttons</h2>
                     <p class="section-note">
-                        Ghost by default: transparent, accent border, accent text, and an opacity-only
-                        hover. Hover a button with an icon — the glyph fades with the label rather than
-                        merging into a filled background.
+                        Three weights, and the accent is the scarcest thing in the set: filled for the
+                        one primary action, a neutral border for ordinary ones, nothing at all until
+                        hover for repeated ones. Hover moves the border rather than the background, so
+                        an icon glyph can never merge into the fill behind it.
                     </p>
                     <div class="row">
                         <button class="button">Default</button>
                         <button class="button">⟳ With icon</button>
                         <button class="button button-filled">Active toggle</button>
                         <button class="button button-danger">⌫ Delete</button>
-                        <button class="button button-quiet">Quiet</button>
+                        <button class="button button-quiet">Flat</button>
                         <button class="button" disabled>Disabled</button>
                     </div>
                     <div class="row">
@@ -1493,7 +1524,7 @@ blockquote {
   --text-on-dark:  #fff;                       /* the navigation frame */
 }
 
-.button:hover { opacity: .85; }  /* never a background swap */</pre>
+.button:hover { border-color: var(--accent); }  /* never a background swap */</pre>
                 </section>
 
                 <!-- Temporal -->
@@ -1571,8 +1602,8 @@ blockquote {
                 <div class="card">
                     <div class="card-header">Properties</div>
                     <div class="attribute-row"><span class="attribute-key">Type</span><span class="attribute-value">Stylesheet</span></div>
-                    <div class="attribute-row"><span class="attribute-key">Tokens</span><span class="attribute-value">26</span></div>
-                    <div class="attribute-row"><span class="attribute-key">Flipped in dark</span><span class="attribute-value">23</span></div>
+                    <div class="attribute-row"><span class="attribute-key">Tokens</span><span class="attribute-value" id="token-count">—</span></div>
+                    <div class="attribute-row"><span class="attribute-key">Flipped in dark</span><span class="attribute-value" id="token-flipped">—</span></div>
                     <div class="attribute-row"><span class="attribute-key">Accents</span><span class="attribute-value">1</span></div>
                     <div class="attribute-row"><span class="attribute-key">Scheme</span><span class="attribute-value" id="scheme-readout">system</span></div>
                 </div>
@@ -1607,7 +1638,7 @@ blockquote {
         <!-- Status bar -->
         <div class="status-bar">
             <span><span class="status-dot"></span> Synced</span>
-            <span>26 tokens</span>
+            <span id="status-tokens">— tokens</span>
             <span id="status-audit">Audit: —</span>
             <span class="status-bar-spacer"></span>
             <span><span class="status-dot status-dot-error"></span> 1 pending conflict</span>
@@ -1788,7 +1819,7 @@ const AUDIT_PAIRS = [
     ["--status-warning-text", "--surface-default", 4.5, "Warning icon or label"],
     ["--text-on-fill", "--status-danger", 4.5, "Danger chip"],
     ["--text-on-fill", "--badge-experimental", 4.5, "Experimental chip"],
-    ["--border-control", "--surface-default", 3.0, "Control border on default surface"]
+    ["--border-control", "--surface-default", 3.0, "Toggle boundary (check, radio, switch)"]
 ];
 
 const auditBody = document.getElementById("audit-body");
@@ -1918,6 +1949,32 @@ function refresh() {
     renderSwatches();
     renderAudit();
     renderClamp();
+    renderCounts();
+    syncEditors();
+}
+
+/* Counts come from the stylesheet, not from a number typed into the markup that
+   goes stale the moment a token is added. */
+function renderCounts() {
+    const css = document.querySelector("style").textContent;
+    const root = css.slice(css.indexOf(":root"), css.indexOf("/* Manual toggle") + 1 || undefined);
+    const declared = new Set([...root.matchAll(/^\s*(--[\w-]+):/gm)].map((m) => m[1]));
+    const colour = TOKENS.length;
+    const flipped = [...root.matchAll(/^\s*(--[\w-]+):\s*light-dark\(/gm)].length;
+    document.getElementById("token-count").textContent = colour;
+    document.getElementById("token-flipped").textContent = flipped;
+    document.getElementById("status-tokens").textContent = colour + " tokens";
+    return declared;
+}
+
+/* The pickers were built once at load, so after a scheme change they showed the
+   other scheme's values. */
+function syncEditors() {
+    editorRows.querySelectorAll("input[type=color]").forEach((input, index) => {
+        if (!root.style.getPropertyValue(EDITABLE[index])) {
+            input.value = toHex(parseRgb(resolveColor(EDITABLE[index])));
+        }
+    });
 }
 
 /* ---------- Live token editor ---------- */
@@ -2155,6 +2212,8 @@ window.addEventListener("mouseup", () => {
 
 /* ---------- Calendar ---------- */
 
+/* Scattered rather than periodic: d % 7 marked a whole column and looked like a bug. */
+const MARKED_DAYS = new Set([4, 9, 17, 23, 28]);
 const calendarGrid = document.getElementById("cal-grid");
 const calendarTitle = document.getElementById("cal-title");
 const today = new Date();
@@ -2188,7 +2247,7 @@ function renderCalendar() {
     for (let i = startDay - 1; i >= 0; i--) addDay(daysInPrev - i, true, false, false);
     for (let d = 1; d <= daysInMonth; d++) {
         const isToday = d === today.getDate() && viewMonth === today.getMonth() && viewYear === today.getFullYear();
-        addDay(d, false, d % 7 === 3, isToday);
+        addDay(d, false, MARKED_DAYS.has(d), isToday);
     }
     const filled = startDay + daysInMonth;
     for (let d = 1; filled + d <= 42 && (filled + d) % 7 !== 1; d++) addDay(d, true, false, false);

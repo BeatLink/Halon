@@ -1,0 +1,34 @@
+/* GTK 3 style properties — spacing that CSS box properties cannot reach.
+   GTK 4 removed the -Gtk* style-property system entirely and warns on every
+   one of these, so this file is imported only by the gtk-3.0 entry points. */
+
+* {
+    -GtkTreeView-vertical-separator: 6;
+    -GtkTreeView-horizontal-separator: 4;
+    -GtkTreeView-expander-size: 16;
+    -GtkTreeView-grid-line-width: 1;
+    -GtkTreeView-tree-line-width: 1;
+    -GtkToolButton-icon-spacing: 4;
+    -GtkScrolledWindow-scrollbar-spacing: 0;
+    -GtkWidget-text-handle-width: 20;
+    -GtkWidget-text-handle-height: 20;
+    -GtkToolItemGroup-expander-size: 11;
+}
+
+scrollbar {
+    -GtkScrollbar-has-backward-stepper: false;
+    -GtkScrollbar-has-forward-stepper: false;
+}
+
+/* Without this the frame is decorative: the window cannot be dragged by it. */
+headerbar,
+.titlebar,
+toolbar,
+.primary-toolbar {
+    -GtkWidget-window-dragging: true;
+}
+
+/* GTK 4 rounds outlines from border-radius; GTK 3 needs this told explicitly. */
+* {
+    -gtk-outline-radius: 8px;
+}

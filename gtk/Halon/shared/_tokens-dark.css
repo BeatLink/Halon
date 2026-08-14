@@ -1,0 +1,48 @@
+/* Layer 1 — theme tokens, dark scheme. Same names, different values; nothing else changes. */
+
+/* Surfaces */
+@define-color surface-root             #0b1220;
+@define-color surface-default          #16213a;
+@define-color surface-secondary        #1e293b;
+@define-color surface-navigation       #060b14;
+@define-color surface-navigation-hover #101b2d;
+@define-color surface-overlay          rgba(0, 0, 0, 0.6);
+
+/* Text on surfaces */
+@define-color text-heading             #f8fafc;
+@define-color text-body                #e2e8f0;
+@define-color text-secondary           #cbd5e1;
+@define-color text-tertiary            #94a3b8;
+@define-color text-on-navigation       #7dabf5;
+
+/* Text on fills — only the inverting one changes, see §3.5 */
+@define-color text-on-fill             #0b1220;
+@define-color text-on-light            #0f172a;
+@define-color text-on-dark             #ffffff;
+
+/* Lines */
+@define-color border-default           #334155;
+@define-color border-hover             #475569;
+@define-color border-control           #64748b;
+
+/* Interaction */
+@define-color accent                   #60a5fa;
+@define-color accent-soft              #93c5fd;
+@define-color focus-ring               rgba(96, 165, 250, 0.28);
+
+/* Defined after @accent: GTK resolves references in source order. */
+@define-color border-focus             @accent;
+
+/* Status — on dark ground the warning fill works as its own mark colour */
+@define-color status-success           #10b981;
+@define-color status-warning           #f59e0b;
+@define-color status-warning-text      #f59e0b;
+@define-color status-danger            #f87171;
+@define-color badge-experimental       #a78bfa;
+
+/* Elevation — same hue, roughly triple the alpha */
+@define-color shadow-item              rgba(15, 23, 42, 0.50);
+@define-color shadow-card              rgba(15, 23, 42, 0.27);
+@define-color shadow-tab               rgba(15, 23, 42, 0.50);
+@define-color shadow-floating          rgba(15, 23, 42, 0.60);
+@define-color shadow-modal             rgba(15, 23, 42, 0.70);

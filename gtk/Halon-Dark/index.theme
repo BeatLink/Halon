@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=X-GNOME-Metatheme
+Name=Halon-Dark
+Comment=Slate and blue, with a dark navigation frame. WCAG 2.1 AA in both schemes.
+Encoding=UTF-8
+
+[X-GNOME-Metatheme]
+GtkTheme=Halon-Dark
+MetacityTheme=Halon-Dark
+IconTheme=Adwaita
+CursorTheme=Adwaita
+ButtonLayout=:minimize,maximize,close

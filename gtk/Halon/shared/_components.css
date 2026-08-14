@@ -1,0 +1,1409 @@
+/* Layer 2 — component rules. No literal colors below this line, per §2 of the design guide.
+   Loaded by both gtk.css and gtk-dark.css; the scheme is decided entirely by which token
+   file was imported before this one. */
+
+/* ==========================================================================
+   Framework mapping — the translation table from §2.
+   GTK's own named colors, assigned to tokens once. Applications that read
+   these instead of styling themselves follow the theme for free.
+   ========================================================================== */
+
+@define-color theme_bg_color            @surface-default;
+@define-color theme_base_color          @surface-default;
+@define-color theme_fg_color            @text-body;
+@define-color theme_text_color          @text-body;
+@define-color theme_selected_bg_color   @accent-soft;
+@define-color theme_selected_fg_color   @text-on-light;
+@define-color theme_unfocused_bg_color  @surface-default;
+@define-color theme_unfocused_base_color @surface-default;
+@define-color theme_unfocused_fg_color  @text-secondary;
+@define-color theme_unfocused_text_color @text-secondary;
+@define-color theme_unfocused_selected_bg_color @accent-soft;
+@define-color theme_unfocused_selected_fg_color @text-on-light;
+@define-color insensitive_bg_color      @surface-secondary;
+@define-color insensitive_fg_color      @text-tertiary;
+@define-color insensitive_base_color    @surface-secondary;
+@define-color borders                   @border-default;
+@define-color unfocused_borders         @border-default;
+@define-color warning_color             @status-warning-text;
+@define-color error_color               @status-danger;
+@define-color success_color             @status-success;
+@define-color content_view_bg           @surface-default;
+@define-color theme_tooltip_bg_color    @surface-navigation;
+@define-color theme_tooltip_fg_color    @text-on-dark;
+/* Legacy GTK2-era names. Plenty of applications still read these directly, and a
+   theme that omits them gets the stock grey for its main surfaces no matter what
+   the modern names say. */
+@define-color bg_color                  @surface-default;
+@define-color fg_color                  @text-body;
+@define-color base_color                @surface-default;
+@define-color text_color                @text-body;
+@define-color selected_bg_color         @accent-soft;
+@define-color selected_fg_color         @text-on-light;
+@define-color placeholder_text_color    @text-tertiary;
+
+/* Window manager decorations. Under a server-side-decorated desktop such as
+   Cinnamon these — not the GTK rules — are what colour the titlebar and its
+   buttons, so an incomplete set here leaves the frame looking untouched. */
+@define-color wm_bg                     @surface-secondary;
+@define-color wm_bg_unfocused           @surface-secondary;
+@define-color wm_border                 @border-default;
+@define-color wm_border_unfocused       @border-default;
+@define-color wm_title                  @text-heading;
+@define-color wm_unfocused_title        @text-tertiary;
+@define-color wm_title_unfocused        @text-tertiary;
+@define-color wm_highlight              @surface-default;
+@define-color wm_shadow                 @shadow-floating;
+
+@define-color wm_button_hover_bg        @border-default;
+@define-color wm_button_active_bg       @accent;
+@define-color wm_button_close_bg        @surface-secondary;
+@define-color wm_button_close_hover_bg  @status-danger;
+@define-color wm_button_close_active_bg @status-danger;
+
+@define-color wm_icon_bg                @text-secondary;
+@define-color wm_icon_hover_bg          @text-heading;
+@define-color wm_icon_active_bg         @text-on-fill;
+@define-color wm_icon_unfocused_bg      @text-tertiary;
+@define-color wm_icon_close_bg          @text-heading;
+
+
+/* ==========================================================================
+   Widget metrics — GTK style properties, not CSS box properties.
+   Row spacing, expander size and handle sizes are set through -Gtk* properties
+   that no amount of padding can reach; omitting them leaves widgets using
+   whatever the fallback stylesheet chose, which is how a themed application
+   ends up with cramped tree rows and invisible expanders.
+   ========================================================================== */
+
+/* Arrows need both a source and a size, or they render at whatever the
+   fallback picked — frequently nothing at all. */
+combobox arrow,
+menubutton arrow,
+expander arrow,
+popover modelbutton arrow {
+    min-width: 16px;
+    min-height: 16px;
+}
+
+expander arrow {
+    -gtk-icon-source: -gtk-icontheme("pan-end-symbolic");
+    color: @text-secondary;
+}
+
+expander arrow:checked,
+expander arrow:hover:checked {
+    -gtk-icon-source: -gtk-icontheme("pan-down-symbolic");
+}
+
+expander arrow:hover {
+    color: @text-heading;
+}
+
+/* Sizes GTK will not infer. */
+switch {
+    min-width: 48px;
+    min-height: 24px;
+}
+
+switch slider {
+    min-width: 20px;
+    min-height: 20px;
+}
+
+levelbar block {
+    min-width: 32px;
+    min-height: 6px;
+}
+
+levelbar.vertical block {
+    min-width: 6px;
+    min-height: 32px;
+}
+
+spinbutton button {
+    min-width: 24px;
+    padding: 4px;
+}
+
+notebook > header > tabs > tab {
+    min-width: 32px;
+}
+
+placessidebar row,
+.sidebar list row {
+    min-height: 28px;
+}
+
+treeview.view header button {
+    min-height: 16px;
+}
+
+scale {
+    min-height: 16px;
+}
+
+scale marks {
+    color: @text-tertiary;
+}
+
+progressbar {
+    min-height: 6px;
+}
+
+separator {
+    min-width: 1px;
+    min-height: 1px;
+}
+
+/* ==========================================================================
+   Window shape — client-side decorations only. A server-side-decorated
+   window is rounded by the window manager, not by this file.
+   ========================================================================== */
+
+decoration {
+    border-radius: 10px;
+    box-shadow: 0 3px 14px @shadow-floating,
+                0 0 0 1px @border-default;
+}
+
+decoration:backdrop {
+    box-shadow: 0 2px 8px @shadow-card,
+                0 0 0 1px @border-default;
+}
+
+/* Nothing is rounded when there is no gap for the corner to sit in. */
+.maximized decoration,
+.fullscreen decoration,
+.tiled decoration,
+.tiled-top decoration,
+.tiled-bottom decoration,
+.tiled-left decoration,
+.tiled-right decoration,
+.solid-csd decoration {
+    border-radius: 0;
+    box-shadow: none;
+}
+
+/* The frame has to follow the window, or the navy corners overhang the rounding. */
+window.csd headerbar:first-child,
+window.csd .titlebar:first-child {
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+window.csd.maximized headerbar:first-child,
+window.csd.fullscreen headerbar:first-child,
+window.csd.tiled headerbar:first-child {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+
+/* And the last child rounds the bottom, so content does not square off the corner. */
+window.csd > box > *:last-child,
+window.csd stack:last-child,
+window.csd statusbar:last-child {
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+popover.background,
+tooltip.background {
+    border-radius: 8px;
+}
+
+/* ==========================================================================
+   Base
+   ========================================================================== */
+
+* {
+    outline-color: @focus-ring;
+    outline-offset: -2px;
+}
+
+window,
+.background {
+    /* Content is the default surface. The root token equals the secondary one
+       in light mode, which made every window read as sidebar-grey. */
+    background-color: @surface-default;
+    color: @text-body;
+}
+
+window:backdrop,
+.background:backdrop {
+    color: @text-secondary;
+}
+
+label:disabled {
+    color: @text-tertiary;
+}
+
+.dim-label {
+    color: @text-secondary;
+    opacity: 1;
+}
+
+.title,
+.large-title {
+    color: @text-heading;
+    font-weight: bold;
+}
+
+.subtitle {
+    color: @text-secondary;
+}
+
+link,
+*:link {
+    color: @accent;
+}
+
+/* Selection uses the translucent accent, so it reads as the same system as focus. */
+selection,
+*:selected:focus,
+*:selected {
+    background-color: @accent-soft;
+    color: @text-on-light;
+}
+
+textview text selection,
+entry selection {
+    background-color: @focus-ring;
+    color: @text-heading;
+}
+
+separator {
+    background-color: @border-default;
+    min-width: 1px;
+    min-height: 1px;
+}
+
+/* ==========================================================================
+   Navigation frame — headerbar, per §6.4. Dark navy in BOTH schemes.
+   ========================================================================== */
+
+headerbar,
+.titlebar,
+headerbar.default-decoration {
+    /* One 32px control with --space-1 above and below = the 34px frame height. */
+    min-height: 32px;
+    padding: 1px 8px;
+    /* App chrome sits on the secondary surface — the shell panel keeps navy,
+       but a dark band on every window read as heavy. Hairline below separates
+       chrome from content, per §1.2. */
+    background-color: @surface-secondary;
+    background-image: none;
+    color: @text-body;
+    border-bottom: 1px solid @border-default;
+    box-shadow: none;
+    text-shadow: none;
+}
+
+headerbar:backdrop,
+.titlebar:backdrop {
+    background-color: @surface-secondary;
+    color: @text-tertiary;
+}
+
+headerbar .title {
+    color: @text-heading;
+    font-weight: bold;
+}
+
+headerbar .subtitle {
+    color: @text-secondary;
+}
+
+button {
+    background-color: transparent;
+    background-image: none;
+    /* The card hairline, not the control border: buttons sit quiet at rest and
+       gain the accent boundary on interaction. See §6.1–6.2. */
+    border: 1px solid @border-default;
+    border-radius: 8px;
+    color: @text-body;
+    /* 16px line + 7px padding + 1px border = the 32px control height from §4.2 */
+    min-height: 16px;
+    min-width: 16px;
+    padding: 7px 14px;
+    font-size: 13px;
+    font-weight: 500;
+    text-shadow: none;
+    box-shadow: none;
+    transition: border-color 120ms ease, color 120ms ease, opacity 120ms ease;
+}
+
+/* Hover moves the border, never the background: a background swap can paint the
+   fill the same colour as an independently coloured icon glyph. */
+button:hover {
+    background-color: transparent;
+    border-color: @accent;
+    color: @text-body;
+}
+
+button:active,
+button:checked {
+    background-color: @accent;
+    color: @text-on-fill;
+    border-color: @accent;
+    opacity: 1;
+}
+
+/* Disabled is explicit colours, not opacity — a hairline at half alpha is
+   invisible, which read as text floating with no button. Matches disabled
+   entries: recessed fill, tertiary text. */
+button:disabled {
+    background-color: @surface-secondary;
+    border-color: @border-default;
+    color: @text-tertiary;
+    opacity: 1;
+}
+
+/* A control that is on but locked: soft accent, so the state survives. */
+button:checked:disabled,
+button:active:disabled {
+    background-color: @accent-soft;
+    border-color: @accent-soft;
+    color: @text-on-light;
+    opacity: 1;
+}
+
+button.suggested-action:disabled,
+button.destructive-action:disabled {
+    background-color: @accent-soft;
+    border-color: @accent-soft;
+    color: @text-on-light;
+}
+
+button.destructive-action:disabled {
+    background-color: @surface-secondary;
+    border-color: @border-default;
+    color: @text-tertiary;
+}
+
+/* Flat is the quietest weight: text only, gaining a border on hover. */
+button.flat,
+button.link,
+button.sidebar-button {
+    border-color: transparent;
+    color: @text-secondary;
+}
+
+button.flat:hover,
+button.link:hover,
+button.sidebar-button:hover {
+    background-color: transparent;
+    border-color: @border-default;
+    color: @text-heading;
+}
+
+button.flat:checked {
+    background-color: @accent;
+    border-color: @accent;
+    color: @text-on-fill;
+}
+
+button.flat:disabled {
+    background-color: transparent;
+    border-color: transparent;
+    color: @text-tertiary;
+    opacity: 1;
+}
+
+button.suggested-action {
+    background-color: @accent;
+    color: @text-on-fill;
+    border-color: @accent;
+}
+
+button.destructive-action {
+    background-color: @status-danger;
+    color: @text-on-fill;
+    border-color: @status-danger;
+}
+
+button.suggested-action:hover,
+button.destructive-action:hover {
+    opacity: 0.85;
+}
+
+button.circular {
+    border-radius: 9999px;
+    padding: 6px;
+    min-width: 18px;
+}
+
+/* ==========================================================================
+   Controls inside the navigation frame — rebuilt as one section so no generic
+   rule can strand dark text on navy. Everything here follows §6.4: quiet
+   navigation colours at rest, the hover fill, and the active page as the one
+   light element.
+   ========================================================================== */
+
+headerbar button,
+headerbar button:backdrop,
+.titlebar button,
+toolbar button,
+.primary-toolbar button {
+    background-color: transparent;
+    background-image: none;
+    border: 1px solid transparent;
+    color: @text-secondary;
+    min-height: 16px;
+    padding: 4px 10px;
+    box-shadow: none;
+    text-shadow: none;
+}
+
+headerbar button:hover,
+.titlebar button:hover,
+toolbar button:hover,
+.primary-toolbar button:hover {
+    background-color: @border-default;
+    border-color: transparent;
+    color: @text-heading;
+}
+
+/* Checked-in-chrome is §6.5 selection: a raised default-surface card. */
+headerbar button:active,
+headerbar button:checked,
+.titlebar button:active,
+.titlebar button:checked,
+toolbar button:active,
+toolbar button:checked,
+.primary-toolbar button:checked {
+    background-color: @surface-default;
+    border-color: transparent;
+    color: @text-heading;
+    box-shadow: 0 1px 2px @shadow-item;
+}
+
+headerbar button:disabled,
+.titlebar button:disabled,
+toolbar button:disabled {
+    background-color: transparent;
+    border-color: transparent;
+    color: @text-tertiary;
+    opacity: 0.6;
+}
+
+/* An icon button in the frame is square and sized to its glyph. */
+headerbar button.image-button,
+headerbar button.titlebutton,
+.titlebar button.image-button,
+toolbar button.image-button {
+    min-width: 16px;
+    min-height: 16px;
+    padding: 6px;
+    margin: 0 1px;
+    border-radius: 6px;
+}
+
+/* Titlebuttons are glyphs, not buttons: no border, ever — the hairline reads
+   as a pale ring on navy. */
+headerbar button.titlebutton,
+.titlebar button.titlebutton {
+    background-color: transparent;
+    border: none;
+    color: @text-secondary;
+    padding: 4px;
+}
+
+headerbar button.titlebutton:hover,
+.titlebar button.titlebutton:hover {
+    background-color: @border-default;
+    color: @text-heading;
+}
+
+/* The close button is the one place the danger fill appears in the frame. */
+headerbar button.titlebutton.close:hover,
+.titlebar button.titlebutton.close:hover {
+    background-color: @status-danger;
+    color: @text-on-fill;
+}
+
+/* A switcher inside the frame is a tab bar, per §6.4 — the active page is the
+   only light element in it. */
+headerbar stackswitcher button,
+headerbar stackswitcher button:backdrop,
+.titlebar stackswitcher button {
+    background-color: transparent;
+    background-image: none;
+    border-color: transparent;
+    color: @text-secondary;
+    font-weight: normal;
+}
+
+headerbar stackswitcher button:hover,
+.titlebar stackswitcher button:hover {
+    background-color: @border-default;
+    background-image: none;
+    border-color: transparent;
+    color: @text-heading;
+}
+
+headerbar stackswitcher button:checked,
+headerbar stackswitcher button.toggle:checked,
+headerbar stackswitcher > button.toggle:checked,
+headerbar stackswitcher button:checked:backdrop,
+headerbar stackswitcher button.toggle:checked:backdrop,
+.titlebar stackswitcher button:checked {
+    background-color: @surface-default;
+    background-image: none;
+    border-color: transparent;
+    color: @text-heading;
+    box-shadow: 0 1px 3px @shadow-tab;
+    font-weight: 500;
+}
+
+/* The one filled action a frame may carry keeps its fill. */
+headerbar button.suggested-action,
+.titlebar button.suggested-action {
+    background-color: @accent;
+    border-color: @accent;
+    color: @text-on-fill;
+}
+
+headerbar entry,
+.titlebar entry {
+    background-color: @surface-default;
+    border: 1px solid @border-default;
+    color: @text-body;
+    min-height: 14px;
+    padding: 4px 8px;
+}
+
+headerbar separator,
+.titlebar separator {
+    background-color: @border-default;
+}
+
+button.image-button,
+button.flat.image-button {
+    border-radius: 6px;
+    padding: 6px;
+    min-width: 16px;
+    min-height: 16px;
+}
+
+/* Linked groups read as one control: square inner corners, a single shared seam,
+   and the outer radius only on the ends. Entries and combo boxes are members of the
+   group too — styling only `button` here leaves them with their own rounded corners
+   and a doubled border down the middle. */
+.linked > button,
+.linked > entry,
+.linked > spinbutton,
+.linked > combobox > box > button,
+.linked > combobox > button,
+.linked > menubutton > button,
+.linked > .select-button {
+    border-radius: 0;
+}
+
+/* Overlap by a pixel so two 1px borders meet as one seam, not a 2px rule. */
+.linked:not(.vertical) > *:not(:first-child) {
+    margin-left: -1px;
+}
+
+.linked.vertical > *:not(:first-child) {
+    margin-top: -1px;
+}
+
+.linked:not(.vertical) > *:first-child,
+.linked:not(.vertical) > *:first-child > button {
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+}
+
+.linked:not(.vertical) > *:last-child,
+.linked:not(.vertical) > *:last-child > button {
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+}
+
+.linked.vertical > *:first-child,
+.linked.vertical > *:first-child > button {
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+}
+
+.linked.vertical > *:last-child,
+.linked.vertical > *:last-child > button {
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+}
+
+/* GTK has no z-index, so a hovered member's accent border would always lose
+   its shared edge to whichever sibling paints later. The demo's segmented
+   control never has this problem because its members hover by TEXT, not by
+   border — so linked members here do the same. */
+.linked > button:hover {
+    border-color: @border-default;
+    background-color: @surface-secondary;
+    color: @text-heading;
+}
+
+.linked > combobox:hover > box > button,
+.linked > combobox > box > button:hover {
+    border-color: @border-default;
+    background-color: @surface-secondary;
+}
+
+/* ==========================================================================
+   Entries — always visibly bordered, per §6.2. The fill never changes.
+   ========================================================================== */
+
+entry,
+spinbutton,
+entry.search {
+    background-color: @surface-default;
+    background-image: none;
+    color: @text-body;
+    border: 1px solid @border-default;
+    border-radius: 8px;
+    /* Same arithmetic as button, so a toolbar row aligns */
+    min-height: 16px;
+    padding: 7px 11px;
+    font-size: 13px;
+    box-shadow: none;
+    caret-color: @accent;
+}
+
+entry:hover,
+spinbutton:hover {
+    border-color: @border-focus;
+    background-color: @surface-default;
+}
+
+entry:focus,
+entry:focus-within,
+spinbutton:focus-within {
+    border-color: @border-focus;
+    background-color: @surface-default;
+    box-shadow: 0 0 0 3px @focus-ring;
+}
+
+entry:disabled,
+spinbutton:disabled {
+    color: @text-tertiary;
+    border-color: @border-default;
+    background-color: @surface-secondary;
+}
+
+entry placeholder,
+entry text placeholder {
+    color: @text-tertiary;
+}
+
+entry progress {
+    background-color: @accent;
+}
+
+entry.error {
+    border-color: @status-danger;
+}
+
+entry.warning {
+    border-color: @status-warning-text;
+}
+
+/* ==========================================================================
+   Combo boxes and menu buttons — ghost, like buttons, per §6.3.
+   ========================================================================== */
+
+combobox button,
+menubutton button,
+.select-button.dropdown-toggle {
+    background-color: transparent;
+    border: 1px solid @border-default;
+    color: @accent;
+}
+
+combobox button:hover,
+menubutton button:hover {
+    background-color: transparent;
+    border-color: @accent;
+    color: @accent;
+}
+
+/* The open list reverts to a normal readable surface. */
+combobox window.popup,
+combobox popover {
+    background-color: @surface-default;
+    color: @text-body;
+}
+
+combobox arrow {
+    color: @accent;
+    -gtk-icon-source: -gtk-icontheme("pan-down-symbolic");
+}
+
+/* ==========================================================================
+   Toggles
+   ========================================================================== */
+
+/* Matches the demo's toggles: white at rest with the control border, true
+   accent when checked. background-image must go — Adwaita paints its own
+   lighter blue over background-color, which is why the fill looked washed. */
+checkbutton check,
+radiobutton radio,
+check,
+radio {
+    background-color: @surface-default;
+    background-image: none;
+    border: 1px solid @border-control;
+    border-radius: 4px;
+    color: @text-on-fill;
+    min-width: 14px;
+    min-height: 14px;
+    box-shadow: none;
+}
+
+/* The shared rule above sets the checkbox square; a radio is always a circle. */
+radiobutton radio,
+radio {
+    border-radius: 9999px;
+}
+
+radio check {
+    border-radius: 9999px;
+}
+
+check:hover,
+radio:hover {
+    border-color: @border-focus;
+}
+
+check:checked,
+check:indeterminate,
+radio:checked,
+radio:indeterminate,
+checkbutton check:checked,
+radiobutton radio:checked {
+    background-color: @accent;
+    background-image: none;
+    border-color: @accent;
+    color: @text-on-fill;
+}
+
+check:disabled,
+radio:disabled {
+    opacity: 0.5;
+}
+
+/* Switches match the demo exactly: bordered pill, knob riding inside it, the
+   whole trough going accent when on. The base theme's ON/OFF glyph text and
+   image are suppressed — they read as clutter at this size. */
+switch {
+    background-color: @surface-secondary;
+    background-image: none;
+    border: 1px solid @border-control;
+    border-radius: 9999px;
+    min-width: 44px;
+    min-height: 22px;
+    padding: 1px;
+    font-size: 0;
+    color: transparent;
+    box-shadow: none;
+}
+
+switch image {
+    -gtk-icon-transform: scale(0);
+}
+
+switch:checked {
+    background-color: @accent;
+    border-color: @accent;
+}
+
+switch slider {
+    background-color: @text-tertiary;
+    background-image: none;
+    border: none;
+    border-radius: 9999px;
+    box-shadow: 0 1px 2px @shadow-item;
+    min-width: 18px;
+    min-height: 18px;
+    margin: 0;
+}
+
+switch:checked slider {
+    background-color: @text-on-fill;
+}
+
+switch:hover slider {
+    background-color: @text-secondary;
+}
+
+switch:checked:hover slider {
+    background-color: @text-on-fill;
+}
+
+switch:disabled {
+    opacity: 0.5;
+}
+
+/* ==========================================================================
+   Scales and progress
+   ========================================================================== */
+
+/* The hairline is what makes the trough perceivable at all — the secondary
+   surface alone is 1.1:1 against a white card, exactly the demo's range input
+   problem. */
+scale trough,
+progressbar trough {
+    background-color: @surface-secondary;
+    border: 1px solid @border-default;
+    border-radius: 3px;
+    min-height: 6px;
+    min-width: 6px;
+}
+
+scale highlight,
+progressbar progress {
+    background-color: @accent;
+    border: 1px solid @accent;
+    border-radius: 3px;
+    min-height: 6px;
+}
+
+/* Warning progress stays bright amber; per §3.6 the value belongs in the label beside it. */
+progressbar.warning progress {
+    background-color: @status-warning;
+}
+
+progressbar.error progress {
+    background-color: @status-danger;
+}
+
+progressbar text {
+    color: @text-secondary;
+    font-size: 0.85em;
+}
+
+scale slider {
+    background-color: @surface-default;
+    border: 1px solid @border-control;
+    border-radius: 9999px;
+    box-shadow: 0 1px 2px @shadow-item;
+    min-width: 16px;
+    min-height: 16px;
+}
+
+scale slider:hover {
+    border-color: @accent;
+}
+
+levelbar block.filled { background-color: @accent; border: 1px solid @accent; }
+levelbar block.low    { background-color: @status-warning; border: 1px solid @status-warning; }
+levelbar block.high   { background-color: @status-success; border: 1px solid @status-success; }
+levelbar block.full   { background-color: @status-success; border: 1px solid @status-success; }
+levelbar block.empty  { background-color: @surface-secondary; border: 1px solid @border-default; }
+
+/* ==========================================================================
+   Notebook tabs — the tab bar from §6.4, sitting in the frame.
+   ========================================================================== */
+
+/* Adwaita's own tab indicator is painted through header.top-qualified selectors
+   that outrank a bare `notebook > header` — and it draws in theme_selected_bg,
+   which this theme maps to the soft accent. Without matching that specificity,
+   every active tab wears a stray soft-blue underline and halo. */
+notebook > header,
+notebook > header.top,
+notebook > header.bottom,
+notebook > header.left,
+notebook > header.right {
+    background-color: @surface-secondary;
+    border: none;
+    box-shadow: none;
+    padding: 2px;
+}
+
+notebook > header.top > tabs > tab,
+notebook > header.bottom > tabs > tab,
+notebook > header.left > tabs > tab,
+notebook > header.right > tabs > tab,
+notebook > header.top > tabs > tab:backdrop,
+notebook > header.bottom > tabs > tab:backdrop,
+notebook > header.left > tabs > tab:backdrop,
+notebook > header.right > tabs > tab:backdrop,
+notebook > header > tabs > tab {
+    background-color: transparent;
+    color: @text-secondary;
+    border: none;
+    box-shadow: none;
+    background-image: none;
+    border-radius: 8px;
+    min-height: 16px;
+    padding: 6px 10px;
+    /* The demo's tab bar breathes: gutter padding on the strip, a real gap
+       between pills. Flush tabs read as buttons jammed in a box. */
+    margin: 3px;
+    font-size: 13px;
+    font-weight: normal;
+}
+
+notebook > header.top > tabs > tab:hover,
+notebook > header.bottom > tabs > tab:hover,
+notebook > header.left > tabs > tab:hover,
+notebook > header.right > tabs > tab:hover,
+notebook > header > tabs > tab:hover {
+    background-color: @border-default;
+    color: @text-heading;
+    border: none;
+    box-shadow: none;
+}
+
+/* The active tab is the only light element in the frame — and it must carry no
+   base-theme indicator, in or out of window focus. */
+notebook > header.top > tabs > tab:checked,
+notebook > header.bottom > tabs > tab:checked,
+notebook > header.left > tabs > tab:checked,
+notebook > header.right > tabs > tab:checked,
+notebook > header.top > tabs > tab:checked:backdrop,
+notebook > header.bottom > tabs > tab:checked:backdrop,
+notebook > header.left > tabs > tab:checked:backdrop,
+notebook > header.right > tabs > tab:checked:backdrop,
+notebook > header > tabs > tab:checked {
+    background-color: @surface-default;
+    background-image: none;
+    color: @text-heading;
+    border: none;
+    box-shadow: 0 1px 3px @shadow-tab;
+    font-weight: 500;
+}
+
+notebook > stack {
+    background-color: @surface-default;
+}
+
+stackswitcher button {
+    border-color: transparent;
+    color: @text-secondary;
+}
+
+stackswitcher button:checked {
+    background-color: @accent;
+    color: @text-on-fill;
+}
+
+/* ==========================================================================
+   Sidebars and lists — per §6.5. Selection reads as elevation.
+   ========================================================================== */
+
+.sidebar,
+placessidebar,
+stacksidebar {
+    background-color: @surface-secondary;
+    color: @text-body;
+    border: none;
+}
+
+.sidebar list,
+placessidebar list {
+    background-color: transparent;
+}
+
+list {
+    background-color: @surface-default;
+    color: @text-body;
+}
+
+list row {
+    background-color: transparent;
+    color: @text-body;
+    border-radius: 6px;
+    min-height: 18px;
+    padding: 5px 8px;
+}
+
+list row:hover {
+    background-color: @border-default;
+    color: @text-heading;
+}
+
+/* A selected row is a raised light card, not an accent bar. */
+.sidebar list row:selected,
+placessidebar list row:selected {
+    background-color: @surface-default;
+    color: @text-heading;
+    box-shadow: 0 1px 2px @shadow-item;
+    font-weight: 500;
+}
+
+list row:selected {
+    background-color: @accent-soft;
+    color: @text-on-light;
+}
+
+list row image {
+    color: @text-secondary;
+}
+
+list row:selected image {
+    color: @accent;
+}
+
+/* ==========================================================================
+   Tree and column views
+   ========================================================================== */
+
+treeview.view {
+    background-color: @surface-default;
+    color: @text-body;
+    border-left-color: @border-default;
+    border-top-color: @border-default;
+}
+
+treeview.view:hover {
+    background-color: @surface-secondary;
+}
+
+treeview.view:selected {
+    background-color: @accent-soft;
+    color: @text-on-light;
+}
+
+treeview.view header button {
+    background-color: @surface-secondary;
+    color: @text-secondary;
+    border: none;
+    border-bottom: 1px solid @border-default;
+    border-radius: 0;
+    font-weight: bold;
+    padding: 5px 10px;
+}
+
+treeview.view header button:hover {
+    background-color: @border-default;
+    color: @text-heading;
+    opacity: 1;
+}
+
+/* ==========================================================================
+   Popovers, menus, tooltips — per §6.6.
+   ========================================================================== */
+
+popover,
+popover.background,
+menu,
+.menu {
+    background-color: @surface-default;
+    color: @text-body;
+    border: 1px solid @border-default;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px @shadow-floating;
+    padding: 5px;
+}
+
+popover > arrow {
+    background-color: @surface-default;
+    border-color: @border-default;
+}
+
+/* The Adwaita base bakes its blue in as literals, so selection inside menus
+   must be overridden explicitly or the stock colour shows through. Selection
+   here follows the demo: secondary fill, heading text — never a blue bar. */
+menu menuitem:hover,
+menu menuitem:selected,
+.menu menuitem:hover,
+.context-menu menuitem:hover {
+    background-color: @surface-secondary;
+    color: @text-heading;
+}
+
+menu menuitem:hover > label,
+menu menuitem:selected > label {
+    color: @text-heading;
+}
+
+menuitem,
+popover modelbutton {
+    border-radius: 5px;
+    color: @text-body;
+    padding: 6px 9px;
+    min-height: 18px;
+    font-size: 13px;
+}
+
+menuitem:hover,
+popover modelbutton:hover {
+    background-color: @surface-secondary;
+    color: @text-heading;
+}
+
+menuitem:disabled,
+popover modelbutton:disabled {
+    color: @text-body;
+    opacity: 0.5;
+}
+
+menuitem accelerator,
+popover modelbutton accelerator {
+    color: @text-tertiary;
+}
+
+menu separator,
+popover separator {
+    background-color: @border-default;
+    margin: 4px 2px;
+}
+
+menu arrow,
+popover modelbutton arrow {
+    color: @text-secondary;
+}
+
+tooltip,
+tooltip.background {
+    background-color: @surface-navigation;
+    color: @text-on-dark;
+    border: none;
+    border-radius: 6px;
+    box-shadow: 0 2px 8px @shadow-floating;
+}
+
+tooltip label {
+    color: @text-on-dark;
+    padding: 2px 4px;
+}
+
+/* ==========================================================================
+   Dialogs and info bars
+   ========================================================================== */
+
+messagedialog,
+dialog {
+    background-color: @surface-default;
+    color: @text-body;
+}
+
+messagedialog .titlebar,
+dialog .titlebar {
+    background-color: @surface-default;
+    color: @text-heading;
+    border-bottom: 1px solid @border-default;
+}
+
+messagedialog .dialog-action-area {
+    background-color: @surface-secondary;
+    border-top: 1px solid @border-default;
+}
+
+/* Regions are tinted, fills are solid — see §6.7. */
+infobar,
+infobar.info {
+    background-color: alpha(@accent, 0.15);
+    color: @text-body;
+    border: none;
+}
+
+infobar.warning {
+    background-color: alpha(@status-warning, 0.15);
+    color: @text-body;
+}
+
+infobar.error {
+    background-color: alpha(@status-danger, 0.15);
+    color: @text-body;
+}
+
+infobar.question {
+    background-color: alpha(@accent, 0.15);
+}
+
+/* ==========================================================================
+   Scrollbars — per §6.8. Invisible track, thumb only.
+   ========================================================================== */
+
+scrollbar {
+    background-color: transparent;
+    border: none;
+}
+
+scrollbar slider {
+    background-color: @border-hover;
+    border: 3px solid transparent;
+    border-radius: 9999px;
+    background-clip: padding-box;
+    min-width: 8px;
+    min-height: 8px;
+}
+
+scrollbar slider:hover {
+    background-color: @text-tertiary;
+}
+
+scrollbar slider:active {
+    background-color: @accent;
+}
+
+scrollbar trough {
+    background-color: transparent;
+    border: none;
+}
+
+/* ==========================================================================
+   Panes, frames, status bars
+   ========================================================================== */
+
+paned > separator {
+    background-color: transparent;
+    min-width: 5px;
+    min-height: 5px;
+}
+
+paned > separator:hover,
+paned > separator:selected {
+    background-color: @accent-soft;
+}
+
+frame,
+frame border,
+.frame {
+    border: 1px solid @border-default;
+    border-radius: 8px;
+}
+
+statusbar {
+    /* Chrome, like the toolbar above it. */
+    background-color: @surface-secondary;
+    color: @text-secondary;
+    border-top: 1px solid @border-default;
+    padding: 2px 8px;
+}
+
+.card,
+.view.card {
+    background-color: @surface-default;
+    border: 1px solid @border-default;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px @shadow-card;
+}
+
+.osd {
+    background-color: @surface-navigation;
+    color: @text-on-dark;
+    border-radius: 8px;
+}
+
+/* §6.4 counts application toolbars as part of the navigation frame, not as content.
+   Only an in-document toolbar stays on a light surface. */
+toolbar,
+.toolbar,
+toolbar.primary-toolbar,
+.primary-toolbar {
+    min-height: 32px;
+    padding: 1px 8px;
+    background-color: @surface-secondary;
+    color: @text-body;
+    border-bottom: 1px solid @border-default;
+}
+
+/* A classic menu bar is part of the frame, per §6.4 — otherwise applications
+   like Nemo show a light strip between a dark titlebar and a dark toolbar. */
+menubar,
+.menubar {
+    background-color: @surface-secondary;
+    color: @text-body;
+    border: none;
+    box-shadow: none;
+    padding: 0;
+}
+
+menubar > menuitem,
+.menubar > menuitem {
+    background-color: transparent;
+    /* Adwaita underlines the open menubar item with an inset accent shadow —
+       the "blue lower border" under every dropdown. Halon marks the open item
+       by fill alone. */
+    box-shadow: none;
+    color: @text-body;
+    border-radius: 6px;
+    padding: 4px 8px;
+    margin: 2px 1px;
+    min-height: 16px;
+}
+
+menubar > menuitem:hover,
+.menubar > menuitem:hover,
+menubar > menuitem:selected,
+.menubar > menuitem:selected {
+    background-color: @border-default;
+    box-shadow: none;
+    color: @text-heading;
+}
+
+menubar > menuitem:disabled {
+    color: @text-tertiary;
+    opacity: 0.6;
+}
+
+.inline-toolbar {
+    background-color: @surface-secondary;
+    color: @text-body;
+    border: 1px solid @border-default;
+    border-radius: 8px;
+}
+
+searchbar > revealer > box {
+    background-color: @surface-secondary;
+    border-bottom: 1px solid @border-default;
+}
+
+actionbar > revealer > box {
+    background-color: @surface-secondary;
+    border-top: 1px solid @border-default;
+}
+
+/* ==========================================================================
+   Text and source views
+   ========================================================================== */
+
+textview,
+textview text {
+    background-color: @surface-default;
+    color: @text-body;
+    caret-color: @accent;
+}
+
+textview border {
+    background-color: @surface-secondary;
+    color: @text-tertiary;
+}
+
+/* ==========================================================================
+   Spinner and calendar
+   ========================================================================== */
+
+spinner {
+    color: @accent;
+}
+
+calendar {
+    background-color: @surface-default;
+    color: @text-body;
+    border: 1px solid @border-default;
+    border-radius: 8px;
+}
+
+calendar:selected {
+    background-color: @accent;
+    color: @text-on-fill;
+    border-radius: 6px;
+}
+
+calendar.header {
+    background-color: @surface-secondary;
+    color: @text-heading;
+    border-bottom: 1px solid @border-default;
+}
+
+calendar.button {
+    color: @text-secondary;
+}
+
+calendar.highlight {
+    color: @text-secondary;
+    font-weight: bold;
+}

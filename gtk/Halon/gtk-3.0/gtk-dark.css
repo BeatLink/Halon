@@ -1,0 +1,6 @@
+/* Halon — dark scheme. Same component layer, different base and token file. */
+@import url("resource:///org/gtk/libgtk/theme/Adwaita/gtk-contained-dark.css");
+@import url("../shared/_tokens-dark.css");
+@import url("../shared/_gtk3-metrics.css");
+@import url("../shared/_reset.css");
+@import url("../shared/_components.css");
