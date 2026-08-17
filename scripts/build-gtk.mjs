@@ -72,8 +72,8 @@ function neutralize(css) {
     css = css.replace(/(?<![-\w.#&])outline\s*:\s*([^;}]+)/g,
         (m, val) => "outline: " + val.replace(/#[0-9a-fA-F]{3,8}\b|rgba?\([^)]*\)/g, "").replace(/\s+/g, " ").trim());
 
-    /* A filter that paints (drop-shadow with a colour) goes; plain ones stay. */
-    css = css.replace(/(?<![-\w.#&])filter\s*:\s*[^;}]*(?:#[0-9a-fA-F]{3,8}|rgba?\()[^;}]*;?/g, "");
+    /* Every filter is paint, including a bare opacity() with no colour in it. */
+    css = css.replace(/(?<![-\w.#&])filter\s*:\s*[^;}]*;?/g, "");
 
     /* Border shorthands keep their width — layout — and lose their paint. */
     css = css.replace(/(?<![-\w.#&])(border(?:-top|-right|-bottom|-left)?)\s*:\s*([^;}]+)/g,

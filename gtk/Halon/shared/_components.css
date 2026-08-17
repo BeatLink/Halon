@@ -16,8 +16,8 @@
 @define-color theme_selected_fg_color   @text-on-fill;
 @define-color theme_unfocused_bg_color  @surface-default;
 @define-color theme_unfocused_base_color @surface-default;
-@define-color theme_unfocused_fg_color  @text-secondary;
-@define-color theme_unfocused_text_color @text-secondary;
+@define-color theme_unfocused_fg_color  @text-body;
+@define-color theme_unfocused_text_color @text-body;
 @define-color theme_unfocused_selected_bg_color @accent;
 @define-color theme_unfocused_selected_fg_color @text-on-fill;
 @define-color insensitive_bg_color      @surface-secondary;
@@ -50,8 +50,8 @@
 @define-color wm_border                 @border-default;
 @define-color wm_border_unfocused       @border-default;
 @define-color wm_title                  @text-heading;
-@define-color wm_unfocused_title        @text-tertiary;
-@define-color wm_title_unfocused        @text-tertiary;
+@define-color wm_unfocused_title        @text-heading;
+@define-color wm_title_unfocused        @text-heading;
 @define-color wm_highlight              @surface-default;
 @define-color wm_shadow                 @shadow-floating;
 
@@ -64,7 +64,7 @@
 @define-color wm_icon_bg                @text-secondary;
 @define-color wm_icon_hover_bg          @text-heading;
 @define-color wm_icon_active_bg         @text-on-fill;
-@define-color wm_icon_unfocused_bg      @text-tertiary;
+@define-color wm_icon_unfocused_bg      @text-secondary;
 @define-color wm_icon_close_bg          @text-heading;
 
 
@@ -229,9 +229,10 @@ window,
     color: @text-body;
 }
 
+/* Losing focus is not a state change: only the window shadow lightens. */
 window:backdrop,
 .background:backdrop {
-    color: @text-secondary;
+    color: @text-body;
 }
 
 label:disabled {
@@ -303,7 +304,13 @@ headerbar.default-decoration {
 headerbar:backdrop,
 .titlebar:backdrop {
     background-color: @surface-secondary;
-    color: @text-tertiary;
+    color: @text-body;
+}
+
+headerbar:backdrop .title,
+.titlebar:backdrop .title {
+    color: @text-heading;
+    filter: none;
 }
 
 headerbar .title {

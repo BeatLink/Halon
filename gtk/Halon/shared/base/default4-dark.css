@@ -597,7 +597,7 @@ windowcontrols button:hover, windowcontrols button:active, windowcontrols button
 
 .titlebar:backdrop:not(headerbar), headerbar:backdrop {   background-image: none; transition: 200ms ease-out; }
 
-.titlebar:backdrop:not(headerbar) .title, headerbar:backdrop .title { filter: opacity(0.5); }
+.titlebar:backdrop:not(headerbar) .title, headerbar:backdrop .title {  }
 
 .titlebar:not(headerbar) .title, headerbar .title { padding-left: 12px; padding-right: 12px; font-weight: bold; }
 
