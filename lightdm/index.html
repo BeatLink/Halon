@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en" data-state="idle">
+<head>
+    <meta charset="utf-8">
+    <title>Halon</title>
+    <link rel="stylesheet" href="tokens.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- Icons are inline so the theme carries no font or image dependency; every
+     glyph strokes in currentColor and follows the token its button sits on. -->
+<svg class="sprite" aria-hidden="true">
+    <symbol id="icon-arrow" viewBox="0 0 16 16"><path d="M3 8h9M8.5 4.5 12 8l-3.5 3.5"/></symbol>
+    <symbol id="icon-shutdown" viewBox="0 0 16 16"><path d="M8 2.5v5.5"/><path d="M4.6 4.6a4.8 4.8 0 1 0 6.8 0"/></symbol>
+    <symbol id="icon-restart" viewBox="0 0 16 16"><path d="M13 8a5 5 0 1 1-1.6-3.7"/><path d="M13.2 2.6v2.8h-2.8"/></symbol>
+    <symbol id="icon-suspend" viewBox="0 0 16 16"><path d="M13.5 9.4A5.4 5.4 0 0 1 6.6 2.5a5.6 5.6 0 1 0 6.9 6.9z"/></symbol>
+    <symbol id="icon-hibernate" viewBox="0 0 16 16"><path d="M8 2v12M2.8 5l10.4 6M13.2 5 2.8 11"/></symbol>
+    <symbol id="icon-scheme" viewBox="0 0 16 16"><circle cx="8" cy="8" r="3.2"/><path d="M8 1.4v1.4M8 13.2v1.4M1.4 8h1.4M13.2 8h1.4M3.3 3.3l1 1M11.7 11.7l1 1M12.7 3.3l-1 1M4.3 11.7l-1 1"/></symbol>
+    <symbol id="icon-battery" viewBox="0 0 16 16"><rect x="1.5" y="5" width="11" height="6" rx="1.5"/><path d="M14.2 7v2"/></symbol>
+</svg>
+
+<main class="greeter">
+
+    <!-- The clock is the only thing on screen before the card, so it carries
+         the h1 step of the type scale. -->
+    <header class="clock">
+        <div class="clock-time" id="clock-time">&nbsp;</div>
+        <div class="clock-date" id="clock-date">&nbsp;</div>
+    </header>
+
+    <section class="card" aria-labelledby="user-name">
+        <div class="identity">
+            <div class="avatar" id="avatar" aria-hidden="true"></div>
+            <div class="identity-text">
+                <h1 class="identity-name" id="user-name">&nbsp;</h1>
+                <p class="identity-host" id="hostname">&nbsp;</p>
+            </div>
+        </div>
+
+        <!-- Replaced by a select when the seat has more than one user, and
+             hidden entirely when LightDM sets hide-users. -->
+        <div class="field" id="user-field" hidden>
+            <label class="field-label" for="user-select">User</label>
+            <select class="select select-block" id="user-select"></select>
+        </div>
+
+        <form id="login-form" autocomplete="off">
+            <div class="field">
+                <label class="field-label" for="entry" id="entry-label">Password</label>
+                <div class="input-group">
+                    <input class="input" id="entry" type="password" autofocus
+                           autocapitalize="off" autocorrect="off" spellcheck="false">
+                    <button class="input-group-action" id="submit" type="submit" aria-label="Log in">
+                        <svg class="icon" aria-hidden="true"><use href="#icon-arrow"></use></svg>
+                    </button>
+                </div>
+            </div>
+        </form>
+
+        <p class="message" id="message" role="status" aria-live="polite" hidden></p>
+
+        <footer class="card-footer">
+            <div class="field field-inline">
+                <label class="field-label" for="session-select">Session</label>
+                <select class="select" id="session-select"></select>
+            </div>
+        </footer>
+    </section>
+
+    <div class="status-bar">
+        <p class="status-item" id="battery" hidden>
+            <svg class="icon" aria-hidden="true"><use href="#icon-battery"></use></svg>
+            <span id="battery-level"></span>
+        </p>
+    </div>
+
+    <div class="actions">
+        <button class="icon-button" id="scheme-toggle" type="button" aria-label="Switch colour scheme">
+            <svg class="icon" aria-hidden="true"><use href="#icon-scheme"></use></svg>
+        </button>
+        <span class="actions-separator" aria-hidden="true"></span>
+        <button class="icon-button" data-power="suspend" type="button" aria-label="Suspend" hidden>
+            <svg class="icon" aria-hidden="true"><use href="#icon-suspend"></use></svg>
+        </button>
+        <button class="icon-button" data-power="hibernate" type="button" aria-label="Hibernate" hidden>
+            <svg class="icon" aria-hidden="true"><use href="#icon-hibernate"></use></svg>
+        </button>
+        <button class="icon-button" data-power="restart" type="button" aria-label="Restart" hidden>
+            <svg class="icon" aria-hidden="true"><use href="#icon-restart"></use></svg>
+        </button>
+        <button class="icon-button icon-button-danger" data-power="shutdown" type="button" aria-label="Shut down" hidden>
+            <svg class="icon" aria-hidden="true"><use href="#icon-shutdown"></use></svg>
+        </button>
+    </div>
+
+</main>
+
+<!-- preview-lightdm uncomments the next line to run this in a browser. -->
+<!--<script src="preview/mock.js"></script>-->
+<script src="greeter.js"></script>
+</body>
+</html>

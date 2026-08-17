@@ -1,0 +1,349 @@
+/* Layer 2 — the greeter's component rules. No colour literals below this line,
+   per §2 of the design guide: every value here is a custom property defined by
+   the generated tokens.css, and scripts/build-lightdm.mjs fails the build if a
+   literal appears in this file. Metrics come from §4 and the components from §6.
+   The reference for all of it is theme-demo.html. */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html, body {
+    height: 100%;
+    margin: 0;
+    overflow: hidden;
+}
+
+body {
+    background: var(--surface-root);
+    color: var(--text-body);
+    font-family: var(--font-family-interface);
+    font-size: var(--text-prose);
+    line-height: var(--line-height-ui);
+    -webkit-font-smoothing: antialiased;
+}
+
+.sprite { display: none; }
+
+.icon {
+    width: 14px;
+    height: 14px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+/* ==========================================================================
+   Layout — the card is the only thing that matters, so it sits alone in the
+   middle and everything else is pushed to a corner.
+   ========================================================================== */
+
+.greeter {
+    display: grid;
+    place-items: center;
+    height: 100%;
+    padding: var(--space-8);
+}
+
+.clock {
+    position: absolute;
+    top: 8vh;
+    text-align: center;
+}
+
+.clock-time {
+    font-size: 64px;
+    font-weight: 200;
+    letter-spacing: -0.02em;
+    color: var(--text-heading);
+    font-variant-numeric: tabular-nums;
+}
+
+.clock-date {
+    margin-top: var(--space-3);
+    font-size: var(--text-h3);
+    color: var(--text-secondary);
+}
+
+.status-bar {
+    position: absolute;
+    left: var(--space-7);
+    bottom: var(--space-7);
+    display: flex;
+    gap: var(--space-5);
+}
+
+.status-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    margin: 0;
+    font-size: var(--text-caption);
+    color: var(--text-tertiary);
+}
+
+.actions {
+    position: absolute;
+    right: var(--space-7);
+    bottom: var(--space-7);
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+}
+
+.actions-separator {
+    width: var(--border-width);
+    height: 18px;
+    margin: 0 var(--space-2);
+    background: var(--border-default);
+}
+
+/* ==========================================================================
+   The card — §6.6. A modal in everything but name, so it takes the modal
+   shadow rather than the card one.
+   ========================================================================== */
+
+.card {
+    width: 348px;
+    padding: var(--space-7);
+    background: var(--surface-default);
+    border: var(--border-width) solid var(--border-default);
+    border-radius: var(--radius-default);
+    box-shadow: var(--shadow-modal);
+}
+
+.identity {
+    display: flex;
+    align-items: center;
+    gap: var(--space-5);
+    margin-bottom: var(--space-6);
+}
+
+/* Initials on the accent fill, per §6.1: the one filled thing on the card
+   besides the submit action, and the only place a photo would otherwise go. */
+.avatar {
+    display: grid;
+    place-items: center;
+    flex: none;
+    width: 44px;
+    height: 44px;
+    border-radius: var(--radius-pill);
+    background: var(--accent);
+    color: var(--text-on-fill);
+    font-size: var(--text-h3);
+    font-weight: 600;
+    background-size: cover;
+    background-position: center;
+}
+
+.identity-text { min-width: 0; }
+
+.identity-name {
+    margin: 0;
+    font-size: var(--text-h2);
+    font-weight: 600;
+    color: var(--text-heading);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.identity-host {
+    margin: var(--space-1) 0 0;
+    font-size: var(--text-caption);
+    color: var(--text-tertiary);
+}
+
+.card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-5);
+    margin: var(--space-6) calc(var(--space-7) * -1) calc(var(--space-7) * -1);
+    padding: var(--space-5) var(--space-7);
+    border-top: var(--border-width) solid var(--border-default);
+}
+
+/* ==========================================================================
+   Fields — §6.2. Fill-defined at rest, border-defined on interaction.
+   ========================================================================== */
+
+.field {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+/* Groups within the card sit a --space-5 apart, per §4.1. */
+.field + form,
+.field + .field {
+    margin-top: var(--space-5);
+}
+
+.field-inline {
+    flex-direction: row;
+    align-items: center;
+    gap: var(--space-4);
+}
+
+.field-label {
+    font-size: var(--text-caption);
+    font-weight: 500;
+    color: var(--text-secondary);
+}
+
+.input {
+    width: 100%;
+    height: var(--control-height);
+    padding: var(--space-4) 11px;
+    font-family: inherit;
+    font-size: var(--text-control);
+    background: var(--surface-default);
+    color: var(--text-body);
+    border: var(--border-width) solid var(--border-default);
+    border-radius: var(--radius-default);
+    transition: border-color .12s;
+}
+
+.input::placeholder { color: var(--text-tertiary); }
+
+/* The fill deliberately does not change on hover — it would push the
+   placeholder under AA. */
+.input:hover { border-color: var(--border-focus); }
+
+.input:focus {
+    outline: var(--focus-ring-width) solid var(--focus-ring);
+    outline-offset: 0;
+    border-color: var(--border-focus);
+}
+
+.input-group {
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+.input-group .input { padding-right: var(--space-8); }
+
+.input-group-action {
+    position: absolute;
+    right: var(--space-3);
+    display: grid;
+    place-items: center;
+    width: 22px;
+    height: 22px;
+    padding: 0;
+    border: none;
+    border-radius: var(--radius-small);
+    background: transparent;
+    color: var(--text-secondary);
+    cursor: pointer;
+}
+
+.input-group-action:hover { color: var(--accent); }
+
+.input-group-action:focus-visible {
+    outline: var(--focus-ring-width) solid var(--focus-ring);
+    color: var(--accent);
+}
+
+/* A closed select is an action affordance, so it reads as a ghost button, §6.3. */
+.select {
+    height: var(--control-height);
+    padding: var(--space-4) 30px var(--space-4) var(--space-5);
+    font-family: inherit;
+    font-size: var(--text-control);
+    font-weight: 500;
+    color: var(--accent);
+    background-color: transparent;
+    background-image: var(--select-arrow);
+    background-repeat: no-repeat;
+    background-position: right 11px center;
+    border: var(--border-width) solid var(--border-default);
+    border-radius: var(--radius-default);
+    appearance: none;
+    cursor: pointer;
+    transition: border-color .12s;
+}
+
+.select-block { width: 100%; }
+
+.select:hover { border-color: var(--accent); }
+
+.select:focus-visible {
+    outline: var(--focus-ring-width) solid var(--focus-ring);
+    border-color: var(--border-focus);
+}
+
+.select option {
+    background: var(--surface-default);
+    color: var(--text-body);
+    font-weight: 400;
+}
+
+/* ==========================================================================
+   Buttons — §6.1, in the two weights a login screen needs.
+   ========================================================================== */
+
+.icon-button {
+    display: grid;
+    place-items: center;
+    width: var(--icon-button-size);
+    height: var(--icon-button-size);
+    border: var(--border-width) solid transparent;
+    border-radius: var(--radius-row);
+    background: transparent;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: color .12s, background-color .12s;
+}
+
+.icon-button:hover {
+    background: var(--surface-navigation-hover);
+    color: var(--text-heading);
+}
+
+.icon-button:focus-visible {
+    outline: var(--focus-ring-width) solid var(--focus-ring);
+    border-color: var(--border-focus);
+}
+
+.icon-button-danger:hover {
+    background: var(--status-danger);
+    color: var(--text-on-fill);
+}
+
+/* ==========================================================================
+   Messages — §6.7. Colour carries the status, never colour alone: the text
+   already says what happened.
+   ========================================================================== */
+
+.message {
+    margin: var(--space-5) 0 0;
+    font-size: var(--text-control);
+    color: var(--text-secondary);
+}
+
+.message[data-type="error"] { color: var(--status-danger); }
+
+/* ==========================================================================
+   States — authenticating locks the form, and the session hand-off fades the
+   whole greeter out so the seat does not flash between the two.
+   ========================================================================== */
+
+html[data-state="busy"] .input,
+html[data-state="busy"] .select,
+html[data-state="busy"] .input-group-action {
+    opacity: .5;
+    pointer-events: none;
+}
+
+.greeter {
+    transition: opacity .25s ease-in;
+}
+
+html[data-state="starting"] .greeter { opacity: 0; }
+
+@media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; }
+}

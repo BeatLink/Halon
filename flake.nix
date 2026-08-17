@@ -97,6 +97,22 @@
           exe = "adwaita-1-demo";
         };
 
+        # The greeter has no LightDM to talk to outside a seat, so the preview
+        # stages a copy with preview/mock.js enabled and opens that.
+        preview-lightdm = pkgs.writeShellApplication {
+          name = "preview-lightdm";
+          runtimeInputs = with pkgs; [ coreutils gnused xdg-utils ];
+          text = ''
+            root="''${HALON_ROOT:-$PWD}"
+            [ -d "$root/lightdm" ] || { echo "run from the repo root, or set HALON_ROOT" >&2; exit 1; }
+            work=$(mktemp -d)
+            cp -r "$root/lightdm/." "$work/"
+            sed -i 's|<!--<script src="preview/mock.js"></script>-->|<script src="preview/mock.js"></script>|' "$work/index.html"
+            echo "greeter preview: $work/index.html  (mock password: justice)"
+            exec xdg-open "$work/index.html"
+          '';
+        };
+
         # Parses the CSS and asserts every audited pair clears its WCAG threshold.
         audit = pkgs.writeShellApplication {
           name = "halon-audit";
@@ -136,6 +152,7 @@
             node "$root/scripts/build-vscode.mjs" "$@"
             node "$root/scripts/build-firefox.mjs" "$@"
             node "$root/scripts/build-qt.mjs" "$@"
+            node "$root/scripts/build-lightdm.mjs" "$@"
           '';
         };
 
@@ -152,7 +169,7 @@
       {
         packages = {
           inherit preview-gtk3 preview-gtk4 demo-gtk3 demo-gtk4 demo-adwaita icons-gtk3
-            audit lint build shots;
+            preview-lightdm audit lint build shots;
 
           # Both theme directories in one derivation: Halon-Dark's stylesheets
           # import ../Halon/shared, so they must be installed side by side.
@@ -242,6 +259,23 @@
             };
           };
 
+          # web-greeter scans its own prefix for theme directories, so the whole
+          # theme installs under one name; the preview copy is left behind.
+          halon-lightdm-theme = pkgs.stdenvNoCC.mkDerivation {
+            pname = "halon-lightdm-theme";
+            version = "1.0.0";
+            src = ./lightdm;
+            dontBuild = true;
+            installPhase = ''
+              mkdir -p "$out/share/web-greeter/themes/halon"
+              cp index.yml index.html tokens.css style.css greeter.js "$out/share/web-greeter/themes/halon/"
+            '';
+            meta = {
+              description = "Slate and blue LightDM web greeter theme";
+              platforms = nixpkgs.lib.platforms.linux;
+            };
+          };
+
           default = self.packages.${system}.halon-theme;
         };
 
@@ -252,6 +286,7 @@
           demo-gtk4    = { type = "app"; program = "${demo-gtk4}/bin/demo-gtk4"; };
           demo-adwaita = { type = "app"; program = "${demo-adwaita}/bin/demo-adwaita"; };
           icons-gtk3   = { type = "app"; program = "${icons-gtk3}/bin/icons-gtk3"; };
+          preview-lightdm = { type = "app"; program = "${preview-lightdm}/bin/preview-lightdm"; };
           audit = { type = "app"; program = "${audit}/bin/halon-audit"; };
           build = { type = "app"; program = "${build}/bin/halon-build"; };
           shots = { type = "app"; program = "${shots}/bin/halon-shots"; };
@@ -283,6 +318,7 @@
             demo-gtk4
             demo-adwaita
             icons-gtk3
+            preview-lightdm
             audit
             lint
             build
@@ -299,6 +335,7 @@
             echo "  preview-gtk4 [dark]     GTK 4 widget factory"
             echo "  demo-gtk4    [dark]     GTK 4 demo"
             echo "  demo-adwaita [dark]     libadwaita demo — the GTK 4 named-colour path"
+            echo "  preview-lightdm         the LightDM greeter in a browser, against its mock"
             echo
             echo "  halon-audit             contrast audit over both schemes"
             echo "  halon-lint              undefined tokens, stray literals, import order"
