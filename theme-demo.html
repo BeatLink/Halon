@@ -44,6 +44,11 @@
     --accent:                   light-dark(#2563eb, #60a5fa);
     --focus-ring:               light-dark(rgba(37, 99, 235, 0.15), rgba(96, 165, 250, 0.28));
 
+    /* Syntax — code only, per §3.7 */
+    --syntax-type:              light-dark(#0e7490, #22d3ee);
+    --syntax-string:            light-dark(#15803d, #4ade80);
+    --syntax-number:            light-dark(#a16207, #fcd34d);
+
     /* Status */
     --status-success:           light-dark(#047857, #10b981);
     --status-warning:           #f59e0b;  /* the fill: bright in both schemes */
@@ -1765,6 +1770,9 @@ const TOKENS = [
     ["--border-focus", "Focused field border"],
     ["--accent", "The single accent"],
     ["--focus-ring", "Focus, text selection"],
+    ["--syntax-type", "Types and classes, code only"],
+    ["--syntax-string", "String literals, code only"],
+    ["--syntax-number", "Numbers and constants, code only"],
     ["--status-success", "Positive status"],
     ["--status-warning", "Caution fills"],
     ["--status-warning-text", "Caution marks and words"],
@@ -1806,6 +1814,9 @@ const AUDIT_PAIRS = [
     ["--accent", "--surface-default", 4.5, "Link on default surface"],
     ["--accent", "--surface-secondary", 4.5, "Link on secondary surface"],
     ["--text-on-fill", "--accent", 4.5, "Filled accent button, selected row"],
+    ["--syntax-type", "--surface-default", 4.5, "Type in code"],
+    ["--syntax-string", "--surface-default", 4.5, "String in code"],
+    ["--syntax-number", "--surface-default", 4.5, "Number in code"],
     ["--text-on-navigation", "--surface-navigation", 4.5, "Frame text at rest"],
     ["--text-heading", "--surface-navigation-hover", 4.5, "Frame text on hover"],
     ["--text-on-fill", "--status-success", 4.5, "Success chip"],

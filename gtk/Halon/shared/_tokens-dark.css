@@ -31,6 +31,11 @@
 /* Defined after @accent: GTK resolves references in source order. */
 @define-color border-focus             @accent;
 
+/* Syntax — code only, per §3.7. Not status: an editor is full of these. */
+@define-color syntax-type              #22d3ee;
+@define-color syntax-string            #4ade80;
+@define-color syntax-number            #fcd34d;
+
 /* Status — on dark ground the warning fill works as its own mark colour */
 @define-color status-success           #10b981;
 @define-color status-warning           #f59e0b;

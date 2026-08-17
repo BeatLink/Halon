@@ -186,6 +186,9 @@ and `--border-focus` are derived from other tokens, so they flip for free.
 | `--border-focus`             | `var(--accent)`       | `var(--accent)`        | Focused field border                     |
 | `--accent`                   | `#2563eb`             | `#60a5fa`              | The single accent: links, buttons, focus |
 | `--focus-ring`               | `rgba(37,99,235,.15)` | `rgba(96,165,250,.28)` | Focus outline, text selection            |
+| `--syntax-type`              | `#0e7490`             | `#22d3ee`              | Types and classes, in code only          |
+| `--syntax-string`            | `#15803d`             | `#4ade80`              | String literals, in code only            |
+| `--syntax-number`            | `#a16207`             | `#fcd34d`              | Numbers and constants, in code only      |
 | `--status-success`           | `#047857`             | `#10b981`              | Positive status only                     |
 | `--status-warning`           | `#f59e0b`             | `#f59e0b`              | Caution fills: chips, tints              |
 | `--status-warning-text`      | `#c2410c`             | `#f59e0b`              | Caution icons, dots, bars, words         |
@@ -334,6 +337,48 @@ directly.
 
 Success and danger need no equivalent. Emerald-700 is 5.48 against white and red-600 is 4.83, so both
 work as marks and as fills from a single token. Only the intrinsically light hue needs two.
+
+### 3.7 Syntax is the one place that needs more than one hue
+
+Everything above holds the palette to slate, one blue, and status. Code is where that stops working,
+and it is worth being precise about why: the rest of the interface colors *state* — a thing is
+selected, failing, disabled — and state is mutually exclusive, so one accent can carry it. Syntax
+colors *category*, and categories are simultaneous. A line of code shows a keyword, a type, a call,
+a string and a number at once, all in the neutral state. With a single accent, four of those five
+collapse into the body ramp, and the file reads as a wall of near-black with occasional blue.
+
+So syntax gets its own small ramp — code only, never chrome:
+
+| Token | Light | Dark | Role |
+| ----- | ----- | ---- | ---- |
+| `--syntax-type` | `#0e7490` | `#22d3ee` | Types, classes, interfaces, enums, namespaces |
+| `--syntax-string` | `#15803d` | `#4ade80` | String literals and regular expressions |
+| `--syntax-number` | `#a16207` | `#fcd34d` | Numbers, constants, booleans, enum members |
+
+Three, not more, and the rest of the mapping comes from tokens that already exist: keywords take
+`--accent`, comments `--text-tertiary` in italic, operators and punctuation `--text-secondary`,
+variables and parameters `--text-body`. Defined names — functions and methods — stay `--text-heading`
+in bold, because weight says "declared here" in a way hue cannot, and that reading is only
+unambiguous now that types have moved off it.
+
+**This is the conventional role mapping, not an invention.** Green strings, warm numbers, a cool
+type hue and grey italic comments are what the TextMate lineage settled on and what nearly every
+widely used theme still follows. The one deliberate departure is keywords: the convention puts them
+in purple, and here they are blue, because Halon has exactly one accent and §3.4's violet is spoken
+for. Blue keywords beside a teal type is the arrangement VS Code's own default theme uses, so the
+substitution is well-trodden.
+
+**Why these are not the status tokens.** Green and amber already exist as `--status-success` and
+`--status-warning`, and reusing them for strings and numbers is the §3.5 mistake in a new place: a
+token means one thing, and an editor showing a hundred string literals per screen would make green
+mean "a string" far more often than it means "this passed." The syntax hues are also chosen a step
+away from their status neighbours — `#a16207` is yellow-brown where `--status-warning-text` is the
+redder `#c2410c` — so a number and a warning are not the same mark.
+
+**The rule this replaces.** §3.4 reserves one off-ramp hue for one badge. Before this section
+existed, the syntax mapping had quietly spent that violet on every string, number, constant and enum
+member in every file, which is the widest violation of the one-place rule the theme could contain.
+`--badge-experimental` is back to the badge.
 
 ---
 
@@ -840,6 +885,9 @@ text and non-text interface elements. Ratios are computed from the §3.1 values.
 | `--text-on-navigation` | `--surface-navigation` | 6.92 | 8.46 |
 | `--text-heading` (frame hover, toasts) | `--surface-navigation-hover` | 14.48 | 16.50 |
 | `--accent` (focus boundary in the frame) | `--surface-navigation-hover` | 4.19 | 6.79 |
+| `--syntax-type` | `--surface-default` (code) | 5.36 | 8.85 |
+| `--syntax-string` | `--surface-default` (code) | 5.02 | 9.18 |
+| `--syntax-number` | `--surface-default` (code) | 4.92 | 11.09 |
 | `--border-control` | `--surface-default` | 3.15 | 3.36 |
 | `--border-focus` (hover/focus boundary) | `--surface-default` | 5.17 | 6.29 |
 

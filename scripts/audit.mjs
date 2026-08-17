@@ -102,6 +102,9 @@ const PAIRS = [
     ["status-warning-text", "surface-secondary", 4.5],
     ["status-danger", "surface-default", 4.5],
     ["status-success", "surface-default", 4.5],
+    ["syntax-type", "surface-default", 4.5],
+    ["syntax-string", "surface-default", 4.5],
+    ["syntax-number", "surface-default", 4.5],
     ["border-control", "surface-default", 3.0],
     ["focus-ring", "surface-default", 1.0],
 ];

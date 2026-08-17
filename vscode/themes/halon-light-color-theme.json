@@ -140,10 +140,10 @@
         "editorBracketMatch.border": "#2563eb",
         "editorBracketHighlight.foreground1": "#475569",
         "editorBracketHighlight.foreground2": "#2563eb",
-        "editorBracketHighlight.foreground3": "#7c3aed",
+        "editorBracketHighlight.foreground3": "#0e7490",
         "editorBracketHighlight.foreground4": "#475569",
         "editorBracketHighlight.foreground5": "#2563eb",
-        "editorBracketHighlight.foreground6": "#7c3aed",
+        "editorBracketHighlight.foreground6": "#0e7490",
         "editorBracketHighlight.unexpectedBracket.foreground": "#dc2626",
         "editorUnnecessaryCode.opacity": "#00000080",
         "editorLightBulb.foreground": "#c2410c",
@@ -360,16 +360,16 @@
         "welcomePage.progress.background": "#f1f5f9",
         "welcomePage.progress.foreground": "#2563eb",
         "walkthrough.embeddedEditorBackground": "#f1f5f9",
-        "symbolIcon.classForeground": "#2563eb",
-        "symbolIcon.interfaceForeground": "#2563eb",
-        "symbolIcon.enumeratorForeground": "#2563eb",
-        "symbolIcon.structForeground": "#2563eb",
+        "symbolIcon.classForeground": "#0e7490",
+        "symbolIcon.interfaceForeground": "#0e7490",
+        "symbolIcon.enumeratorForeground": "#0e7490",
+        "symbolIcon.structForeground": "#0e7490",
         "symbolIcon.eventForeground": "#2563eb",
-        "symbolIcon.functionForeground": "#7c3aed",
-        "symbolIcon.methodForeground": "#7c3aed",
-        "symbolIcon.constructorForeground": "#7c3aed",
-        "symbolIcon.constantForeground": "#7c3aed",
-        "symbolIcon.enumeratorMemberForeground": "#7c3aed",
+        "symbolIcon.functionForeground": "#0f172a",
+        "symbolIcon.methodForeground": "#0f172a",
+        "symbolIcon.constructorForeground": "#0f172a",
+        "symbolIcon.constantForeground": "#a16207",
+        "symbolIcon.enumeratorMemberForeground": "#a16207",
         "symbolIcon.variableForeground": "#475569",
         "symbolIcon.fieldForeground": "#475569",
         "symbolIcon.propertyForeground": "#475569",
@@ -404,7 +404,7 @@
                 "punctuation.definition.string"
             ],
             "settings": {
-                "foreground": "#7c3aed"
+                "foreground": "#15803d"
             }
         },
         {
@@ -417,7 +417,7 @@
                 "variable.other.enummember"
             ],
             "settings": {
-                "foreground": "#7c3aed"
+                "foreground": "#a16207"
             }
         },
         {
@@ -425,7 +425,8 @@
                 "constant.character.escape"
             ],
             "settings": {
-                "foreground": "#2563eb"
+                "foreground": "#a16207",
+                "fontStyle": "bold"
             }
         },
         {
@@ -473,8 +474,7 @@
                 "entity.other.inherited-class"
             ],
             "settings": {
-                "foreground": "#0f172a",
-                "fontStyle": "bold"
+                "foreground": "#0e7490"
             }
         },
         {
@@ -682,36 +682,18 @@
                 "token.debug-token"
             ],
             "settings": {
-                "foreground": "#7c3aed"
+                "foreground": "#0e7490"
             }
         }
     ],
     "semanticTokenColors": {
-        "namespace": "#0f172a",
-        "class": {
-            "foreground": "#0f172a",
-            "bold": true
-        },
-        "interface": {
-            "foreground": "#0f172a",
-            "bold": true
-        },
-        "enum": {
-            "foreground": "#0f172a",
-            "bold": true
-        },
-        "struct": {
-            "foreground": "#0f172a",
-            "bold": true
-        },
-        "type": {
-            "foreground": "#0f172a",
-            "bold": true
-        },
-        "typeParameter": {
-            "foreground": "#0f172a",
-            "bold": true
-        },
+        "namespace": "#0e7490",
+        "class": "#0e7490",
+        "interface": "#0e7490",
+        "enum": "#0e7490",
+        "struct": "#0e7490",
+        "type": "#0e7490",
+        "typeParameter": "#0e7490",
         "function": {
             "foreground": "#0f172a",
             "bold": true
@@ -726,10 +708,10 @@
             "foreground": "#64748b",
             "italic": true
         },
-        "string": "#7c3aed",
-        "number": "#7c3aed",
-        "regexp": "#7c3aed",
-        "enumMember": "#7c3aed",
+        "string": "#15803d",
+        "number": "#a16207",
+        "regexp": "#15803d",
+        "enumMember": "#a16207",
         "variable": "#1a1a2e",
         "parameter": "#1a1a2e",
         "property": "#1a1a2e",
