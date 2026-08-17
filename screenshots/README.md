@@ -22,6 +22,7 @@ are cropped from the live session.
 | `gtk3-light-hover.png` | Hover state: border moves, background never | `halon-shots` |
 | `gtk3-light-dropdown.png` | Open combobox list | `halon-shots` |
 | `gtk3-light-focus.png` | Focused entry: accent border + translucent ring | `halon-shots` |
+| `lightdm-light.png`, `lightdm-dark.png` | The LightDM greeter, both schemes | `halon-shots-lightdm` |
 | `nemo-light.png` | A real application under the theme | Xvfb, manual |
 | `cinnamon-menu.png` | Main menu applet | live session crop |
 | `cinnamon-calendar.png` | Calendar applet popup | live session crop |
@@ -33,6 +34,7 @@ are cropped from the live session.
 ```sh
 nix develop
 halon-shots               # gtk3/gtk4 sets, light+dark, plus interaction states
+halon-shots-lightdm       # the greeter, both schemes, against preview/mock.js
 ```
 
 The demo pages: load `theme-demo.html` in a browser and use its scheme control,

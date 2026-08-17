@@ -140,6 +140,17 @@
           '';
         };
 
+        # The greeter renders in Firefox rather than Xvfb, so it captures on its
+        # own rather than as another case in halon-shots.
+        shots-lightdm = pkgs.writeShellApplication {
+          name = "halon-shots-lightdm";
+          runtimeInputs = with pkgs; [ firefox coreutils gnused ];
+          text = ''
+            root="''${HALON_ROOT:-$PWD}"
+            exec "$root/scripts/screenshot-lightdm.sh" "$@"
+          '';
+        };
+
         # Regenerates every derived stylesheet from the shared token files.
         build = pkgs.writeShellApplication {
           name = "halon-build";
@@ -169,7 +180,7 @@
       {
         packages = {
           inherit preview-gtk3 preview-gtk4 demo-gtk3 demo-gtk4 demo-adwaita icons-gtk3
-            preview-lightdm audit lint build shots;
+            preview-lightdm audit lint build shots shots-lightdm;
 
           # Both theme directories in one derivation: Halon-Dark's stylesheets
           # import ../Halon/shared, so they must be installed side by side.
@@ -290,6 +301,7 @@
           audit = { type = "app"; program = "${audit}/bin/halon-audit"; };
           build = { type = "app"; program = "${build}/bin/halon-build"; };
           shots = { type = "app"; program = "${shots}/bin/halon-shots"; };
+          shots-lightdm = { type = "app"; program = "${shots-lightdm}/bin/halon-shots-lightdm"; };
           lint = { type = "app"; program = "${lint}/bin/halon-lint"; };
           default = self.apps.${system}.audit;
         };
@@ -323,6 +335,7 @@
             lint
             build
             shots
+            shots-lightdm
           ];
 
           shellHook = ''
@@ -341,6 +354,7 @@
             echo "  halon-lint              undefined tokens, stray literals, import order"
             echo "  halon-build [--check]   regenerate the derived stylesheets from the tokens"
             echo "  halon-shots [outdir]    render the GTK theme in Xvfb and screenshot it"
+            echo "  halon-shots-lightdm     render the greeter against its mock and screenshot it"
             echo
             echo "  theme source:  gtk/Halon"
             echo "  live symlink:  ~/.themes/Halon"
