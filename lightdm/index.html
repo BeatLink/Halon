@@ -22,6 +22,18 @@
 
 <main class="greeter">
 
+    <!-- Preferences take the top corners, so a colour scheme or a locale is
+         never a neighbour of the shutdown button. -->
+    <div class="actions actions-top actions-start">
+        <button class="icon-button" id="scheme-toggle" type="button" aria-label="Switch colour scheme">
+            <svg class="icon" aria-hidden="true"><use href="#icon-scheme"></use></svg>
+        </button>
+    </div>
+
+    <div class="actions actions-top">
+        <select class="select" id="language-select" aria-label="Language"></select>
+    </div>
+
     <!-- The clock is the only thing on screen before the card, so it carries
          the h1 step of the type scale. -->
     <header class="clock">
@@ -76,10 +88,6 @@
     </div>
 
     <div class="actions">
-        <button class="icon-button" id="scheme-toggle" type="button" aria-label="Switch colour scheme">
-            <svg class="icon" aria-hidden="true"><use href="#icon-scheme"></use></svg>
-        </button>
-        <span class="actions-separator" aria-hidden="true"></span>
         <button class="icon-button" data-power="suspend" type="button" aria-label="Suspend" hidden>
             <svg class="icon" aria-hidden="true"><use href="#icon-suspend"></use></svg>
         </button>

@@ -43,6 +43,13 @@
             { username: "guest", display_name: "Guest", session: "gnome", image: "" },
         ],
 
+        language: { code: "en_US", name: "English", territory: "United States" },
+
+        languages: [
+            { code: "en_US", name: "English", territory: "United States" },
+            { code: "fr_FR", name: "French", territory: "France" },
+        ],
+
         show_prompt: signal(),
         show_message: signal(),
         authentication_complete: signal(),
@@ -66,6 +73,7 @@
             }, 700);
         },
 
+        set_language: (language) => console.log("set_language", language),
         start_session: (session) => console.log("start_session", session),
         suspend: () => console.log("suspend"),
         hibernate: () => console.log("hibernate"),

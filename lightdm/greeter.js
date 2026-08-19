@@ -14,6 +14,7 @@ const entryLabel = $("#entry-label");
 const message = $("#message");
 const userSelect = $("#user-select");
 const sessionSelect = $("#session-select");
+const languageSelect = $("#language-select");
 
 const state = (name) => html.setAttribute("data-state", name);
 
@@ -90,6 +91,7 @@ function showUser(user) {
     /* A user's own session wins over the seat default, matching what LightDM
        would have started for them last time. */
     if (user && user.session) selectOption(sessionSelect, user.session);
+    if (user && user.language) selectOption(languageSelect, user.language);
 }
 
 function selectOption(select, value) {
@@ -101,8 +103,22 @@ function fillSessions(lightdm) {
         sessionSelect.add(new Option(session.name, session.key));
     }
     selectOption(sessionSelect, lightdm.default_session);
-    /* One session is not a choice, so the control would only be noise. */
-    if (lightdm.sessions.length < 2) sessionSelect.parentElement.hidden = true;
+    /* One session is not a choice, so the footer would only be a bare hairline. */
+    if (lightdm.sessions.length < 2) $(".card-footer").hidden = true;
+}
+
+/* The bare language subtag, since a corner control has no room for
+   "English (United States)" and the value keeps the full code regardless. */
+const languageLabel = (code) => code.split(/[_.@]/)[0].toUpperCase();
+
+function fillLanguages(lightdm) {
+    const languages = lightdm.languages || [];
+    for (const language of languages) {
+        languageSelect.add(new Option(languageLabel(language.code), language.code));
+    }
+    selectOption(languageSelect, (lightdm.language || {}).code);
+    /* One language is not a choice, so the control would only be noise. */
+    if (languages.length < 2) languageSelect.hidden = true;
 }
 
 function fillUsers(lightdm) {
@@ -185,6 +201,10 @@ function setupAuthentication(lightdm) {
             return;
         }
 
+        /* LightDM only accepts a language once it has authenticated, so the
+           choice is applied here rather than when the select changes. */
+        if (languageSelect.value) lightdm.set_language(languageSelect.value);
+
         /* Fade the greeter out before handing the seat over, so the screen does
            not flash between the login card and the session's first frame. */
         state("starting");
@@ -216,6 +236,7 @@ window.addEventListener("GreeterReady", () => {
     $("#hostname").textContent = lightdm.hostname || "";
 
     fillSessions(lightdm);
+    fillLanguages(lightdm);
     fillUsers(lightdm);
     setupPower(lightdm);
     setupBattery(lightdm);
