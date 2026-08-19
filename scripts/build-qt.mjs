@@ -187,6 +187,13 @@ function stylesheet(scheme) {
     const a = (name, alpha) => qssRgba(t(name), alpha);
     const assets = `assets/${scheme}`;
 
+    /* qt6ct prepends this sheet to the application's own, so an application rule
+       naming the same widget wins every tie. Listing a selector twice, the second
+       time under an ancestor, gives the rule a specificity nothing at one type
+       selector can reach while the bare form still covers a top-level widget. */
+    const held = (...selectors) =>
+        selectors.concat(selectors.map((s) => `QWidget ${s}`)).join(",\n");
+
     return `/* GENERATED FILE — do not edit.
  * Halon for Qt, ${scheme} scheme. Built from gtk/Halon/shared/_tokens-${scheme}.css
  * by scripts/build-qt.mjs; edit the mapping there, then rebuild.
@@ -371,12 +378,7 @@ QToolButton::menu-indicator {
 
 /* ---------- inputs — §6.2 ---------- */
 
-QLineEdit,
-QSpinBox,
-QDoubleSpinBox,
-QDateEdit,
-QTimeEdit,
-QDateTimeEdit {
+${held("QLineEdit", "QSpinBox", "QDoubleSpinBox", "QDateEdit", "QTimeEdit", "QDateTimeEdit")} {
     background-color: ${t("surface-default")};
     border: 1px solid ${t("border-default")};
     border-radius: 8px;
@@ -728,7 +730,7 @@ QMenu::icon {
     padding-left: 9px;
 }
 
-QToolTip {
+${held("QToolTip")} {
     background-color: ${t("surface-navigation")};
     border: 1px solid ${t("border-default")};
     border-radius: 6px;

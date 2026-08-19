@@ -187,7 +187,13 @@ QSpinBox,
 QDoubleSpinBox,
 QDateEdit,
 QTimeEdit,
-QDateTimeEdit {
+QDateTimeEdit,
+QWidget QLineEdit,
+QWidget QSpinBox,
+QWidget QDoubleSpinBox,
+QWidget QDateEdit,
+QWidget QTimeEdit,
+QWidget QDateTimeEdit {
     background-color: #ffffff;
     border: 1px solid #e2e8f0;
     border-radius: 8px;
@@ -539,7 +545,8 @@ QMenu::icon {
     padding-left: 9px;
 }
 
-QToolTip {
+QToolTip,
+QWidget QToolTip {
     background-color: #f1f5f9;
     border: 1px solid #e2e8f0;
     border-radius: 6px;
