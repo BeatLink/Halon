@@ -23,6 +23,9 @@ body {
 
 .sprite { display: none; }
 
+/* Component display rules would otherwise outrank the user agent's, leaving every element the script hides on screen. */
+[hidden] { display: none !important; }
+
 .icon {
     width: 14px;
     height: 14px;
