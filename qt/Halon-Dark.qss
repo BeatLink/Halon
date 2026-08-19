@@ -158,6 +158,28 @@ QToolBar > QToolButton:hover {
     color: #f8fafc;
 }
 
+/* A split tool button's menu half is a sub-control, and the style-sheet engine
+   paints it as a black block wherever the sheet styles QToolButton but leaves
+   the sub-control unnamed. The padding is what reserves room for it. */
+QToolButton[popupMode="1"] {
+    padding-right: 18px;
+}
+
+QToolButton::menu-button {
+    background-color: transparent;
+    border: none;
+    width: 14px;
+}
+
+QToolButton::menu-arrow,
+QToolButton::menu-indicator {
+    height: 8px;
+    image: url(assets/dark/chevron-down.svg);
+    subcontrol-origin: padding;
+    subcontrol-position: center right;
+    width: 8px;
+}
+
 /* ---------- inputs — §6.2 ---------- */
 
 QLineEdit,

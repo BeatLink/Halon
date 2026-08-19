@@ -89,8 +89,11 @@ function palette(scheme) {
     const active = {
         WindowText: t("text-body"),
         Button: t("surface-secondary"),
-        Light: t("border-default"),
-        Midlight: t("border-default"),
+    /* Light and Midlight are the bevel ramp's top: Qt reads them as lighter than
+       Button, so a border token here inverts the ramp and any app that fills a
+       surface with palette(light) gets a grey card instead of the raised one. */
+        Light: t("surface-default"),
+        Midlight: t("surface-default"),
         Dark: t("text-tertiary"),
         Mid: t("border-hover"),
         Text: t("text-body"),
@@ -342,6 +345,28 @@ QToolBar > QToolButton {
 QToolBar > QToolButton:hover {
     border-color: ${t("surface-navigation-hover")};
     color: ${t("text-heading")};
+}
+
+/* A split tool button's menu half is a sub-control, and the style-sheet engine
+   paints it as a black block wherever the sheet styles QToolButton but leaves
+   the sub-control unnamed. The padding is what reserves room for it. */
+QToolButton[popupMode="1"] {
+    padding-right: 18px;
+}
+
+QToolButton::menu-button {
+    background-color: transparent;
+    border: none;
+    width: 14px;
+}
+
+QToolButton::menu-arrow,
+QToolButton::menu-indicator {
+    height: 8px;
+    image: url(${assets}/chevron-down.svg);
+    subcontrol-origin: padding;
+    subcontrol-position: center right;
+    width: 8px;
 }
 
 /* ---------- inputs — §6.2 ---------- */
