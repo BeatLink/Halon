@@ -180,6 +180,15 @@ QToolButton::menu-indicator {
     width: 8px;
 }
 
+/* A line edit's action icons are tool buttons, and Qt positions them for the
+   height it means to give them but then lets a minimum clamp make them taller,
+   which drops the icon below the field's centre. Waiving the minimum here is
+   what lets the button keep the height the position was computed from. */
+QLineEdit > QToolButton {
+    min-height: 0px;
+    min-width: 0px;
+}
+
 /* ---------- inputs — §6.2 ---------- */
 
 QLineEdit,
