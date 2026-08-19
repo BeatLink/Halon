@@ -1,0 +1,53 @@
+[Plymouth Theme]
+Name=Halon
+Description=Slate and blue boot splash: a pulsing mark, status messages beneath it, and a quiet accent progress bar
+ModuleName=two-step
+
+[two-step]
+ImageDir=@THEME_DIR@
+Font=DejaVu Sans 14
+TitleFont=DejaVu Sans 16
+
+BackgroundStartColor=0x060b14
+BackgroundEndColor=0x060b14
+
+HorizontalAlignment=.5
+VerticalAlignment=.40
+Transition=fade-over
+TransitionDuration=6.0
+MessageBelowAnimation=true
+
+ProgressBarWidth=400
+ProgressBarHeight=6
+ProgressBarHorizontalAlignment=.5
+ProgressBarVerticalAlignment=.62
+ProgressBarBackgroundColor=0x334155
+ProgressBarForegroundColor=0x60a5fa
+
+DialogHorizontalAlignment=.5
+DialogVerticalAlignment=.5
+DialogClearsFirmwareBackground=false
+
+[boot-up]
+UseAnimation=true
+UseEndAnimation=false
+UseFirmwareBackground=false
+SuppressMessages=false
+ProgressBarShowPercentComplete=false
+UseProgressBar=true
+
+[shutdown]
+UseAnimation=true
+UseEndAnimation=false
+UseFirmwareBackground=false
+SuppressMessages=true
+ProgressBarShowPercentComplete=false
+UseProgressBar=true
+
+[reboot]
+UseAnimation=true
+UseEndAnimation=false
+UseFirmwareBackground=false
+SuppressMessages=true
+ProgressBarShowPercentComplete=false
+UseProgressBar=true

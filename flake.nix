@@ -270,6 +270,38 @@
             };
           };
 
+          # The pulse is baked at build time: 360 frames of a cosine opacity sweep,
+          # which two-step plays at 30fps for a 12-second cycle.
+          halon-plymouth-theme = pkgs.stdenvNoCC.mkDerivation {
+            pname = "halon-plymouth-theme";
+            version = "1.0.0";
+            src = ./plymouth;
+            nativeBuildInputs = [ pkgs.librsvg pkgs.imagemagick pkgs.gawk ];
+            dontBuild = true;
+            installPhase = ''
+              theme=$out/share/plymouth/themes/halon
+              mkdir -p "$theme"
+
+              rsvg-convert -w 220 logo.svg -o logo.png
+              for i in $(seq 1 360); do
+                alpha=$(awk -v i="$i" 'BEGIN { pi = atan2(0, -1); printf "%.4f", 0.675 + 0.325 * cos(2 * pi * (i - 1) / 360) }')
+                magick logo.png -channel A -evaluate multiply "$alpha" +channel \
+                  "$theme/throbber-$(printf '%04d' "$i").png"
+              done
+
+              rsvg-convert -w 280 entry.svg -o "$theme/entry.png"
+              rsvg-convert -h 22 lock.svg -o "$theme/lock.png"
+              rsvg-convert -w 10 bullet.svg -o "$theme/bullet.png"
+              rsvg-convert -h 22 capslock.svg -o "$theme/capslock.png"
+
+              substitute halon.plymouth "$theme/halon.plymouth" --replace-fail "@THEME_DIR@" "$theme"
+            '';
+            meta = {
+              description = "Slate and blue Plymouth boot splash; pulsing mark, status messages, accent progress bar";
+              platforms = nixpkgs.lib.platforms.linux;
+            };
+          };
+
           # web-greeter scans its own prefix for theme directories, so the whole
           # theme installs under one name; the preview copy is left behind.
           halon-lightdm-theme = pkgs.stdenvNoCC.mkDerivation {
