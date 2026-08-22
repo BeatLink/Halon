@@ -164,6 +164,7 @@
             node "$root/scripts/build-firefox.mjs" "$@"
             node "$root/scripts/build-qt.mjs" "$@"
             node "$root/scripts/build-lightdm.mjs" "$@"
+            node "$root/scripts/build-tokens.mjs" "$@"
           '';
         };
 
@@ -228,6 +229,11 @@
               mkdir -p "$out/share/vscode/extensions/halon.halon-theme"
               cp -r . "$out/share/vscode/extensions/halon.halon-theme/"
             '';
+            # nixpkgs' extension machinery reads these off the derivation, and a plain one has no manifest to infer them from
+            passthru = {
+              vscodeExtUniqueId = "halon.halon-theme";
+              vscodeExtPublisher = "halon";
+            };
             meta = {
               description = "Slate and blue VS Code theme; recessed chrome, raised content";
             };
@@ -304,7 +310,7 @@
 
           # web-greeter scans its own prefix for theme directories, so the whole
           # theme installs under one name; the preview copy is left behind.
-          halon-lightdm-theme = pkgs.stdenvNoCC.mkDerivation {
+          halon-lightdm-theme = pkgs.stdenvNoCC.mkDerivation (finalAttrs: {
             pname = "halon-lightdm-theme";
             version = "1.0.0";
             src = ./lightdm;
@@ -313,9 +319,27 @@
               mkdir -p "$out/share/web-greeter/themes/halon"
               cp index.yml index.html tokens.css style.css greeter.js "$out/share/web-greeter/themes/halon/"
             '';
+            # web-greeter's theme key takes a path when the theme lives outside its own prefix, as this one does
+            passthru.themePath = "${finalAttrs.finalPackage}/share/web-greeter/themes/halon";
             meta = {
               description = "Slate and blue LightDM web greeter theme";
               platforms = nixpkgs.lib.platforms.linux;
+            };
+          });
+
+          # The tokens as data. Nix consumers should prefer the `tokens` output, which
+          # is the same JSON already parsed; this exists for anything reading a path.
+          halon-tokens = pkgs.stdenvNoCC.mkDerivation {
+            pname = "halon-tokens";
+            version = "1.0.0";
+            src = ./tokens.json;
+            dontUnpack = true;
+            dontBuild = true;
+            installPhase = ''
+              install -Dm644 "$src" "$out/share/halon/tokens.json"
+            '';
+            meta = {
+              description = "Halon's colour tokens for both schemes, as JSON";
             };
           };
 
@@ -397,6 +421,10 @@
         halon-theme = self.packages.${final.stdenv.hostPlatform.system}.halon-theme;
       };
 
+      # Both schemes' colours, resolved and hexified, so a consumer theming something
+      # Halon has no stylesheet for reads the palette instead of transcribing it.
+      tokens = nixpkgs.lib.importJSON ./tokens.json;
+
       # NixOS: `imports = [ halon.nixosModules.default ];  themes.halon.enable = true;`
       nixosModules.default = { config, lib, pkgs, ... }: {
         options.themes.halon.enable = lib.mkEnableOption "the Halon GTK and Cinnamon theme";
@@ -410,7 +438,22 @@
       # setDefaults additionally selects Halon for GTK and the Cinnamon shell.
       homeManagerModules.default = { config, lib, pkgs, ... }:
         let cfg = config.themes.halon;
-            pkg = self.packages.${pkgs.stdenv.hostPlatform.system}.halon-theme;
+            packages = self.packages.${pkgs.stdenv.hostPlatform.system};
+            pkg = packages.halon-theme;
+            qtPkg = packages.halon-qt-theme;
+
+            # Fusion is what the style sheet is written against; it assumes Fusion's
+            # element structure for everything it does not restyle.
+            qtctConf = qtct: ''
+              [Appearance]
+              custom_palette=true
+              color_scheme_path=${qtPkg}/share/${qtct}/colors/Halon.conf
+              style=Fusion
+              standard_dialogs=default
+
+              [Interface]
+              stylesheets=${qtPkg}/share/halon/qt/Halon.qss
+            '';
         in {
           options.themes.halon = {
             enable = lib.mkEnableOption "the Halon GTK and Cinnamon theme";
@@ -419,18 +462,31 @@
               default = true;
               description = "Select Halon as the GTK theme and Cinnamon shell theme.";
             };
+            # Independent of enable: a session can be Halon in Qt without Halon in GTK
+            qt = lib.mkEnableOption ''
+              the Halon Qt colour scheme and style sheet, written as qt5ct and qt6ct
+              configuration. Qt must be pointed at those platform themes separately,
+              with NixOS' qt.platformTheme or home-manager's qt.platformTheme.name'';
           };
-          config = lib.mkIf cfg.enable {
-            home.packages = [ pkg ];
-            gtk = lib.mkIf cfg.setDefaults {
-              enable = true;
-              theme = { name = "Halon"; package = pkg; };
-            };
-            dconf.settings = lib.mkIf cfg.setDefaults {
-              "org/cinnamon/theme".name = "Halon";
-              "org/cinnamon/desktop/interface".gtk-theme = "Halon";
-            };
-          };
+          config = lib.mkMerge [
+            (lib.mkIf cfg.enable {
+              home.packages = [ pkg ];
+              gtk = lib.mkIf cfg.setDefaults {
+                enable = true;
+                theme = { name = "Halon"; package = pkg; };
+              };
+              dconf.settings = lib.mkIf cfg.setDefaults {
+                "org/cinnamon/theme".name = "Halon";
+                "org/cinnamon/desktop/interface".gtk-theme = "Halon";
+              };
+            })
+            (lib.mkIf cfg.qt {
+              xdg.configFile = {
+                "qt5ct/qt5ct.conf".text = qtctConf "qt5ct";
+                "qt6ct/qt6ct.conf".text = qtctConf "qt6ct";
+              };
+            })
+          ];
         };
     };
 }
