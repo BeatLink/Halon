@@ -1728,7 +1728,7 @@ stage {
 
 #panel {
     background-color: #060b14;
-    color: #7dabf5;
+    color: #ffffff;
     border: none;
     font-size: 13px;
 }
@@ -1754,7 +1754,7 @@ stage {
    ========================================================================== */
 
 .applet-box {
-    color: #7dabf5;
+    color: #ffffff;
     padding: 0 6px;
     border-radius: 6px;
     transition-duration: 120ms;
@@ -1778,7 +1778,7 @@ stage {
 
 .panel-status-button {
     border: none;
-    color: #7dabf5;
+    color: #ffffff;
 }
 
 /* ==========================================================================
@@ -1793,7 +1793,7 @@ stage {
 
 .grouped-window-list-item-box,
 .window-list-item-box {
-    color: #7dabf5;
+    color: #ffffff;
     border-radius: 6px;
     padding: 1px 8px;
     margin: 2px 1px;
@@ -2265,7 +2265,7 @@ stage {
 }
 
 .workspace-button {
-    color: #7dabf5;
+    color: #ffffff;
     border-radius: 6px;
     padding: 2px 6px;
 }

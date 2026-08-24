@@ -137,7 +137,7 @@ That mapping is a translation table, not a third layer. It contains no colors an
     --text-body:                 #e2e8f0;
     --text-secondary:            #cbd5e1;
     --text-tertiary:             #94a3b8;
-    --text-on-navigation:        #7dabf5;  /* the frame is near-black here, so its label is blue */
+    --text-on-navigation:        #ffffff;  /* the frame is near-black here, so its label is pure white */
 
     --text-on-fill:              #0b1220;  /* dark-mode fills are light, so this inverts */
 
@@ -177,7 +177,7 @@ and `--border-focus` are derived from other tokens, so they flip for free.
 | `--text-body`                | `#1a1a2e`             | `#e2e8f0`              | Body text                                |
 | `--text-secondary`           | `#475569`             | `#cbd5e1`              | Secondary text, icons, section labels    |
 | `--text-tertiary`            | `#64748b`             | `#94a3b8`              | Placeholders, shortcut hints             |
-| `--text-on-navigation`       | `#475569`             | `#7dabf5`              | Text and icons on the frame at rest      |
+| `--text-on-navigation`       | `#475569`             | `#ffffff`              | Text and icons on the frame at rest      |
 | `--text-on-fill`             | `#fff`                | `#0b1220`              | Text on a solid accent or status chip    |
 | `--text-on-light`            | `#0f172a`             | `#0f172a`              | Text on a fill that is light in both     |
 | `--border-default`           | `#e2e8f0`             | `#334155`              | Decorative hairlines                     |
@@ -791,8 +791,8 @@ flip:
    fills and are not covered by this rule — text on the frame comes off the ordinary ramp.
 4. **The frame follows the secondary surface down.** `#f1f5f9 → #060b14`, which is darker than the
    content surface it wraps, exactly as it was lighter-side-recessed in light mode. Its label color
-   is the one thing that does not simply invert: `--text-on-navigation` goes from slate-600 to a
-   light blue, because on near-black a slate label reads as disabled.
+   is the one thing that does not simply invert: `--text-on-navigation` goes from slate-600 to
+   pure white, because on near-black a slate label reads as disabled.
 5. **Translucent values gain a lot of alpha.** Focus ring `.15 → .28`; shadow opacity `.15 → .5`.
 6. **The overlay switches from tinted to neutral.** `rgba(15,23,42,.45)` → `rgba(0,0,0,.6)`.
 
@@ -882,7 +882,7 @@ text and non-text interface elements. Ratios are computed from the §3.1 values.
 | `--status-warning-text` | `--surface-secondary` | 4.73 | 9.18 |
 | `--text-on-fill` | `--status-danger` | 4.83 | 6.77 |
 | `--text-on-fill` | `--badge-experimental` | 5.70 | 6.88 |
-| `--text-on-navigation` | `--surface-navigation` | 6.92 | 8.46 |
+| `--text-on-navigation` | `--surface-navigation` | 6.92 | 19.71 |
 | `--text-heading` (frame hover, toasts) | `--surface-navigation-hover` | 14.48 | 16.50 |
 | `--accent` (focus boundary in the frame) | `--surface-navigation-hover` | 4.19 | 6.79 |
 | `--syntax-type` | `--surface-default` (code) | 5.36 | 8.85 |

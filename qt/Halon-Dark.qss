@@ -43,7 +43,7 @@ QMenuBar,
 QToolBar,
 QStatusBar {
     background-color: #060b14;
-    color: #7dabf5;
+    color: #ffffff;
     border: none;
 }
 
@@ -65,7 +65,7 @@ QStatusBar::item {
 
 QMenuBar::item {
     background-color: transparent;
-    color: #7dabf5;
+    color: #ffffff;
     padding: 6px 9px;
     border-radius: 5px;
 }
@@ -150,7 +150,7 @@ QToolButton:checked {
 
 /* In the frame, a tool button takes the frame's own label colour. */
 QToolBar > QToolButton {
-    color: #7dabf5;
+    color: #ffffff;
 }
 
 QToolBar > QToolButton:hover {
@@ -584,7 +584,7 @@ QTabBar::tab {
     border: 1px solid transparent;
     border-top-left-radius: 8px;
     border-top-right-radius: 8px;
-    color: #7dabf5;
+    color: #ffffff;
     margin: 3px 1px;
     min-height: 20px;
     padding: 4px 10px;

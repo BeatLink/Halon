@@ -118,7 +118,7 @@ Every pair this port introduces beyond the guide's §10 table, measured against 
 | Foreground | Background | Light | Dark |
 | ---------- | ---------- | ----- | ---- |
 | `--text-heading` (address bar text) | `--surface-navigation-hover` | 14.48 | 16.50 |
-| `--text-on-navigation` (frame at rest) | `--surface-navigation` | 6.92 | 8.46 |
+| `--text-on-navigation` (frame at rest) | `--surface-navigation` | 6.92 | 19.71 |
 | `--accent` (focused field border) | `--surface-navigation-hover` | 4.19 | 6.79 |
 | `--accent` (tab line, attention icons) | `--surface-navigation` | 4.72 | 7.75 |
 

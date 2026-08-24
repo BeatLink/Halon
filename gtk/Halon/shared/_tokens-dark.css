@@ -13,7 +13,7 @@
 @define-color text-body                #e2e8f0;
 @define-color text-secondary           #cbd5e1;
 @define-color text-tertiary            #94a3b8;
-@define-color text-on-navigation       #7dabf5;
+@define-color text-on-navigation       #ffffff;
 
 /* Text on fills — only the inverting one changes, see §3.5 */
 @define-color text-on-fill             #0b1220;
