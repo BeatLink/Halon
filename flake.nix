@@ -510,15 +510,18 @@
 
             # Fusion is what the style sheet is written against; it assumes Fusion's
             # element structure for everything it does not restyle.
+            # Both artifacts are per-scheme, and they have to agree: a light palette under a
+            # dark style sheet leaves every widget the sheet does not name painting white
+            qtName = if cfg.qtScheme == "dark" then "Halon-Dark" else "Halon";
             qtctConf = qtct: ''
               [Appearance]
               custom_palette=true
-              color_scheme_path=${qtPkg}/share/${qtct}/colors/Halon.conf
+              color_scheme_path=${qtPkg}/share/${qtct}/colors/${qtName}.conf
               style=Fusion
               standard_dialogs=default
 
               [Interface]
-              stylesheets=${qtPkg}/share/halon/qt/Halon.qss
+              stylesheets=${qtPkg}/share/halon/qt/${qtName}.qss
             '';
         in {
           options.themes.halon = {
@@ -533,6 +536,15 @@
               the Halon Qt colour scheme and style sheet, written as qt5ct and qt6ct
               configuration. Qt must be pointed at those platform themes separately,
               with NixOS' qt.platformTheme or home-manager's qt.platformTheme.name'';
+            qtScheme = lib.mkOption {
+              type = lib.types.enum [ "light" "dark" ];
+              default = "light";
+              description = ''
+                Which scheme the Qt colour scheme and style sheet use. Qt has no
+                equivalent of the GTK dark preference, so the scheme is chosen here
+                rather than followed at runtime.
+              '';
+            };
             # Also independent of enable, and set by environment rather than by writing
             # ~/.lmmsrc.xml, which LMMS rewrites wholesale whenever its settings change
             lmms = lib.mkEnableOption ''
