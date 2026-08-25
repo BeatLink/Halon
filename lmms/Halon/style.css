@@ -1,0 +1,1236 @@
+/* Halon for LMMS — GENERATED FILE. Built from gtk/Halon/shared/_tokens-dark.css by scripts/build-lmms.mjs. */
+
+/* ---------------------------------------------------------------------- palette ---------------------------------------------------------------------- */
+
+/* LMMS builds its QPalette from this widget, so it is what every control with no rule below lands on. */
+lmms--gui--LmmsPalette {
+	qproperty-background: #060b14;
+	qproperty-windowText: #e2e8f0;
+	qproperty-base: #16213a;
+	qproperty-text: #e2e8f0;
+	qproperty-button: #101b2d;
+	qproperty-buttonText: #e2e8f0;
+	qproperty-brightText: #f8fafc;
+	qproperty-shadow: #0f172a;
+	qproperty-highlight: #60a5fa;
+	qproperty-highlightedText: #0b1220;
+}
+
+QLabel, QTreeWidget, QListWidget, QGroupBox, QMenuBar, QCheckBox {
+	color: #e2e8f0;
+}
+
+/* The desk behind the editor windows is the outermost chrome, one step back from every canvas on it. */
+QMdiArea {
+	background-color: #060b14;
+}
+
+/* ---------------------------------------------------------------------- text and lists ---------------------------------------------------------------------- */
+
+QTreeView {
+	outline: none;
+	alternate-background-color: #060b14;
+}
+
+QTreeWidget::item {
+	padding: 5px 8px;
+	border-radius: 6px;
+}
+
+QTreeWidget::item:hover,
+QTreeWidget::branch:hover {
+	background-color: #101b2d;
+	color: #f8fafc;
+	padding-left: 0px;
+}
+
+QTreeWidget::item:selected,
+QTreeWidget::branch:selected {
+	background-color: #60a5fa;
+	color: #0b1220;
+	padding-left: 0px;
+}
+
+QTreeView::branch:has-children:open {
+	border-image: url("resources:open_branch.png") 0;
+}
+
+QTreeView::branch:has-children:closed {
+	border-image: url("resources:closed_branch.png") 0;
+}
+
+lmms--gui--FileBrowser QCheckBox {
+	font-size: 8pt;
+	color: #e2e8f0;
+}
+
+/* ---------------------------------------------------------------------- inputs ---------------------------------------------------------------------- */
+
+/* §6.2 — a hairline and the content surface at rest, the border asserting itself on focus. */
+QLineEdit {
+	border: 1px solid #334155;
+	border-radius: 8px;
+	padding: 4px 11px;
+	background: #16213a;
+	color: #e2e8f0;
+	selection-background-color: #60a5fa;
+	selection-color: #0b1220;
+}
+
+QLineEdit:hover {
+	border: 1px solid #60a5fa;
+}
+
+QLineEdit:focus {
+	border: 1px solid #60a5fa;
+}
+
+QLineEdit:read-only {
+	border: 1px solid transparent;
+	background: transparent;
+}
+
+QTextEdit, QLineEdit:focus, QComboBox:focus, QSpinBox:focus, QDoubleSpinBox:focus {
+	color: #e2e8f0;
+	selection-background-color: #60a5fa;
+	selection-color: #0b1220;
+}
+
+/* ---------------------------------------------------------------------- overlays ---------------------------------------------------------------------- */
+
+/* §6.6 — transient overlays belong to the frame rather than the page. */
+QToolTip {
+	border: 1px solid #334155;
+	border-radius: 8px;
+	padding: 4px 8px;
+	background: #060b14;
+	color: #f8fafc;
+}
+
+lmms--gui--TextFloat, lmms--gui--SimpleTextFloat {
+	background: #060b14;
+	color: #f8fafc;
+}
+
+QSplashScreen QLabel {
+	color: #f8fafc;
+}
+
+QMenu {
+	border: 1px solid #334155;
+	background-color: #16213a;
+	padding: 5px;
+}
+
+QMenu::separator {
+	height: 1px;
+	background: #334155;
+	margin: 4px 0px;
+}
+
+QMenu::item {
+	color: #e2e8f0;
+	padding: 6px 32px 6px 22px;
+	margin: 1px 0px;
+	border-radius: 5px;
+}
+
+QMenu::item:selected {
+	color: #0b1220;
+	background-color: #60a5fa;
+}
+
+QMenu::item:disabled {
+	color: #94a3b8;
+	background-color: transparent;
+}
+
+QMenu::icon {
+	margin: 3px;
+}
+
+QMenu::indicator {
+	width: 16;
+	height: 16;
+	opacity: 0;
+	border: 1px solid #64748b;
+	border-radius: 4px;
+	background-color: #16213a;
+}
+
+QMenu::indicator:checked {
+	image: url("resources:apply.png");
+}
+
+QMenu::indicator:selected {
+	image: url("resources:apply-selected.png");
+	border: 1px solid #60a5fa;
+	background-color: #16213a;
+}
+
+/* ---------------------------------------------------------------------- generic controls ---------------------------------------------------------------------- */
+
+/* LMMS styles its own widgets and leaves the rest to Qt, so dialogs need §4 and §6 spelled out here. */
+QDialog, QMessageBox {
+	background: #16213a;
+}
+
+QMenuBar {
+	background: #060b14;
+	padding: 2px 4px;
+}
+
+QMenuBar::item {
+	background: transparent;
+	color: #ffffff;
+	padding: 5px 9px;
+	border-radius: 6px;
+}
+
+QMenuBar::item:selected {
+	background: #101b2d;
+	color: #f8fafc;
+}
+
+QPushButton {
+	color: #e2e8f0;
+	background: transparent;
+	border: 1px solid #334155;
+	border-radius: 8px;
+	padding: 5px 14px;
+	font-weight: 500;
+}
+
+QPushButton:hover {
+	border: 1px solid #60a5fa;
+	color: #f8fafc;
+}
+
+QPushButton:pressed, QPushButton:default {
+	color: #0b1220;
+	background: #60a5fa;
+	border: 1px solid #60a5fa;
+}
+
+QPushButton:disabled {
+	color: #94a3b8;
+	background: transparent;
+	border: 1px solid #334155;
+}
+
+/* §6.3 — a closed select is an action affordance, so it is ghosted and its text takes the accent. */
+QComboBox {
+	background-color: transparent;
+	border: 1px solid #334155;
+	border-radius: 8px;
+	padding: 4px 8px;
+	color: #60a5fa;
+	font-weight: 500;
+}
+
+QComboBox:hover {
+	border: 1px solid #60a5fa;
+}
+
+QComboBox::drop-down {
+	border: none;
+	width: 20px;
+}
+
+QComboBox QAbstractItemView {
+	background: #16213a;
+	border: 1px solid #334155;
+	color: #e2e8f0;
+	selection-background-color: #60a5fa;
+	selection-color: #0b1220;
+	outline: none;
+}
+
+QSpinBox, QDoubleSpinBox {
+	background: #16213a;
+	border: 1px solid #334155;
+	border-radius: 8px;
+	padding: 4px 6px;
+	color: #e2e8f0;
+}
+
+QSpinBox:hover, QDoubleSpinBox:hover,
+QSpinBox:focus, QDoubleSpinBox:focus {
+	border: 1px solid #60a5fa;
+}
+
+/* §6.2 — toggles are the exception that keeps a 3:1 boundary, because the border is the control. */
+QCheckBox::indicator, QRadioButton::indicator, QGroupBox::indicator {
+	width: 14px;
+	height: 14px;
+	border: 1px solid #64748b;
+	background: #16213a;
+}
+
+QCheckBox::indicator, QGroupBox::indicator {
+	border-radius: 4px;
+}
+
+QRadioButton::indicator {
+	border-radius: 8px;
+}
+
+QCheckBox::indicator:hover, QRadioButton::indicator:hover, QGroupBox::indicator:hover {
+	border: 1px solid #60a5fa;
+}
+
+QCheckBox::indicator:checked, QRadioButton::indicator:checked, QGroupBox::indicator:checked {
+	background: #60a5fa;
+	border: 1px solid #60a5fa;
+}
+
+QCheckBox:disabled, QRadioButton:disabled {
+	color: #94a3b8;
+}
+
+QTabWidget::pane {
+	background: #16213a;
+	border: 1px solid #334155;
+	border-radius: 8px;
+}
+
+QTabBar::tab {
+	background: transparent;
+	color: #ffffff;
+	border: 1px solid transparent;
+	border-radius: 8px;
+	padding: 5px 10px;
+	margin: 1px;
+}
+
+QTabBar::tab:hover {
+	background: #101b2d;
+	color: #f8fafc;
+}
+
+/* §6.4 — a selected tab is a raised card: fill, heading text and an accent edge together. */
+QTabBar::tab:selected {
+	background: #16213a;
+	border: 1px solid #334155;
+	border-bottom: 2px solid #60a5fa;
+	color: #f8fafc;
+}
+
+QHeaderView::section {
+	background: #060b14;
+	color: #cbd5e1;
+	border: none;
+	border-bottom: 1px solid #334155;
+	padding: 5px 12px;
+}
+
+QProgressBar {
+	background: #060b14;
+	border: none;
+	border-radius: 3px;
+	height: 6px;
+	text-align: center;
+	color: #e2e8f0;
+}
+
+QProgressBar::chunk {
+	background: #60a5fa;
+	border-radius: 3px;
+}
+
+QSplitter::handle {
+	background: transparent;
+}
+
+QSplitter::handle:hover {
+	background: #60a5fa;
+}
+
+/* ---------------------------------------------------------------------- editor canvases ---------------------------------------------------------------------- */
+
+lmms--gui--AutomationEditor {
+	color: #e2e8f0;
+	background-color: #16213a;
+	qproperty-backgroundShade: rgba(248, 250, 252, 10);
+	qproperty-nodeInValueColor: rgba(96, 165, 250, 153);
+	qproperty-nodeOutValueColor: rgba(248, 113, 113, 153);
+	qproperty-nodeTangentLineColor: #cbd5e1;
+	qproperty-crossColor: rgba(96, 165, 250, 153);
+	qproperty-lineColor: #334155;
+	qproperty-beatLineColor: #475569;
+	qproperty-barLineColor: #64748b;
+	qproperty-graphColor: rgba(167, 139, 250, 179);
+	qproperty-scaleColor: #060b14;
+	qproperty-ghostNoteColor: rgba(148, 163, 184, 128);
+	qproperty-detuningNoteColor: rgba(248, 113, 113, 128);
+	qproperty-ghostSampleColor: rgba(148, 163, 184, 128);
+}
+
+lmms--gui--PositionLine {
+	qproperty-tailGradient: true;
+	qproperty-lineColor: #f8fafc;
+	qproperty-recordingColor: #f87171;
+}
+
+lmms--gui--PianoRoll {
+	background-color: #16213a;
+	qproperty-backgroundShade: rgba(248, 250, 252, 8);
+	qproperty-noteModeColor: #60a5fa;
+	qproperty-noteColor: #60a5fa;
+	qproperty-stepNoteColor: #f87171;
+	qproperty-currentStepNoteColor: #f59e0b;
+	qproperty-noteTextColor: #0b1220;
+	qproperty-noteOpacity: 230;
+	qproperty-noteBorders: false;
+	qproperty-selectedNoteColor: #f8fafc;
+	qproperty-ghostNoteColor: #475569;
+	qproperty-ghostNoteTextColor: #f8fafc;
+	qproperty-ghostNoteOpacity: 90;
+	qproperty-ghostNoteBorders: false;
+	qproperty-barColor: #60a5fa;
+	qproperty-markedSemitoneColor: rgba(96, 165, 250, 36);
+	qproperty-knifeCutLine: #f87171;
+
+	/* Piano keys */
+	qproperty-whiteKeyWidth: 64;
+	qproperty-whiteKeyActiveTextColor: #0b1220;
+	qproperty-whiteKeyActiveTextShadow: rgba(248, 250, 252, 102);
+	qproperty-whiteKeyActiveBackground: #60a5fa;
+	qproperty-whiteKeyInactiveTextColor: #0f172a;
+	qproperty-whiteKeyInactiveTextShadow: rgba(248, 250, 252, 102);
+	qproperty-whiteKeyInactiveBackground: #e2e8f0;
+	qproperty-whiteKeyDisabledBackground: #94a3b8;
+	qproperty-blackKeyWidth: 48;
+	qproperty-blackKeyActiveBackground: #60a5fa;
+	qproperty-blackKeyInactiveBackground: #161e2b;
+	qproperty-blackKeyDisabledBackground: #334155;
+
+	/* Grid colors */
+	qproperty-lineColor: #334155;
+	qproperty-beatLineColor: #475569;
+	qproperty-barLineColor: #64748b;
+
+	/* Text on the white piano keys */
+	qproperty-textColor: #0f172a;
+	qproperty-textColorLight: #60a5fa;
+	qproperty-textShadow: rgba(248, 250, 252, 102);
+}
+
+lmms--gui--PianoView {
+	background-color: #16213a;
+}
+
+/* Song and pattern editor canvases are content, so they are raised off the frame around them. */
+lmms--gui--TrackContainerView QFrame {
+	background-color: #16213a;
+}
+
+lmms--gui--TrackContainerView QLabel {
+	background: none;
+}
+
+lmms--gui--TrackContentWidget {
+	/* colors */
+	qproperty-darkerColor: #101b2d;
+	qproperty-lighterColor: #16213a;
+	qproperty-coarseGridColor: #64748b;
+	qproperty-fineGridColor: #334155;
+	qproperty-horizontalColor: #334155;
+	qproperty-embossColor: rgba(0, 0, 0, 0);
+
+	/* line widths */
+	qproperty-coarseGridWidth: 1;
+	qproperty-fineGridWidth: 1;
+	qproperty-horizontalWidth: 1;
+	qproperty-embossWidth: 0;
+
+	/* positive offset shifts emboss to the right */
+	qproperty-embossOffset: 0;
+}
+
+/* Track controls frame the grid rather than carry it, so they take the recessed surface. */
+lmms--gui--TrackView > QWidget {
+	background-color: #060b14;
+}
+
+lmms--gui--TimeLineWidget {
+	font-size: 7pt;
+	min-height: 1.5em;
+	max-height: 1.5em;
+
+	qproperty-inactiveLoopColor: #334155;
+	qproperty-inactiveLoopBrush: #334155;
+	qproperty-inactiveLoopInnerColor: #334155;
+	qproperty-inactiveLoopHandleColor: rgba(148, 163, 184, 128);
+
+	qproperty-activeLoopColor: #60a5fa;
+	qproperty-activeLoopBrush: #60a5fa;
+	qproperty-activeLoopInnerColor: #60a5fa;
+	qproperty-activeLoopHandleColor: rgba(248, 250, 252, 204);
+
+	qproperty-loopRectangleVerticalPadding: 1;
+	qproperty-loopHandleWidth: 8;
+
+	qproperty-barLineColor: #94a3b8;
+	qproperty-barNumberColor: #cbd5e1;
+}
+
+/* ---------------------------------------------------------------------- clips ---------------------------------------------------------------------- */
+
+lmms--gui--ClipView {
+	qproperty-mutedColor: rgba(148, 163, 184, 140);
+	qproperty-mutedBackgroundColor: #101b2d;
+	qproperty-selectedColor: #60a5fa;
+	qproperty-patternClipBackground: #101b2d;
+	qproperty-textColor: #0b1220;
+	qproperty-textBackgroundColor: rgba(0, 0, 0, 0);
+	qproperty-textShadowColor: rgba(0, 0, 0, 0);
+	qproperty-gradient: false;
+	qproperty-markerColor: rgba(11, 18, 32, 128);
+	font-size: 11px;
+}
+
+lmms--gui--MidiClipView {
+	background-color: #4ade80;
+	color: #0b1220;
+
+	qproperty-noteFillColor: rgba(11, 18, 32, 217);
+	qproperty-noteBorderColor: #4ade80;
+	qproperty-mutedNoteFillColor: rgba(148, 163, 184, 217);
+	qproperty-mutedNoteBorderColor: #101b2d;
+}
+
+lmms--gui--SampleClipView {
+	background-color: #fcd34d;
+	color: #0b1220;
+}
+
+lmms--gui--AutomationClipView {
+	background-color: #a78bfa;
+	color: rgba(11, 18, 32, 179);
+}
+
+lmms--gui--PatternClipView {
+	background-color: #22d3ee;
+	qproperty-emptyTrackHeightRatio: 0.5;
+	qproperty-verticalPadding: 0.15;
+	qproperty-noteVerticalSpacing: 0.2;
+	qproperty-noteHorizontalSpacing: 0.2;
+	qproperty-noteColor: #0b1220;
+}
+
+/* ---------------------------------------------------------------------- scroll bars ---------------------------------------------------------------------- */
+
+/* §6.8 — transparent track, a border-hover thumb that brightens under the pointer. */
+QScrollBar:horizontal {
+	background: transparent;
+	border: none;
+	height: 10px;
+	margin: 0px 10px;
+}
+
+QScrollBar:vertical {
+	background: transparent;
+	border: none;
+	width: 10px;
+	margin: 10px 0px;
+}
+
+QScrollBar::add-page, QScrollBar::sub-page {
+	background: none;
+}
+
+QScrollBar::handle:horizontal {
+	background: #475569;
+	border: 3px solid transparent;
+	border-radius: 5px;
+	min-width: 24px;
+}
+
+QScrollBar::handle:vertical {
+	background: #475569;
+	border: 3px solid transparent;
+	border-radius: 5px;
+	min-height: 24px;
+}
+
+QScrollBar::handle:hover, QScrollBar::handle:pressed {
+	background: #94a3b8;
+}
+
+QScrollBar::handle:disabled {
+	background: transparent;
+}
+
+lmms--gui--EffectRackView QScrollBar::handle:vertical:disabled {
+	background: #334155;
+	border: 3px solid transparent;
+	border-radius: 5px;
+}
+
+QScrollBar::add-line, QScrollBar::sub-line {
+	background: transparent;
+	border: none;
+	border-radius: 0px;
+	subcontrol-origin: margin;
+}
+
+QScrollBar::add-line:horizontal	{ subcontrol-position: right; width: 10px; }
+QScrollBar::sub-line:horizontal	{ subcontrol-position: left; width: 10px; }
+QScrollBar::add-line:vertical	{ subcontrol-position: bottom; height: 10px; }
+QScrollBar::sub-line:vertical	{ subcontrol-position: top; height: 10px; }
+
+QScrollBar::add-line:hover, QScrollBar::sub-line:hover,
+QScrollBar::add-line:pressed, QScrollBar::sub-line:pressed,
+QScrollBar::add-line:disabled, QScrollBar::sub-line:disabled {
+	background: transparent;
+}
+
+QScrollBar::left-arrow:horizontal, QScrollBar::right-arrow:horizontal,
+QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical {
+	border: none;
+	background-color: none;
+	width: 5px;
+	height: 5px;
+}
+
+QScrollBar::left-arrow:horizontal, QScrollBar::right-arrow:horizontal {
+	margin-top: 3px;
+}
+
+QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical {
+	margin-left: 3px;
+}
+
+QScrollBar::left-arrow:horizontal { background-image: url("resources:sbarrow_left.png"); }
+QScrollBar::right-arrow:horizontal { background-image: url("resources:sbarrow_right.png"); }
+QScrollBar::up-arrow:vertical { background-image: url("resources:sbarrow_up.png"); }
+QScrollBar::down-arrow:vertical { background-image: url("resources:sbarrow_down.png"); }
+QScrollBar::left-arrow:horizontal:disabled { background-image: url("resources:sbarrow_left_d.png"); }
+QScrollBar::right-arrow:horizontal:disabled { background-image: url("resources:sbarrow_right_d.png"); }
+QScrollBar::up-arrow:vertical:disabled { background-image: url("resources:sbarrow_up_d.png"); }
+QScrollBar::down-arrow:vertical:disabled { background-image: url("resources:sbarrow_down_d.png"); }
+lmms--gui--EffectRackView QScrollBar::up-arrow:vertical:disabled { background-image: url("resources:sbarrow_up.png"); }
+lmms--gui--EffectRackView QScrollBar::down-arrow:vertical:disabled { background-image: url("resources:sbarrow_down.png"); }
+
+/* ---------------------------------------------------------------------- buttons ---------------------------------------------------------------------- */
+
+/* §6.1 — the default weight: transparent with a neutral hairline, accent border on hover. */
+QPushButton#btn {
+	color: #e2e8f0;
+	padding: 4px 14px;
+	border: 1px solid #334155;
+	border-radius: 8px;
+	background: transparent;
+	font-weight: 500;
+}
+
+QPushButton#btn:hover {
+	border: 1px solid #60a5fa;
+	color: #f8fafc;
+}
+
+QPushButton#btn:pressed,
+QPushButton#btn:checked {
+	color: #0b1220;
+	border: 1px solid #60a5fa;
+	background: #60a5fa;
+}
+
+QPushButton#btn:disabled {
+	color: #94a3b8;
+	border: 1px solid #334155;
+}
+
+/* 20px = 1px border + 2px padding + 14px icon + 2px padding + 1px border */
+QPushButton#btn-mute,
+QPushButton#btn-mute-inv,
+QPushButton#btn-mute-inv:checked,
+QPushButton#btn-solo,
+lmms--gui--TrackOperationsWidget QPushButton {
+	padding: 2;
+	min-height: 14;
+	max-height: 14;
+	min-width: 14;
+	max-width: 14;
+}
+
+/* 16px = 1px border + 2px padding + 10px icon + 2px padding + 1px border */
+QPushButton#btn-stepper-down,
+QPushButton#btn-stepper-left,
+QPushButton#btn-stepper-right {
+	padding: 2;
+	min-height: 10;
+	max-height: 10;
+	min-width: 10;
+	max-width: 10;
+}
+
+/* §6.1's flat weight — these repeat once per track, so they carry no border until hovered. */
+QPushButton#btn-stepper-down,
+QPushButton#btn-stepper-left,
+QPushButton#btn-stepper-right,
+QPushButton#btn-mute,
+QPushButton#btn-mute-inv:checked,
+QPushButton#btn-solo,
+lmms--gui--TrackOperationsWidget QPushButton {
+	border: 1px solid transparent;
+	border-radius: 4px;
+	background: transparent;
+}
+
+QPushButton#btn-stepper-down::menu-indicator,
+QPushButton#btn-stepper-left::menu-indicator,
+QPushButton#btn-stepper-right::menu-indicator,
+lmms--gui--TrackOperationsWidget QPushButton::menu-indicator {
+	image: none;
+}
+
+lmms--gui--TrackOperationsWidget QPushButton {
+	image: url("resources:gear.svg");
+}
+
+QPushButton#btn-mute,
+QPushButton#btn-mute-inv:checked {
+	image: url("resources:speaker.svg");
+}
+
+QPushButton#btn-solo {
+	image: url("resources:headphones.svg");
+}
+
+QPushButton#btn-stepper-left {
+	image: url("resources:arrow-left.svg");
+}
+
+QPushButton#btn-stepper-right {
+	image: url("resources:arrow-right.svg");
+}
+
+QPushButton#btn-stepper-down {
+	image: url("resources:arrow-down.svg");
+}
+
+QPushButton#btn-stepper-down:hover,
+QPushButton#btn-stepper-left:hover,
+QPushButton#btn-stepper-right:hover,
+QPushButton#btn-mute:hover,
+QPushButton#btn-solo:hover,
+lmms--gui--TrackOperationsWidget QPushButton:hover {
+	border: 1px solid #334155;
+	background: transparent;
+}
+
+QPushButton#btn-stepper-down:pressed,
+QPushButton#btn-stepper-left:pressed,
+QPushButton#btn-stepper-right:pressed,
+lmms--gui--TrackOperationsWidget QPushButton:pressed {
+	border: 1px solid #60a5fa;
+	background: transparent;
+}
+
+/* Mute and solo are latched states, so they invert to a solid fill the way a status chip does. */
+QPushButton#btn-mute-inv,
+QPushButton#btn-mute:checked {
+	image: url("resources:speaker_slash.svg");
+	border: 1px solid #f87171;
+	background: #f87171;
+}
+
+QPushButton#btn-solo:checked {
+	border: 1px solid #60a5fa;
+	background: #60a5fa;
+}
+
+/* ---------------------------------------------------------------------- toolbars ---------------------------------------------------------------------- */
+
+/* §6.4 — every frame member is one surface; a strip of another colour between them is the tell. */
+QWidget#mainToolbar {
+	background: #060b14;
+	border-bottom: 1px solid #334155;
+}
+
+QToolBar {
+	background: #060b14;
+	border: none;
+	border-bottom: 1px solid #334155;
+	padding: 2px 8px;
+	spacing: 0;
+}
+
+QToolBar::separator {
+	border: none;
+	width: 8px;
+}
+
+QToolButton, QToolButton::menu-button {
+	margin: 1px;
+	padding: 3px;
+	border: 1px solid transparent;
+	border-radius: 6px;
+	background: transparent;
+	font-size: 10px;
+	color: #ffffff;
+}
+
+QToolButton:hover, QToolButton::menu-button:hover {
+	border: 1px solid #334155;
+	background: #101b2d;
+	color: #f8fafc;
+}
+
+QToolButton:pressed {
+	border: 1px solid #60a5fa;
+	background: #101b2d;
+}
+
+QToolButton:checked {
+	border: 1px solid #60a5fa;
+	background: rgba(96, 165, 250, 51);
+	color: #f8fafc;
+}
+
+QToolButton:checked:hover {
+	border: 1px solid #60a5fa;
+	background: rgba(96, 165, 250, 77);
+}
+
+QToolButton:disabled {
+	color: #94a3b8;
+}
+
+QToolButton[popupMode="1"] {
+	margin-right: 13px;
+	border-top-right-radius: 0;
+	border-bottom-right-radius: 0;
+}
+
+QToolButton::menu-button {
+	subcontrol-origin: margin;
+	width: 13px;
+	padding: 0;
+	border-top-left-radius: 0;
+	border-bottom-left-radius: 0;
+}
+
+/* The oscilloscope and CPU meter sit directly on the toolbar surface. */
+lmms--gui--Oscilloscope {
+	background: none;
+	border: none;
+	qproperty-leftChannelColor: #60a5fa;
+	qproperty-rightChannelColor: #22d3ee;
+	qproperty-otherChannelsColor: #a78bfa;
+	qproperty-clippingColor: #f87171;
+}
+
+lmms--gui--CPULoadWidget {
+	border: none;
+	background: url("resources:cpuload_bg.png");
+	qproperty-stepSize: 1;
+}
+
+/* Master volume and pitch, on the main toolbar. */
+lmms--gui--AutomatableSlider::groove:vertical {
+	background: #060b14;
+	border: 1px solid #334155;
+	border-radius: 2px;
+	width: 2px;
+	margin: 2px 2px;
+}
+
+lmms--gui--AutomatableSlider::handle:vertical {
+	background: none;
+	border-image: url("resources:main_slider.png");
+	width: 26px;
+	height: 10px;
+	border-radius: 2px;
+	margin: -4px -12px -2px;
+}
+
+lmms--gui--AutomatableSlider::groove:horizontal {
+	background: #060b14;
+	border: 1px solid #334155;
+	border-radius: 2px;
+	height: 2px;
+	margin: 2px;
+}
+
+lmms--gui--AutomatableSlider::handle:horizontal {
+	background: none;
+	border-image: url("resources:horizontal_slider.png");
+	width: 10px;
+	height: 26px;
+	border-radius: 2px;
+	margin: -12px -2px;
+}
+
+/* ---------------------------------------------------------------------- track labels and sidebar ---------------------------------------------------------------------- */
+
+lmms--gui--TrackLabelButton {
+	background-color: transparent;
+	border: 1px solid transparent;
+	color: #e2e8f0;
+	font-size: 11px;
+	font-weight: normal;
+	padding: 2px 4px;
+}
+
+lmms--gui--TrackLabelButton:hover {
+	background: #101b2d;
+	border: 1px solid #334155;
+	color: #f8fafc;
+}
+
+lmms--gui--TrackLabelButton:pressed {
+	background: #101b2d;
+	border: 1px solid #60a5fa;
+}
+
+/* §6.5 — the track you are on is a raised card, not a tinted row. */
+lmms--gui--TrackLabelButton:checked {
+	border: 1px solid #334155;
+	background: #16213a;
+	color: #f8fafc;
+}
+
+lmms--gui--TrackLabelButton:checked:pressed {
+	border: 1px solid #60a5fa;
+	background: #16213a;
+}
+
+lmms--gui--SideBar {
+	subcontrol-position: center;
+	background: #060b14;
+	border-right: 1px solid #334155;
+}
+
+lmms--gui--SideBar QToolButton {
+	background: none;
+	border: 1px solid transparent;
+	color: #ffffff;
+	font-size: 12px;
+}
+
+lmms--gui--SideBar QToolButton:hover {
+	background: #101b2d;
+	border: 1px solid transparent;
+	color: #f8fafc;
+	font-size: 12px;
+}
+
+lmms--gui--SideBar QToolButton:pressed {
+	background: #101b2d;
+	border: 1px solid #60a5fa;
+	font-size: 12px;
+}
+
+/* The open sidebar page is the tab-selection case: a raised fill plus an accent edge. */
+lmms--gui--SideBar QToolButton:checked {
+	background: #16213a;
+	border: 1px solid #334155;
+	border-left: 2px solid #60a5fa;
+	color: #f8fafc;
+	font-size: 12px;
+}
+
+lmms--gui--PluginDescWidget {
+	border: 1px solid transparent;
+	border-bottom: 1px solid #334155;
+	border-radius: 0px;
+	background-color: transparent;
+	color: #e2e8f0;
+	font-weight: bold;
+	margin: 0px;
+}
+
+lmms--gui--PluginDescWidget:hover {
+	background: #101b2d;
+	color: #f8fafc;
+}
+
+/* ---------------------------------------------------------------------- windows, tabs and panels ---------------------------------------------------------------------- */
+
+/* SubWindow paints its own title bar, so the gradient slots are given one flat frame colour each. */
+lmms--gui--SubWindow {
+	color: #060b14;
+	qproperty-activeColor: #101b2d;
+	qproperty-textShadowColor: rgba(0, 0, 0, 0);
+	qproperty-borderColor: #334155;
+}
+
+lmms--gui--SubWindow > QLabel {
+	color: #ffffff;
+	font-size: 12px;
+	font-style: normal;
+}
+
+lmms--gui--SubWindow > QPushButton {
+	background-color: transparent;
+	border: 1px solid transparent;
+	border-radius: 6px;
+}
+
+lmms--gui--SubWindow > QPushButton:hover {
+	background-color: rgba(248, 250, 252, 31);
+	border: 1px solid #334155;
+	border-radius: 6px;
+}
+
+lmms--gui--TabWidget {
+	background-color: #16213a;
+	qproperty-tabText: #ffffff;
+	qproperty-tabTitleText: #f8fafc;
+	qproperty-tabSelected: #16213a;
+	qproperty-tabTextSelected: #f8fafc;
+	qproperty-tabBackground: #060b14;
+	qproperty-tabBorder: #334155;
+}
+
+lmms--gui--GroupBox {
+	background-color: #16213a;
+}
+
+lmms--gui--EffectSelectDialog QScrollArea {
+	background: #16213a;
+}
+
+lmms--gui--SetupDialog QScrollArea {
+	border: 0px;
+}
+
+lmms--gui--EffectControlDialog QGroupBox {
+	background: #16213a;
+	margin-top: 1ex;
+	padding: 10px 2px 1px;
+	border-radius: 8px;
+	border: 1px solid #334155;
+}
+
+lmms--gui--EffectControlDialog QGroupBox::title {
+	subcontrol-origin: margin;
+	subcontrol-position: top center;
+	background: #16213a;
+	color: #cbd5e1;
+	border-radius: 4px;
+	border: none;
+	padding: 2px 6px;
+}
+
+lmms--gui--Sf2InstrumentView > QLabel {
+	font-size: 10px;
+}
+
+/* ---------------------------------------------------------------------- mixer ---------------------------------------------------------------------- */
+
+lmms--gui--MixerView QPushButton,
+lmms--gui--EffectRackView QPushButton,
+lmms--gui--ControllerRackView QPushButton {
+	font-size: 10px;
+}
+
+lmms--gui--MixerChannelView {
+	background: #060b14;
+	color: #e2e8f0;
+	qproperty-backgroundActive: #16213a;
+	qproperty-strokeOuterActive: #60a5fa;
+	qproperty-strokeOuterInactive: #334155;
+	qproperty-strokeInnerActive: #60a5fa;
+	qproperty-strokeInnerInactive: #060b14;
+}
+
+lmms--gui--MixerChannelView QGraphicsView {
+	background: transparent;
+	border-style: none;
+}
+
+lmms--gui--PeakIndicator {
+	background-color: #060b14;
+	font-size: 7pt;
+}
+
+/* The one place status colours mean what they say: a meter reading level against clipping. */
+lmms--gui--Fader {
+	qproperty-peakOk: #10b981;
+	qproperty-peakWarn: #f59e0b;
+	qproperty-peakClip: #f87171;
+}
+
+/* ---------------------------------------------------------------------- instrument graphs ---------------------------------------------------------------------- */
+
+lmms--gui--EnvelopeGraph {
+	qproperty-noAmountColor: #64748b;
+	qproperty-fullAmountColor: #60a5fa;
+	qproperty-markerFillColor: #f8fafc;
+	qproperty-markerOutlineColor: #060b14;
+}
+
+lmms--gui--LfoGraph {
+	qproperty-noAmountColor: #64748b;
+	qproperty-fullAmountColor: #60a5fa;
+}
+
+lmms--gui--VectorView {
+	qproperty-colorTrace: #60a5fa;
+	qproperty-colorGrid: rgba(51, 65, 85, 153);
+	qproperty-colorLabels: #94a3b8;
+}
+
+lmms--gui--BarModelEditor {
+	qproperty-backgroundBrush: #16213a;
+	qproperty-barBrush: #60a5fa;
+}
+
+lmms--gui--CompressorControlDialog {
+	qproperty-inVolAreaColor: rgba(226, 232, 240, 18);
+	qproperty-inVolColor: rgba(226, 232, 240, 102);
+	qproperty-outVolAreaColor: rgba(226, 232, 240, 31);
+	qproperty-outVolColor: rgba(226, 232, 240, 240);
+	qproperty-gainReductionColor: rgba(248, 113, 113, 209);
+	qproperty-kneeColor: #60a5fa;
+	qproperty-kneeColor2: #22d3ee;
+	qproperty-threshColor: rgba(96, 165, 250, 102);
+	qproperty-textColor: rgba(226, 232, 240, 128);
+	qproperty-graphColor: rgba(51, 65, 85, 204);
+	qproperty-resetColor: rgba(245, 158, 11, 204);
+	qproperty-backgroundColor: #060b14;
+}
+
+/* ---------------------------------------------------------------------- knobs ---------------------------------------------------------------------- */
+
+/* §1 — one accent. Every plugin's knobs read as the same control instead of a per-plugin hue. */
+lmms--gui--Knob {
+	color: #60a5fa;
+	qproperty-outerColor: #60a5fa;
+	qproperty-lineInactiveColor: #64748b;
+	qproperty-arcInactiveColor: rgba(100, 116, 139, 71);
+}
+
+lmms--gui--TripleOscillatorView lmms--gui--Knob {
+	qproperty-innerRadius: 2;
+	qproperty-outerRadius: 7;
+	qproperty-centerPointX: 13.0;
+	qproperty-centerPointY: 14.0;
+	qproperty-lineWidth: 2;
+}
+
+lmms--gui--KickerInstrumentView lmms--gui--Knob#smallKnob {
+	qproperty-innerRadius: 3;
+	qproperty-outerRadius: 11.0;
+	qproperty-centerPointX: 14.5;
+	qproperty-centerPointY: 14.5;
+	qproperty-lineWidth: 2;
+}
+
+lmms--gui--KickerInstrumentView lmms--gui--Knob#largeKnob {
+	qproperty-innerRadius: 12.0;
+	qproperty-outerRadius: 14.5;
+	qproperty-centerPointX: 17.0;
+	qproperty-centerPointY: 17.0;
+	qproperty-lineWidth: 3;
+}
+
+lmms--gui--AudioFileProcessorView lmms--gui--Knob {
+	qproperty-innerRadius: 4;
+	qproperty-outerRadius: 11.2;
+	qproperty-centerPointX: 18.5;
+	qproperty-centerPointY: 16.5;
+	qproperty-lineWidth: 3;
+}
+
+lmms--gui--OrganicInstrumentView lmms--gui--Knob {
+	qproperty-innerRadius: 2;
+	qproperty-outerRadius: 7.5;
+	qproperty-centerPointX: 10.5;
+	qproperty-centerPointY: 10.5;
+	qproperty-lineWidth: 1.5;
+}
+
+lmms--gui--OrganicInstrumentView lmms--gui--Knob#fx1Knob,
+lmms--gui--OrganicInstrumentView lmms--gui--Knob#volKnob {
+	qproperty-innerRadius: 4;
+	qproperty-outerRadius: 10.0;
+	qproperty-centerPointX: 18.5;
+	qproperty-centerPointY: 13.8;
+	qproperty-lineWidth: 2;
+}
+
+lmms--gui--Sf2InstrumentView lmms--gui--Knob {
+	qproperty-innerRadius: 2;
+	qproperty-outerRadius: 9.2;
+	qproperty-centerPointX: 15.5;
+	qproperty-centerPointY: 15.42;
+	qproperty-lineWidth: 2;
+}
+
+/* Sfxr draws its panel in a light wood tone, so its knobs need the inverting on-colour. */
+lmms--gui--SfxrInstrumentView lmms--gui--Knob {
+	color: #0f172a;
+	qproperty-outerColor: #0f172a;
+	qproperty-innerRadius: 2;
+	qproperty-outerRadius: 9;
+	qproperty-lineWidth: 2;
+}
+
+lmms--gui--OpulenzInstrumentView lmms--gui--Knob {
+	qproperty-innerRadius: 2;
+	qproperty-outerRadius: 9;
+	qproperty-lineWidth: 2;
+}
+
+lmms--gui--SidInstrumentView lmms--gui--Knob {
+	color: #0f172a;
+	qproperty-outerColor: #0f172a;
+	qproperty-innerRadius: 2;
+	qproperty-outerRadius: 7;
+	qproperty-lineWidth: 2;
+}
+
+lmms--gui--SlicerTView lmms--gui--Knob {
+	qproperty-innerRadius: 1;
+	qproperty-outerRadius: 11;
+	qproperty-lineWidth: 3;
+}
+
+lmms--gui--WatsynView lmms--gui--Knob {
+	qproperty-innerRadius: 1;
+	qproperty-outerRadius: 7;
+	qproperty-centerPointX: 9.5;
+	qproperty-centerPointY: 9.5;
+	qproperty-lineWidth: 2;
+}
+
+lmms--gui--WatsynView lmms--gui--Knob#mixKnob {
+	qproperty-outerRadius: 13;
+	qproperty-centerPointX: 15.5;
+	qproperty-centerPointY: 15.5;
+}
+
+lmms--gui--MonstroView lmms--gui--Knob {
+	qproperty-outerRadius: 9;
+	qproperty-innerRadius: 6;
+	qproperty-centerPointX: 10;
+	qproperty-centerPointY: 10;
+	qproperty-lineWidth: 2.5;
+}
+
+lmms--gui--NesInstrumentView lmms--gui--Knob {
+	qproperty-outerRadius: 11.0;
+	qproperty-innerRadius: 8.0;
+	qproperty-centerPointX: 14.5;
+	qproperty-centerPointY: 14.5;
+	qproperty-lineWidth: 2;
+}
+
+lmms--gui--CompressorControlDialog lmms--gui--Knob {
+	qproperty-lineWidth: 2;
+}
+
+lmms--gui--FrequencyShifterControlDialog lmms--gui--Knob {
+	qproperty-lineWidth: 3;
+}
+
+lmms--gui--FrequencyShifterControlDialog lmms--gui--Knob#fs_glide,
+lmms--gui--FrequencyShifterControlDialog lmms--gui--Knob#fs_dglide,
+lmms--gui--FrequencyShifterControlDialog lmms--gui--Knob#fs_phase {
+	qproperty-lineWidth: 2;
+}

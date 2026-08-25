@@ -113,6 +113,20 @@
           '';
         };
 
+        # LMMS_THEME_PATH goes ahead of the configured theme on LMMS' resource
+        # search path, so the working tree previews without touching ~/.lmmsrc.xml.
+        preview-lmms = pkgs.writeShellApplication {
+          name = "preview-lmms";
+          runtimeInputs = [ pkgs.lmms pkgs.coreutils ];
+          text = ''
+            root="''${HALON_ROOT:-$PWD}"
+            [ -f "$root/lmms/Halon/style.css" ] || { echo "run from the repo root, or set HALON_ROOT" >&2; exit 1; }
+            export LMMS_THEME_PATH="$root/lmms/Halon"
+            echo "LMMS_THEME_PATH=$LMMS_THEME_PATH"
+            exec lmms "$@"
+          '';
+        };
+
         # Parses the CSS and asserts every audited pair clears its WCAG threshold.
         audit = pkgs.writeShellApplication {
           name = "halon-audit";
@@ -163,6 +177,7 @@
             node "$root/scripts/build-vscode.mjs" "$@"
             node "$root/scripts/build-firefox.mjs" "$@"
             node "$root/scripts/build-qt.mjs" "$@"
+            node "$root/scripts/build-lmms.mjs" "$@"
             node "$root/scripts/build-lightdm.mjs" "$@"
             node "$root/scripts/build-tokens.mjs" "$@"
           '';
@@ -181,7 +196,7 @@
       {
         packages = {
           inherit preview-gtk3 preview-gtk4 demo-gtk3 demo-gtk4 demo-adwaita icons-gtk3
-            preview-lightdm audit lint build shots shots-lightdm;
+            preview-lightdm preview-lmms audit lint build shots shots-lightdm;
 
           # Both theme directories in one derivation: Halon-Dark's stylesheets
           # import ../Halon/shared, so they must be installed side by side.
@@ -276,6 +291,53 @@
             };
           };
 
+          # LMMS falls back to its own default theme for every file the chosen
+          # directory does not carry, so the theme is a style sheet plus the
+          # handful of images whose stock colour is LMMS' green. Those are
+          # remapped by luminance rather than by hue: desaturate, stretch, then
+          # tint, which keeps the artwork's shading and lands the whole ramp on
+          # a Halon token. Lit artwork goes to the accent; knob bodies are
+          # control surfaces, so they go to the neutral ramp and leave the
+          # accent to the indicator line the style sheet colours.
+          halon-lmms-theme = pkgs.stdenvNoCC.mkDerivation {
+            pname = "halon-lmms-theme";
+            version = "1.0.0";
+            src = ./lmms;
+            nativeBuildInputs = [ pkgs.imagemagick ];
+            dontBuild = true;
+            installPhase =
+              let
+                dark = self.tokens.dark;
+                recolor = from: to: images: nixpkgs.lib.concatMapStringsSep "\n" (image: ''
+                  magick "${pkgs.lmms}/share/lmms/themes/default/${image}" \
+                    -alpha set -channel RGB -modulate 100,0 -auto-level \
+                    +level-colors "${from},${to}" "$theme/${image}"
+                '') images;
+              in
+              ''
+                theme=$out/share/lmms/themes/Halon
+                mkdir -p "$theme"
+                cp Halon/style.css "$theme/"
+
+                ${recolor dark.surface-root dark.accent [
+                  "lcd_11green.png" "lcd_11green_dot.png" "lcd_19green.png" "lcd_19green_dot.png"
+                  "step_btn_on_0.png" "step_btn_on_200.png" "step_btn_highlight.png"
+                  "white_key_pressed.png" "black_key_pressed.png"
+                  "pr_white_key_big_pressed.png" "pr_white_key_small_pressed.png" "pr_black_key_pressed.png"
+                  "main_slider.png" "horizontal_slider.png" "loop_point.png"
+                  "mixer_send_on.png" "lfo_x1_active.png" "lfo_x100_active.png" "lfo_d100_active.png"
+                ]}
+
+                ${recolor dark.surface-navigation-hover dark.border-control [
+                  "knob01.png" "knob02.png" "knob03.png" "knob05.png"
+                ]}
+              '';
+            meta = {
+              description = "Slate and blue LMMS theme; recessed chrome, raised editor canvases";
+              platforms = nixpkgs.lib.platforms.linux;
+            };
+          };
+
           # The pulse is baked at build time: 360 frames of a cosine opacity sweep,
           # which two-step plays at 30fps for a 12-second cycle.
           halon-plymouth-theme = pkgs.stdenvNoCC.mkDerivation {
@@ -354,6 +416,7 @@
           demo-adwaita = { type = "app"; program = "${demo-adwaita}/bin/demo-adwaita"; };
           icons-gtk3   = { type = "app"; program = "${icons-gtk3}/bin/icons-gtk3"; };
           preview-lightdm = { type = "app"; program = "${preview-lightdm}/bin/preview-lightdm"; };
+          preview-lmms = { type = "app"; program = "${preview-lmms}/bin/preview-lmms"; };
           audit = { type = "app"; program = "${audit}/bin/halon-audit"; };
           build = { type = "app"; program = "${build}/bin/halon-build"; };
           shots = { type = "app"; program = "${shots}/bin/halon-shots"; };
@@ -387,6 +450,7 @@
             demo-adwaita
             icons-gtk3
             preview-lightdm
+            preview-lmms
             audit
             lint
             build
@@ -405,6 +469,7 @@
             echo "  demo-gtk4    [dark]     GTK 4 demo"
             echo "  demo-adwaita [dark]     libadwaita demo — the GTK 4 named-colour path"
             echo "  preview-lightdm         the LightDM greeter in a browser, against its mock"
+            echo "  preview-lmms            LMMS against the working tree's style sheet"
             echo
             echo "  halon-audit             contrast audit over both schemes"
             echo "  halon-lint              undefined tokens, stray literals, import order"
@@ -441,6 +506,7 @@
             packages = self.packages.${pkgs.stdenv.hostPlatform.system};
             pkg = packages.halon-theme;
             qtPkg = packages.halon-qt-theme;
+            lmmsPkg = packages.halon-lmms-theme;
 
             # Fusion is what the style sheet is written against; it assumes Fusion's
             # element structure for everything it does not restyle.
@@ -467,6 +533,12 @@
               the Halon Qt colour scheme and style sheet, written as qt5ct and qt6ct
               configuration. Qt must be pointed at those platform themes separately,
               with NixOS' qt.platformTheme or home-manager's qt.platformTheme.name'';
+            # Also independent of enable, and set by environment rather than by writing
+            # ~/.lmmsrc.xml, which LMMS rewrites wholesale whenever its settings change
+            lmms = lib.mkEnableOption ''
+              the Halon LMMS theme, selected through LMMS_THEME_PATH. Point LMMS at it
+              by hand instead, under Edit -> Settings -> Paths, if the session does not
+              pick up home-manager's environment'';
           };
           config = lib.mkMerge [
             (lib.mkIf cfg.enable {
@@ -479,6 +551,11 @@
                 "org/cinnamon/theme".name = "Halon";
                 "org/cinnamon/desktop/interface".gtk-theme = "Halon";
               };
+            })
+            (lib.mkIf cfg.lmms {
+              home.packages = [ lmmsPkg ];
+              home.sessionVariables.LMMS_THEME_PATH =
+                "${lmmsPkg}/share/lmms/themes/Halon";
             })
             (lib.mkIf cfg.qt {
               xdg.configFile = {
