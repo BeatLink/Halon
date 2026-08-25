@@ -29,6 +29,23 @@ token. Lit artwork (LCD digits, pressed keys, step buttons, sliders) goes to `--
 bodies are control surfaces, so they go to `--border-control` and leave the accent to the indicator
 line the style sheet colours.
 
+## Two gaps worth knowing about
+
+**LMMS' palette is half a palette.** `LmmsPalette` exposes ten `qproperty` colours and
+`LmmsPalette::palette()` starts from `QApplication::style()->standardPalette()` — Qt's *light*
+one — overriding only those ten roles. `AlternateBase` and the whole `Light`/`Midlight`/`Mid`/`Dark`
+bevel ramp therefore arrive white, and any widget without a style-sheet rule paints white edges on a
+dark theme. Only `AlternateBase` is reachable from a style sheet (`alternate-background-color`), so
+the bevel ramp is headed off instead by giving every framed widget an explicit border.
+
+**The default theme is not the property list.** LMMS declares 120 colour `Q_PROPERTY`s across 21
+widget classes; its stock `style.css` sets fewer, and the rest fall back to C++ defaults. The
+visible one is `Knob`: `color` and `outerColor` do not reach the indicator line, which defaults to
+`QPalette::WindowText` and paints near-white however the knob is themed. `lineActiveColor` and
+`arcActiveColor` are what colour it. This theme sets all 120; the properties it leaves alone are the
+non-colour ones — `knobNum`, `numDigits`, `renderUnityLine`, the timeline hotspots — which are
+behaviour rather than appearance.
+
 ## Dark only
 
 LMMS' stock artwork — knobs, LEDs, LCD digits, faders, key caps, roughly 290 images — is drawn for
