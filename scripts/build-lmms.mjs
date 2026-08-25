@@ -431,6 +431,16 @@ QSplitter::handle {
 /* LmmsPalette overrides ten QPalette roles and leaves the rest on Qt's light standard palette, so
    AlternateBase and the Light/Midlight/Mid/Dark bevel ramp arrive white. Only the first is settable
    from a style sheet; the rest are headed off by giving every framed widget an explicit border. */
+/* A scroll area resets itself to the application palette and keeps NoFrame, so no rule above
+   reaches its viewport and it paints from whichever Base the host palette happens to carry. */
+QAbstractScrollArea {
+	background-color: ${canvas};
+}
+
+QAbstractScrollArea > QWidget > QWidget {
+	background-color: ${canvas};
+}
+
 QAbstractItemView {
 	alternate-background-color: ${frame};
 	border: 1px solid ${t("border-default")};
