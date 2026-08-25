@@ -428,6 +428,42 @@ QSplitter::handle {
 	background: transparent;
 }
 
+/* LmmsPalette overrides ten QPalette roles and leaves the rest on Qt's light standard palette, so
+   AlternateBase and the Light/Midlight/Mid/Dark bevel ramp arrive white. Only the first is settable
+   from a style sheet; the rest are headed off by giving every framed widget an explicit border. */
+QAbstractItemView {
+	alternate-background-color: ${frame};
+	border: 1px solid ${t("border-default")};
+	border-radius: 8px;
+	outline: none;
+}
+
+QFrame[frameShape="1"], QFrame[frameShape="2"],
+QFrame[frameShape="3"], QFrame[frameShape="6"] {
+	border: 1px solid ${t("border-default")};
+}
+
+QFrame[frameShape="4"] {
+	background-color: ${t("border-default")};
+	border: none;
+	max-height: 1px;
+}
+
+QFrame[frameShape="5"] {
+	background-color: ${t("border-default")};
+	border: none;
+	max-width: 1px;
+}
+
+QStatusBar {
+	background: ${frame};
+	color: ${t("text-secondary")};
+}
+
+QStatusBar::item {
+	border: none;
+}
+
 QSplitter::handle:hover {
 	background: ${t("accent")};
 }
@@ -438,6 +474,7 @@ lmms--gui--AutomationEditor {
 	color: ${t("text-body")};
 	background-color: ${canvas};
 	qproperty-backgroundShade: ${fade("text-heading", 0.04)};
+	qproperty-outOfBoundsShade: ${fade("shadow-base", 0.6)};
 	qproperty-nodeInValueColor: ${fade("accent", 0.6)};
 	qproperty-nodeOutValueColor: ${fade("status-danger", 0.6)};
 	qproperty-nodeTangentLineColor: ${t("text-secondary")};
@@ -461,6 +498,7 @@ lmms--gui--PositionLine {
 lmms--gui--PianoRoll {
 	background-color: ${canvas};
 	qproperty-backgroundShade: ${fade("text-heading", 0.03)};
+	qproperty-outOfBoundsShade: ${fade("shadow-base", 0.6)};
 	qproperty-noteModeColor: ${t("accent")};
 	qproperty-noteColor: ${t("accent")};
 	qproperty-stepNoteColor: ${t("status-danger")};
@@ -984,6 +1022,12 @@ lmms--gui--TrackLabelButton:checked:pressed {
 	background: ${canvas};
 }
 
+/* §6.4 — a page title is chrome, not a selection, so the header recedes rather than filling with accent. */
+lmms--gui--SideBarWidget {
+	selection-background-color: ${frameHover};
+	selection-color: ${t("text-heading")};
+}
+
 lmms--gui--SideBar {
 	subcontrol-position: center;
 	background: ${frame};
@@ -1139,6 +1183,7 @@ lmms--gui--Fader {
 	qproperty-peakOk: ${t("status-success")};
 	qproperty-peakWarn: ${t("status-warning")};
 	qproperty-peakClip: ${t("status-danger")};
+	qproperty-unityMarker: ${t("border-control")};
 }
 
 /* ---------------------------------------------------------------------- instrument graphs ---------------------------------------------------------------------- */
@@ -1187,6 +1232,9 @@ lmms--gui--CompressorControlDialog {
 lmms--gui--Knob {
 	color: ${t("accent")};
 	qproperty-outerColor: ${t("accent")};
+	/* Without these two the indicator line falls back to QPalette::WindowText and paints near-white. */
+	qproperty-lineActiveColor: ${t("accent")};
+	qproperty-arcActiveColor: ${fade("accent", 0.28)};
 	qproperty-lineInactiveColor: ${t("border-control")};
 	qproperty-arcInactiveColor: ${fade("border-control", 0.28)};
 }

@@ -342,6 +342,42 @@ QSplitter::handle {
 	background: transparent;
 }
 
+/* LmmsPalette overrides ten QPalette roles and leaves the rest on Qt's light standard palette, so
+   AlternateBase and the Light/Midlight/Mid/Dark bevel ramp arrive white. Only the first is settable
+   from a style sheet; the rest are headed off by giving every framed widget an explicit border. */
+QAbstractItemView {
+	alternate-background-color: #060b14;
+	border: 1px solid #334155;
+	border-radius: 8px;
+	outline: none;
+}
+
+QFrame[frameShape="1"], QFrame[frameShape="2"],
+QFrame[frameShape="3"], QFrame[frameShape="6"] {
+	border: 1px solid #334155;
+}
+
+QFrame[frameShape="4"] {
+	background-color: #334155;
+	border: none;
+	max-height: 1px;
+}
+
+QFrame[frameShape="5"] {
+	background-color: #334155;
+	border: none;
+	max-width: 1px;
+}
+
+QStatusBar {
+	background: #060b14;
+	color: #cbd5e1;
+}
+
+QStatusBar::item {
+	border: none;
+}
+
 QSplitter::handle:hover {
 	background: #60a5fa;
 }
@@ -352,6 +388,7 @@ lmms--gui--AutomationEditor {
 	color: #e2e8f0;
 	background-color: #16213a;
 	qproperty-backgroundShade: rgba(248, 250, 252, 10);
+	qproperty-outOfBoundsShade: rgba(15, 23, 42, 153);
 	qproperty-nodeInValueColor: rgba(96, 165, 250, 153);
 	qproperty-nodeOutValueColor: rgba(248, 113, 113, 153);
 	qproperty-nodeTangentLineColor: #cbd5e1;
@@ -375,6 +412,7 @@ lmms--gui--PositionLine {
 lmms--gui--PianoRoll {
 	background-color: #16213a;
 	qproperty-backgroundShade: rgba(248, 250, 252, 8);
+	qproperty-outOfBoundsShade: rgba(15, 23, 42, 153);
 	qproperty-noteModeColor: #60a5fa;
 	qproperty-noteColor: #60a5fa;
 	qproperty-stepNoteColor: #f87171;
@@ -898,6 +936,12 @@ lmms--gui--TrackLabelButton:checked:pressed {
 	background: #16213a;
 }
 
+/* §6.4 — a page title is chrome, not a selection, so the header recedes rather than filling with accent. */
+lmms--gui--SideBarWidget {
+	selection-background-color: #101b2d;
+	selection-color: #f8fafc;
+}
+
 lmms--gui--SideBar {
 	subcontrol-position: center;
 	background: #060b14;
@@ -1053,6 +1097,7 @@ lmms--gui--Fader {
 	qproperty-peakOk: #10b981;
 	qproperty-peakWarn: #f59e0b;
 	qproperty-peakClip: #f87171;
+	qproperty-unityMarker: #64748b;
 }
 
 /* ---------------------------------------------------------------------- instrument graphs ---------------------------------------------------------------------- */
@@ -1101,6 +1146,9 @@ lmms--gui--CompressorControlDialog {
 lmms--gui--Knob {
 	color: #60a5fa;
 	qproperty-outerColor: #60a5fa;
+	/* Without these two the indicator line falls back to QPalette::WindowText and paints near-white. */
+	qproperty-lineActiveColor: #60a5fa;
+	qproperty-arcActiveColor: rgba(96, 165, 250, 71);
 	qproperty-lineInactiveColor: #64748b;
 	qproperty-arcInactiveColor: rgba(100, 116, 139, 71);
 }
