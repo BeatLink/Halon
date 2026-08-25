@@ -1,12 +1,12 @@
 # Halon for LMMS
 
-The Halon theme for LMMS. `Halon/style.css` is generated from the shared token files — the same
+The Halon theme for LMMS. `Halon/style.css` and `Halon-Light/style.css` are generated from the shared token files — the same
 Layer 1 that drives the GTK, Cinnamon, Tilix, VS Code, Firefox and Qt implementations — by
 `scripts/build-lmms.mjs`. Edit the mapping in that script or the tokens in `gtk/Halon/shared/`,
 never the style sheet.
 
 ```sh
-node scripts/build-lmms.mjs           # regenerate lmms/Halon/style.css
+node scripts/build-lmms.mjs           # regenerate both schemes under lmms/
 node scripts/build-lmms.mjs --check   # fail if the output is stale
 ```
 
@@ -46,17 +46,30 @@ visible one is `Knob`: `color` and `outerColor` do not reach the indicator line,
 non-colour ones — `knobNum`, `numDigits`, `renderUnityLine`, the timeline hotspots — which are
 behaviour rather than appearance.
 
-## Dark only
+## Both schemes, and what the light one costs
 
-LMMS' stock artwork — knobs, LEDs, LCD digits, faders, key caps, roughly 290 images — is drawn for
-a dark host. A light scheme would need every one of them redrawn rather than recoloured, so this is
-the one Halon implementation that ships a single scheme, as the Plymouth and LightDM themes do for
-their own reasons.
+LMMS' stock artwork is drawn for a dark host, but only a minority of it actually needs redrawing.
+Of 283 images, 183 are flat white line art that inverts straight to ink, and 27 are logos, LEDs and
+the splash, which keep their own colours. The rest is a short exception list:
+
+- **Objects, not surfaces.** A piano black key is black and a drop shadow is dark in both schemes,
+  so those are pinned rather than flipped — the same rule §3.5 applies to the warning fill. The
+  style sheet pins the key colours to the fixed ends of the ramp for the same reason.
+- **Shaded controls invert their hue, not just their tone.** Negating the slider handles turns them
+  pink. Knobs and sliders take the desaturate-stretch-tint recipe onto the neutral ramp instead.
+- **The LCD stays a dark readout** on light chrome, because that is what an LCD is; its digits keep
+  the dark scheme's accent so they stay legible on it.
+- **Twelve SVG glyphs are a single white fill** and simply take ink. Missing five of them is what
+  makes the knife tool invisible on a light ground.
+
+Everything outside those lists is decided by saturation at build time: flat art inverts, anything
+genuinely coloured is left alone and falls back to the stock file. That way new LMMS artwork lands
+on the right side of the rule without the list needing an edit.
 
 ## Install
 
-Copy the theme somewhere LMMS can read, then point LMMS at it under **Edit → Settings → Paths →
-Theme directory** and restart. That is how LMMS installs any theme; there is no theme picker.
+Copy either `Halon` (dark) or `Halon-Light` somewhere LMMS can read, then point LMMS at it under
+**Edit → Settings → Paths → Theme directory** and restart. That is how LMMS installs any theme; there is no theme picker.
 
 **LMMS discards the setting if its config file predates the running LMMS.** On startup it compares
 the `version` attribute in `~/.lmmsrc.xml` against its own major and minor version, and resets the
@@ -65,8 +78,8 @@ LMMS upgrade, expect to set the path once more.
 
 ## Install with Nix
 
-The flake exposes the theme as `packages.<system>.halon-lmms-theme`, installing it under
-`share/lmms/themes/Halon/`:
+The flake exposes the theme as `packages.<system>.halon-lmms-theme`, installing both schemes under
+`share/lmms/themes/Halon/` and `share/lmms/themes/Halon-Light/`:
 
 ```nix
 {

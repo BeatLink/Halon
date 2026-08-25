@@ -54,7 +54,15 @@ const rgb = (value) => {
     return nums.slice(0, 3).map(Number);
 };
 
-const t = loadTokens("dark");
+/* Piano keys and LCD readouts are objects rather than surfaces, so they are pinned to the fixed
+   ends of the ramp in both schemes — the way §3.5's warning fill never inverts. */
+const LIGHT = loadTokens("light");
+const DARK = loadTokens("dark");
+
+/* Both schemes come from one mapping; only the token file differs. */
+function stylesheet(scheme) {
+
+const t = loadTokens(scheme);
 
 /* Qt's parser takes rgba alpha as 0-255, so every translucent value is emitted that way. */
 const fade = (name, alpha) => `rgba(${rgb(t(name)).join(", ")}, ${Math.round(alpha * 255)})`;
@@ -84,7 +92,7 @@ const clip = {
     pattern: t("syntax-type"),
 };
 
-const sheet = `/* Halon for LMMS — GENERATED FILE. Built from gtk/Halon/shared/_tokens-dark.css by scripts/build-lmms.mjs. */
+const sheet = `/* Halon for LMMS — GENERATED FILE. Built from gtk/Halon/shared/_tokens-${scheme}.css by scripts/build-lmms.mjs. */
 
 /* ---------------------------------------------------------------------- palette ---------------------------------------------------------------------- */
 
@@ -528,16 +536,16 @@ lmms--gui--PianoRoll {
 	/* Piano keys */
 	qproperty-whiteKeyWidth: 64;
 	qproperty-whiteKeyActiveTextColor: ${t("text-on-fill")};
-	qproperty-whiteKeyActiveTextShadow: ${fade("text-heading", 0.4)};
+	qproperty-whiteKeyActiveTextShadow: ${LIGHT("surface-default")};
 	qproperty-whiteKeyActiveBackground: ${t("accent")};
 	qproperty-whiteKeyInactiveTextColor: ${t("text-on-light")};
-	qproperty-whiteKeyInactiveTextShadow: ${fade("text-heading", 0.4)};
-	qproperty-whiteKeyInactiveBackground: ${t("text-body")};
-	qproperty-whiteKeyDisabledBackground: ${t("text-tertiary")};
+	qproperty-whiteKeyInactiveTextShadow: ${LIGHT("surface-default")};
+	qproperty-whiteKeyInactiveBackground: ${LIGHT("surface-default")};
+	qproperty-whiteKeyDisabledBackground: ${LIGHT("border-hover")};
 	qproperty-blackKeyWidth: 48;
 	qproperty-blackKeyActiveBackground: ${t("accent")};
-	qproperty-blackKeyInactiveBackground: ${mix("surface-root", "border-default", 0.35)};
-	qproperty-blackKeyDisabledBackground: ${t("border-default")};
+	qproperty-blackKeyInactiveBackground: ${DARK("surface-root")};
+	qproperty-blackKeyDisabledBackground: ${DARK("border-hover")};
 
 	/* Grid colors */
 	qproperty-lineColor: ${t("border-default")};
@@ -547,7 +555,7 @@ lmms--gui--PianoRoll {
 	/* Text on the white piano keys */
 	qproperty-textColor: ${t("text-on-light")};
 	qproperty-textColorLight: ${t("accent")};
-	qproperty-textShadow: ${fade("text-heading", 0.4)};
+	qproperty-textShadow: ${LIGHT("surface-default")};
 }
 
 lmms--gui--PianoView {
@@ -1380,9 +1388,15 @@ lmms--gui--FrequencyShifterControlDialog lmms--gui--Knob#fs_phase {
 }
 `;
 
+return sheet;
+}
+
 /* ---------- write or check ---------- */
 
-const outputs = [["lmms/Halon/style.css", sheet]];
+const outputs = [
+    ["lmms/Halon/style.css", stylesheet("dark")],
+    ["lmms/Halon-Light/style.css", stylesheet("light")],
+];
 
 let stale = false;
 for (const [relative, contents] of outputs) {

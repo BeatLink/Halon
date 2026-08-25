@@ -307,33 +307,93 @@
             dontBuild = true;
             installPhase =
               let
-                dark = self.tokens.dark;
+                inherit (self.tokens) light dark;
+                stock = "${pkgs.lmms}/share/lmms/themes/default";
+                list = nixpkgs.lib.concatStringsSep " ";
+
+                # Desaturate, stretch, then tint: keeps the artwork's shading and lands the whole
+                # ramp between two tokens, which hue rotation cannot do.
                 recolor = from: to: images: nixpkgs.lib.concatMapStringsSep "\n" (image: ''
-                  magick "${pkgs.lmms}/share/lmms/themes/default/${image}" \
+                  magick "${stock}/${image}" \
                     -alpha set -channel RGB -modulate 100,0 -auto-level \
                     +level-colors "${from},${to}" "$theme/${image}"
                 '') images;
+
+                # The glyphs LMMS draws as a single white fill; on a light ground they need ink.
+                ink = colour: images: nixpkgs.lib.concatMapStringsSep "\n" (image: ''
+                  sed -e 's|fill="#fff"|fill="${colour}"|g' \
+                      -e 's|fill="#ffffff"|fill="${colour}"|g' \
+                      -e 's|fill:#ffffff|fill:${colour}|g' \
+                      "${stock}/${image}.svg" > "$theme/${image}.svg"
+                '') images;
+
+                # Objects rather than surfaces: a black key is black and a shadow is dark in both
+                # schemes, the way §3.5's warning fill never inverts.
+                objects = [
+                  "black_key.png" "pr_black_key.png" "black_key_disabled.png"
+                  "shadow_c.png" "shadow_p.png" "track_shadow_c.png" "track_shadow_p.png"
+                ];
+                readouts = [
+                  "lcd_11green.png" "lcd_11green_dot.png" "lcd_19green.png" "lcd_19green_dot.png"
+                ];
+                indicators = [
+                  "step_btn_on_0.png" "step_btn_on_200.png" "step_btn_highlight.png"
+                  "white_key_pressed.png" "black_key_pressed.png"
+                  "pr_white_key_big_pressed.png" "pr_white_key_small_pressed.png" "pr_black_key_pressed.png"
+                  "loop_point.png" "mixer_send_on.png"
+                  "lfo_x1_active.png" "lfo_x100_active.png" "lfo_d100_active.png"
+                ];
+                # Shaded controls, which invert their hue rather than their tone — the slider
+                # handles come out pink from a straight negate.
+                controls = [
+                  "knob01.png" "knob02.png" "knob03.png" "knob05.png"
+                  "main_slider.png" "horizontal_slider.png"
+                ];
+                glyphs = [
+                  "arrow-down" "arrow-left" "arrow-right" "arrow-up" "detach" "edit_knife"
+                  "edit_unlink" "gear" "headphones" "pr_no_clip" "speaker" "speaker_slash"
+                ];
               in
               ''
                 theme=$out/share/lmms/themes/Halon
                 mkdir -p "$theme"
                 cp Halon/style.css "$theme/"
 
-                ${recolor dark.surface-root dark.accent [
-                  "lcd_11green.png" "lcd_11green_dot.png" "lcd_19green.png" "lcd_19green_dot.png"
-                  "step_btn_on_0.png" "step_btn_on_200.png" "step_btn_highlight.png"
-                  "white_key_pressed.png" "black_key_pressed.png"
-                  "pr_white_key_big_pressed.png" "pr_white_key_small_pressed.png" "pr_black_key_pressed.png"
-                  "main_slider.png" "horizontal_slider.png" "loop_point.png"
-                  "mixer_send_on.png" "lfo_x1_active.png" "lfo_x100_active.png" "lfo_d100_active.png"
-                ]}
+                ${recolor dark.surface-root dark.accent (readouts ++ indicators ++ [
+                  "main_slider.png" "horizontal_slider.png"
+                ])}
 
                 ${recolor dark.surface-navigation-hover dark.border-control [
                   "knob01.png" "knob02.png" "knob03.png" "knob05.png"
                 ]}
+
+                theme=$out/share/lmms/themes/Halon-Light
+                mkdir -p "$theme"
+                cp Halon-Light/style.css "$theme/"
+
+                # Most of the stock set is flat white line art, which inverts straight to ink.
+                # A logo has to survive that, so anything genuinely coloured is left alone and
+                # falls back to the stock file.
+                handled="${list (objects ++ readouts ++ indicators ++ controls)}"
+                for image in "${stock}"/*.png; do
+                  name=$(basename "$image")
+                  case " $handled " in *" $name "*) continue ;; esac
+                  saturation=$(magick "$image" -background gray50 -alpha remove -alpha off \
+                    -colorspace HSL -channel G -separate +channel -format "%[fx:mean]" info:)
+                  if [ "$(awk -v s="$saturation" 'BEGIN { print (s >= 0.20) }')" = 1 ]; then
+                    continue
+                  fi
+                  magick "$image" -alpha set -channel RGB -negate "$theme/$name"
+                done
+
+                # The readout stays a dark panel on light chrome, so its digits keep the dark accent.
+                ${recolor dark.surface-root dark.accent readouts}
+                ${recolor light.surface-default light.accent indicators}
+                ${recolor light.surface-navigation light.border-control controls}
+                ${ink light.text-body glyphs}
               '';
             meta = {
-              description = "Slate and blue LMMS theme; recessed chrome, raised editor canvases";
+              description = "Slate and blue LMMS theme in both schemes; recessed chrome, raised editor canvases";
               platforms = nixpkgs.lib.platforms.linux;
             };
           };
