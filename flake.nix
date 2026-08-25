@@ -337,6 +337,7 @@
                   "lcd_11green.png" "lcd_11green_dot.png" "lcd_19green.png" "lcd_19green_dot.png"
                 ];
                 indicators = [
+                  "playpos_marker.png"
                   "step_btn_on_0.png" "step_btn_on_200.png" "step_btn_highlight.png"
                   "white_key_pressed.png" "black_key_pressed.png"
                   "pr_white_key_big_pressed.png" "pr_white_key_small_pressed.png" "pr_black_key_pressed.png"
@@ -349,6 +350,7 @@
                   "knob01.png" "knob02.png" "knob03.png" "knob05.png"
                   "main_slider.png" "horizontal_slider.png"
                 ];
+                recordingMarker = [ "recording_playpos_marker.png" ];
                 glyphs = [
                   "arrow-down" "arrow-left" "arrow-right" "arrow-up" "detach" "edit_knife"
                   "edit_unlink" "gear" "headphones" "pr_no_clip" "speaker" "speaker_slash"
@@ -366,6 +368,7 @@
                 ${recolor dark.surface-navigation-hover dark.border-control [
                   "knob01.png" "knob02.png" "knob03.png" "knob05.png"
                 ]}
+                ${recolor dark.surface-root dark.status-danger recordingMarker}
 
                 theme=$out/share/lmms/themes/Halon-Light
                 mkdir -p "$theme"
@@ -374,7 +377,7 @@
                 # Most of the stock set is flat white line art, which inverts straight to ink.
                 # A logo has to survive that, so anything genuinely coloured is left alone and
                 # falls back to the stock file.
-                handled="${list (objects ++ readouts ++ indicators ++ controls)}"
+                handled="${list (objects ++ readouts ++ indicators ++ controls ++ recordingMarker)}"
                 for image in "${stock}"/*.png; do
                   name=$(basename "$image")
                   case " $handled " in *" $name "*) continue ;; esac
@@ -390,6 +393,7 @@
                 ${recolor dark.surface-root dark.accent readouts}
                 ${recolor light.surface-default light.accent indicators}
                 ${recolor light.surface-navigation light.border-control controls}
+                ${recolor light.surface-default light.status-danger recordingMarker}
                 ${ink light.text-body glyphs}
               '';
             meta = {

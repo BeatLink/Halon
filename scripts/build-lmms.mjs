@@ -507,9 +507,11 @@ lmms--gui--AutomationEditor {
 	qproperty-ghostSampleColor: ${fade("text-tertiary", 0.5)};
 }
 
+/* The playhead is the one moving mark in every editor, so it takes the accent; recording keeps
+   the danger colour, which is the only state that outranks it. */
 lmms--gui--PositionLine {
 	qproperty-tailGradient: true;
-	qproperty-lineColor: ${t("text-heading")};
+	qproperty-lineColor: ${t("accent")};
 	qproperty-recordingColor: ${t("status-danger")};
 }
 
