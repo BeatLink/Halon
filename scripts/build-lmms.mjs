@@ -573,7 +573,9 @@ lmms--gui--TrackContainerView QLabel {
 
 lmms--gui--TrackContentWidget {
 	/* colors */
-	qproperty-darkerColor: ${frameHover};
+	/* @surface-navigation-hover is a small step down in dark and a large one in light, and at
+	   #e2e8f0 it is exactly @border-default, so the hairlines vanished into the banding. */
+	qproperty-darkerColor: ${mix("surface-default", "surface-navigation", 0.55)};
 	qproperty-lighterColor: ${canvas};
 	qproperty-coarseGridColor: ${t("border-control")};
 	qproperty-fineGridColor: ${t("border-default")};
@@ -588,6 +590,12 @@ lmms--gui--TrackContentWidget {
 
 	/* positive offset shifts emboss to the right */
 	qproperty-embossOffset: 0;
+}
+
+/* TrackView auto-fills itself with a hardcoded near-black that its children leave one pixel of
+   showing, so the row separator is really this background: make it the hairline it should be. */
+lmms--gui--TrackView {
+	background-color: ${t("border-default")};
 }
 
 /* Track controls frame the grid rather than carry it, so they take the recessed surface. */
