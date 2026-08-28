@@ -1718,7 +1718,7 @@ StScrollBar StButton#hhandle {
 /* ---------- Halon ---------- */
 
 /* ==========================================================================
-   Stage and panel — the panel is the navigation frame, dark in every scheme.
+   Stage and panel — the panel is shell chrome: gray in light, navy in dark.
    ========================================================================== */
 
 stage {
@@ -1727,26 +1727,26 @@ stage {
 }
 
 #panel {
-    background-color: #060b14;
+    background-color: #16213a;
     color: #ffffff;
     border: none;
     font-size: 13px;
 }
 
 #panel.panel-top {
-    border-bottom: 1px solid #060b14;
+    border-bottom: 1px solid #16213a;
 }
 
 #panel.panel-bottom {
-    border-top: 1px solid #060b14;
+    border-top: 1px solid #16213a;
 }
 
 #panel:highlight {
-    background-color: #101b2d;
+    background-color: #1f2c4a;
 }
 
 .panel-top, .panel-bottom, .panel-left, .panel-right {
-    background-color: #060b14;
+    background-color: #16213a;
 }
 
 /* ==========================================================================
@@ -1762,7 +1762,7 @@ stage {
 
 .applet-box:hover,
 .applet-box:checked {
-    background-color: #101b2d;
+    background-color: #1f2c4a;
     color: #f8fafc;
 }
 
@@ -1802,7 +1802,7 @@ stage {
 
 .grouped-window-list-item-box:hover,
 .window-list-item-box:hover {
-    background-color: #101b2d;
+    background-color: #1f2c4a;
     color: #f8fafc;
 }
 
@@ -1811,14 +1811,14 @@ stage {
 .grouped-window-list-item-box:focus,
 .window-list-item-box:active,
 .window-list-item-box:focus {
-    background-color: #16213a;
+    background-color: #2a3a5e;
     color: #f8fafc;
     box-shadow: 0 1px 3px rgba(15, 23, 42, 0.50);
 }
 
 .grouped-window-list-item-box:hover:active,
 .grouped-window-list-item-box:hover:checked {
-    background-color: #16213a;
+    background-color: #2a3a5e;
     color: #f8fafc;
 }
 
@@ -2071,7 +2071,7 @@ stage {
    ========================================================================== */
 
 #Tooltip {
-    background-color: #060b14;
+    background-color: #16213a;
     color: #f8fafc;
     border: none;
     border-radius: 6px;
@@ -2080,7 +2080,7 @@ stage {
 }
 
 .osd-window {
-    background-color: #060b14;
+    background-color: #16213a;
     color: #f8fafc;
     border-radius: 8px;
     padding: 12px;
@@ -2090,7 +2090,7 @@ stage {
 .osd-window .level {
     height: 6px;
     border-radius: 3px;
-    background-color: #101b2d;
+    background-color: #1f2c4a;
     color: #60a5fa;
 }
 
@@ -2102,7 +2102,7 @@ stage {
    ========================================================================== */
 
 #notification {
-    background-color: #060b14;
+    background-color: #16213a;
     color: #f8fafc;
     border: none;
     border-radius: 8px;
@@ -2122,7 +2122,7 @@ stage {
 
 .notification,
 .notification-with-image {
-    background-color: #060b14;
+    background-color: #16213a;
     color: #f8fafc;
     border: none;
     border-radius: 8px;
@@ -2136,7 +2136,7 @@ stage {
 #notification .notification-icon-button,
 .notification-button,
 .notification-icon-button {
-    background-color: #101b2d;
+    background-color: #1f2c4a;
     background-gradient-direction: none;
     border: none;
     border-radius: 6px;
@@ -2150,7 +2150,7 @@ stage {
 #notification .notification-icon-button:hover,
 .notification-button:hover,
 .notification-icon-button:hover {
-    background-color: #101b2d;
+    background-color: #1f2c4a;
     color: #f8fafc;
 }
 
@@ -2272,13 +2272,13 @@ stage {
 
 .workspace-button:outlined,
 .workspace-button:checked {
-    background-color: #101b2d;
+    background-color: #1f2c4a;
     color: #f8fafc;
 }
 
 .workspace-graph .workspace {
-    background-color: #101b2d;
-    border: 1px solid #060b14;
+    background-color: #1f2c4a;
+    border: 1px solid #16213a;
 }
 
 .workspace-graph .workspace:active {
@@ -2630,7 +2630,7 @@ StScrollView StScrollBar StButton#hhandle:active {
 }
 
 .applet-separator-line {
-    background-color: #101b2d;
+    background-color: #1f2c4a;
     width: 1px;
 }
 
@@ -2750,7 +2750,7 @@ StScrollView StScrollBar StButton#hhandle:active {
 .info-osd,
 .workspace-switch-osd,
 .resize-popup {
-    background-color: #060b14;
+    background-color: #16213a;
     color: #f8fafc;
     border: none;
     border-radius: 8px;
@@ -2803,7 +2803,7 @@ StScrollView StScrollBar StButton#hhandle:active {
 
 /* Expo and Scale overlays. */
 .window-caption {
-    background-color: #060b14;
+    background-color: #16213a;
     color: #f8fafc;
     border: none;
     border-radius: 6px;
@@ -2823,11 +2823,11 @@ StScrollView StScrollBar StButton#hhandle:active {
 
 /* On-screen keyboard: frame chrome, tabs-like keys. */
 #virtual-keyboard {
-    background-color: #060b14;
+    background-color: #16213a;
 }
 
 .vkeyboard-key {
-    background-color: #101b2d;
+    background-color: #1f2c4a;
     color: #f8fafc;
     border: none;
     border-radius: 6px;
@@ -2841,7 +2841,7 @@ StScrollView StScrollBar StButton#hhandle:active {
 }
 
 .vkeyboard-subkeys {
-    background-color: #060b14;
+    background-color: #16213a;
     border-radius: 8px;
     -boxpointer-gap: 4px;
 }
@@ -2916,7 +2916,7 @@ StScrollView StScrollBar StButton#hhandle:active {
 }
 
 .screen-shield {
-    background-color: #060b14;
+    background-color: #16213a;
 }
 
 .system-status-icon {

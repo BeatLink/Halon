@@ -10,6 +10,11 @@
 @define-color surface-navigation-hover #e2e8f0;
 @define-color surface-overlay          rgba(15, 23, 42, 0.45);
 
+/* Shell chrome — the same quiet gray as the frame in this scheme */
+@define-color surface-shell            @surface-secondary;
+@define-color surface-shell-hover      #e2e8f0;
+@define-color surface-shell-card       @surface-default;
+
 /* Text on surfaces */
 @define-color text-heading             #0f172a;
 @define-color text-body                #1a1a2e;

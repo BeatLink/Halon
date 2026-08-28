@@ -14,7 +14,7 @@
  */
 
 /* ==========================================================================
-   Stage and panel — the panel is the navigation frame, dark in every scheme.
+   Stage and panel — the panel is shell chrome: gray in light, navy in dark.
    ========================================================================== */
 
 stage {
@@ -23,26 +23,26 @@ stage {
 }
 
 #panel {
-    background-color: @surface-navigation;
+    background-color: @surface-shell;
     color: @text-on-navigation;
     border: none;
     font-size: 13px;
 }
 
 #panel.panel-top {
-    border-bottom: 1px solid @surface-navigation;
+    border-bottom: 1px solid @surface-shell;
 }
 
 #panel.panel-bottom {
-    border-top: 1px solid @surface-navigation;
+    border-top: 1px solid @surface-shell;
 }
 
 #panel:highlight {
-    background-color: @surface-navigation-hover;
+    background-color: @surface-shell-hover;
 }
 
 .panel-top, .panel-bottom, .panel-left, .panel-right {
-    background-color: @surface-navigation;
+    background-color: @surface-shell;
 }
 
 /* ==========================================================================
@@ -58,7 +58,7 @@ stage {
 
 .applet-box:hover,
 .applet-box:checked {
-    background-color: @surface-navigation-hover;
+    background-color: @surface-shell-hover;
     color: @text-heading;
 }
 
@@ -98,7 +98,7 @@ stage {
 
 .grouped-window-list-item-box:hover,
 .window-list-item-box:hover {
-    background-color: @surface-navigation-hover;
+    background-color: @surface-shell-hover;
     color: @text-heading;
 }
 
@@ -107,14 +107,14 @@ stage {
 .grouped-window-list-item-box:focus,
 .window-list-item-box:active,
 .window-list-item-box:focus {
-    background-color: @surface-default;
+    background-color: @surface-shell-card;
     color: @text-heading;
     box-shadow: 0 1px 3px @shadow-tab;
 }
 
 .grouped-window-list-item-box:hover:active,
 .grouped-window-list-item-box:hover:checked {
-    background-color: @surface-default;
+    background-color: @surface-shell-card;
     color: @text-heading;
 }
 
@@ -367,7 +367,7 @@ stage {
    ========================================================================== */
 
 #Tooltip {
-    background-color: @surface-navigation;
+    background-color: @surface-shell;
     color: @text-heading;
     border: none;
     border-radius: 6px;
@@ -376,7 +376,7 @@ stage {
 }
 
 .osd-window {
-    background-color: @surface-navigation;
+    background-color: @surface-shell;
     color: @text-heading;
     border-radius: 8px;
     padding: 12px;
@@ -386,7 +386,7 @@ stage {
 .osd-window .level {
     height: 6px;
     border-radius: 3px;
-    background-color: @surface-navigation-hover;
+    background-color: @surface-shell-hover;
     color: @accent;
 }
 
@@ -398,7 +398,7 @@ stage {
    ========================================================================== */
 
 #notification {
-    background-color: @surface-navigation;
+    background-color: @surface-shell;
     color: @text-heading;
     border: none;
     border-radius: 8px;
@@ -418,7 +418,7 @@ stage {
 
 .notification,
 .notification-with-image {
-    background-color: @surface-navigation;
+    background-color: @surface-shell;
     color: @text-heading;
     border: none;
     border-radius: 8px;
@@ -432,7 +432,7 @@ stage {
 #notification .notification-icon-button,
 .notification-button,
 .notification-icon-button {
-    background-color: @surface-navigation-hover;
+    background-color: @surface-shell-hover;
     background-gradient-direction: none;
     border: none;
     border-radius: 6px;
@@ -446,7 +446,7 @@ stage {
 #notification .notification-icon-button:hover,
 .notification-button:hover,
 .notification-icon-button:hover {
-    background-color: @surface-navigation-hover;
+    background-color: @surface-shell-hover;
     color: @text-heading;
 }
 
@@ -568,13 +568,13 @@ stage {
 
 .workspace-button:outlined,
 .workspace-button:checked {
-    background-color: @surface-navigation-hover;
+    background-color: @surface-shell-hover;
     color: @text-heading;
 }
 
 .workspace-graph .workspace {
-    background-color: @surface-navigation-hover;
-    border: 1px solid @surface-navigation;
+    background-color: @surface-shell-hover;
+    border: 1px solid @surface-shell;
 }
 
 .workspace-graph .workspace:active {
@@ -926,7 +926,7 @@ StScrollView StScrollBar StButton#hhandle:active {
 }
 
 .applet-separator-line {
-    background-color: @surface-navigation-hover;
+    background-color: @surface-shell-hover;
     width: 1px;
 }
 
@@ -1046,7 +1046,7 @@ StScrollView StScrollBar StButton#hhandle:active {
 .info-osd,
 .workspace-switch-osd,
 .resize-popup {
-    background-color: @surface-navigation;
+    background-color: @surface-shell;
     color: @text-heading;
     border: none;
     border-radius: 8px;
@@ -1099,7 +1099,7 @@ StScrollView StScrollBar StButton#hhandle:active {
 
 /* Expo and Scale overlays. */
 .window-caption {
-    background-color: @surface-navigation;
+    background-color: @surface-shell;
     color: @text-heading;
     border: none;
     border-radius: 6px;
@@ -1119,11 +1119,11 @@ StScrollView StScrollBar StButton#hhandle:active {
 
 /* On-screen keyboard: frame chrome, tabs-like keys. */
 #virtual-keyboard {
-    background-color: @surface-navigation;
+    background-color: @surface-shell;
 }
 
 .vkeyboard-key {
-    background-color: @surface-navigation-hover;
+    background-color: @surface-shell-hover;
     color: @text-heading;
     border: none;
     border-radius: 6px;
@@ -1137,7 +1137,7 @@ StScrollView StScrollBar StButton#hhandle:active {
 }
 
 .vkeyboard-subkeys {
-    background-color: @surface-navigation;
+    background-color: @surface-shell;
     border-radius: 8px;
     -boxpointer-gap: 4px;
 }
@@ -1212,7 +1212,7 @@ StScrollView StScrollBar StButton#hhandle:active {
 }
 
 .screen-shield {
-    background-color: @surface-navigation;
+    background-color: @surface-shell;
 }
 
 .system-status-icon {

@@ -93,6 +93,11 @@ That mapping is a translation table, not a third layer. It contains no colors an
   --surface-navigation-hover:  #e2e8f0;  /* hover on the frame and in sidebars */
   --surface-overlay:           rgba(15, 23, 42, 0.45);
 
+  /* Shell chrome — a desktop panel and its overlays, see §6.4 */
+  --surface-shell:             var(--surface-secondary);
+  --surface-shell-hover:       #e2e8f0;
+  --surface-shell-card:        var(--surface-default);  /* the raised item on the panel */
+
   /* Text on surfaces */
   --text-heading:              #0f172a;
   --text-body:                 #1a1a2e;
@@ -133,6 +138,10 @@ That mapping is a translation table, not a third layer. It contains no colors an
     --surface-navigation-hover:  #101b2d;
     --surface-overlay:           rgba(0, 0, 0, 0.6);
 
+    --surface-shell:             #16213a;  /* navy, not the frame's near-black — it floats on wallpaper */
+    --surface-shell-hover:       #1f2c4a;
+    --surface-shell-card:        #2a3a5e;
+
     --text-heading:              #f8fafc;
     --text-body:                 #e2e8f0;
     --text-secondary:            #cbd5e1;
@@ -158,7 +167,7 @@ That mapping is a translation table, not a third layer. It contains no colors an
 }
 ```
 
-Twenty-six tokens; dark mode re-declares twenty-two. The four it leaves alone are the ones that
+Twenty-nine tokens; dark mode re-declares twenty-five. The four it leaves alone are the ones that
 carry no mode: `--text-on-light` sits on fills whose lightness does not change between schemes,
 `--status-warning` is the one fill that is already light in light mode, and `--surface-navigation`
 and `--border-focus` are derived from other tokens, so they flip for free.
@@ -172,6 +181,9 @@ and `--border-focus` are derived from other tokens, so they flip for free.
 | `--surface-secondary`        | `#f1f5f9`             | `#060b14`              | Sidebars, the frame, footers, fills      |
 | `--surface-navigation`       | = secondary           | = secondary            | Navigation rail and tab bar base         |
 | `--surface-navigation-hover` | `#e2e8f0`             | `#101b2d`              | Frame and sidebar hover                  |
+| `--surface-shell`            | = secondary           | `#16213a`              | Desktop panel and its overlays           |
+| `--surface-shell-hover`      | `#e2e8f0`             | `#1f2c4a`              | Hover on the shell panel                 |
+| `--surface-shell-card`       | = default             | `#2a3a5e`              | The raised item on the shell panel       |
 | `--surface-overlay`          | `rgba(15,23,42,.45)`  | `rgba(0,0,0,.6)`       | Modal backdrop                           |
 | `--text-heading`             | `#0f172a`             | `#f8fafc`              | Headings, active and selected labels     |
 | `--text-body`                | `#1a1a2e`             | `#e2e8f0`              | Body text                                |
@@ -676,10 +688,9 @@ is the telltale of a frame member that got missed.
 
 **Context mapping.** "The frame" is the outermost navigation chrome of whatever is being themed. In
 a standalone application, that is its own rail and tab bar, as in the reference demo. In a desktop
-OS, the shell panel is the frame, and application window chrome (headerbars, toolbars, menu bars)
-takes the same surface, while nearly all content sits on `--surface-default`. Chrome recedes,
-content advances; that relationship is the same at every level, so it does not matter much where
-you draw the line:
+OS, application window chrome (headerbars, toolbars, menu bars) takes the same surface, while
+nearly all content sits on `--surface-default`. Chrome recedes, content advances; that relationship
+is the same at every level, so it does not matter much where you draw the line:
 
 | Part                   | Value                                                                                            |
 | ---------------------- | ------------------------------------------------------------------------------------------------ |
@@ -692,13 +703,21 @@ you draw the line:
 | Inactive tab           | transparent,`--text-on-navigation` text, `--surface-navigation-hover` on hover               |
 | Tab close hover        | `--status-danger` fill, `--text-on-fill` glyph                                             |
 
+**A desktop shell is the exception.** Its panel, tooltips, OSD and notifications float over the
+wallpaper rather than sitting inside a window, so the frame's near-black reads there as a hole
+rather than as a recess. They take the `--surface-shell` trio instead: the same quiet gray in light
+mode, navy in dark. The raised item on the panel is `--surface-shell-card`, not `--surface-default`,
+because in dark the window fill *is* the navy and would vanish against it.
+
 **The active tab is a raised card, and it has to be read as one.** Its fill is only 1.10:1 against
 the frame in light mode and 1.23:1 in dark — deliberately, because §6.5 selects by elevation rather
 than by color. Selection is therefore carried by three things at once: the lift (the `--shadow-tab`
 shadow), the text going to `--text-heading` from `--text-on-navigation`, and the `--accent` icon or
 tab line. Drop two of the three and the selected tab disappears. This is the one place in the theme
 where a component genuinely depends on more than one signal, and it is why a port that gets tab
-selection right on fill alone is wrong even when it looks fine.
+selection right on fill alone is wrong even when it looks fine. On a shell panel the equivalent
+card is `--surface-shell-card`, a wider step at 1.42:1 in dark, because the navy leaves room for
+one.
 
 **Why the frame is not dark in light mode.** An earlier version of this theme painted the frame
 navy in both schemes and made the active tab the only light element in it. It was the most
@@ -849,8 +868,9 @@ Hazards worth checking for in any implementation:
 5. Give inputs the resting hairline, moving to accent on hover and focus; never change the fill on
    hover, and never place an input without a label or placeholder.
 6. Ghost the closed select; leave its open option list on a normal surface.
-7. Paint the navigation frame and the sidebar on `--surface-navigation` in **both** modes, and mark
-   the active item by elevation, heading-weight text and the accent — never by fill alone.
+7. Paint the navigation frame and the sidebar on `--surface-navigation` in **both** modes — a
+   desktop shell takes `--surface-shell` instead — and mark the active item by elevation,
+   heading-weight text and the accent, never by fill alone.
 8. Pair every colored fill with the right on-color from §3.5 — `--text-on-fill` for fills that
    invert, `--text-on-light` for fills light in both schemes — and give surfaces ordinary ramp text.
 9. Restrict shadows to the §5 table; use borders for anything that merely delimits a region.
@@ -885,6 +905,10 @@ text and non-text interface elements. Ratios are computed from the §3.1 values.
 | `--text-on-navigation` | `--surface-navigation` | 6.92 | 19.71 |
 | `--text-heading` (frame hover, toasts) | `--surface-navigation-hover` | 14.48 | 16.50 |
 | `--accent` (focus boundary in the frame) | `--surface-navigation-hover` | 4.19 | 6.79 |
+| `--text-on-navigation` (shell panel) | `--surface-shell` | 6.92 | 16.00 |
+| `--text-heading` (shell panel hover) | `--surface-shell-hover` | 14.48 | 13.23 |
+| `--text-heading` (raised item on the shell panel) | `--surface-shell-card` | 17.85 | 10.76 |
+| `--accent` (focus boundary on the shell panel) | `--surface-shell-hover` | 4.19 | 5.44 |
 | `--syntax-type` | `--surface-default` (code) | 5.36 | 8.85 |
 | `--syntax-string` | `--surface-default` (code) | 5.02 | 9.18 |
 | `--syntax-number` | `--surface-default` (code) | 4.92 | 11.09 |

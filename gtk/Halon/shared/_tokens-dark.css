@@ -8,6 +8,11 @@
 @define-color surface-navigation-hover #101b2d;
 @define-color surface-overlay          rgba(0, 0, 0, 0.6);
 
+/* Shell chrome — floats over the wallpaper, so it is navy rather than the frame's near-black */
+@define-color surface-shell            #16213a;
+@define-color surface-shell-hover      #1f2c4a;
+@define-color surface-shell-card       #2a3a5e;
+
 /* Text on surfaces */
 @define-color text-heading             #f8fafc;
 @define-color text-body                #e2e8f0;

@@ -23,6 +23,11 @@
     --surface-navigation-hover: light-dark(#e2e8f0, #101b2d);
     --surface-overlay:          light-dark(rgba(15, 23, 42, 0.45), rgba(0, 0, 0, 0.6));
 
+    /* Shell chrome — a desktop panel and its overlays, absent from this demo but part of the set */
+    --surface-shell:            light-dark(var(--surface-secondary), #16213a);
+    --surface-shell-hover:      light-dark(#e2e8f0, #1f2c4a);
+    --surface-shell-card:       light-dark(var(--surface-default), #2a3a5e);
+
     /* Text on surfaces */
     --text-heading:             light-dark(#0f172a, #f8fafc);
     --text-body:                light-dark(#1a1a2e, #e2e8f0);
@@ -1756,6 +1761,9 @@ const TOKENS = [
     ["--surface-secondary", "Sidebars, frame, fills, hovers"],
     ["--surface-navigation", "Rails, tab bars (= secondary)"],
     ["--surface-navigation-hover", "Frame and sidebar hover"],
+    ["--surface-shell", "Desktop panel and its overlays"],
+    ["--surface-shell-hover", "Hover on the shell panel"],
+    ["--surface-shell-card", "Raised card on the shell panel"],
     ["--surface-overlay", "Modal backdrop"],
     ["--text-heading", "Headings, selected labels"],
     ["--text-body", "Body text"],
@@ -1819,6 +1827,9 @@ const AUDIT_PAIRS = [
     ["--syntax-number", "--surface-default", 4.5, "Number in code"],
     ["--text-on-navigation", "--surface-navigation", 4.5, "Frame text at rest"],
     ["--text-heading", "--surface-navigation-hover", 4.5, "Frame text on hover"],
+    ["--text-on-navigation", "--surface-shell", 4.5, "Shell panel text at rest"],
+    ["--text-heading", "--surface-shell-hover", 4.5, "Shell panel text on hover"],
+    ["--text-heading", "--surface-shell-card", 4.5, "Raised card on the shell panel"],
     ["--text-on-fill", "--status-success", 4.5, "Success chip"],
     ["--text-on-light", "--status-warning", 4.5, "Warning chip"],
     ["--status-warning-text", "--surface-default", 4.5, "Warning icon or label"],

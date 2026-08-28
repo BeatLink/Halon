@@ -1718,7 +1718,7 @@ StScrollBar StButton#hhandle {
 /* ---------- Halon ---------- */
 
 /* ==========================================================================
-   Stage and panel — the panel is the navigation frame, dark in every scheme.
+   Stage and panel — the panel is shell chrome: gray in light, navy in dark.
    ========================================================================== */
 
 stage {

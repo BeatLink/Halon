@@ -47,6 +47,9 @@
     --surface-navigation: #f1f5f9;
     --surface-navigation-hover: #e2e8f0;
     --surface-overlay: rgba(15, 23, 42, 0.45);
+    --surface-shell: #f1f5f9;
+    --surface-shell-hover: #e2e8f0;
+    --surface-shell-card: #ffffff;
     --text-heading: #0f172a;
     --text-body: #1a1a2e;
     --text-secondary: #475569;
@@ -83,6 +86,9 @@
         --surface-navigation: #060b14;
         --surface-navigation-hover: #101b2d;
         --surface-overlay: rgba(0, 0, 0, 0.6);
+        --surface-shell: #16213a;
+        --surface-shell-hover: #1f2c4a;
+        --surface-shell-card: #2a3a5e;
         --text-heading: #f8fafc;
         --text-body: #e2e8f0;
         --text-secondary: #cbd5e1;
@@ -118,6 +124,9 @@
     --surface-navigation: #060b14;
     --surface-navigation-hover: #101b2d;
     --surface-overlay: rgba(0, 0, 0, 0.6);
+    --surface-shell: #16213a;
+    --surface-shell-hover: #1f2c4a;
+    --surface-shell-card: #2a3a5e;
     --text-heading: #f8fafc;
     --text-body: #e2e8f0;
     --text-secondary: #cbd5e1;
@@ -152,6 +161,9 @@
     --surface-navigation: #f1f5f9;
     --surface-navigation-hover: #e2e8f0;
     --surface-overlay: rgba(15, 23, 42, 0.45);
+    --surface-shell: #f1f5f9;
+    --surface-shell-hover: #e2e8f0;
+    --surface-shell-card: #ffffff;
     --text-heading: #0f172a;
     --text-body: #1a1a2e;
     --text-secondary: #475569;
