@@ -175,8 +175,7 @@ decoration:backdrop {
 }
 
 /* The compositor shadows a server-side frame, so only the hairline is painted here. */
-.ssd decoration,
-.ssd decoration:backdrop {
+.ssd decoration {
     box-shadow: 0 0 0 1px @border-default;
 }
 
