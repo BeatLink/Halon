@@ -167,9 +167,17 @@ decoration {
                 0 0 0 1px @border-default;
 }
 
+/* The transparent shadow keeps the focused extents, or the frame border shrinks on focus loss. */
 decoration:backdrop {
-    box-shadow: 0 2px 8px @shadow-card,
+    box-shadow: 0 3px 14px transparent,
+                0 2px 8px @shadow-card,
                 0 0 0 1px @border-default;
+}
+
+/* The compositor shadows a server-side frame, so only the hairline is painted here. */
+.ssd decoration,
+.ssd decoration:backdrop {
+    box-shadow: 0 0 0 1px @border-default;
 }
 
 /* Nothing is rounded when there is no gap for the corner to sit in. */
