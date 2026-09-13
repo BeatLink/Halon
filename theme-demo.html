@@ -72,17 +72,75 @@
     --shadow-floating: light-dark(0 2px 8px rgba(15, 23, 42, .20), 0 2px 8px rgba(15, 23, 42, .6));
     --shadow-modal:    light-dark(0 8px 32px rgba(15, 23, 42, .25), 0 8px 32px rgba(15, 23, 42, .7));
 
-    /* Typography and shape — §4. */
+    /* Metrics — §4.1, the whole block. Every number below this line is one of
+       these tokens or a padding §4.3 names; scripts/audit.mjs enforces both. */
     --font-family-interface:
         system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
         "Noto Sans", Cantarell, "Helvetica Neue", Arial, sans-serif,
         "Apple Color Emoji", "Segoe UI Emoji";
     --font-family-code: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas,
         "Liberation Mono", monospace;
-    --radius-default: 8px;
-    --spacing-gutter: 0.2rem;
 
-    --sidebar-width: 248px;
+    /* Spacing — a 4px scale. Nothing may use a value that is not on it. */
+    --space-1:  2px;   /* badge padding, hairline gaps */
+    --space-2:  4px;   /* icon to label */
+    --space-3:  6px;   /* control inner vertical */
+    --space-4:  8px;   /* related controls, list row padding */
+    --space-5: 12px;   /* groups within a panel */
+    --space-6: 16px;   /* panel padding */
+    --space-7: 24px;   /* between sections */
+    --space-8: 32px;   /* page margins */
+
+    /* Geometry — one control height, so everything on a row aligns */
+    --control-height:       32px;   /* the 16px line box + 7px padding + 1px border, doubled */
+    --control-padding-x:    14px;
+    --icon-button-size:     32px;   /* a control that happens to be square */
+    --row-height:           28px;   /* list and tree rows, menu items, the status bar */
+    --frame-height:         34px;   /* headerbars, tab bars, toolbars */
+    --rail-width:           52px;
+    --rail-button-size:     36px;   /* the one square that is not a control, see §4.2 */
+    --icon-size-small:      16px;   /* menus, rows, toolbars — the dense default */
+    --icon-size-large:      20px;   /* the navigation rail and floating actions */
+    --sidebar-width:       248px;
+    --border-width:          1px;
+    --focus-ring-width:      3px;
+
+    /* Radii — proportional to what they round */
+    --radius-small:    4px;      /* anything you act on: controls, rows, chips */
+    --radius-default:  8px;      /* any surface that holds them, the window included */
+
+    /* Type scale */
+    --text-label:    11px;       /* uppercase section labels, weight 600 */
+    --text-caption:  12px;       /* captions, footers, shortcut hints */
+    --text-control:  13px;       /* buttons, inputs, menus, list rows, tabs */
+    --text-prose:    14px;       /* running prose */
+    --text-h3:       15px;
+    --text-h2:       19px;
+    --text-h1:       26px;
+
+    /* Tracking — uppercase micro-labels open up, large display type closes in.
+       Everything else takes neither. */
+    --letter-spacing-caps:    .04em;
+    --letter-spacing-display: -.01em;
+
+    /* The UI line box is a length, not a ratio: every height in §4.3 is this box
+       plus padding plus borders, and a ratio would make each one font-dependent. */
+    --line-height-ui:   16px;
+    --line-height-body: 1.55;
+    --measure:          68ch;    /* maximum prose line length */
+
+    /* Layering — only the order means anything, so the values state the order and
+       nothing else. 100 apart leaves a port room to slot a rung in without a rename. */
+    --layer-sticky:    100;      /* sticky table headers */
+    --layer-menu:      200;      /* context menus, popovers */
+    --layer-modal:     300;      /* modal backdrop and the modal itself */
+    --layer-toast:     400;      /* a toast has to clear a modal */
+    --layer-tooltip:   500;      /* topmost: a tooltip can be raised from anything */
+
+    /* Motion — two durations. Fast is a state answering a pointer; slow is a
+       thing arriving, leaving, or travelling a distance. */
+    --duration-fast:   .12s;
+    --duration-slow:    .3s;
 
     /* The arrow is drawn in the accent color, so its two variants belong in the token block. */
     --select-arrow: light-dark(
@@ -107,11 +165,18 @@ body {
     height: 100vh;
     overflow: hidden;
     font-family: var(--font-family-interface);
-    font-size: 14px;
-    line-height: 1.55;
+    font-size: var(--text-prose);
+    line-height: var(--line-height-body);
     color: var(--text-body);
     background: var(--surface-root);
     -webkit-font-smoothing: antialiased;
+}
+
+/* Interface text sits on a fixed line box, per §4.2. This is the rule that makes
+   one control height true: left to `normal`, an input is taller than a button. */
+button, input, select, .badge, .status-bar, .field-label, .attribute-row,
+thead th, tbody td {
+    line-height: var(--line-height-ui);
 }
 
 ::selection {
@@ -120,15 +185,17 @@ body {
 }
 
 :focus-visible {
-    outline: 3px solid var(--focus-ring);
+    outline: var(--focus-ring-width) solid var(--focus-ring);
     outline-offset: 1px;
 }
 
 ::-webkit-scrollbar { width: 10px; height: 10px; }
 ::-webkit-scrollbar-track { background: transparent; }
+/* §4.3: a 10px track with a 2px transparent inset, so a 6px thumb — rounded at
+   half its width, the point at which a bar becomes a capsule. */
 ::-webkit-scrollbar-thumb {
     background: var(--border-hover);
-    border-radius: 6px;
+    border-radius: 3px;
     border: 2px solid transparent;
     background-clip: content-box;
 }
@@ -138,10 +205,37 @@ body {
 @supports not (color: light-dark(#fff, #000)) {
     .legacy-warning {
         display: block;
-        padding: 12px 20px;
+        padding: var(--space-5) var(--space-7);
         background: var(--status-danger);
         color: var(--text-on-fill);
         font-weight: 500;
+    }
+}
+
+/* Icons are a 24px artboard rendered at one of two sizes, per §4.5. The box is
+   the specification and the stroke scales with it — a glyph character can do
+   neither, which is why 17px of font-size was drawing a 12px mark. */
+.icon {
+    width: var(--icon-size-small);
+    height: var(--icon-size-small);
+    flex-shrink: 0;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.icon-large { width: var(--icon-size-large); height: var(--icon-size-large); }
+
+/* §4.6 — the user's setting outranks the sheet. Everything animated here is
+   feedback or decoration, so none of it loses meaning by being switched off. */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 1ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 1ms !important;
+        scroll-behavior: auto !important;
     }
 }
 
@@ -156,28 +250,27 @@ body {
 /* ---------- Navigation rail — §6.4 ---------- */
 
 .navigation-rail {
-    width: 52px;
+    width: var(--rail-width);
     flex-shrink: 0;
     background: var(--surface-navigation);
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 4px;
-    padding: 8px 0;
+    gap: var(--space-2);
+    padding: var(--space-4) 0;
 }
 
 .rail-button {
-    width: 36px;
-    height: 36px;
+    width: var(--rail-button-size);
+    height: var(--rail-button-size);
     display: grid;
     place-items: center;
     border: none;
-    border-radius: var(--radius-default);
+    border-radius: var(--radius-small);
     background: transparent;
     color: var(--text-on-navigation);
-    font-size: 17px;
     cursor: pointer;
-    transition: background-color .12s, color .12s;
+    transition: background-color var(--duration-fast), color var(--duration-fast);
 }
 
 .rail-button:hover, .rail-button[aria-current="true"] {
@@ -194,8 +287,8 @@ body {
 .rail-badge::after {
     content: "";
     position: absolute;
-    top: 5px; right: 5px;
-    width: 7px; height: 7px;
+    top: 4px; right: 4px;
+    width: 8px; height: 8px;
     border-radius: 50%;
     background: var(--status-success);
     border: 2px solid var(--surface-navigation);
@@ -206,8 +299,10 @@ body {
 .tab-bar {
     display: flex;
     align-items: center;
-    gap: 2px;
-    padding: var(--spacing-gutter);
+    height: var(--frame-height);
+    flex-shrink: 0;
+    gap: var(--space-1);
+    padding: 0 var(--space-2);
     background: var(--surface-navigation);
     overflow-x: auto;
     scrollbar-width: none;
@@ -217,17 +312,18 @@ body {
 .tab {
     display: flex;
     align-items: center;
-    gap: 8px;
-    padding: 6px 10px;
+    gap: var(--space-4);
+    height: var(--row-height);
+    padding: var(--space-3) 10px;
     border: none;
     border-radius: var(--radius-default);
     background: transparent;
     color: var(--text-on-navigation);
     font: inherit;
-    font-size: 13px;
+    font-size: var(--text-control);
     white-space: nowrap;
     cursor: pointer;
-    transition: background-color .12s;
+    transition: background-color var(--duration-fast);
 }
 
 .tab:hover { background: var(--surface-navigation-hover); }
@@ -245,11 +341,9 @@ body {
     place-items: center;
     width: 16px; height: 16px;
     border: none;
-    border-radius: 4px;
+    border-radius: var(--radius-small);
     background: transparent;
     color: inherit;
-    font-size: 11px;
-    line-height: 1;
     cursor: pointer;
     opacity: .6;
 }
@@ -262,12 +356,11 @@ body {
 
 .new-tab-button {
     flex-shrink: 0;
-    width: 28px; height: 28px;
+    width: var(--row-height); height: var(--row-height);
     border: none;
-    border-radius: var(--radius-default);
+    border-radius: var(--radius-small);
     background: transparent;
     color: var(--text-on-navigation);
-    font-size: 16px;
     cursor: pointer;
 }
 
@@ -281,27 +374,28 @@ body {
 .sidebar {
     width: var(--sidebar-width);
     flex-shrink: 0;
+    padding: 0 var(--space-4);
     background: var(--surface-secondary);
     display: flex;
     flex-direction: column;
     min-height: 0;
 }
 
-.sidebar-search { padding: 10px; }
+.sidebar-search { padding: var(--space-4) 0; }
 
 .tree {
     flex: 1;
     overflow-y: auto;
-    padding: 0 8px 16px;
+    padding: 0 0 var(--space-6);
     list-style: none;
     margin: 0;
 }
 
 .tree-group-label {
-    padding: 12px 8px 4px;
-    font-size: 11px;
+    padding: var(--space-5) var(--space-4) var(--space-2);
+    font-size: var(--text-label);
     font-weight: 600;
-    letter-spacing: .04em;
+    letter-spacing: var(--letter-spacing-caps);
     text-transform: uppercase;
     color: var(--text-secondary);
 }
@@ -309,16 +403,17 @@ body {
 .tree-item {
     display: flex;
     align-items: center;
-    gap: 7px;
+    gap: var(--space-3);
     width: 100%;
-    padding: 5px 8px;
-    margin-bottom: 1px;
+    height: var(--row-height);
+    padding: var(--space-3) var(--space-4);
+    margin-bottom: var(--border-width);
     border: none;
-    border-radius: 6px;
+    border-radius: var(--radius-small);
     background: transparent;
     color: var(--text-body);
     font: inherit;
-    font-size: 13px;
+    font-size: var(--text-control);
     text-align: left;
     cursor: pointer;
 }
@@ -333,19 +428,18 @@ body {
     font-weight: 500;
 }
 
-.tree-item-icon { color: var(--text-secondary); font-size: 13px; width: 15px; text-align: center; }
+.tree-item-icon { color: var(--text-secondary); }
 .tree-item[aria-current="true"] .tree-item-icon { color: var(--accent); }
 .tree-item-label { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
 .tree-item-action {
     display: none;
     place-items: center;
-    width: 19px; height: 19px;
+    width: 20px; height: 20px;
     border: none;
-    border-radius: 4px;
+    border-radius: var(--radius-small);
     background: var(--surface-default);
     color: var(--text-secondary);
-    font-size: 12px;
     cursor: pointer;
 }
 
@@ -358,23 +452,22 @@ body {
     color: var(--text-secondary);
     cursor: pointer;
     padding: 0;
-    width: 12px;
-    font-size: 9px;
-    transition: transform .15s;
+    width: var(--icon-size-small);
+    transition: transform var(--duration-fast);
 }
 .tree-toggle[aria-expanded="false"] { transform: rotate(-90deg); }
 
-.tree-children { list-style: none; margin: 0; padding-left: 14px; }
+.tree-children { list-style: none; margin: 0; padding-left: var(--space-6); }
 .tree-children[hidden] { display: none; }
 
 /* ---------- Gutter — §6.8 ---------- */
 
 .gutter {
-    width: 5px;
+    width: var(--space-2);
     flex-shrink: 0;
     cursor: col-resize;
     background: transparent;
-    transition: background-color .12s;
+    transition: background-color var(--duration-fast);
 }
 .gutter:hover, .gutter.is-dragging { background: var(--accent); }
 
@@ -386,54 +479,54 @@ body {
     overflow-y: auto;
     background: var(--surface-default);
     border-radius: var(--radius-default);
-    margin: var(--spacing-gutter);
-    padding: 28px 32px 80px;
+    margin: var(--space-2);
+    padding: 28px var(--space-8) 80px;
     scroll-behavior: smooth;
 }
 
 .content h1, .content h2, .content h3, .content h4 {
     color: var(--text-heading);
     line-height: 1.25;
-    margin: 0 0 8px;
+    margin: 0 0 var(--space-4);
 }
-.content h1 { font-size: 26px; letter-spacing: -.01em; }
-.content h2 { font-size: 19px; margin-top: 0; }
-.content h3 { font-size: 15px; margin-top: 20px; }
-.content p { margin: 0 0 14px; max-width: 68ch; }
+.content h1 { font-size: var(--text-h1); letter-spacing: var(--letter-spacing-display); }
+.content h2 { font-size: var(--text-h2); margin-top: 0; }
+.content h3 { font-size: var(--text-h3); margin-top: var(--space-7); }
+.content p { margin: 0 0 var(--space-6); max-width: var(--measure); }
 .content a { color: var(--accent); text-decoration-color: var(--accent); }
-.content a:hover { background: var(--focus-ring); border-radius: 3px; }
+.content a:hover { background: var(--focus-ring); border-radius: var(--radius-small); }
 
-.lede { color: var(--text-secondary); font-size: 15px; }
+.lede { color: var(--text-secondary); font-size: var(--text-h3); }
 
 /* Scrolls with the document — the always-reachable scheme toggle lives in the navigation rail. */
-.content-header { margin-bottom: 18px; }
+.content-header { margin-bottom: var(--space-6); }
 .content-header h1 { margin-bottom: 0; }
-.content-header .lede { margin: 10px 0 0; }
+.content-header .lede { margin: var(--space-5) 0 0; }
 
 .section {
-    padding: 24px 0;
-    border-top: 1px solid var(--border-default);
-    scroll-margin-top: 12px;
+    padding: var(--space-7) 0;
+    border-top: var(--border-width) solid var(--border-default);
+    scroll-margin-top: var(--space-5);
 }
-.section:first-of-type { border-top: none; padding-top: 8px; }
+.section:first-of-type { border-top: none; padding-top: var(--space-4); }
 
 .section-note {
     color: var(--text-secondary);
-    font-size: 13px;
-    margin: -4px 0 16px;
-    max-width: 72ch;
+    font-size: var(--text-control);
+    margin: calc(var(--space-2) * -1) 0 var(--space-6);
+    max-width: var(--measure);
 }
 
-.row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-bottom: 14px; }
-.stack { display: flex; flex-direction: column; gap: 10px; }
-.grid { display: grid; gap: 12px; }
+.row { display: flex; flex-wrap: wrap; gap: var(--space-5); align-items: center; margin-bottom: var(--space-6); }
+.stack { display: flex; flex-direction: column; gap: var(--space-5); }
+.grid { display: grid; gap: var(--space-5); }
 .label-small {
-    font-size: 11px;
+    font-size: var(--text-label);
     font-weight: 600;
-    letter-spacing: .04em;
+    letter-spacing: var(--letter-spacing-caps);
     text-transform: uppercase;
     color: var(--text-secondary);
-    margin-bottom: 6px;
+    margin-bottom: var(--space-3);
 }
 
 /* ---------- Buttons — §6.1 ---------- */
@@ -442,18 +535,18 @@ body {
 .button {
     display: inline-flex;
     align-items: center;
-    gap: 7px;
+    gap: var(--space-2);
     background: transparent;
-    border: 1px solid var(--border-default);
+    border: var(--border-width) solid var(--border-default);
     color: var(--text-body);
-    padding: 8px 14px;
+    height: var(--control-height);
+    padding: 7px var(--control-padding-x);
     font-family: inherit;
-    font-size: 13px;
+    font-size: var(--text-control);
     font-weight: 500;
-    line-height: 1;
-    border-radius: var(--radius-default);
+    border-radius: var(--radius-small);
     cursor: pointer;
-    transition: border-color .12s, color .12s, opacity .12s;
+    transition: border-color var(--duration-fast), color var(--duration-fast), opacity var(--duration-fast);
 }
 
 /* Hover moves the border, never the background — a background swap can paint the
@@ -478,18 +571,21 @@ body {
 
 .button-group {
     display: inline-flex;
-    border: 1px solid var(--border-default);
-    border-radius: var(--radius-default);
+    border: var(--border-width) solid var(--border-default);
+    border-radius: var(--radius-small);
     overflow: hidden;
 }
 
+/* The group owns the border, so each segment gives back its width — the group,
+   not the segment, is what has to be --control-height tall. */
 .button-group .button {
+    height: calc(var(--control-height) - 2 * var(--border-width));
     border: none;
     border-radius: 0;
     color: var(--text-secondary);
 }
 .button-group .button:hover { border: none; color: var(--text-heading); }
-.button-group .button + .button { border-left: 1px solid var(--border-default); }
+.button-group .button + .button { border-left: var(--border-width) solid var(--border-default); }
 .button-group .button[aria-pressed="true"] {
     background: var(--accent);
     color: var(--text-on-fill);
@@ -498,41 +594,44 @@ body {
 .icon-button {
     display: grid;
     place-items: center;
-    width: 30px; height: 30px;
-    border: 1px solid transparent;
-    border-radius: 6px;
+    width: var(--icon-button-size); height: var(--icon-button-size);
+    border: var(--border-width) solid transparent;
+    border-radius: var(--radius-small);
     background: transparent;
     color: var(--text-secondary);
-    font-size: 14px;
     cursor: pointer;
 }
 .icon-button:hover { background: var(--surface-secondary); color: var(--text-heading); }
 
 .keyboard-shortcut {
     font-family: var(--font-family-code);
-    font-size: 11px;
-    padding: 2px 5px;
-    border: 1px solid var(--border-default);
-    border-radius: 4px;
+    font-size: var(--text-label);
+    padding: var(--space-1) var(--space-2);
+    border: var(--border-width) solid var(--border-default);
+    border-radius: var(--radius-small);
     background: var(--surface-secondary);
     color: var(--text-body);
 }
 
 /* ---------- Inputs — §6.2 ---------- */
 
-.field { display: flex; flex-direction: column; gap: 5px; min-width: 200px; }
-.field-label { font-size: 12px; font-weight: 500; color: var(--text-secondary); }
+.field { display: flex; flex-direction: column; gap: var(--space-2); min-width: 200px; }
+.field-label { font-size: var(--text-caption); font-weight: 500; color: var(--text-secondary); }
 
 .input, .textarea {
     font-family: inherit;
-    font-size: 13px;
-    padding: 8px 11px;
-    border: 1px solid var(--border-default);
-    border-radius: var(--radius-default);
+    font-size: var(--text-control);
+    padding: 7px 11px;
+    border: var(--border-width) solid var(--border-default);
+    border-radius: var(--radius-small);
     background: var(--surface-default);
     color: var(--text-body);
-    transition: border-color .12s;
+    transition: border-color var(--duration-fast);
 }
+
+/* A textarea is prose, so it keeps the body line box and grows; only the
+   single-line input is held to the one control height. */
+.input { height: var(--control-height); }
 
 .input::placeholder, .textarea::placeholder { color: var(--text-tertiary); }
 
@@ -540,36 +639,36 @@ body {
 .input:hover, .textarea:hover { border-color: var(--border-focus); }
 
 .input:focus, .textarea:focus {
-    outline: 3px solid var(--focus-ring);
+    outline: var(--focus-ring-width) solid var(--focus-ring);
     outline-offset: 0;
     border-color: var(--border-focus);
     background: var(--surface-default);
 }
 
-.textarea { resize: vertical; min-height: 76px; }
+.textarea { resize: vertical; min-height: 80px; }
 
 .input-group { display: flex; align-items: center; position: relative; }
-.input-group .input { flex: 1; padding-right: 32px; }
+.input-group .input { flex: 1; padding-right: var(--space-8); }
 .input-group-action {
     position: absolute;
-    right: 6px;
+    right: var(--space-3);
     border: none;
     background: transparent;
     color: var(--text-secondary);
     cursor: pointer;
-    font-size: 13px;
-    padding: 2px;
+    padding: var(--space-1);
 }
 .input-group-action:hover { color: var(--accent); }
 
 /* A closed select is an action affordance, so it reads as a ghost button. */
 .select {
     font-family: inherit;
-    font-size: 13px;
+    font-size: var(--text-control);
     font-weight: 500;
-    padding: 8px 30px 8px 12px;
-    border: 1px solid var(--border-default);
-    border-radius: var(--radius-default);
+    height: var(--control-height);
+    padding: 7px 30px 7px var(--space-5);
+    border: var(--border-width) solid var(--border-default);
+    border-radius: var(--radius-small);
     color: var(--accent);
     cursor: pointer;
     appearance: none;
@@ -577,34 +676,36 @@ body {
     background-image: var(--select-arrow);
     background-repeat: no-repeat;
     background-position: right 11px center;
-    transition: opacity .12s;
+    transition: opacity var(--duration-fast);
 }
-.select:hover { border-color: var(--accent); }
+.select:hover { opacity: .85; }
 .select option { background: var(--surface-default); color: var(--text-body); font-weight: 400; }
 
-.checkbox-row { display: flex; align-items: center; gap: 8px; font-size: 13px; }
-.checkbox-row input { accent-color: var(--accent); width: 15px; height: 15px; }
+.checkbox-row { display: flex; align-items: center; gap: var(--space-4); font-size: var(--text-control); }
+.checkbox-row input[type="checkbox"], .checkbox-row input[type="radio"] {
+    accent-color: var(--accent); width: 16px; height: 16px;
+}
 
 .switch {
     position: relative;
-    width: 38px; height: 21px;
-    border-radius: 11px;
-    border: 1px solid var(--border-hover);
+    width: 40px; height: 24px;
+    border-radius: var(--radius-small);
+    border: var(--border-width) solid var(--border-hover);
     background: var(--surface-secondary);
     cursor: pointer;
-    transition: background-color .15s, border-color .15s;
+    transition: background-color var(--duration-fast), border-color var(--duration-fast);
 }
 .switch::after {
     content: "";
     position: absolute;
-    top: 2px; left: 2px;
-    width: 15px; height: 15px;
-    border-radius: 50%;
+    top: 3px; left: 3px;
+    width: 16px; height: 16px;
+    border-radius: var(--radius-small);
     background: var(--text-tertiary);
-    transition: transform .15s, background-color .15s;
+    transition: transform var(--duration-fast), background-color var(--duration-fast);
 }
 .switch[aria-checked="true"] { background: var(--accent); border-color: var(--accent); }
-.switch[aria-checked="true"]::after { transform: translateX(17px); background: var(--text-on-fill); }
+.switch[aria-checked="true"]::after { transform: translateX(16px); background: var(--text-on-fill); }
 
 .range {
     -webkit-appearance: none;
@@ -613,18 +714,18 @@ body {
     height: 6px;
     border-radius: 3px;
     background: var(--surface-secondary);
-    border: 1px solid var(--border-default);
+    border: var(--border-width) solid var(--border-default);
 }
 .range::-webkit-slider-thumb {
     -webkit-appearance: none;
-    width: 15px; height: 15px;
+    width: 16px; height: 16px;
     border-radius: 50%;
     background: var(--accent);
     border: 2px solid var(--surface-default);
     box-shadow: var(--shadow-item);
 }
 .range::-moz-range-thumb {
-    width: 15px; height: 15px;
+    width: 16px; height: 16px;
     border-radius: 50%;
     background: var(--accent);
     border: 2px solid var(--surface-default);
@@ -634,9 +735,9 @@ body {
 
 .card {
     background: var(--surface-default);
-    border: 1px solid var(--border-default);
+    border: var(--border-width) solid var(--border-default);
     border-radius: var(--radius-default);
-    padding: 14px 16px;
+    padding: 14px var(--space-6);
     box-shadow: var(--shadow-card);
 }
 
@@ -646,31 +747,32 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 10px;
-    margin: -14px -16px 12px;
-    padding: 10px 16px;
-    border-bottom: 1px solid var(--border-default);
+    gap: var(--space-5);
+    margin: -14px calc(var(--space-6) * -1) var(--space-5);
+    padding: 10px var(--space-6);
+    border-bottom: var(--border-width) solid var(--border-default);
     border-radius: 0;
-    font-size: 12px;
+    font-size: var(--text-caption);
     font-weight: 600;
-    letter-spacing: .03em;
+    letter-spacing: var(--letter-spacing-caps);
     text-transform: uppercase;
     color: var(--text-secondary);
 }
 
-.card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(215px, 1fr)); gap: 12px; }
+.card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(216px, 1fr)); gap: var(--space-5); }
 
 /* ---------- Badges — §6.7 ---------- */
 
 .badge {
     display: inline-flex;
     align-items: center;
-    gap: 5px;
-    padding: 2px 8px;
-    border-radius: 20px;
-    font-size: 11px;
+    gap: var(--space-2);
+    padding: var(--space-1) var(--space-4);
+    border-radius: var(--radius-small);
+    font-size: var(--text-label);
+    white-space: nowrap;
     font-weight: 600;
-    letter-spacing: .02em;
+    letter-spacing: var(--letter-spacing-caps);
     background: var(--surface-secondary);
     color: var(--text-secondary);
 }
@@ -684,13 +786,13 @@ body {
 .alert-bar {
     display: flex;
     align-items: center;
-    gap: 10px;
-    padding: 10px 14px;
+    gap: var(--space-5);
+    padding: var(--space-5) var(--space-6);
     border-radius: var(--radius-default);
     background: color-mix(in srgb, var(--status-warning) 15%, transparent);
     color: var(--text-body);
-    font-size: 13px;
-    margin-bottom: 14px;
+    font-size: var(--text-control);
+    margin-bottom: var(--space-6);
 }
 .alert-bar-icon { color: var(--status-warning-text); }
 
@@ -700,28 +802,29 @@ body {
 /* ---------- Table ---------- */
 
 .table-wrap {
-    border: 1px solid var(--border-default);
+    border: var(--border-width) solid var(--border-default);
     border-radius: var(--radius-default);
     overflow: auto;
 }
 
-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+table { width: 100%; border-collapse: collapse; font-size: var(--text-control); }
 
 thead th {
     position: sticky;
     top: 0;
+    z-index: var(--layer-sticky);
     text-align: left;
-    padding: 9px 12px;
+    padding: 9px var(--space-5);
     background: var(--surface-secondary);
     color: var(--text-secondary);
-    font-size: 11px;
+    font-size: var(--text-label);
     font-weight: 600;
-    letter-spacing: .04em;
+    letter-spacing: var(--letter-spacing-caps);
     text-transform: uppercase;
-    border-bottom: 1px solid var(--border-default);
+    border-bottom: var(--border-width) solid var(--border-default);
 }
 
-tbody td { padding: 9px 12px; border-bottom: 1px solid var(--border-default); }
+tbody td { padding: 9px var(--space-5); border-bottom: var(--border-width) solid var(--border-default); }
 tbody tr:last-child td { border-bottom: none; }
 tbody tr:hover td { background: var(--surface-secondary); }
 tbody tr[aria-selected="true"] td { background: var(--accent); color: var(--text-on-fill); }
@@ -732,76 +835,76 @@ tbody tr[aria-selected="true"] td { background: var(--accent); color: var(--text
 
 .code-block {
     font-family: var(--font-family-code);
-    font-size: 12.5px;
+    font-size: var(--text-caption);
     line-height: 1.65;
     background: var(--surface-secondary);
-    border: 1px solid var(--border-default);
+    border: var(--border-width) solid var(--border-default);
     border-radius: var(--radius-default);
-    padding: 13px 15px;
+    padding: var(--space-5) var(--space-6);
     overflow-x: auto;
     box-shadow: var(--shadow-code);
-    margin: 0 0 14px;
+    margin: 0 0 var(--space-6);
     color: var(--text-body);
 }
 
 code.inline {
     font-family: var(--font-family-code);
     font-size: .92em;
-    padding: 1px 5px;
-    border-radius: 4px;
+    padding: var(--border-width) var(--space-2);
+    border-radius: var(--radius-small);
     background: var(--surface-secondary);
     color: var(--text-body);
 }
 
 blockquote {
-    margin: 0 0 14px;
-    padding: 2px 0 2px 14px;
+    margin: 0 0 var(--space-6);
+    padding: var(--space-1) 0 var(--space-1) var(--space-6);
     border-left: 3px solid var(--accent);
     color: var(--text-secondary);
 }
 
 /* ---------- Swatches ---------- */
 
-.swatch-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(178px, 1fr)); gap: 8px; }
+.swatch-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(176px, 1fr)); gap: var(--space-4); }
 
 .swatch {
     display: flex;
     align-items: center;
-    gap: 10px;
-    padding: 7px;
-    border: 1px solid var(--border-default);
+    gap: var(--space-5);
+    padding: var(--space-4);
+    border: var(--border-width) solid var(--border-default);
     border-radius: var(--radius-default);
     background: var(--surface-default);
     cursor: pointer;
     text-align: left;
     font: inherit;
-    transition: border-color .12s;
+    transition: border-color var(--duration-fast);
 }
 .swatch:hover { border-color: var(--border-hover); }
 
 .swatch-chip {
-    width: 34px; height: 34px;
+    width: 32px; height: 32px;
     flex-shrink: 0;
-    border-radius: 6px;
-    border: 1px solid var(--border-default);
+    border-radius: var(--radius-small);
+    border: var(--border-width) solid var(--border-default);
 }
 
 .swatch-name {
     font-family: var(--font-family-code);
-    font-size: 11px;
+    font-size: var(--text-label);
     color: var(--text-body);
     display: block;
     overflow: hidden;
     text-overflow: ellipsis;
 }
-.swatch-value { font-family: var(--font-family-code); font-size: 10.5px; color: var(--text-tertiary); }
+.swatch-value { font-family: var(--font-family-code); font-size: var(--text-label); color: var(--text-tertiary); }
 
 /* ---------- Menu — §6.6 ---------- */
 
 .menu {
     min-width: 216px;
     padding: 5px;
-    border: 1px solid var(--border-default);
+    border: var(--border-width) solid var(--border-default);
     border-radius: var(--radius-default);
     background: var(--surface-default);
     box-shadow: var(--shadow-floating);
@@ -810,10 +913,10 @@ blockquote {
 .menu-static { position: static; display: block; }
 
 .menu-group-header {
-    padding: 6px 9px 3px;
-    font-size: 10.5px;
+    padding: var(--space-3) 9px 3px;
+    font-size: var(--text-label);
     font-weight: 600;
-    letter-spacing: .05em;
+    letter-spacing: var(--letter-spacing-caps);
     text-transform: uppercase;
     color: var(--text-secondary);
 }
@@ -821,38 +924,42 @@ blockquote {
 .menu-item {
     display: flex;
     align-items: center;
-    gap: 9px;
+    gap: var(--space-4);
     width: 100%;
-    padding: 6px 9px;
+    height: var(--row-height);
+    padding: var(--space-3) 9px;
     border: none;
-    border-radius: 5px;
+    border-radius: var(--radius-small);
     background: transparent;
     color: var(--text-body);
     font: inherit;
-    font-size: 13px;
+    font-size: var(--text-control);
     text-align: left;
     cursor: pointer;
 }
 .menu-item:hover { background: var(--surface-secondary); color: var(--text-heading); }
 .menu-item:disabled { opacity: .5; cursor: not-allowed; background: transparent; }
-.menu-item-icon { color: var(--text-secondary); width: 15px; text-align: center; font-size: 13px; }
+.menu-item-icon { color: var(--text-secondary); }
 .menu-item-danger { color: var(--status-danger); }
 .menu-item-danger .menu-item-icon { color: var(--status-danger); }
-.menu-item-shortcut { margin-left: auto; font-size: 11px; color: var(--text-tertiary); font-family: var(--font-family-code); }
-.menu-item-arrow { margin-left: auto; color: var(--text-secondary); font-size: 10px; }
-.menu-separator { height: 1px; margin: 5px 3px; background: var(--border-default); }
+.menu-item-shortcut { margin-left: auto; font-size: var(--text-label); color: var(--text-tertiary); font-family: var(--font-family-code); }
+.menu-item-arrow { margin-left: auto; color: var(--text-secondary); display: grid; }
+.menu-separator { height: var(--border-width); margin: var(--space-2) var(--space-1); background: var(--border-default); }
 
 .menu-section {
+    /* Flush into the sheet's bottom corners, so it takes the sheet's INNER
+       radius — the outer radius less the border it sits behind. */
     margin: 5px -5px -5px;
-    padding: 8px 14px;
+    padding: var(--space-4) var(--space-6);
     background: var(--surface-secondary);
-    border-top: 1px solid var(--border-default);
-    border-radius: 0 0 7px 7px;
-    font-size: 11.5px;
+    border-top: var(--border-width) solid var(--border-default);
+    border-radius: 0 0 calc(var(--radius-default) - var(--border-width))
+                          calc(var(--radius-default) - var(--border-width));
+    font-size: var(--text-caption);
     color: var(--text-secondary);
 }
 
-.context-menu { position: fixed; z-index: 60; }
+.context-menu { position: fixed; z-index: var(--layer-menu); }
 .context-menu[hidden] { display: none; }
 
 /* ---------- Inspector ---------- */
@@ -861,29 +968,29 @@ blockquote {
     width: 268px;
     flex-shrink: 0;
     overflow-y: auto;
-    padding: var(--spacing-gutter) calc(5px + var(--spacing-gutter)) var(--spacing-gutter) 0;
+    padding: var(--space-2) var(--space-4) var(--space-2) 0;
     display: flex;
     flex-direction: column;
-    gap: var(--spacing-gutter);
+    gap: var(--space-2);
 }
 
-.inspector .card { padding: 12px 13px; }
+.inspector .card { padding: var(--space-5); }
 .inspector-heading {
-    font-size: 11px;
+    font-size: var(--text-label);
     font-weight: 600;
-    letter-spacing: .04em;
+    letter-spacing: var(--letter-spacing-caps);
     text-transform: uppercase;
     color: var(--text-secondary);
-    margin: 0 0 9px;
+    margin: 0 0 var(--space-4);
 }
 
 .attribute-row {
     display: flex;
     justify-content: space-between;
-    gap: 10px;
-    padding: 5px 0;
-    font-size: 12.5px;
-    border-bottom: 1px solid var(--border-default);
+    gap: var(--space-5);
+    padding: var(--space-2) 0;
+    font-size: var(--text-caption);
+    border-bottom: var(--border-width) solid var(--border-default);
 }
 .attribute-row:last-child { border-bottom: none; }
 .attribute-key { color: var(--text-secondary); }
@@ -894,60 +1001,75 @@ blockquote {
 .status-bar {
     display: flex;
     align-items: center;
-    gap: 16px;
-    padding: 5px 14px;
-    border-top: 1px solid var(--border-default);
+    height: var(--row-height);
+    flex-shrink: 0;
+    gap: var(--space-6);
+    padding: 5px var(--space-5) 6px;
+    border-top: var(--border-width) solid var(--border-default);
     background: var(--surface-default);
-    font-size: 12px;
+    font-size: var(--text-caption);
     color: var(--text-secondary);
 }
 .status-bar-spacer { flex: 1; }
-.status-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--status-success); display: inline-block; }
+.status-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--status-success); display: inline-block; }
 .status-dot-error { background: var(--status-danger); animation: pulse 1.6s ease-in-out infinite; }
 @keyframes pulse { 50% { opacity: .25; } }
 
 /* ---------- Calendar ---------- */
 
 .calendar { max-width: 268px; }
-.calendar-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
-.calendar-title { font-weight: 600; color: var(--text-heading); font-size: 13px; }
-.calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; }
-.calendar-weekday { text-align: center; font-size: 10.5px; font-weight: 600; color: var(--text-secondary); padding-bottom: 4px; }
+.calendar-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--space-4); }
+.calendar-title { font-weight: 600; color: var(--text-heading); font-size: var(--text-control); }
+.calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: var(--space-1); }
+.calendar-weekday { text-align: center; font-size: var(--text-label); font-weight: 600; color: var(--text-secondary); padding-bottom: var(--space-2); }
 .calendar-day {
     aspect-ratio: 1;
     display: grid;
     place-items: center;
     border: none;
-    border-radius: 6px;
+    border-radius: var(--radius-small);
     background: transparent;
     color: var(--text-body);
     font: inherit;
-    font-size: 12px;
+    font-size: var(--text-caption);
     cursor: pointer;
+    transition: background-color var(--duration-fast), color var(--duration-fast), opacity var(--duration-fast);
 }
-.calendar-day:hover { background: var(--accent); color: var(--text-on-fill); }
+/* An ordinary day hovers like a menu row. It used to take the accent fill, which
+   is what today wears — so every cell under the pointer impersonated today. */
+.calendar-day:hover { background: var(--surface-secondary); color: var(--text-heading); }
 .calendar-day.is-outside { color: var(--text-tertiary); }
 .calendar-day.is-marked { background: var(--focus-ring); }
-.calendar-day[aria-current="date"] { border: 1px solid var(--accent); color: var(--accent); font-weight: 600; }
+
+/* Today is the primary action of the calendar, so it is the filled accent: the
+   same fill, text token, shadow and opacity-only hover as a filled button (§6.1). */
+.calendar-day[aria-current="date"] {
+    background: var(--accent);
+    color: var(--text-on-fill);
+    box-shadow: var(--shadow-item);
+    font-weight: 600;
+}
+.calendar-day[aria-current="date"]:hover { opacity: .85; }
 
 /* ---------- Timeline ---------- */
 
-.timeline { list-style: none; margin: 0; padding: 0 0 0 6px; }
-.timeline-item { position: relative; padding: 0 0 18px 22px; border-left: 2px solid var(--border-default); }
+.timeline { list-style: none; margin: 0; padding: 0 0 0 var(--space-3); }
+.timeline-item { position: relative; padding: 0 0 var(--space-6) var(--space-7); border-left: 2px solid var(--border-default); }
 .timeline-item:last-child { border-left-color: transparent; padding-bottom: 0; }
 .timeline-item.is-active { border-left-color: var(--accent); }
 .timeline-item::before {
     content: "";
     position: absolute;
-    left: -6px; top: 3px;
-    width: 10px; height: 10px;
+    /* -5px centres the 8px dot on the item's 2px rail. */
+    left: -5px; top: 4px;
+    width: 8px; height: 8px;
     border-radius: 50%;
     background: var(--accent);
     border: 2px solid var(--surface-default);
 }
 .timeline-item:hover::before { background: var(--accent); }
-.timeline-time { font-size: 11px; color: var(--text-tertiary); font-family: var(--font-family-code); }
-.timeline-title { font-size: 13px; color: var(--text-heading); font-weight: 500; }
+.timeline-time { font-size: var(--text-label); color: var(--text-tertiary); font-family: var(--font-family-code); }
+.timeline-title { font-size: var(--text-control); color: var(--text-heading); font-weight: 500; }
 
 /* ---------- Progress ---------- */
 
@@ -957,33 +1079,33 @@ blockquote {
     height: 6px;
     border-radius: 3px;
     background: var(--surface-secondary);
-    border: 1px solid var(--border-default);
+    border: var(--border-width) solid var(--border-default);
     overflow: hidden;
 }
-.progress-fill { height: 100%; background: var(--accent); border-radius: 3px; transition: width .3s; }
+.progress-fill { height: 100%; background: var(--accent); border-radius: 3px; transition: width var(--duration-slow); }
 .progress-fill-success { background: var(--status-success); }
 .progress-fill-warning { background: var(--status-warning); }
 
 .progress-label { display: flex; justify-content: space-between; align-items: baseline; }
-.progress-value { font-family: var(--font-family-code); font-size: 11px; color: var(--text-secondary); }
+.progress-value { font-family: var(--font-family-code); font-size: var(--text-label); color: var(--text-secondary); }
 
 /* ---------- Modal — §6.6 ---------- */
 
 .modal-backdrop {
     position: fixed;
     inset: 0;
-    z-index: 80;
+    z-index: var(--layer-modal);
     background: var(--surface-overlay);
     display: grid;
     place-items: center;
-    padding: 20px;
+    padding: var(--space-7);
 }
 .modal-backdrop[hidden] { display: none; }
 
 .modal {
     width: min(520px, 100%);
     background: var(--surface-default);
-    border: 1px solid var(--border-default);
+    border: var(--border-width) solid var(--border-default);
     border-radius: var(--radius-default);
     box-shadow: var(--shadow-modal);
     overflow: hidden;
@@ -993,37 +1115,36 @@ blockquote {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 13px 16px;
-    border-bottom: 1px solid var(--border-default);
+    padding: var(--space-5) var(--space-6);
+    border-bottom: var(--border-width) solid var(--border-default);
 }
-.modal-title { margin: 0; font-size: 15px; color: var(--text-heading); }
+.modal-title { margin: 0; font-size: var(--text-h3); color: var(--text-heading); }
 
 .modal-control-button {
     display: grid;
     place-items: center;
-    width: 26px; height: 26px;
+    width: 24px; height: 24px;
     border: none;
-    border-radius: 6px;
+    border-radius: var(--radius-small);
     background: var(--surface-secondary);
     color: var(--text-secondary);
     cursor: pointer;
-    font-size: 13px;
 }
 /* The one sanctioned color-swap hover — a filled accent chip has no icon-vanishing risk. */
 .modal-control-button:hover { background: var(--accent); color: var(--text-on-fill); }
 
-.modal-body { padding: 16px; }
+.modal-body { padding: var(--space-6); }
 
 .modal-footer {
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    gap: 8px;
-    padding: 11px 16px;
+    gap: var(--space-4);
+    padding: var(--space-5) var(--space-6);
     background: var(--surface-secondary);
-    border-top: 1px solid var(--border-default);
+    border-top: var(--border-width) solid var(--border-default);
     color: var(--text-secondary);
-    font-size: 12px;
+    font-size: var(--text-caption);
 }
 .modal-footer-note { margin-right: auto; }
 
@@ -1031,50 +1152,49 @@ blockquote {
 
 .toast-region {
     position: fixed;
-    bottom: 18px; right: 18px;
-    z-index: 90;
+    bottom: var(--space-6); right: var(--space-6);
+    z-index: var(--layer-toast);
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: var(--space-4);
     align-items: flex-end;
 }
 
 .toast {
     display: flex;
     align-items: center;
-    gap: 10px;
-    padding: 10px 13px;
+    gap: var(--space-5);
+    padding: var(--space-5);
     border-radius: var(--radius-default);
     background: var(--surface-navigation);
     color: var(--text-heading);
     box-shadow: var(--shadow-floating);
-    font-size: 13px;
-    animation: toast-in .18s ease-out;
+    font-size: var(--text-control);
+    animation: toast-in var(--duration-slow) ease-out;
 }
 @keyframes toast-in { from { opacity: 0; transform: translateY(6px); } }
-.toast.is-leaving { opacity: 0; transform: translateY(6px); transition: opacity .18s, transform .18s; }
+.toast.is-leaving { opacity: 0; transform: translateY(6px); transition: opacity var(--duration-slow), transform var(--duration-slow); }
 
 .toast-close {
     display: grid;
     place-items: center;
-    width: 19px; height: 19px;
+    width: 20px; height: 20px;
     border: none;
-    border-radius: 4px;
+    border-radius: var(--radius-small);
     background: color-mix(in srgb, var(--text-heading) 15%, transparent);
     color: inherit;
     cursor: pointer;
-    font-size: 11px;
 }
 
 .tooltip {
     position: fixed;
-    z-index: 95;
-    padding: 5px 9px;
-    border-radius: 6px;
+    z-index: var(--layer-tooltip);
+    padding: var(--space-2) var(--space-4);
+    border-radius: var(--radius-small);
     background: var(--surface-navigation);
     color: var(--text-heading);
     box-shadow: var(--shadow-floating);
-    font-size: 12px;
+    font-size: var(--text-caption);
     pointer-events: none;
 }
 .tooltip[hidden] { display: none; }
@@ -1087,15 +1207,14 @@ blockquote {
     bottom: 44px;
     display: grid;
     place-items: center;
-    width: 38px; height: 38px;
-    border: 1px solid var(--border-default);
+    width: 40px; height: 40px;
+    border: var(--border-width) solid var(--border-default);
     border-radius: 50%;
     background: var(--surface-default);
     color: var(--accent);
     box-shadow: var(--shadow-floating);
     cursor: pointer;
-    font-size: 16px;
-    transition: opacity .12s;
+    transition: opacity var(--duration-fast);
 }
 .floating-button:hover { opacity: .85; background: var(--surface-secondary); }
 
@@ -1103,30 +1222,77 @@ blockquote {
 
 .audit-pass { color: var(--status-success); font-weight: 600; }
 .audit-fail { color: var(--status-danger); font-weight: 600; }
-.audit-sample { padding: 2px 8px; border-radius: 4px; font-size: 12px; white-space: nowrap; }
+.audit-sample { padding: var(--space-1) var(--space-4); border-radius: var(--radius-small); font-size: var(--text-caption); white-space: nowrap; }
 
 /* ---------- Editor ---------- */
 
 .editor-row {
     display: grid;
-    grid-template-columns: 1fr 34px;
+    grid-template-columns: 1fr 32px;
     align-items: center;
-    gap: 8px;
+    gap: var(--space-4);
     font-family: var(--font-family-code);
-    font-size: 11.5px;
+    font-size: var(--text-label);
     color: var(--text-body);
 }
 .editor-row input[type="color"] {
-    width: 34px; height: 26px;
+    width: 32px; height: 24px;
     padding: 0;
-    border: 1px solid var(--border-default);
-    border-radius: 5px;
+    border: var(--border-width) solid var(--border-default);
+    border-radius: var(--radius-small);
     background: transparent;
     cursor: pointer;
 }
 </style>
 </head>
 <body>
+
+<!-- Icon sprite — one 24px artboard per mark, per §4.5. Rendered at the two
+     sizes in §4.1; the stroke scales with the box, which a glyph cannot do. -->
+<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="display: none">
+  <symbol id="i-layout" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.6-3.6"/></symbol>
+  <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3v12"/><path d="m8 11 4 4 4-4"/><path d="M4 21h16"/></symbol>
+  <symbol id="i-history" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 2.6-6.4L3 8"/><path d="M3 3v5h5"/><path d="M12 7v5l3 2"/></symbol>
+  <symbol id="i-star" viewBox="0 0 24 24"><path d="m12 3 2.9 5.9 6.1.9-4.5 4.4 1.1 6.3L12 17.6 6.4 20.5l1.1-6.3L3 9.8l6.1-.9z"/></symbol>
+  <symbol id="i-lock" viewBox="0 0 24 24"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></symbol>
+  <symbol id="i-moon" viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8"/></symbol>
+  <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M4.9 4.9l1.5 1.5m11.2 11.2 1.5 1.5m0-14.2-1.5 1.5M6.4 17.6l-1.5 1.5"/></symbol>
+  <symbol id="i-contrast" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M12 4a8 8 0 0 1 0 16z" fill="currentColor" stroke="none"/></symbol>
+  <symbol id="i-settings" viewBox="0 0 24 24"><path d="M4 7h8M17 7h3M4 17h3M12 17h8"/><circle cx="14.5" cy="7" r="2.5"/><circle cx="9.5" cy="17" r="2.5"/></symbol>
+  <symbol id="i-pencil" viewBox="0 0 24 24"><path d="M4 20h4L20 8l-4-4L4 16z"/><path d="m14 6 4 4"/></symbol>
+  <symbol id="i-hash" viewBox="0 0 24 24"><path d="M5 9h14M5 15h14M10 4 8 20M16 4l-2 16"/></symbol>
+  <symbol id="i-flag" viewBox="0 0 24 24"><path d="M5 21V4"/><path d="M5 4h13l-3 4 3 4H5"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></symbol>
+  <symbol id="i-chevron-down" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+  <symbol id="i-chevron-right" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></symbol>
+  <symbol id="i-chevron-left" viewBox="0 0 24 24"><path d="m15 6-6 6 6 6"/></symbol>
+  <symbol id="i-diamond" viewBox="0 0 24 24"><path d="m12 3 9 9-9 9-9-9z"/></symbol>
+  <symbol id="i-type" viewBox="0 0 24 24"><path d="M4 7V4h16v3"/><path d="M12 4v16"/><path d="M9 20h6"/></symbol>
+  <symbol id="i-layers" viewBox="0 0 24 24"><path d="m12 3 9 5-9 5-9-5z"/><path d="m3 13 9 5 9-5"/></symbol>
+  <symbol id="i-rectangle" viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="10" rx="2"/></symbol>
+  <symbol id="i-input" viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="10" rx="2"/><path d="M7 10v4"/></symbol>
+  <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></symbol>
+  <symbol id="i-overlay" viewBox="0 0 24 24"><rect x="3" y="3" width="13" height="13" rx="2"/><path d="M8 21h11a2 2 0 0 0 2-2V8"/></symbol>
+  <symbol id="i-circle" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/></symbol>
+  <symbol id="i-table" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18M9 10v10"/></symbol>
+  <symbol id="i-paragraph" viewBox="0 0 24 24"><path d="M17 4H9.5a4.5 4.5 0 0 0 0 9H13"/><path d="M13 4v16M17 4v16"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 2"/></symbol>
+  <symbol id="i-ellipsis" viewBox="0 0 24 24"><path d="M6 12h.01M12 12h.01M18 12h.01"/></symbol>
+  <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-2.6-6.4L21 8"/><path d="M21 3v5h-5"/></symbol>
+  <symbol id="i-trash" viewBox="0 0 24 24"><path d="M4 7h16"/><path d="M9 7V5h6v2"/><path d="m6 7 1 13h10l1-13"/></symbol>
+  <symbol id="i-bold" viewBox="0 0 24 24"><path d="M7 5h6a4 4 0 0 1 0 8H7z"/><path d="M7 13h7a4 4 0 0 1 0 8H7z"/></symbol>
+  <symbol id="i-italic" viewBox="0 0 24 24"><path d="M10 4h8M6 20h8M14 4l-4 16"/></symbol>
+  <symbol id="i-link" viewBox="0 0 24 24"><path d="M10.5 13.5a4 4 0 0 0 6 .5l2.5-2.5a4 4 0 0 0-5.7-5.7L12 7.1"/><path d="M13.5 10.5a4 4 0 0 0-6-.5L5 12.5a4 4 0 0 0 5.7 5.7L12 16.9"/></symbol>
+  <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></symbol>
+  <symbol id="i-arrow-up-right" viewBox="0 0 24 24"><path d="M7 17 17 7"/><path d="M8 7h9v9"/></symbol>
+  <symbol id="i-copy" viewBox="0 0 24 24"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1"/></symbol>
+  <symbol id="i-clipboard" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="17" rx="2"/><rect x="9" y="2" width="6" height="4" rx="1"/></symbol>
+  <symbol id="i-warning" viewBox="0 0 24 24"><path d="M12 4 2 20h20z"/><path d="M12 10v4M12 17h.01"/></symbol>
+  <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="i-arrow-up" viewBox="0 0 24 24"><path d="M12 20V5"/><path d="m6 11 6-6 6 6"/></symbol>
+</svg>
 
 <div class="legacy-warning">
     This browser does not support <code>light-dark()</code>, so the theme tokens will not resolve.
@@ -1137,15 +1303,15 @@ blockquote {
 
     <!-- Navigation rail -->
     <nav class="navigation-rail" aria-label="Primary">
-        <button class="rail-button" aria-current="true" data-tooltip="Workspace">◧</button>
-        <button class="rail-button" data-tooltip="Search">⌕</button>
-        <button class="rail-button rail-badge" data-tooltip="Updates available">↧</button>
-        <button class="rail-button" data-tooltip="History">↺</button>
-        <button class="rail-button" data-tooltip="Bookmarks">★</button>
+        <button class="rail-button" aria-current="true" data-tooltip="Workspace"><svg class="icon icon-large" aria-hidden="true"><use href="#i-layout"/></svg></button>
+        <button class="rail-button" data-tooltip="Search"><svg class="icon icon-large" aria-hidden="true"><use href="#i-search"/></svg></button>
+        <button class="rail-button rail-badge" data-tooltip="Updates available"><svg class="icon icon-large" aria-hidden="true"><use href="#i-download"/></svg></button>
+        <button class="rail-button" data-tooltip="History"><svg class="icon icon-large" aria-hidden="true"><use href="#i-history"/></svg></button>
+        <button class="rail-button" data-tooltip="Bookmarks"><svg class="icon icon-large" aria-hidden="true"><use href="#i-star"/></svg></button>
         <div class="rail-spacer"></div>
-        <button class="rail-button" data-tooltip="Protected session">⚿</button>
-        <button class="rail-button" id="rail-scheme" data-tooltip="Toggle light and dark">☾</button>
-        <button class="rail-button" id="rail-settings" data-tooltip="Settings">⚙</button>
+        <button class="rail-button" data-tooltip="Protected session"><svg class="icon icon-large" aria-hidden="true"><use href="#i-lock"/></svg></button>
+        <button class="rail-button" id="rail-scheme" data-tooltip="Toggle light and dark"><svg class="icon icon-large" aria-hidden="true"><use href="#i-moon"/></svg></button>
+        <button class="rail-button" id="rail-settings" data-tooltip="Settings"><svg class="icon icon-large" aria-hidden="true"><use href="#i-settings"/></svg></button>
     </nav>
 
     <div class="app-body">
@@ -1153,22 +1319,22 @@ blockquote {
         <!-- Tab bar -->
         <div class="tab-bar" id="tab-bar" role="tablist">
             <button class="tab" role="tab" aria-selected="true">
-                <span class="tab-icon">◧</span> Design guide
-                <span class="tab-close" role="button" aria-label="Close tab">✕</span>
+                <svg class="icon tab-icon" aria-hidden="true"><use href="#i-layout"/></svg> Design guide
+                <span class="tab-close" role="button" aria-label="Close tab"><svg class="icon" aria-hidden="true"><use href="#i-x"/></svg></span>
             </button>
             <button class="tab" role="tab" aria-selected="false">
-                <span class="tab-icon">✎</span> Release notes
-                <span class="tab-close" role="button" aria-label="Close tab">✕</span>
+                <svg class="icon tab-icon" aria-hidden="true"><use href="#i-pencil"/></svg> Release notes
+                <span class="tab-close" role="button" aria-label="Close tab"><svg class="icon" aria-hidden="true"><use href="#i-x"/></svg></span>
             </button>
             <button class="tab" role="tab" aria-selected="false">
-                <span class="tab-icon">⌗</span> tokens.css
-                <span class="tab-close" role="button" aria-label="Close tab">✕</span>
+                <svg class="icon tab-icon" aria-hidden="true"><use href="#i-hash"/></svg> tokens.css
+                <span class="tab-close" role="button" aria-label="Close tab"><svg class="icon" aria-hidden="true"><use href="#i-x"/></svg></span>
             </button>
             <button class="tab" role="tab" aria-selected="false">
-                <span class="tab-icon">⚑</span> Contrast audit
-                <span class="tab-close" role="button" aria-label="Close tab">✕</span>
+                <svg class="icon tab-icon" aria-hidden="true"><use href="#i-flag"/></svg> Contrast audit
+                <span class="tab-close" role="button" aria-label="Close tab"><svg class="icon" aria-hidden="true"><use href="#i-x"/></svg></span>
             </button>
-            <button class="new-tab-button" id="new-tab" aria-label="New tab">+</button>
+            <button class="new-tab-button" id="new-tab" aria-label="New tab"><svg class="icon" aria-hidden="true"><use href="#i-plus"/></svg></button>
         </div>
 
         <div class="workspace">
@@ -1178,17 +1344,17 @@ blockquote {
                 <div class="sidebar-search">
                     <div class="input-group">
                         <input class="input" type="text" placeholder="Filter sections…" id="tree-filter">
-                        <button class="input-group-action" aria-label="Clear" id="tree-filter-clear">✕</button>
+                        <button class="input-group-action" aria-label="Clear" id="tree-filter-clear"><svg class="icon" aria-hidden="true"><use href="#i-x"/></svg></button>
                     </div>
                 </div>
                 <ul class="tree" id="tree">
                     <li class="tree-group-label">Foundations</li>
                     <li>
                         <button class="tree-item" aria-current="true" data-target="tokens">
-                            <span class="tree-toggle" aria-expanded="true" role="button">▾</span>
-                            <span class="tree-item-icon">◆</span>
+                            <span class="tree-toggle" aria-expanded="true" role="button"><svg class="icon" aria-hidden="true"><use href="#i-chevron-down"/></svg></span>
+                            <svg class="icon tree-item-icon" aria-hidden="true"><use href="#i-diamond"/></svg>
                             <span class="tree-item-label">Tokens</span>
-                            <span class="tree-item-action" role="button" aria-label="More">⋯</span>
+                            <span class="tree-item-action" role="button" aria-label="More"><svg class="icon" aria-hidden="true"><use href="#i-ellipsis"/></svg></span>
                         </button>
                         <ul class="tree-children">
                             <li><button class="tree-item" data-target="tokens"><span class="tree-item-icon">·</span><span class="tree-item-label">Surfaces</span></button></li>
@@ -1196,22 +1362,22 @@ blockquote {
                             <li><button class="tree-item" data-target="tokens"><span class="tree-item-icon">·</span><span class="tree-item-label">Status</span></button></li>
                         </ul>
                     </li>
-                    <li><button class="tree-item" data-target="typography"><span class="tree-item-icon">A</span><span class="tree-item-label">Typography</span><span class="tree-item-action" role="button" aria-label="More">⋯</span></button></li>
-                    <li><button class="tree-item" data-target="elevation"><span class="tree-item-icon">▤</span><span class="tree-item-label">Elevation</span><span class="tree-item-action" role="button" aria-label="More">⋯</span></button></li>
+                    <li><button class="tree-item" data-target="typography"><svg class="icon tree-item-icon" aria-hidden="true"><use href="#i-type"/></svg><span class="tree-item-label">Typography</span><span class="tree-item-action" role="button" aria-label="More"><svg class="icon" aria-hidden="true"><use href="#i-ellipsis"/></svg></span></button></li>
+                    <li><button class="tree-item" data-target="elevation"><svg class="icon tree-item-icon" aria-hidden="true"><use href="#i-layers"/></svg><span class="tree-item-label">Elevation</span><span class="tree-item-action" role="button" aria-label="More"><svg class="icon" aria-hidden="true"><use href="#i-ellipsis"/></svg></span></button></li>
 
                     <li class="tree-group-label">Components</li>
-                    <li><button class="tree-item" data-target="buttons"><span class="tree-item-icon">▭</span><span class="tree-item-label">Buttons</span><span class="tree-item-action" role="button" aria-label="More">⋯</span></button></li>
-                    <li><button class="tree-item" data-target="inputs"><span class="tree-item-icon">▯</span><span class="tree-item-label">Inputs and selects</span><span class="tree-item-action" role="button" aria-label="More">⋯</span></button></li>
-                    <li><button class="tree-item" data-target="menus"><span class="tree-item-icon">☰</span><span class="tree-item-label">Menus</span><span class="tree-item-action" role="button" aria-label="More">⋯</span></button></li>
-                    <li><button class="tree-item" data-target="overlays"><span class="tree-item-icon">▣</span><span class="tree-item-label">Overlays</span><span class="tree-item-action" role="button" aria-label="More">⋯</span></button></li>
-                    <li><button class="tree-item" data-target="status"><span class="tree-item-icon">●</span><span class="tree-item-label">Status and badges</span><span class="tree-item-action" role="button" aria-label="More">⋯</span></button></li>
-                    <li><button class="tree-item" data-target="data"><span class="tree-item-icon">▦</span><span class="tree-item-label">Data display</span><span class="tree-item-action" role="button" aria-label="More">⋯</span></button></li>
-                    <li><button class="tree-item" data-target="editorial"><span class="tree-item-icon">¶</span><span class="tree-item-label">Editorial</span><span class="tree-item-action" role="button" aria-label="More">⋯</span></button></li>
-                    <li><button class="tree-item" data-target="temporal"><span class="tree-item-icon">◷</span><span class="tree-item-label">Calendar and timeline</span><span class="tree-item-action" role="button" aria-label="More">⋯</span></button></li>
+                    <li><button class="tree-item" data-target="buttons"><svg class="icon tree-item-icon" aria-hidden="true"><use href="#i-rectangle"/></svg><span class="tree-item-label">Buttons</span><span class="tree-item-action" role="button" aria-label="More"><svg class="icon" aria-hidden="true"><use href="#i-ellipsis"/></svg></span></button></li>
+                    <li><button class="tree-item" data-target="inputs"><svg class="icon tree-item-icon" aria-hidden="true"><use href="#i-input"/></svg><span class="tree-item-label">Inputs and selects</span><span class="tree-item-action" role="button" aria-label="More"><svg class="icon" aria-hidden="true"><use href="#i-ellipsis"/></svg></span></button></li>
+                    <li><button class="tree-item" data-target="menus"><svg class="icon tree-item-icon" aria-hidden="true"><use href="#i-menu"/></svg><span class="tree-item-label">Menus</span><span class="tree-item-action" role="button" aria-label="More"><svg class="icon" aria-hidden="true"><use href="#i-ellipsis"/></svg></span></button></li>
+                    <li><button class="tree-item" data-target="overlays"><svg class="icon tree-item-icon" aria-hidden="true"><use href="#i-overlay"/></svg><span class="tree-item-label">Overlays</span><span class="tree-item-action" role="button" aria-label="More"><svg class="icon" aria-hidden="true"><use href="#i-ellipsis"/></svg></span></button></li>
+                    <li><button class="tree-item" data-target="status"><svg class="icon tree-item-icon" aria-hidden="true"><use href="#i-circle"/></svg><span class="tree-item-label">Status and badges</span><span class="tree-item-action" role="button" aria-label="More"><svg class="icon" aria-hidden="true"><use href="#i-ellipsis"/></svg></span></button></li>
+                    <li><button class="tree-item" data-target="data"><svg class="icon tree-item-icon" aria-hidden="true"><use href="#i-table"/></svg><span class="tree-item-label">Data display</span><span class="tree-item-action" role="button" aria-label="More"><svg class="icon" aria-hidden="true"><use href="#i-ellipsis"/></svg></span></button></li>
+                    <li><button class="tree-item" data-target="editorial"><svg class="icon tree-item-icon" aria-hidden="true"><use href="#i-paragraph"/></svg><span class="tree-item-label">Editorial</span><span class="tree-item-action" role="button" aria-label="More"><svg class="icon" aria-hidden="true"><use href="#i-ellipsis"/></svg></span></button></li>
+                    <li><button class="tree-item" data-target="temporal"><svg class="icon tree-item-icon" aria-hidden="true"><use href="#i-clock"/></svg><span class="tree-item-label">Calendar and timeline</span><span class="tree-item-action" role="button" aria-label="More"><svg class="icon" aria-hidden="true"><use href="#i-ellipsis"/></svg></span></button></li>
 
                     <li class="tree-group-label">Verification</li>
-                    <li><button class="tree-item" data-target="audit"><span class="tree-item-icon">⚑</span><span class="tree-item-label">Contrast audit</span><span class="tree-item-action" role="button" aria-label="More">⋯</span></button></li>
-                    <li><button class="tree-item" data-target="tree-colors"><span class="tree-item-icon">◑</span><span class="tree-item-label">Lightness clamping</span><span class="tree-item-action" role="button" aria-label="More">⋯</span></button></li>
+                    <li><button class="tree-item" data-target="audit"><svg class="icon tree-item-icon" aria-hidden="true"><use href="#i-flag"/></svg><span class="tree-item-label">Contrast audit</span><span class="tree-item-action" role="button" aria-label="More"><svg class="icon" aria-hidden="true"><use href="#i-ellipsis"/></svg></span></button></li>
+                    <li><button class="tree-item" data-target="tree-colors"><svg class="icon tree-item-icon" aria-hidden="true"><use href="#i-contrast"/></svg><span class="tree-item-label">Lightness clamping</span><span class="tree-item-action" role="button" aria-label="More"><svg class="icon" aria-hidden="true"><use href="#i-ellipsis"/></svg></span></button></li>
                 </ul>
             </aside>
 
@@ -1224,9 +1390,9 @@ blockquote {
                     <div class="row" style="justify-content: space-between; margin-bottom: 0;">
                         <h1>Theme reference implementation</h1>
                         <div class="button-group" role="group" aria-label="Color scheme">
-                            <button class="button" data-scheme="light" aria-pressed="false">☀ Light</button>
-                            <button class="button" data-scheme="system" aria-pressed="true">◐ System</button>
-                            <button class="button" data-scheme="dark" aria-pressed="false">☾ Dark</button>
+                            <button class="button" data-scheme="light" aria-pressed="false"><svg class="icon" aria-hidden="true"><use href="#i-sun"/></svg> Light</button>
+                            <button class="button" data-scheme="system" aria-pressed="true"><svg class="icon" aria-hidden="true"><use href="#i-contrast"/></svg> System</button>
+                            <button class="button" data-scheme="dark" aria-pressed="false"><svg class="icon" aria-hidden="true"><use href="#i-moon"/></svg> Dark</button>
                         </div>
                     </div>
                     <p class="lede">
@@ -1255,9 +1421,9 @@ blockquote {
                         <code class="inline">--text-heading</code> and are never accent-colored — only
                         links are blue.
                     </p>
-                    <h1 style="font-size:26px">Heading one · 26px</h1>
-                    <h2 style="font-size:19px">Heading two · 19px</h2>
-                    <h3 style="font-size:15px">Heading three · 15px</h3>
+                    <h1 style="font-size:var(--text-h1)">Heading one · 26px</h1>
+                    <h2 style="font-size:var(--text-h2)">Heading two · 19px</h2>
+                    <h3 style="font-size:var(--text-h3)">Heading three · 15px</h3>
                     <p>
                         Body text at 14px on <code class="inline">--text-body</code>, a slightly warm
                         near-black that sits a hair softer than headings. It contains
@@ -1322,9 +1488,9 @@ blockquote {
                     </p>
                     <div class="row">
                         <button class="button">Default</button>
-                        <button class="button">⟳ With icon</button>
+                        <button class="button"><svg class="icon" aria-hidden="true"><use href="#i-refresh"/></svg> With icon</button>
                         <button class="button button-filled">Active toggle</button>
-                        <button class="button button-danger">⌫ Delete</button>
+                        <button class="button button-danger"><svg class="icon" aria-hidden="true"><use href="#i-trash"/></svg> Delete</button>
                         <button class="button button-quiet">Flat</button>
                         <button class="button" disabled>Disabled</button>
                     </div>
@@ -1334,9 +1500,9 @@ blockquote {
                             <button class="button" aria-pressed="false">Grid</button>
                             <button class="button" aria-pressed="false">Table</button>
                         </div>
-                        <button class="icon-button" data-tooltip="Bold">B</button>
-                        <button class="icon-button" data-tooltip="Italic">I</button>
-                        <button class="icon-button" data-tooltip="Link">⚭</button>
+                        <button class="icon-button" data-tooltip="Bold"><svg class="icon" aria-hidden="true"><use href="#i-bold"/></svg></button>
+                        <button class="icon-button" data-tooltip="Italic"><svg class="icon" aria-hidden="true"><use href="#i-italic"/></svg></button>
+                        <button class="icon-button" data-tooltip="Link"><svg class="icon" aria-hidden="true"><use href="#i-link"/></svg></button>
                         <button class="button" id="open-modal">Open modal…</button>
                         <button class="button" id="fire-toast">Fire toast</button>
                     </div>
@@ -1363,7 +1529,7 @@ blockquote {
                             <label class="field-label" for="i3">With action</label>
                             <div class="input-group">
                                 <input class="input" id="i3" type="password" value="correct-horse">
-                                <button class="input-group-action" data-tooltip="Reveal">◉</button>
+                                <button class="input-group-action" data-tooltip="Reveal"><svg class="icon" aria-hidden="true"><use href="#i-eye"/></svg></button>
                             </div>
                         </div>
                         <div class="field">
@@ -1386,10 +1552,10 @@ blockquote {
                             <label class="checkbox-row"><input type="checkbox"> Checkbox, unchecked</label>
                             <label class="checkbox-row"><input type="radio" name="r" checked> Radio, selected</label>
                             <label class="checkbox-row"><input type="radio" name="r"> Radio, unselected</label>
-                            <div class="checkbox-row" style="margin-top:6px">
+                            <div class="checkbox-row" style="margin-top:var(--space-3)">
                                 <button class="switch" role="switch" aria-checked="true"></button> Switch
                             </div>
-                            <div class="checkbox-row" style="margin-top:6px">
+                            <div class="checkbox-row" style="margin-top:var(--space-3)">
                                 <input class="range" type="range" value="65">
                             </div>
                         </div>
@@ -1406,29 +1572,29 @@ blockquote {
                     <div class="row" style="align-items: flex-start">
                         <div class="menu menu-static">
                             <div class="menu-group-header">Note</div>
-                            <button class="menu-item"><span class="menu-item-icon">✎</span> Rename<span class="menu-item-shortcut">F2</span></button>
-                            <button class="menu-item"><span class="menu-item-icon">⧉</span> Duplicate<span class="menu-item-shortcut">⌘D</span></button>
-                            <button class="menu-item"><span class="menu-item-icon">↗</span> Move to…<span class="menu-item-arrow">▸</span></button>
+                            <button class="menu-item"><svg class="icon menu-item-icon" aria-hidden="true"><use href="#i-pencil"/></svg> Rename<span class="menu-item-shortcut">F2</span></button>
+                            <button class="menu-item"><svg class="icon menu-item-icon" aria-hidden="true"><use href="#i-copy"/></svg> Duplicate<span class="menu-item-shortcut">⌘D</span></button>
+                            <button class="menu-item"><svg class="icon menu-item-icon" aria-hidden="true"><use href="#i-arrow-up-right"/></svg> Move to…<span class="menu-item-arrow"><svg class="icon" aria-hidden="true"><use href="#i-chevron-right"/></svg></span></button>
                             <div class="menu-separator"></div>
                             <div class="menu-group-header">Export</div>
-                            <button class="menu-item"><span class="menu-item-icon">↧</span> Markdown</button>
-                            <button class="menu-item" disabled><span class="menu-item-icon">↧</span> PDF (unavailable)</button>
+                            <button class="menu-item"><svg class="icon menu-item-icon" aria-hidden="true"><use href="#i-download"/></svg> Markdown</button>
+                            <button class="menu-item" disabled><svg class="icon menu-item-icon" aria-hidden="true"><use href="#i-download"/></svg> PDF (unavailable)</button>
                             <div class="menu-separator"></div>
-                            <button class="menu-item menu-item-danger"><span class="menu-item-icon">⌫</span> Delete<span class="menu-item-shortcut">⌦</span></button>
+                            <button class="menu-item menu-item-danger"><svg class="icon menu-item-icon" aria-hidden="true"><use href="#i-trash"/></svg> Delete<span class="menu-item-shortcut">⌦</span></button>
                             <div class="menu-section">Last edited 4 minutes ago</div>
                         </div>
                         <div class="stack" style="flex:1; min-width:260px">
                             <div class="alert-bar">
-                                <span class="alert-bar-icon">⚠</span>
+                                <svg class="icon alert-bar-icon" aria-hidden="true"><use href="#i-warning"/></svg>
                                 Alert bars tint the status color to 15%. Fills are solid; regions are tinted.
                             </div>
                             <div class="alert-bar alert-bar-accent">
-                                <span class="alert-bar-icon">ⓘ</span>
+                                <svg class="icon alert-bar-icon" aria-hidden="true"><use href="#i-info"/></svg>
                                 The informational variant reuses the focus ring rather than adding a token.
                             </div>
                             <div class="card card-flat">
                                 <div class="label-small">Menu tokens</div>
-                                <p style="margin:0; font-size:12.5px; color: var(--text-secondary)">
+                                <p style="margin:0; font-size:var(--text-caption); color: var(--text-secondary)">
                                     Surface for the sheet, secondary for the footer strip, secondary text
                                     for icons and group headers, tertiary for shortcut hints, default
                                     border for dividers, and 50% opacity for disabled rows.
@@ -1468,13 +1634,13 @@ blockquote {
                         <span class="badge badge-accent">Linked</span>
                         <span class="badge badge-experimental">Experimental</span>
                     </div>
-                    <p class="section-note" style="margin-top:14px">
+                    <p class="section-note" style="margin-top:var(--space-6)">
                         Each bar states its value in text. That is deliberate: bright amber is 1.96:1
                         against the track, and a graphic that duplicates adjacent text is exempt from
                         the 3:1 requirement. Without the number, the bar would have to be dimmed,
                         outlined, or set in a near-black trough.
                     </p>
-                    <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(190px,1fr))">
+                    <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(192px,1fr))">
                         <div>
                             <div class="progress-label"><span class="label-small">Accent</span><span class="progress-value">68%</span></div>
                             <div class="progress"><div class="progress-fill" style="width:68%"></div></div>
@@ -1537,12 +1703,12 @@ blockquote {
                 <!-- Temporal -->
                 <section class="section" id="temporal">
                     <h2>Calendar and timeline</h2>
-                    <div class="row" style="align-items: flex-start; gap: 32px">
+                    <div class="row" style="align-items: flex-start; gap: var(--space-8)">
                         <div class="calendar">
                             <div class="calendar-header">
-                                <button class="icon-button" id="cal-prev" aria-label="Previous month">‹</button>
+                                <button class="icon-button" id="cal-prev" aria-label="Previous month"><svg class="icon" aria-hidden="true"><use href="#i-chevron-left"/></svg></button>
                                 <span class="calendar-title" id="cal-title"></span>
-                                <button class="icon-button" id="cal-next" aria-label="Next month">›</button>
+                                <button class="icon-button" id="cal-next" aria-label="Next month"><svg class="icon" aria-hidden="true"><use href="#i-chevron-right"/></svg></button>
                             </div>
                             <div class="calendar-grid" id="cal-grid"></div>
                         </div>
@@ -1599,7 +1765,7 @@ blockquote {
                         The left column is the raw user color; the right is the same hue clamped to a
                         light-mode ceiling of 78 and a dark-mode floor of 58, computed in CIELAB.
                     </p>
-                    <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(210px,1fr))" id="clamp-grid"></div>
+                    <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(208px,1fr))" id="clamp-grid"></div>
                 </section>
 
             </main>
@@ -1617,12 +1783,12 @@ blockquote {
 
                 <div class="card">
                     <div class="card-header">Live overrides</div>
-                    <p style="margin:0 0 10px; font-size:11.5px; color: var(--text-secondary)">
+                    <p style="margin:0 0 var(--space-5); font-size:var(--text-label); color: var(--text-secondary)">
                         Writes a flat value over the token, replacing both schemes. Everything downstream
                         follows immediately — that is the whole argument for the token layer.
                     </p>
                     <div class="stack" id="editor-rows"></div>
-                    <button class="button button-quiet" id="reset-tokens" style="margin-top:12px; width:100%; justify-content:center">Reset overrides</button>
+                    <button class="button button-quiet" id="reset-tokens" style="margin-top:var(--space-5); width:100%; justify-content:center">Reset overrides</button>
                 </div>
 
                 <div class="card">
@@ -1654,14 +1820,14 @@ blockquote {
     </div>
 </div>
 
-<button class="floating-button" id="scroll-top" data-tooltip="Back to top">↑</button>
+<button class="floating-button" id="scroll-top" data-tooltip="Back to top"><svg class="icon icon-large" aria-hidden="true"><use href="#i-arrow-up"/></svg></button>
 
 <!-- Modal -->
 <div class="modal-backdrop" id="modal" hidden>
     <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
         <div class="modal-title-bar">
             <h3 class="modal-title" id="modal-title">Apply theme overrides</h3>
-            <button class="modal-control-button" id="modal-close" aria-label="Close">✕</button>
+            <button class="modal-control-button" id="modal-close" aria-label="Close"><svg class="icon" aria-hidden="true"><use href="#i-x"/></svg></button>
         </div>
         <div class="modal-body">
             <p style="margin-top:0">
@@ -1669,7 +1835,7 @@ blockquote {
                 filled accent chip carries no icon-vanishing risk, because the glyph is explicitly
                 recolored along with the background.
             </p>
-            <div class="field" style="margin-bottom:12px">
+            <div class="field" style="margin-bottom:var(--space-5)">
                 <label class="field-label" for="modal-input">Theme name</label>
                 <input class="input" id="modal-input" type="text" value="Slate and blue">
             </div>
@@ -1686,11 +1852,11 @@ blockquote {
 
 <!-- Context menu -->
 <div class="menu context-menu" id="context-menu" hidden>
-    <button class="menu-item"><span class="menu-item-icon">⧉</span> Copy<span class="menu-item-shortcut">⌘C</span></button>
-    <button class="menu-item"><span class="menu-item-icon">⎘</span> Paste<span class="menu-item-shortcut">⌘V</span></button>
+    <button class="menu-item"><svg class="icon menu-item-icon" aria-hidden="true"><use href="#i-copy"/></svg> Copy<span class="menu-item-shortcut">⌘C</span></button>
+    <button class="menu-item"><svg class="icon menu-item-icon" aria-hidden="true"><use href="#i-clipboard"/></svg> Paste<span class="menu-item-shortcut">⌘V</span></button>
     <div class="menu-separator"></div>
-    <button class="menu-item"><span class="menu-item-icon">◆</span> Inspect token</button>
-    <button class="menu-item menu-item-danger"><span class="menu-item-icon">⌫</span> Remove</button>
+    <button class="menu-item"><svg class="icon menu-item-icon" aria-hidden="true"><use href="#i-diamond"/></svg> Inspect token</button>
+    <button class="menu-item menu-item-danger"><svg class="icon menu-item-icon" aria-hidden="true"><use href="#i-trash"/></svg> Remove</button>
 </div>
 
 <div class="tooltip" id="tooltip" hidden></div>
@@ -1921,7 +2087,7 @@ function renderClamp() {
         card.className = "card card-flat";
         card.innerHTML =
             '<div class="label-small">' + name + "</div>" +
-            '<div style="display:flex;gap:8px;align-items:center">' +
+            '<div style="display:flex;gap:var(--space-4);align-items:center">' +
               '<span style="flex:1;color:' + raw + '">Raw ' + raw + "</span>" +
               '<span style="flex:1;color:' + clamped + '">Clamped ' + clamped + "</span>" +
             "</div>";
@@ -2025,13 +2191,17 @@ document.getElementById("reset-tokens").addEventListener("click", () => {
 
 const toastRegion = document.getElementById("toast-region");
 
+/* Reads the token the leave transition uses, rather than restating it in JS. */
+const leaveDuration = () => parseFloat(getComputedStyle(document.documentElement)
+    .getPropertyValue("--duration-slow")) * 1000;
+
 function showToast(message) {
     const toast = document.createElement("div");
     toast.className = "toast";
-    toast.innerHTML = "<span>" + message + '</span><button class="toast-close" aria-label="Dismiss">✕</button>';
+    toast.innerHTML = "<span>" + message + '</span><button class="toast-close" aria-label="Dismiss"><svg class="icon" aria-hidden="true"><use href="#i-x"/></svg></button>';
     const dismiss = () => {
         toast.classList.add("is-leaving");
-        setTimeout(() => toast.remove(), 200);
+        setTimeout(() => toast.remove(), leaveDuration());
     };
     toast.querySelector(".toast-close").addEventListener("click", dismiss);
     toastRegion.appendChild(toast);
@@ -2120,7 +2290,7 @@ document.getElementById("new-tab").addEventListener("click", () => {
     tab.setAttribute("role", "tab");
     tab.setAttribute("aria-selected", "false");
     tab.innerHTML = '<span class="tab-icon">◇</span> Untitled ' + untitledCount +
-        '<span class="tab-close" role="button" aria-label="Close tab">✕</span>';
+        '<span class="tab-close" role="button" aria-label="Close tab"><svg class="icon" aria-hidden="true"><use href="#i-x"/></svg></span>';
     tabBar.insertBefore(tab, document.getElementById("new-tab"));
 });
 
