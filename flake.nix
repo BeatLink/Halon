@@ -133,7 +133,8 @@
           '';
         };
 
-        # Parses the CSS and asserts every audited pair clears its WCAG threshold.
+        # Asserts every audited pair clears its WCAG threshold, and that the guide,
+        # the demo and the theme still agree on colour (§3) and metrics (§4).
         audit = pkgs.writeShellApplication {
           name = "halon-audit";
           runtimeInputs = [ pkgs.nodejs ];
@@ -591,7 +592,8 @@
             echo "  preview-lightdm         the LightDM greeter in a browser, against its mock"
             echo "  preview-lmms            LMMS against the working tree's style sheet"
             echo
-            echo "  halon-audit             contrast audit over both schemes"
+            echo "  halon-audit             contrast and drift audit over both schemes"
+            echo "  halon-audit --render    the above, plus heights measured in a browser"
             echo "  halon-lint              undefined tokens, stray literals, import order"
             echo "  halon-build [--check]   regenerate the derived stylesheets from the tokens"
             echo "  halon-shots [outdir]    render the GTK theme in Xvfb and screenshot it"

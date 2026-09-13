@@ -96,12 +96,25 @@ the installed theme or the running desktop.
 
 ```sh
 halon-audit            # every sanctioned pairing, both schemes, against WCAG 2.1
+halon-audit --render   # the above, plus heights measured in a headless Firefox
 halon-lint             # undefined tokens, literals outside Layer 1, import order
 ```
 
 `halon-audit` reads the GTK token files as the source of truth and cross-checks them
-against `theme-demo.html`, so the guide, the demo and the theme cannot drift apart.
-Both exit non-zero on failure and are suitable as a pre-commit hook.
+against `theme-demo.html` and against the design guide's own §3.1, §3.2 and §3.8 tables,
+so the guide, the demo and the theme cannot drift apart. A token added to the theme and
+not written into the guide fails the audit, and so does a guide value that no longer
+matches.
+
+It holds §4 to the same standard: the metric tokens in §4.1 must match the demo's `:root`
+name for name, every cell of §4.3's component table must match what the demo's rule
+actually declares, and every gap and margin in the demo must land on the 4px scale.
+
+`--render` adds the check no amount of reading can do — it serves the demo to a headless
+Firefox, has the page measure itself, and compares the result against §4.3's heights. That
+is what catches a control whose height a fallback font or an unset `line-height` has
+quietly changed. It needs `firefox` on `PATH` and takes a few seconds, so the plain run
+stays the one suitable as a pre-commit hook; both exit non-zero on failure.
 
 ## Coverage
 
