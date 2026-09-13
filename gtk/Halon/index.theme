@@ -7,6 +7,6 @@ Encoding=UTF-8
 [X-GNOME-Metatheme]
 GtkTheme=Halon
 MetacityTheme=Halon
-IconTheme=Colloid
+IconTheme=Halon
 CursorTheme=Adwaita
 ButtonLayout=:minimize,maximize,close

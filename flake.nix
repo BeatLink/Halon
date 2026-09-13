@@ -11,11 +11,10 @@
       let
         pkgs = nixpkgs.legacyPackages.${system};
 
-        # The icon set the metatheme names. Halon draws only its own widget glyphs,
-        # so icons come from Colloid: flat, one blue, hairline-compatible geometry.
-        # It inherits hicolor and breeze, not Adwaita, so Adwaita stays installed
-        # alongside it to catch the names Colloid does not carry.
-        iconTheme = pkgs.colloid-icon-theme;
+        # The base Halon's own icon theme overlays and inherits: flat, one blue,
+        # hairline-compatible geometry. It inherits hicolor and breeze, not Adwaita,
+        # so Adwaita stays installed alongside it to catch the names it does not carry.
+        iconThemeBase = pkgs.colloid-icon-theme;
 
         # Every preview runs the working tree against a throwaway XDG dir, so testing
         # never depends on what is installed in ~/.themes or disturbs the running desktop.
@@ -150,13 +149,13 @@
           name = "halon-shots";
           runtimeInputs = with pkgs; [
             xorg.xvfb imagemagick xdotool coreutils gnugrep
-            gtk3.dev gtk4.dev adwaita-icon-theme colloid-icon-theme
+            gtk3.dev gtk4.dev adwaita-icon-theme
             gst_all_1.gst-plugins-base gst_all_1.gst-plugins-good
           ];
           text = ''
             root="''${HALON_ROOT:-$PWD}"
             export GST_PLUGIN_SYSTEM_PATH_1_0="${pkgs.gst_all_1.gst-plugins-base}/lib/gstreamer-1.0:${pkgs.gst_all_1.gst-plugins-good}/lib/gstreamer-1.0"
-            export XDG_DATA_DIRS="${iconTheme}/share:${pkgs.adwaita-icon-theme}/share:/run/current-system/sw/share:''${XDG_DATA_DIRS:-/usr/share}"
+            export XDG_DATA_DIRS="${self.packages.${system}.halon-icon-theme}/share:${iconThemeBase}/share:${pkgs.adwaita-icon-theme}/share:/run/current-system/sw/share:''${XDG_DATA_DIRS:-/usr/share}"
             exec "$root/scripts/screenshot.sh" "$@"
           '';
         };
@@ -227,6 +226,37 @@
           };
 
           halon-gtk-theme = self.packages.${system}.halon-theme;
+
+          # Colloid sends Places icons at 16, 22 and 24px to fixed-size directories
+          # drawn as currentColor glyphs, so a file manager at a small zoom paints
+          # black outlines where folders belong. This re-declares the colour
+          # directory as scalable from 16px up; a theme's own directories are
+          # searched before the ones it inherits, so that wins at every size, and
+          # everything outside the Places context comes from Colloid untouched.
+          # Symbolic names are unaffected: they resolve in places/symbolic, so
+          # sidebars and panels keep their monochrome icons.
+          halon-icon-theme = pkgs.stdenvNoCC.mkDerivation {
+            pname = "halon-icon-theme";
+            version = "1.0.0";
+            src = ./icons;
+            dontBuild = true;
+            installPhase = ''
+              install -Dm444 Halon/index.theme      "$out/share/icons/Halon/index.theme"
+              install -Dm444 Halon-Dark/index.theme "$out/share/icons/Halon-Dark/index.theme"
+              mkdir -p "$out/share/icons/Halon/places" "$out/share/icons/Halon-Dark/places"
+              ln -s ${iconThemeBase}/share/icons/Colloid/places/scalable \
+                    "$out/share/icons/Halon/places/scalable"
+              ln -s ${iconThemeBase}/share/icons/Colloid-Dark/places/scalable \
+                    "$out/share/icons/Halon-Dark/places/scalable"
+            '';
+            # Useless without the theme it inherits, so installing it installs both
+            propagatedUserEnvPkgs = [ iconThemeBase ];
+            meta = {
+              description = "Halon — Colloid with its colour place icons used at every size";
+              license = nixpkgs.lib.licenses.gpl3Plus;
+              platforms = nixpkgs.lib.platforms.linux;
+            };
+          };
 
           # Installs onto XDG_DATA_DIRS, where Tilix discovers color schemes.
           halon-tilix-theme = pkgs.stdenvNoCC.mkDerivation {
@@ -558,7 +588,7 @@
             libadwaita
             glib                      # gsettings, for flipping the system colour-scheme
             gnome-themes-extra        # Adwaita, the base these overrides sit on
-            colloid-icon-theme        # the icon set index.theme names
+            colloid-icon-theme        # the base the Halon icon theme inherits
 
             # The verification scripts
             nodejs
@@ -577,6 +607,7 @@
             build
             shots
             shots-lightdm
+            self.packages.${system}.halon-icon-theme
           ];
 
           shellHook = ''
@@ -616,22 +647,22 @@
       nixosModules.default = { config, lib, pkgs, ... }: {
         options.themes.halon.enable = lib.mkEnableOption "the Halon GTK and Cinnamon theme";
         config = lib.mkIf config.themes.halon.enable {
-          environment.systemPackages = [
-            self.packages.${pkgs.stdenv.hostPlatform.system}.halon-theme
-            pkgs.colloid-icon-theme   # the icon set index.theme names
+          environment.systemPackages = with self.packages.${pkgs.stdenv.hostPlatform.system}; [
+            halon-theme
+            halon-icon-theme   # brings the Colloid base it inherits with it
           ];
         };
       };
 
       # home-manager: `imports = [ halon.homeManagerModules.default ];  themes.halon.enable = true;`
-      # setDefaults additionally selects Halon for GTK and the Cinnamon shell, and
-      # Colloid for icons.
+      # setDefaults additionally selects Halon for GTK, the Cinnamon shell and icons.
       homeManagerModules.default = { config, lib, pkgs, ... }:
         let cfg = config.themes.halon;
             packages = self.packages.${pkgs.stdenv.hostPlatform.system};
             pkg = packages.halon-theme;
             qtPkg = packages.halon-qt-theme;
             lmmsPkg = packages.halon-lmms-theme;
+            iconPkg = packages.halon-icon-theme;
 
             # Fusion is what the style sheet is written against; it assumes Fusion's
             # element structure for everything it does not restyle.
@@ -655,9 +686,8 @@
               type = lib.types.bool;
               default = true;
               description = ''
-                Select Halon as the GTK theme and Cinnamon shell theme, and Colloid
-                as the icon theme. Colloid is what index.theme names; set
-                gtk.iconTheme yourself, after this, to use a different one.
+                Select Halon as the GTK theme, Cinnamon shell theme and icon theme.
+                Set gtk.iconTheme yourself, after this, to use different icons.
               '';
             };
             # Independent of enable: a session can be Halon in Qt without Halon in GTK
@@ -683,16 +713,16 @@
           };
           config = lib.mkMerge [
             (lib.mkIf cfg.enable {
-              home.packages = [ pkg ];
+              home.packages = [ pkg iconPkg ];
               gtk = lib.mkIf cfg.setDefaults {
                 enable = true;
                 theme = { name = "Halon"; package = pkg; };
-                iconTheme = { name = "Colloid"; package = pkgs.colloid-icon-theme; };
+                iconTheme = { name = "Halon"; package = iconPkg; };
               };
               dconf.settings = lib.mkIf cfg.setDefaults {
                 "org/cinnamon/theme".name = "Halon";
                 "org/cinnamon/desktop/interface".gtk-theme = "Halon";
-                "org/cinnamon/desktop/interface".icon-theme = "Colloid";
+                "org/cinnamon/desktop/interface".icon-theme = "Halon";
               };
             })
             (lib.mkIf cfg.lmms {

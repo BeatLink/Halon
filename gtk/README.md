@@ -124,8 +124,10 @@ combo boxes and menu buttons, check, radio and switch, scales, progress and leve
 sidebars, lists, tree and column views, popovers, menus, tooltips, dialogs, info bars,
 scrollbars, panes, frames, status bars, text views, calendars.
 
-Not themed: window manager decorations beyond what GTK draws, application-specific
-stylesheets, and the icons themselves — `index.theme` names Colloid for icons
-(`Colloid-Dark` in the dark metatheme) and Adwaita for cursors. Colloid inherits
-hicolor and breeze rather than Adwaita, so keep Adwaita installed alongside it to
-cover the names Colloid does not carry.
+Icons: `index.theme` names the `Halon` icon theme (`Halon-Dark` in the dark metatheme),
+a thin overlay on Colloid that lives in `icons/` — see [icons/README.md](../icons/README.md).
+Keep Adwaita installed alongside it: Colloid inherits hicolor and breeze rather than
+Adwaita, so it has no Adwaita fallback of its own. Cursors are still Adwaita.
+
+Not themed: window manager decorations beyond what GTK draws, and application-specific
+stylesheets.
