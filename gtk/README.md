@@ -44,13 +44,17 @@ alias therefore sits at the end of the interaction block, not with the other bor
 
 ## Install
 
-The repository copy is already symlinked for testing:
+The theme is installed through Nix, under `share/themes/Halon` on the profile. Edits to the
+repository are **not** live: rebuild and switch before a change reaches a running session.
 
-```
-~/.themes/Halon -> <repo>/gtk/Halon
+To test without a rebuild, point GTK at the working tree for one session:
+
+```sh
+mkdir -p ~/.themes && ln -sfn "$PWD/gtk/Halon" ~/.themes/Halon
 ```
 
-Edits to the source are live; no reinstall step.
+`~/.themes` is searched ahead of the profile, so the symlink shadows the installed copy until it is
+removed. Applications pick the change up on restart.
 
 **GTK 3** — select the theme:
 
@@ -63,7 +67,7 @@ design. The supported route is a user stylesheet:
 
 ```sh
 mkdir -p ~/.config/gtk-4.0
-ln -sf ~/.themes/Halon/gtk-4.0/gtk.css ~/.config/gtk-4.0/gtk.css
+ln -sf ~/.nix-profile/share/themes/Halon/gtk-4.0/gtk.css ~/.config/gtk-4.0/gtk.css
 ```
 
 Point that at `gtk-dark.css` instead for the dark scheme, or keep both and switch the

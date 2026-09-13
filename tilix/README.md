@@ -54,7 +54,7 @@ text stays AA-legible). Light-mode yellow is `--status-warning-text`, not the am
 is 2.15:1 on white and unreadable as text (§3.6); in dark mode the fill works as a mark and is used
 directly.
 
-Cyan has no Halon token, so both schemes derive it from the same Tailwind cyan ramp the palette is
-built on, picked to clear 4.5:1 against the scheme background (cyan-700 on light, cyan-400 on dark).
-Bright variants sit one step along each hue's ramp — lighter in dark mode, darker in light mode,
-since a brighter mark on white loses legibility.
+Cyan is `--syntax-type`, the same hue code uses for types — a terminal and an editor are the same
+surface, so the one cool non-accent hue serves both. Bright variants sit one step along each hue's
+ramp — lighter in dark mode, darker in light mode, since a brighter mark on white loses legibility.
+They are the one part of the palette with no tokens behind them; §3.8 of the design guide says why.

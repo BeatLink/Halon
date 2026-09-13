@@ -2,7 +2,7 @@
 
 A complete, framework-agnostic specification for a **slate + single-blue** application theme with a
 recessed navigation frame, ghost-first controls, and hairline structure. It defines a token set, a
-palette, component treatments, and a dark mode built by flipping twenty-two values. Every
+palette, component treatments, and a dark mode built by flipping thirty-one values. Every
 foreground/background pair it specifies meets WCAG 2.1 AA, verified in both schemes.
 
 Nothing here is tied to a particular UI framework. Section 3 is the whole token set; adopt it
@@ -21,7 +21,10 @@ name is a name that will eventually lie.
 
 1. **One accent, one hue family.** The theme is slate plus a single blue. Semantic colors (success,
    warning, danger) exist only to carry meaning, never decoration. If a color is not slate, blue, or
-   a status signal, it does not belong.
+   a status signal, it does not belong — with two bounded exceptions, both of which are places the
+   interface is displaying someone else's content rather than its own: a three-hue syntax ramp for
+   code (§3.7) and the fixed sixteen-slot terminal palette (§3.8). Neither is reachable from a
+   component rule.
 2. **Flat surfaces, hairline separation.** Structure comes from 1px borders and a three-step surface
    scale, not from shadows. Shadows appear only where an element genuinely floats.
 3. **Three button weights, and the accent is the scarcest.** Filled accent for the one primary
@@ -34,7 +37,7 @@ name is a name that will eventually lie.
    quiet gray strip in light mode and a near-black one in dark; what makes a selection unmissable
    is elevation and the accent line, never a block of color.
 5. **Everything routes through the token set.** No component rule names a literal color. Dark mode is
-   implemented by re-declaring twenty-two tokens and nothing else.
+   implemented by re-declaring thirty-one tokens and nothing else.
 6. **Contrast is a property of the token set, not of individual rules.** Every pairing the theme
    sanctions is audited (§10). A token whose only safe pairing is unstated is a defect in the palette.
 
@@ -59,7 +62,7 @@ from semantic tokens (`--text-secondary`). Once both were named by role, the spl
 near-identical aliases — a lookup hop that bought nothing, and enough drift that the root surface
 ended up with a different name in each layer. A literal scale layer underneath semantics
 (`--blue-600` → `--accent`, as Radix and Primer do) is a real pattern, but it earns its keep at nine
-shades per hue and several accents. This theme has twenty-six tokens, one accent, and two colors that
+shades per hue and several accents. This theme has thirty-six tokens, one accent, and two colors that
 sit on no scale at all. One layer is correct here.
 
 **Mapping onto a framework.** If your framework exposes its own theming variables, do not restyle its
@@ -119,6 +122,11 @@ That mapping is a translation table, not a third layer. It contains no colors an
   --accent:                    #2563eb;  /* links, buttons, focus — the only accent */
   --focus-ring:                rgba(37, 99, 235, 0.15);  /* also: text selection */
 
+  /* Syntax — code only, see §3.7 */
+  --syntax-type:               #0e7490;
+  --syntax-string:             #15803d;
+  --syntax-number:             #a16207;
+
   /* Status */
   --status-success:            #047857;
   --status-warning:            #f59e0b;  /* the fill; bright in both schemes, see §3.5 */
@@ -126,8 +134,13 @@ That mapping is a translation table, not a third layer. It contains no colors an
   --status-danger:             #dc2626;
   --badge-experimental:        #7c3aed;  /* the one off-ramp hue, see §3.4 */
 
-  /* Elevation */
-  --shadow-opacity:            0.15;
+  /* Elevation — slate-900 at a per-role alpha, see §5 */
+  --shadow-base:               #0f172a;  /* the hue every shadow is drawn in */
+  --shadow-card:               rgba(15, 23, 42, 0.08);
+  --shadow-item:               rgba(15, 23, 42, 0.12);
+  --shadow-tab:                rgba(15, 23, 42, 0.15);
+  --shadow-floating:           rgba(15, 23, 42, 0.20);
+  --shadow-modal:              rgba(15, 23, 42, 0.25);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -157,20 +170,34 @@ That mapping is a translation table, not a third layer. It contains no colors an
     --accent:                    #60a5fa;
     --focus-ring:                rgba(96, 165, 250, 0.28);
 
+    --syntax-type:               #22d3ee;
+    --syntax-string:             #4ade80;
+    --syntax-number:             #fcd34d;
+
     --status-success:            #10b981;
     --status-warning-text:       #f59e0b;  /* on dark ground the fill colour works as-is */
     --status-danger:             #f87171;
     --badge-experimental:        #a78bfa;
 
-    --shadow-opacity:            0.5;
+    /* Same hue, roughly triple the alpha — a slate shadow on near-black needs it */
+    --shadow-card:               rgba(15, 23, 42, 0.27);
+    --shadow-item:               rgba(15, 23, 42, 0.50);
+    --shadow-tab:                rgba(15, 23, 42, 0.50);
+    --shadow-floating:           rgba(15, 23, 42, 0.60);
+    --shadow-modal:              rgba(15, 23, 42, 0.70);
   }
 }
 ```
 
-Twenty-nine tokens; dark mode re-declares twenty-five. The four it leaves alone are the ones that
+Thirty-six tokens; dark mode re-declares thirty-one. The five it leaves alone are the ones that
 carry no mode: `--text-on-light` sits on fills whose lightness does not change between schemes,
-`--status-warning` is the one fill that is already light in light mode, and `--surface-navigation`
-and `--border-focus` are derived from other tokens, so they flip for free.
+`--status-warning` is the one fill that is already light in light mode, `--shadow-base` is the
+shadow hue and is slate-900 in both, and `--surface-navigation` and `--border-focus` are derived
+from other tokens, so they flip for free.
+
+The shadow tokens are spelled here as colors, because that is the form every framework can hold. A
+CSS implementation stores the whole `box-shadow` in them instead and gains one role the color form
+cannot express — `--shadow-code`; §5 covers both shapes and why they differ.
 
 ### 3.2 Reference
 
@@ -206,7 +233,12 @@ and `--border-focus` are derived from other tokens, so they flip for free.
 | `--status-warning-text`      | `#c2410c`             | `#f59e0b`              | Caution icons, dots, bars, words         |
 | `--status-danger`            | `#dc2626`             | `#f87171`              | Destructive actions, errors              |
 | `--badge-experimental`       | `#7c3aed`             | `#a78bfa`              | One off-ramp badge                       |
-| `--shadow-opacity`           | `.15`                 | `.5`                   | Shadow strength multiplier               |
+| `--shadow-base`              | `#0f172a`             | `#0f172a`              | The hue every shadow is drawn in         |
+| `--shadow-card`              | `rgba(15,23,42,.08)`  | `rgba(15,23,42,.27)`   | Cards, backdrop windows                  |
+| `--shadow-item`              | `rgba(15,23,42,.12)`  | `rgba(15,23,42,.50)`   | Selected list and sidebar items          |
+| `--shadow-tab`               | `rgba(15,23,42,.15)`  | `rgba(15,23,42,.50)`   | Active tab                               |
+| `--shadow-floating`          | `rgba(15,23,42,.20)`  | `rgba(15,23,42,.60)`   | Popovers, menus, tooltips, windows       |
+| `--shadow-modal`             | `rgba(15,23,42,.25)`  | `rgba(15,23,42,.70)`   | Modals                                   |
 
 The ramp is Tailwind's slate and blue scales, with two deliberate departures:
 
@@ -248,10 +280,16 @@ not about the job.
 
 ### 3.4 Off-ramp hues
 
-Reserve exactly one: a violet for a stateful badge that would otherwise collide with the status
-colors — "executable," "beta," "experimental." It appears in exactly one place. That is the precedent
-for adding a hue outside slate, blue, and status: a single badge that must not read as success,
-warning, or danger.
+Reserve exactly one *for the interface*: a violet for a stateful badge that would otherwise collide
+with the status colors — "executable," "beta," "experimental." It appears in exactly one place. That
+is the precedent for adding a hue outside slate, blue, and status: a single badge that must not read
+as success, warning, or danger.
+
+The syntax ramp (§3.7) and the terminal palette (§3.8) are not off-ramp hues under this rule, because
+they are not the interface coloring itself — they color a document the interface is showing. The test
+is whether a component can reach for the hue. Nothing can ask for `--syntax-string` outside an editor
+or for slot 11 outside a terminal; a badge asking for violet is exactly the decision this section
+rations.
 
 It still gets a token, and it still flips (`#7c3aed` → `#a78bfa`). A one-off hue pinned to a single
 value would be the only fill in the theme that takes white text in dark mode, and that exception
@@ -391,6 +429,59 @@ redder `#c2410c` — so a number and a warning are not the same mark.
 existed, the syntax mapping had quietly spent that violet on every string, number, constant and enum
 member in every file, which is the widest violation of the one-place rule the theme could contain.
 `--badge-experimental` is back to the badge.
+
+### 3.8 The terminal palette is a fixed sixteen, not a token set
+
+A terminal emulator does not ask the theme what a color means. Programs write `\e[31m` and the
+emulator paints slot 1, so the theme's only move is to decide what the sixteen slots contain. This is
+the second and last place the palette exceeds slate, blue and status — and unlike syntax (§3.7) it is
+not a choice about how many hues are warranted, it is a fixed-width interface the theme has to fill.
+
+Nine of the sixteen are tokens the theme already has. The base tier maps by meaning:
+
+| Slot | Light | Dark | Token |
+| ---- | ----- | ---- | ----- |
+| 0 black | `#0f172a` | `#1e293b` | `--text-heading` / slate-800 in dark, see below |
+| 1 red | `#dc2626` | `#f87171` | `--status-danger` |
+| 2 green | `#047857` | `#10b981` | `--status-success` |
+| 3 yellow | `#c2410c` | `#f59e0b` | `--status-warning-text` — the mark color, not the fill (§3.6) |
+| 4 blue | `#2563eb` | `#60a5fa` | `--accent` |
+| 5 magenta | `#7c3aed` | `#a78bfa` | `--badge-experimental` |
+| 6 cyan | `#0e7490` | `#22d3ee` | `--syntax-type` |
+| 7 white | `#cbd5e1` | `#cbd5e1` | `--border-hover` / `--text-secondary` in dark |
+| 8 bright black | `#64748b` | `#94a3b8` | `--text-tertiary` — dimmed shell text stays AA-legible |
+| 15 bright white | `#f8fafc` | `#f8fafc` | slate-50 |
+
+The seven remaining are the bright tier, and they are the theme's second sanctioned departure from
+the token set:
+
+| Slot | Light | Dark | Ramp |
+| ---- | ----- | ---- | ---- |
+| 9 bright red | `#b91c1c` | `#fca5a5` | red-700 / red-300 |
+| 10 bright green | `#065f46` | `#34d399` | emerald-800 / emerald-400 |
+| 11 bright yellow | `#9a3412` | `#fbbf24` | orange-800 / amber-400 |
+| 12 bright blue | `#1d4ed8` | `#93c5fd` | blue-700 / blue-300 |
+| 13 bright magenta | `#6d28d9` | `#c4b5fd` | violet-700 / violet-300 |
+| 14 bright cyan | `#155e75` | `#67e8f9` | cyan-800 / cyan-300 |
+
+**Why these get no tokens.** A token exists so a component can ask for a role. Nothing in the theme
+can ask for "bright red" — only a program writing `\e[91m` can, and it is not asking about state. The
+bright tier is one step along each base hue's own Tailwind ramp, which makes it derived geometry
+rather than seven new decisions: lighter in dark mode, *darker* in light, because a brighter mark on
+white loses legibility rather than gaining emphasis. Every slot clears 4.5:1 against its scheme's
+terminal background.
+
+**Slot 0 is the one that cannot be a token.** In light mode it is `--text-heading`, the ordinary
+near-black. In dark mode a near-black slot 0 would be invisible against the `#16213a` background, so
+it is slate-800 — the one value in the palette chosen to be *seen* rather than to mean something.
+
+The terminal background and foreground are ordinary tokens: `--surface-default` and `--text-body`,
+because a terminal is an editor surface. Cursor and selection are `--accent` behind
+`--text-on-fill`, matching text selection everywhere else (§6.8).
+
+**Where it lives.** `tilix/Halon.json` and `tilix/Halon-Dark.json` hold the palette, and
+`scripts/build-vscode.mjs` reads them for the editor's `terminal.ansi*` colors, so one ramp serves
+both. A port needs the sixteen values above and nothing else.
 
 ---
 
@@ -559,23 +650,46 @@ targets need more space, not bigger labels.
 
 ## 5. Elevation
 
-Shadows are always **slate-900 at low alpha** — never neutral black — and always small-offset:
+Shadows are always **slate-900 at low alpha** — never neutral black — and always small-offset. A
+token per role carries the whole ladder, and a component picks the role rather than spelling an
+alpha:
 
-| Use                              | Value                                                          |
-| -------------------------------- | -------------------------------------------------------------- |
-| Selected list item               | `0 1px 2px rgba(15,23,42,.12)`                               |
-| Card                             | `0 1px 3px rgba(15,23,42,.08), 0 1px 2px rgba(15,23,42,.06)` |
-| Code block                       | `0 1px 3px rgba(15,23,42,.10)`                               |
-| Active tab                       | `0 1px 3px rgba(15,23,42,.15)`                               |
-| Floating button, tooltip, dialog | `rgba(15,23,42,.20)`                                         |
-| Modal                            | `rgba(15,23,42,.25)`                                         |
+| Role                | Light                              | Dark                              | Use                                                 |
+| ------------------- | ---------------------------------- | --------------------------------- | --------------------------------------------------- |
+| `--shadow-card`     | `0 1px 3px /.08` + `0 1px 2px /.06`| `0 1px 3px /.27` + `0 1px 2px /.2`| Cards and panels                                    |
+| `--shadow-item`     | `0 1px 2px /.12`                   | `0 1px 2px /.50`                  | Selected list item, selected sidebar item, rail button |
+| `--shadow-code`     | `0 1px 3px /.10`                   | `0 1px 3px /.33`                  | Code blocks                                         |
+| `--shadow-tab`      | `0 1px 3px /.15`                   | `0 1px 3px /.50`                  | Active tab                                          |
+| `--shadow-floating` | `0 2px 8px /.20`                   | `0 2px 8px /.60`                  | Popovers, menus, tooltips, toasts, floating buttons |
+| `--shadow-modal`    | `0 8px 32px /.25`                  | `0 8px 32px /.70`                 | Modals                                              |
+
+A client-side-decorated window takes a wider spread than anything on that ladder —
+`0 3px 14px var(--shadow-floating)` plus a `--border-default` hairline — because it casts on the
+wallpaper rather than on a surface one step behind it.
+
+**Where the token holds a color rather than a finished shadow.** The table above is how CSS carries
+it: each token is the whole `box-shadow`, so the card can be two layers and the code block can have
+its own alpha. A framework whose theming primitive is a *color* — GTK's `@define-color`, and so
+everything built from it — cannot do that. There, the same names hold bare `rgba()` values, the
+geometry moves into the component rule, and two roles collapse: the card loses its second layer and
+the code block reuses `--shadow-card`, whose `.08` sits close enough to `.10` that nothing visible
+turns on the difference. `scripts/build-lightdm.mjs` shows the reverse trip, reattaching the offsets
+to rebuild CSS shadows from the GTK color tokens.
+
+`--shadow-base` is the seventh token and is not a shadow at all: it is the bare slate-900 hue, for
+frameworks that compose their own shade colors from it — the Adwaita `*_shade_color` family, for
+instance — instead of consuming a finished one.
 
 Explicitly **shadowless**: inline attribute cards, help cards, toolbar toggle buttons, list-row
 action buttons, add-new buttons. A shadow means "this floats above the page." Anything that merely
 delimits a region gets a border instead.
 
-Dark mode does not change shadow *colors* — it raises `--shadow-opacity` from `.15` to `.5`, because
-a slate shadow on near-black ground needs far more alpha to register.
+**Dark mode does not change shadow *colors*, it raises their alpha — and not by a single
+multiplier.** Roughly triple, tuned per role: `.08 → .27` for cards, `.12 → .50` and `.15 → .50` for
+selected items and tabs, `.20 → .60` floating, `.25 → .70` modal. A slate shadow on near-black ground
+needs far more alpha to register at all, and the shallow end of the ladder needs proportionally more
+of it than the deep end, or cards simply stop reading as raised. That per-role tuning is the reason
+the ladder is spelled out token by token rather than derived from one base color and a scale factor.
 
 ---
 
@@ -699,7 +813,7 @@ is the same at every level, so it does not matter much where you draw the line:
 | Hover background       | `--surface-navigation-hover`                                                                   |
 | Hover text             | `--text-heading`                                                                               |
 | Hover shadow           | none                                                                                             |
-| Active tab             | `--surface-default` fill, `--text-heading` text, `--accent` icon, `0 1px 3px rgba(15,23,42,.15)` |
+| Active tab             | `--surface-default` fill, `--text-heading` text, `--accent` icon, `--shadow-tab` |
 | Inactive tab           | transparent,`--text-on-navigation` text, `--surface-navigation-hover` on hover               |
 | Tab close hover        | `--status-danger` fill, `--text-on-fill` glyph                                             |
 
@@ -737,7 +851,7 @@ the same job — one step off the content surface:
   single hover color — VS Code's `list.hoverBackground`, for instance — `--border-default` is the
   value that works on either.
 - **A selected item in a navigation sidebar is a raised light card:** `--surface-default` fill,
-  `--text-heading` text, `0 1px 2px rgba(15,23,42,.12)`. Selection there reads as *elevation*,
+  `--text-heading` text, `--shadow-item`. Selection there reads as *elevation*,
   because a sidebar item is a place you are, not a row you picked.
 - **A selected row in a list, tree or table is a solid `--accent` fill with `--text-on-fill`
   text**, and any icon in that row takes `--text-on-fill` too — an accent-colored glyph on an
@@ -753,14 +867,16 @@ the same job — one step off the content surface:
   headers, `--text-tertiary` shortcut hints, `--border-default` dividers, `--surface-secondary`
   section blocks, `.5` opacity when disabled.
 - **Modals** — `--surface-default` body, `--text-heading` title, `--surface-secondary` footer with
-  `--text-secondary` text, `--surface-overlay` backdrop, `rgba(15,23,42,.25)` shadow. The close
+  `--text-secondary` text, `--surface-overlay` backdrop, `--shadow-modal`. The close
   button is `--surface-secondary` / `--text-secondary` at rest and inverts to `--accent` /
   `--text-on-fill` on hover — the one sanctioned color-swap hover, because a filled accent chip
   carries no icon-vanishing risk.
 - **Toasts and tooltips** use `--surface-navigation` with `--text-heading` in both modes, so
   transient overlays belong to the frame rather than the page. They are the one case where the
-  frame surface floats above content instead of sitting behind it, so they carry a
-  `rgba(15,23,42,.20)` shadow to say so — without it a toast on a light page is just a gray box.
+  frame surface floats above content instead of sitting behind it, so they carry `--shadow-floating`
+  to say so — without it a toast on a light page is just a gray box. Inside a desktop shell they
+  follow §6.4's exception and take `--surface-shell` instead: a tooltip there floats over the
+  wallpaper, not over a window, and the frame's near-black would read as a hole in it.
 
 ### 6.7 Status and badges
 
@@ -812,7 +928,8 @@ flip:
    content surface it wraps, exactly as it was lighter-side-recessed in light mode. Its label color
    is the one thing that does not simply invert: `--text-on-navigation` goes from slate-600 to
    pure white, because on near-black a slate label reads as disabled.
-5. **Translucent values gain a lot of alpha.** Focus ring `.15 → .28`; shadow opacity `.15 → .5`.
+5. **Translucent values gain a lot of alpha.** Focus ring `.15 → .28`; every shadow roughly triples,
+   tuned per role rather than by one multiplier (§5).
 6. **The overlay switches from tinted to neutral.** `rgba(15,23,42,.45)` → `rgba(0,0,0,.6)`.
 
 If your application has a manual theme toggle rather than following the operating system, apply the
@@ -873,10 +990,13 @@ Hazards worth checking for in any implementation:
    heading-weight text and the accent, never by fill alone.
 8. Pair every colored fill with the right on-color from §3.5 — `--text-on-fill` for fills that
    invert, `--text-on-light` for fills light in both schemes — and give surfaces ordinary ramp text.
-9. Restrict shadows to the §5 table; use borders for anything that merely delimits a region.
-10. Confirm no component rule contains a literal hex.
-11. Run the §10 audit in both schemes and confirm every pair passes.
-12. Verify dark mode with a real operating-system toggle, not only devtools emulation.
+9. Restrict shadows to the five §5 tokens; use borders for anything that merely delimits a region.
+10. Confirm no component rule contains a literal hex — shadows included, which is the easiest place
+    to leave one behind.
+11. If the thing being themed has a terminal, fill all sixteen slots from §3.8. Nine are tokens; the
+    bright tier is not, and is the only other place a hue may leave the token set.
+12. Run the §10 audit in both schemes and confirm every pair passes.
+13. Verify dark mode with a real operating-system toggle, not only devtools emulation.
 
 ---
 
@@ -884,6 +1004,12 @@ Hazards worth checking for in any implementation:
 
 Every pairing the theme sanctions, measured against WCAG 2.1: **4.5** for text, **3.0** for large
 text and non-text interface elements. Ratios are computed from the §3.1 values.
+
+`scripts/audit.mjs` recomputes this table from the GTK token files on every run, and parses §3.1,
+§3.2 and §3.8 back out of this document to check them against the theme and the Tilix palettes. The
+guide is the one artefact here that a build step cannot regenerate, so it is the one that has to be
+read back instead. If you change a token, change it in §3.1 and §3.2; the audit will tell you if you
+missed one.
 
 | Foreground | Background | Light | Dark |
 | ---------- | ---------- | ----- | ---- |
