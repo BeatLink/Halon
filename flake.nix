@@ -214,6 +214,7 @@
             '';
             meta = {
               description = "Halon — slate and blue GTK + Cinnamon theme; recessed chrome, raised content";
+              license = nixpkgs.lib.licenses.gpl3Plus;
               platforms = nixpkgs.lib.platforms.linux;
             };
           };
@@ -232,6 +233,7 @@
             '';
             meta = {
               description = "Slate and blue Tilix color schemes";
+              license = nixpkgs.lib.licenses.gpl3Plus;
               platforms = nixpkgs.lib.platforms.linux;
             };
           };
@@ -253,6 +255,7 @@
             };
             meta = {
               description = "Slate and blue VS Code theme; recessed chrome, raised content";
+              license = nixpkgs.lib.licenses.gpl3Plus;
             };
           };
 
@@ -268,6 +271,7 @@
             '';
             meta = {
               description = "Slate and blue Firefox theme; recessed chrome, raised content";
+              license = nixpkgs.lib.licenses.gpl3Plus;
             };
           };
 
@@ -286,6 +290,7 @@
             '';
             meta = {
               description = "Slate and blue Steam client theme for Millennium";
+              license = nixpkgs.lib.licenses.gpl3Plus;
               platforms = nixpkgs.lib.platforms.linux;
             };
           };
@@ -304,6 +309,7 @@
             '';
             meta = {
               description = "Slate and blue Trilium theme; recessed chrome, raised content";
+              license = nixpkgs.lib.licenses.gpl3Plus;
             };
           };
 
@@ -325,6 +331,7 @@
             '';
             meta = {
               description = "Slate and blue Qt colour schemes and style sheet";
+              license = nixpkgs.lib.licenses.gpl3Plus;
               platforms = nixpkgs.lib.platforms.linux;
             };
           };
@@ -436,6 +443,7 @@
               '';
             meta = {
               description = "Slate and blue LMMS theme in both schemes; recessed chrome, raised editor canvases";
+              license = nixpkgs.lib.licenses.gpl3Plus;
               platforms = nixpkgs.lib.platforms.linux;
             };
           };
@@ -468,6 +476,7 @@
             '';
             meta = {
               description = "Slate and blue Plymouth boot splash; pulsing mark, status messages, accent progress bar";
+              license = nixpkgs.lib.licenses.gpl3Plus;
               platforms = nixpkgs.lib.platforms.linux;
             };
           };
@@ -487,6 +496,7 @@
             passthru.themePath = "${finalAttrs.finalPackage}/share/web-greeter/themes/halon";
             meta = {
               description = "Slate and blue LightDM web greeter theme";
+              license = nixpkgs.lib.licenses.gpl3Plus;
               platforms = nixpkgs.lib.platforms.linux;
             };
           });
@@ -504,6 +514,7 @@
             '';
             meta = {
               description = "Halon's colour tokens for both schemes, as JSON";
+              license = nixpkgs.lib.licenses.gpl3Plus;
             };
           };
 
