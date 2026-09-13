@@ -1,0 +1,746 @@
+/* Halon for Trilium — GENERATED FILE, do not edit.
+ *
+ * Written by scripts/build-trilium.mjs in the Halon repository from
+ * gtk/Halon/shared/_tokens-*.css and trilium/_rules.css:
+ * https://github.com/BeatLink/Halon
+ *
+ * Paste this into a CSS code note and give the note these labels:
+ *
+ *     #appThemeBase=next   #appTheme=Halon
+ *
+ * The theme follows the operating system's colour scheme, as the "next" base
+ * it sits on does.
+ */
+
+/* ==========================================================================
+   Layer 1 — theme tokens. The only place a literal colour appears (§2).
+   ========================================================================== */
+
+:root {
+    --font-family-interface:
+        system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+        "Noto Sans", Cantarell, "Helvetica Neue", Arial, sans-serif,
+        "Apple Color Emoji", "Segoe UI Emoji";
+
+    --space-1: 2px;
+    --space-2: 4px;
+    --space-3: 6px;
+    --space-4: 8px;
+    --space-5: 12px;
+    --space-6: 16px;
+    --space-7: 24px;
+    --space-8: 32px;
+
+    --control-height: 32px;
+    --control-padding-x: 14px;
+    --row-height: 28px;
+    --border-width: 1px;
+    --focus-ring-width: 3px;
+
+    --radius-small: 4px;
+    --radius-row: 6px;
+    --radius-default: 8px;
+    --radius-window: 10px;
+    --radius-pill: 9999px;
+
+    --text-label: 11px;
+    --text-caption: 12px;
+    --text-control: 13px;
+    --text-prose: 14px;
+    --text-h3: 15px;
+    --text-h2: 19px;
+    --text-h1: 26px;
+
+    --line-height-body: 1.55;
+    --line-height-ui: 1.2;
+
+    --surface-root: #f1f5f9;
+    --surface-default: #ffffff;
+    --surface-secondary: #f1f5f9;
+    --surface-navigation: #f1f5f9;
+    --surface-navigation-hover: #e2e8f0;
+    --surface-overlay: rgba(15, 23, 42, 0.45);
+    --surface-shell: #f1f5f9;
+    --surface-shell-hover: #e2e8f0;
+    --surface-shell-card: #ffffff;
+    --text-heading: #0f172a;
+    --text-body: #1a1a2e;
+    --text-secondary: #475569;
+    --text-tertiary: #64748b;
+    --text-on-navigation: #475569;
+    --text-on-fill: #ffffff;
+    --text-on-light: #0f172a;
+    --border-default: #e2e8f0;
+    --border-hover: #cbd5e1;
+    --border-control: #8792a3;
+    --accent: #2563eb;
+    --focus-ring: rgba(37, 99, 235, 0.15);
+    --border-focus: #2563eb;
+    --status-success: #047857;
+    --status-warning: #f59e0b;
+    --status-warning-text: #c2410c;
+    --status-danger: #dc2626;
+    --badge-experimental: #7c3aed;
+    --shadow-item: 0 1px 2px rgba(15, 23, 42, 0.12);
+    --shadow-item-color: rgba(15, 23, 42, 0.12);
+    --shadow-card: 0 1px 3px rgba(15, 23, 42, 0.08);
+    --shadow-card-color: rgba(15, 23, 42, 0.08);
+    --shadow-tab: 0 1px 3px rgba(15, 23, 42, 0.15);
+    --shadow-tab-color: rgba(15, 23, 42, 0.15);
+    --shadow-floating: 0 2px 8px rgba(15, 23, 42, 0.20);
+    --shadow-floating-color: rgba(15, 23, 42, 0.20);
+    --shadow-modal: 0 8px 32px rgba(15, 23, 42, 0.25);
+    --shadow-modal-color: rgba(15, 23, 42, 0.25);
+    --shadow-floating-opacity: 0.20;
+}
+
+/* §7 — one media query re-declaring the tokens, and nothing else. The "next"
+   base flips on the same query, so the two never disagree. */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --surface-root: #060b14;
+        --surface-default: #16213a;
+        --surface-secondary: #060b14;
+        --surface-navigation: #060b14;
+        --surface-navigation-hover: #101b2d;
+        --surface-overlay: rgba(0, 0, 0, 0.6);
+        --surface-shell: #16213a;
+        --surface-shell-hover: #1f2c4a;
+        --surface-shell-card: #2a3a5e;
+        --text-heading: #f8fafc;
+        --text-body: #e2e8f0;
+        --text-secondary: #cbd5e1;
+        --text-tertiary: #94a3b8;
+        --text-on-navigation: #ffffff;
+        --text-on-fill: #0b1220;
+        --text-on-light: #0f172a;
+        --border-default: #334155;
+        --border-hover: #475569;
+        --border-control: #64748b;
+        --accent: #60a5fa;
+        --focus-ring: rgba(96, 165, 250, 0.28);
+        --border-focus: #60a5fa;
+        --status-success: #10b981;
+        --status-warning: #f59e0b;
+        --status-warning-text: #f59e0b;
+        --status-danger: #f87171;
+        --badge-experimental: #a78bfa;
+        --shadow-item: 0 1px 2px rgba(15, 23, 42, 0.50);
+        --shadow-item-color: rgba(15, 23, 42, 0.50);
+        --shadow-card: 0 1px 3px rgba(15, 23, 42, 0.27);
+        --shadow-card-color: rgba(15, 23, 42, 0.27);
+        --shadow-tab: 0 1px 3px rgba(15, 23, 42, 0.50);
+        --shadow-tab-color: rgba(15, 23, 42, 0.50);
+        --shadow-floating: 0 2px 8px rgba(15, 23, 42, 0.60);
+        --shadow-floating-color: rgba(15, 23, 42, 0.60);
+        --shadow-modal: 0 8px 32px rgba(15, 23, 42, 0.70);
+        --shadow-modal-color: rgba(15, 23, 42, 0.70);
+        --shadow-floating-opacity: 0.60;
+    }
+}
+
+/* ==========================================================================
+   Layer 2 — SOURCE FILE, not the shipped one. Trilium's own theming variables
+   assigned to the tokens above (§2), plus the rules that need real selectors.
+
+   Edit this file. Never edit the generated trilium/halon.css.
+
+   No colour may appear here; scripts/build-trilium.mjs fails the build if one
+   does. Every declaration carries `!important`: with #appThemeBase=next the
+   base stylesheets load *after* the custom theme and redeclare many of these
+   on an equal-specificity plain `:root`.
+   ========================================================================== */
+
+/* Trilium reads --theme-style to set `color-scheme` and the body's
+   light-theme/dark-theme classes; --theme-style-auto tells it the OS made the
+   choice, which keeps the editor's syntax theme and the native window in step.
+   Stated as keywords rather than through a token so nothing depends on how a
+   substituted custom property is whitespace-trimmed when read from script. */
+:root {
+    --theme-style: light !important;
+    --theme-style-auto: true !important;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --theme-style: dark !important;
+    }
+}
+
+:root {
+    /* ----------------------------------------------------------------------
+       Window and typography — §4
+       ---------------------------------------------------------------------- */
+
+    /* Electron's window-controls overlay is part of the frame (§6.4). Trilium
+       applies it only when both halves are set, so the stock theme's
+       background-only declaration was a no-op. */
+    --native-titlebar-background: var(--surface-navigation) !important;
+    --native-titlebar-foreground: var(--text-on-navigation) !important;
+
+    /* The native stack, not the bundled interface font — §4.5. Skipping this is
+       most of what separates the theme from a recolour. */
+    --main-font-family: var(--font-family-interface) !important;
+    --center-pane-border-radius: var(--radius-default) !important;
+
+    /* ----------------------------------------------------------------------
+       Surfaces and text — §3.1
+       ---------------------------------------------------------------------- */
+
+    --root-background: var(--surface-root) !important;
+    --main-background-color: var(--surface-default) !important;
+    --main-text-color: var(--text-body) !important;
+    --main-border-color: var(--border-default) !important;
+    --subtle-border-color: var(--border-default) !important;
+    --accented-background-color: var(--surface-secondary) !important;
+    --muted-text-color: var(--text-secondary) !important;
+
+    /* ----------------------------------------------------------------------
+       Menus and dropdowns — §6.6
+       ---------------------------------------------------------------------- */
+
+    --dropdown-border-color: var(--border-default) !important;
+    --dropdown-item-icon-destructive-color: var(--status-danger) !important;
+    --contextual-help-icon-color: var(--accent) !important;
+
+    /* The base builds three popup shadows itself, out of neutral black and a
+       bare opacity. The depth is put on §5's ladder even though the hue cannot
+       be — no variable carries the colour. */
+    --dropdown-shadow-opacity: var(--shadow-floating-opacity) !important;
+
+    --menu-text-color: var(--text-body) !important;
+    --menu-background-color: var(--surface-default) !important;
+    --menu-background-color-no-backdrop: var(--surface-default) !important;
+    --menu-item-icon-color: var(--text-secondary) !important;
+    --menu-item-disabled-opacity: 0.5 !important;
+    --menu-item-keyboard-shortcut-color: var(--text-tertiary) !important;
+    --menu-item-arrow-color: var(--text-secondary) !important;
+    --menu-item-delimiter-color: var(--border-default) !important;
+    --menu-item-group-header-color: var(--text-secondary) !important;
+    --menu-section-background-color: var(--surface-secondary) !important;
+
+    /* Hover is the frame's hover everywhere (§6.5); the active entry in a
+       dropdown or autocomplete is a row you picked, so it takes the solid
+       accent fill rather than a softened one. */
+    --hover-item-text-color: var(--text-heading) !important;
+    --hover-item-background-color: var(--surface-navigation-hover) !important;
+    --hover-item-border-color: transparent !important;
+    --active-item-text-color: var(--text-on-fill) !important;
+    --active-item-background-color: var(--accent) !important;
+    --active-item-border-color: transparent !important;
+
+    /* ----------------------------------------------------------------------
+       Buttons — §6.1. These variables drive every command button at once, so
+       they carry the default (neutral bordered) weight and the filled weight
+       is separated out by selector further down.
+       ---------------------------------------------------------------------- */
+
+    --button-text-color: var(--text-body) !important;
+    --cmd-button-background-color: transparent !important;
+    --cmd-button-text-color: var(--text-body) !important;
+    --cmd-button-hover-background-color: transparent !important;
+    --cmd-button-hover-text-color: var(--text-body) !important;
+    --cmd-button-shadow-color: transparent !important;
+
+    /* The glyph follows the label instead of carrying a colour of its own,
+       which is what made it vanish when a hover repainted the background. */
+    --cmd-button-icon-color: currentColor !important;
+
+    --cmd-button-keyboard-shortcut-background: var(--surface-secondary) !important;
+    --cmd-button-keyboard-shortcut-color: var(--text-tertiary) !important;
+    --cmd-button-disabled-opacity: 0.5 !important;
+
+    --button-group-active-button-background-color: var(--accent) !important;
+    --button-group-active-button-color: var(--text-on-fill) !important;
+    --button-group-active-button-shadow-color: var(--shadow-item-color) !important;
+
+    /* Icon buttons are the flat weight: a secondary glyph that goes to heading
+       on hover, over the frame's own hover fill. */
+    --icon-button-color: var(--text-secondary) !important;
+    --icon-button-hover-background: var(--surface-navigation-hover) !important;
+    --icon-button-hover-color: var(--text-heading) !important;
+
+    /* ----------------------------------------------------------------------
+       Inputs — §6.2. The fill never changes on hover: dropping it to the
+       secondary surface puts the placeholder below AA in a state the user is
+       actively pointing at.
+       ---------------------------------------------------------------------- */
+
+    --input-background-color: var(--surface-default) !important;
+    --input-text-color: var(--text-body) !important;
+    --input-placeholder-color: var(--text-tertiary) !important;
+    --input-selection-background: var(--accent) !important;
+    --input-selection-text-color: var(--text-on-fill) !important;
+    --input-hover-background: var(--surface-default) !important;
+    --input-hover-color: var(--text-body) !important;
+    --input-focus-outline-color: var(--focus-ring) !important;
+    --input-focus-background: var(--surface-default) !important;
+    --input-focus-color: var(--text-body) !important;
+    --input-action-button-color: var(--text-secondary) !important;
+    --input-action-button-hover: var(--accent) !important;
+
+    /* Toggles are the exception that keeps --border-control: a check box has no
+       label inside it, so its boundary genuinely is the control. */
+    --radio-checkbox-background: var(--surface-default) !important;
+    --radio-checkbox-hover-background: var(--surface-navigation-hover) !important;
+    --radio-checkbox-indicator-color: var(--accent) !important;
+
+    /* ----------------------------------------------------------------------
+       Selects — §6.3. The closed control is an action affordance; its open
+       option list stays an ordinary readable panel.
+       ---------------------------------------------------------------------- */
+
+    --select-focus-background: transparent !important;
+    --select-focus-text-color: var(--accent) !important;
+    --select-dropdown-text-color: var(--text-body) !important;
+    --select-group-heading-text-color: var(--text-secondary) !important;
+
+    /* ----------------------------------------------------------------------
+       Links and selection — §6.8
+       ---------------------------------------------------------------------- */
+
+    --link-color: var(--accent) !important;
+    --link-hover-background: var(--focus-ring) !important;
+    --link-hover-color: var(--accent) !important;
+    --link-selection-outline-color: var(--accent) !important;
+    --selection-background-color: var(--focus-ring) !important;
+
+    /* ----------------------------------------------------------------------
+       Modals, toasts and tooltips — §6.6
+       ---------------------------------------------------------------------- */
+
+    --modal-backdrop-color: var(--surface-overlay) !important;
+    --modal-shadow-color: var(--shadow-modal-color) !important;
+    --modal-border-color: var(--border-default) !important;
+    --modal-background-color: var(--surface-default) !important;
+    --modal-title-color: var(--text-heading) !important;
+    --modal-footer-background: var(--surface-secondary) !important;
+    --modal-footer-color: var(--text-secondary) !important;
+
+    /* The one sanctioned colour-swap hover: a filled accent chip carries no
+       icon-vanishing risk. */
+    --modal-control-button-background: var(--surface-secondary) !important;
+    --modal-control-button-color: var(--text-secondary) !important;
+    --modal-control-button-hover-background: var(--accent) !important;
+    --modal-control-button-hover-color: var(--text-on-fill) !important;
+
+    --tool-dialog-background-color: var(--surface-default) !important;
+    --tool-dialog-shadow-color: var(--shadow-floating-color) !important;
+
+    /* Transient overlays belong to the frame rather than to the page, and float
+       above it, so they carry the floating shadow to say so. */
+    --toast-background: var(--surface-navigation) !important;
+    --toast-text-color: var(--text-heading) !important;
+    --toast-close-button-background: var(--surface-navigation-hover) !important;
+    --tooltip-background-color: var(--surface-navigation) !important;
+    --tooltip-foreground-color: var(--text-heading) !important;
+    --tooltip-shadow-color: var(--shadow-floating-color) !important;
+
+    /* ----------------------------------------------------------------------
+       The navigation frame — §6.4. The launcher rail and the tab bar are the
+       frame: one step back from the content they wrap, in both schemes.
+       ---------------------------------------------------------------------- */
+
+    --launcher-pane-vert-background-color: var(--surface-navigation) !important;
+    --launcher-pane-vert-background-color-bgfx: var(--surface-navigation) !important;
+    --launcher-pane-vert-text-color: var(--text-on-navigation) !important;
+    --launcher-pane-vert-button-hover-background: var(--surface-navigation-hover) !important;
+    --launcher-pane-vert-button-hover-color: var(--text-heading) !important;
+    --launcher-pane-vert-button-hover-shadow: none !important;
+
+    --launcher-pane-horiz-background-color: var(--surface-navigation) !important;
+    --launcher-pane-horiz-background-color-bgfx: var(--surface-navigation) !important;
+    --launcher-pane-horiz-border-color: var(--border-default) !important;
+    --launcher-pane-horiz-border-color-bgfx: var(--border-default) !important;
+    --launcher-pane-horiz-text-color: var(--text-on-navigation) !important;
+    --launcher-pane-horiz-button-hover-background: var(--surface-navigation-hover) !important;
+    --launcher-pane-horiz-button-hover-color: var(--text-heading) !important;
+
+    /* The active tab is a raised card and has to be read as one: its fill is
+       barely a step off the frame, so the lift, the heading text and the accent
+       icon carry the selection together. Drop two of the three and it vanishes. */
+    --active-tab-background-color: var(--surface-default) !important;
+    --active-tab-hover-background-color: var(--surface-default) !important;
+    --active-tab-text-color: var(--text-heading) !important;
+    --active-tab-icon-color: var(--accent) !important;
+    --active-tab-shadow: var(--shadow-tab) !important;
+
+    --inactive-tab-background-color: transparent !important;
+    --inactive-tab-hover-background-color: var(--surface-navigation-hover) !important;
+    --inactive-tab-text-color: var(--text-on-navigation) !important;
+
+    --tab-close-button-hover-background: var(--status-danger) !important;
+    --tab-close-button-hover-color: var(--text-on-fill) !important;
+
+    --new-tab-button-background: transparent !important;
+    --new-tab-button-color: var(--text-on-navigation) !important;
+    --new-tab-button-shadow: none !important;
+    --new-tab-button-hover-background: var(--surface-navigation-hover) !important;
+    --new-tab-button-hover-color: var(--text-heading) !important;
+
+    /* Application toolbars are frame members too. */
+    --classic-toolbar-vert-layout-background-color: var(--surface-navigation) !important;
+    --classic-toolbar-horiz-layout-background-color: var(--surface-navigation) !important;
+    --status-bar-border-color: var(--border-default) !important;
+
+    /* ----------------------------------------------------------------------
+       Sidebars and the note tree — §6.5. The tree is navigation, so the
+       selected note is a raised card rather than an accent bar.
+       ---------------------------------------------------------------------- */
+
+    --left-pane-background-color: var(--surface-secondary) !important;
+    --left-pane-collapsed-border-color: var(--border-default) !important;
+    --left-pane-text-color: var(--text-body) !important;
+    --left-pane-icon-color: var(--text-secondary) !important;
+    --left-pane-item-hover-background: var(--surface-navigation-hover) !important;
+    --left-pane-item-selected-background: var(--surface-default) !important;
+    --left-pane-item-selected-color: var(--text-heading) !important;
+    --left-pane-item-selected-shadow: var(--shadow-item) !important;
+
+    /* A row's action button keeps its fill and moves its glyph to the accent
+       on hover (see the selector below), shadowless. */
+    --left-pane-item-action-button-background: var(--surface-default) !important;
+    --left-pane-item-action-button-color: var(--text-secondary) !important;
+    --left-pane-item-action-button-hover-background: var(--surface-default) !important;
+    --left-pane-item-action-button-hover-shadow: none !important;
+    --left-pane-item-selected-action-button-hover-shadow: none !important;
+
+    --right-pane-background-color: var(--surface-secondary) !important;
+    --right-pane-heading-color: var(--text-secondary) !important;
+    --right-pane-item-hover-background: var(--surface-navigation-hover) !important;
+    --right-pane-item-hover-color: var(--text-heading) !important;
+
+    --bottom-panel-background-color: var(--surface-default) !important;
+    --bottom-panel-title-bar-background-color: var(--surface-secondary) !important;
+
+    /* A note's own #color label is converted to Lab and clamped for legibility
+       against the tree. The base's cap is aggressive enough that `gold` and
+       `lime` land on dark olive; §8's figures keep a hue close to true while
+       retaining a margin. */
+    --tree-item-light-theme-max-color-lightness: 78 !important;
+    --tree-item-dark-theme-min-color-lightness: 58 !important;
+
+    /* A field inside the frame takes the frame's hover fill, not the content
+       surface — a white box there would read as content rather than chrome. */
+    --quick-search-background: var(--surface-navigation-hover) !important;
+    --quick-search-color: var(--text-secondary) !important;
+    --quick-search-hover-background: var(--surface-navigation-hover) !important;
+    --quick-search-focus-background: var(--surface-navigation-hover) !important;
+    --quick-search-focus-border: var(--accent) !important;
+    --quick-search-focus-color: var(--text-body) !important;
+    --quick-search-result-content-background: var(--surface-secondary) !important;
+    --quick-search-result-highlight-color: var(--accent) !important;
+
+    /* ----------------------------------------------------------------------
+       Status and badges — §6.7. Every solid fill takes --text-on-fill, which
+       is the whole reason that token flips.
+       ---------------------------------------------------------------------- */
+
+    --badge-background-color: var(--surface-secondary) !important;
+    --badge-text-color: var(--text-secondary) !important;
+    --badge-temporaraily-editable-background-color: var(--status-success) !important;
+    --badge-active-content-background-color: var(--status-success) !important;
+    --badge-read-only-background-color: var(--status-danger) !important;
+    --badge-clipped-note-background-color: var(--accent) !important;
+    --badge-doc-url-background-color: var(--accent) !important;
+    --badge-execute-background-color: var(--badge-experimental) !important;
+    --badge-share-background-color: var(--text-secondary) !important;
+    --badge-snippet-background-color: var(--text-secondary) !important;
+    --badge-office-preview-background-color: var(--text-secondary) !important;
+
+    --global-menu-update-available-badge-background-color: var(--status-success) !important;
+    --global-menu-update-available-badge-color: var(--text-on-fill) !important;
+    --protected-session-active-icon-color: var(--status-success) !important;
+    --sync-status-error-pulse-color: var(--status-danger) !important;
+
+    /* A status region is tinted rather than filled, and the tint follows the
+       token instead of hardcoding it. */
+    --alert-bar-background: color-mix(in srgb, var(--status-warning) 15%, transparent) !important;
+
+    /* ----------------------------------------------------------------------
+       Content surfaces — §5, §6.7
+       ---------------------------------------------------------------------- */
+
+    --note-icon-background-color: var(--accent) !important;
+    --note-icon-color: var(--text-on-fill) !important;
+    --note-icon-hover-background-color: var(--accent) !important;
+
+    --card-background-color: var(--surface-default) !important;
+    --card-background-hover-color: var(--surface-navigation-hover) !important;
+    --card-border-color: var(--border-default) !important;
+    --card-box-shadow: var(--shadow-card) !important;
+    --card-shadow-color: var(--shadow-card-color) !important;
+
+    /* Structure comes from the hairline, not from a shadow: neither a code
+       block nor a promoted-attribute card floats. */
+    --code-block-box-shadow: none !important;
+    --promoted-attribute-card-background-color: var(--surface-secondary) !important;
+    --promoted-attribute-card-shadow: none !important;
+    --note-list-view-content-background: var(--surface-secondary) !important;
+
+    --floating-button-background-color: var(--surface-default) !important;
+    --floating-button-color: var(--text-secondary) !important;
+    --floating-button-hover-background: var(--surface-navigation-hover) !important;
+    --floating-button-hover-color: var(--text-heading) !important;
+    --floating-button-hide-button-background: var(--surface-secondary) !important;
+    --floating-button-hide-button-color: var(--text-secondary) !important;
+    --floating-button-shadow-color: var(--shadow-floating-color) !important;
+
+    --calendar-color: var(--text-body) !important;
+    --calendar-weekday-labels-color: var(--text-secondary) !important;
+    --calendar-day-hover-background: var(--accent) !important;
+    --calendar-day-hover-color: var(--text-on-fill) !important;
+    --calendar-day-highlight-background: var(--focus-ring) !important;
+
+    --timeline-bullet-color: var(--border-hover) !important;
+    --timeline-bullet-hover-color: var(--accent) !important;
+    --timeline-connector-color: var(--border-default) !important;
+    --timeline-connector-active-color: var(--accent) !important;
+
+    --help-background-color: var(--surface-default) !important;
+    --help-card-background: var(--surface-secondary) !important;
+    --help-card-shadow: none !important;
+    --help-card-heading-color: var(--text-secondary) !important;
+    --help-kbd-shortcut-color: var(--text-body) !important;
+    --help-kbd-shortcut-background: var(--surface-secondary) !important;
+    --help-kbd-shortcut-border: var(--border-default) !important;
+    --help-code-color: var(--text-body) !important;
+    --help-code-background: var(--surface-secondary) !important;
+
+    --ck-editor-popup-border-color: var(--border-default) !important;
+    --ck-editor-toolbar-button-on-background: var(--accent) !important;
+    --ck-editor-toolbar-button-on-color: var(--text-on-fill) !important;
+    --ck-editor-toolbar-button-on-shadow: none !important;
+    --ck-editor-toolbar-dropdown-button-open-background: var(--surface-navigation-hover) !important;
+
+    /* Invisible until grabbed — §6.8. */
+    --gutter-color: transparent !important;
+    --gutter-hover-color: var(--accent) !important;
+
+    --scrollbar-background-color: transparent !important;
+    --scrollbar-thumb-color: var(--border-hover) !important;
+    --scrollbar-thumb-hover-color: var(--text-tertiary) !important;
+}
+
+/* ==========================================================================
+   Rules that no variable can express
+   ========================================================================== */
+
+/* Buttons — §6.1. forms.css hardcodes `border: unset`, a 120px min-width, 6px
+   corners and 4px/16px padding on every command button, so the geometry and
+   the default weight's hairline need selectors rather than variables. */
+button.btn.btn-primary,
+button.btn.btn-secondary,
+button.btn.btn-sm:not(.select-button),
+button.btn.btn-success {
+    min-width: unset !important;
+    padding: var(--space-4) var(--control-padding-x) !important;
+    border-radius: var(--radius-default) !important;
+    border: var(--border-width) solid var(--border-default) !important;
+    font-size: var(--text-control) !important;
+    font-weight: 500 !important;
+}
+
+button.btn.btn-secondary:hover,
+button.btn.btn-sm:not(.select-button):hover {
+    border-color: var(--accent) !important;
+}
+
+/* The filled weight, spent on the one primary action of a view. A confirming
+   `.btn-success` is that action, so it takes the accent rather than a second
+   filled colour competing with it. Hover is opacity-only: the fill and the
+   glyph are already different colours and any change that moves one without
+   the other risks collapsing them. */
+button.btn.btn-primary,
+button.btn.btn-success {
+    background: var(--accent) !important;
+    border-color: var(--accent) !important;
+    color: var(--text-on-fill) !important;
+}
+
+button.btn.btn-primary:hover,
+button.btn.btn-success:hover {
+    background: var(--accent) !important;
+    color: var(--text-on-fill) !important;
+    opacity: 0.85 !important;
+}
+
+/* The base restores --cmd-button-background-color on :active with !important,
+   which would flash a filled button transparent while it is held down. Outrank
+   it rather than match it: at equal specificity the base wins, loading last. */
+:root button.btn.btn-primary:active,
+:root button.btn.btn-success:active {
+    background: var(--accent) !important;
+    color: var(--text-on-fill) !important;
+}
+
+/* Toggles — §6.2. The box is drawn as a pseudo-element with a fill and no
+   border of its own, and a boundary that is the whole control has to clear 3:1. */
+label.tn-checkbox::before,
+label.tn-radio::before {
+    box-sizing: border-box !important;
+    border: var(--border-width) solid var(--border-control) !important;
+}
+
+/* Inputs — §6.2. The base renders these with a literal `border: unset`, which
+   no variable governs, so the resting hairline has to be declared here. A
+   border-color override alone would silently do nothing: there is no border to
+   recolour. */
+input:not([type]),
+input[type="text"],
+input[type="number"],
+input[type="password"],
+input[type="date"],
+input[type="time"],
+input[type="datetime-local"],
+:root input.ck.ck-input-text,
+:root input.ck.ck-input-number,
+textarea.form-control,
+textarea,
+:root textarea.ck.ck-textarea,
+.tn-input-field,
+.input-group,
+select,
+select.form-select,
+select.form-control,
+.select-button.dropdown-toggle.btn {
+    border: var(--border-width) solid var(--border-default) !important;
+    border-radius: var(--radius-default) !important;
+}
+
+input:not([type]):hover,
+input[type="text"]:hover,
+input[type="number"]:hover,
+input[type="password"]:hover,
+input[type="date"]:hover,
+input[type="time"]:hover,
+input[type="datetime-local"]:hover,
+:root input.ck.ck-input-text:not([readonly="true"]):hover,
+:root input.ck.ck-input-number:not([readonly="true"]):hover,
+textarea.form-control:hover,
+textarea:hover,
+:root textarea.ck.ck-textarea:hover,
+.tn-input-field:hover,
+.input-group:hover,
+select:hover,
+select.form-select:hover,
+select.form-control:hover,
+.select-button.dropdown-toggle.btn:hover {
+    border-color: var(--border-focus) !important;
+}
+
+input:not([type]):focus,
+input[type="text"]:focus,
+input[type="number"]:focus,
+input[type="password"]:focus,
+input[type="date"]:focus,
+input[type="time"]:focus,
+input[type="datetime-local"]:focus,
+:root input.ck.ck-input-text:not([readonly="true"]):focus,
+:root input.ck.ck-input-number:not([readonly="true"]):focus,
+textarea.form-control:focus,
+textarea:focus,
+:root textarea.ck.ck-textarea:focus,
+.tn-input-field:focus,
+.tn-input-field:focus-within,
+.input-group:focus-within,
+select:focus,
+select.form-select:focus,
+select.form-control:focus,
+.select-button.dropdown-toggle.btn:focus {
+    border-color: var(--border-focus) !important;
+}
+
+/* Selects — §6.3. forms.css drives both selects and text inputs from
+   --input-background-color and --input-text-color, so ghosting the closed
+   control through variables would ghost every text field with it. The longhand
+   background-color is deliberate: the base paints the dropdown arrow with a
+   `background:` shorthand, which a shorthand override would erase. */
+select,
+select.form-select,
+select.form-control,
+.select-button.dropdown-toggle.btn {
+    background-color: transparent !important;
+    color: var(--accent) !important;
+}
+
+select:hover,
+select.form-select:hover,
+select.form-control:hover,
+.select-button.dropdown-toggle.btn:hover {
+    background-color: transparent !important;
+    color: var(--accent) !important;
+    opacity: 0.85 !important;
+}
+
+select:focus,
+select.form-select:focus,
+select.form-control:focus,
+.select-button.dropdown-toggle.btn:focus {
+    background-color: transparent !important;
+    color: var(--accent) !important;
+}
+
+/* Badges — §6.7. Badge.tsx's own stylesheet types `color: white` rather than
+   reading a variable, which is the single-on-colour failure of §3.5: in dark
+   mode every one of these fills lightens and white on them stops clearing AA. */
+.ext-badge {
+    color: var(--text-on-fill) !important;
+}
+
+.ext-badge.outline {
+    color: var(--color) !important;
+}
+
+.ext-badge.outline.clickable:hover {
+    color: var(--text-on-fill) !important;
+}
+
+/* Content headings are never accent-coloured — §6.8. Only links are blue. */
+.note-detail h1,
+.note-detail h2,
+.note-detail h3,
+.note-detail h4,
+.note-detail h5 {
+    color: var(--text-heading) !important;
+}
+
+/* The tree — §6.5. Rows take body text, heading text on hover, and a row's
+   action button moves its glyph to the accent rather than filling. */
+span.fancytree-title {
+    color: var(--text-body) !important;
+}
+
+span.fancytree-node:not(.fancytree-active):hover .fancytree-title,
+span.fancytree-node:hover {
+    color: var(--text-heading) !important;
+}
+
+#left-pane span.fancytree-node .tree-item-button:hover {
+    color: var(--accent) !important;
+}
+
+/* A header flush inside an already-rounded container takes no corner of its
+   own — §4.2. */
+#right-pane .card-header {
+    border-radius: 0 !important;
+}
+
+/* The experimental layout draws the note pane and the right pane as detached
+   cards, which the base leaves square and flush. */
+body.desktop.experimental-feature-new-layout .split-note-container-widget > .note-split {
+    border-radius: var(--center-pane-border-radius) !important;
+}
+
+body.desktop.experimental-feature-new-layout .tab-row-container {
+    margin: var(--space-1) !important;
+}
+
+body.experimental-feature-new-layout #right-pane .card {
+    background-color: var(--surface-default) !important;
+    border: var(--border-width) solid var(--border-default) !important;
+    border-radius: var(--center-pane-border-radius) !important;
+    padding: var(--space-1) !important;
+    margin: var(--space-1) !important;
+    margin-right: calc(5px + var(--space-1)) !important;
+}

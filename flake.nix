@@ -180,6 +180,7 @@
             node "$root/scripts/build-qt.mjs" "$@"
             node "$root/scripts/build-lmms.mjs" "$@"
             node "$root/scripts/build-lightdm.mjs" "$@"
+            node "$root/scripts/build-trilium.mjs" "$@"
             node "$root/scripts/build-tokens.mjs" "$@"
           '';
         };
@@ -286,6 +287,23 @@
             meta = {
               description = "Slate and blue Steam client theme for Millennium";
               platforms = nixpkgs.lib.platforms.linux;
+            };
+          };
+
+          # Trilium has no theme directory to install into — a theme is a CSS note
+          # inside the database — so this only puts the stylesheet somewhere a
+          # configuration can read it from. The Trilium Addon Manager installs it
+          # by fetching trilium/halon.css from this repository instead.
+          halon-trilium-theme = pkgs.stdenvNoCC.mkDerivation {
+            pname = "halon-trilium-theme";
+            version = "1.0.0";
+            src = ./trilium;
+            dontBuild = true;
+            installPhase = ''
+              install -Dm644 halon.css "$out/share/halon/trilium/halon.css"
+            '';
+            meta = {
+              description = "Slate and blue Trilium theme; recessed chrome, raised content";
             };
           };
 
