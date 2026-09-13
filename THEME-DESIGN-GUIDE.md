@@ -499,6 +499,8 @@ wearing its colors.
     system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
     "Noto Sans", Cantarell, "Helvetica Neue", Arial, sans-serif,
     "Apple Color Emoji", "Segoe UI Emoji";
+  --font-family-code: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas,
+    "Liberation Mono", monospace;
 
   /* Spacing — a 4px scale. Nothing may use a value that is not on it. */
   --space-1:  2px;   /* badge padding, hairline gaps */
@@ -511,86 +513,211 @@ wearing its colors.
   --space-8: 32px;   /* page margins */
 
   /* Geometry — one control height, so everything on a row aligns */
-  --control-height:       32px;   /* 13px text + 8px padding + 1px border, doubled */
+  --control-height:       32px;   /* the 16px line box + 7px padding + 1px border, doubled */
   --control-padding-x:    14px;
-  --icon-button-size:     30px;
-  --row-height:           28px;   /* list and tree rows */
+  --icon-button-size:     32px;   /* a control that happens to be square */
+  --row-height:           28px;   /* list and tree rows, menu items, the status bar */
   --frame-height:         34px;   /* headerbars, tab bars, toolbars */
+  --rail-width:           52px;
+  --rail-button-size:     36px;   /* the one square that is not a control, see §4.2 */
+  --icon-size-small:      16px;   /* menus, rows, toolbars — the dense default */
+  --icon-size-large:      20px;   /* the navigation rail and floating actions */
+  --sidebar-width:       248px;
   --border-width:          1px;
   --focus-ring-width:      3px;
 
   /* Radii — proportional to what they round */
-  --radius-small:    4px;      /* check boxes, keyboard keys, inline code */
-  --radius-row:      6px;      /* list rows, menu items, icon buttons */
-  --radius-default:  8px;      /* buttons, inputs, cards, panels, popovers */
-  --radius-window:  10px;      /* client-side window corners */
-  --radius-pill:  9999px;      /* badges, switches, scrollbar thumbs */
+  --radius-small:    4px;      /* anything you act on: controls, rows, chips */
+  --radius-default:  8px;      /* any surface that holds them, the window included */
 
   /* Type scale */
   --text-label:    11px;       /* uppercase section labels, weight 600 */
   --text-caption:  12px;       /* captions, footers, shortcut hints */
   --text-control:  13px;       /* buttons, inputs, menus, list rows, tabs */
-  --text-body:     14px;       /* prose */
+  --text-prose:    14px;       /* running prose */
   --text-h3:       15px;
   --text-h2:       19px;
   --text-h1:       26px;
 
+  /* Tracking — uppercase micro-labels open up, large display type closes in.
+     Everything else takes neither. */
+  --letter-spacing-caps:    .04em;
+  --letter-spacing-display: -.01em;
+
+  /* The UI line box is a length, not a ratio: every height in §4.3 is this box
+     plus padding plus borders, and a ratio would make each one font-dependent. */
+  --line-height-ui:   16px;
   --line-height-body: 1.55;
-  --line-height-ui:   1.2;
   --measure:          68ch;    /* maximum prose line length */
+
+  /* Layering — only the order means anything, so the values state the order and
+     nothing else. 100 apart leaves a port room to slot a rung in without a rename. */
+  --layer-sticky:    100;      /* sticky table headers */
+  --layer-menu:      200;      /* context menus, popovers */
+  --layer-modal:     300;      /* modal backdrop and the modal itself */
+  --layer-toast:     400;      /* a toast has to clear a modal */
+  --layer-tooltip:   500;      /* topmost: a tooltip can be raised from anything */
+
+  /* Motion — two durations. Fast is a state answering a pointer; slow is a
+     thing arriving, leaving, or travelling a distance. */
+  --duration-fast:   .12s;
+  --duration-slow:    .3s;
 }
 ```
 
-### 4.2 The three rules that matter
+### 4.2 The rules that matter
 
 **One control height.** Buttons, text inputs, selects, and combo boxes are all
 `--control-height`. This is the single most visible metric in the theme: when a toolbar mixes a
 34px button with a 30px entry, the row looks broken no matter how good the colors are. The 32px
-figure is exact arithmetic, not a round number — 13px of text, `--space-4` above and below, and two
-1px borders. Change the type size and this has to be recomputed.
+figure is exact arithmetic, not a round number — a 16px line box, 7px above and below, and two 1px
+borders.
 
-**Radius is proportional to what it rounds.** `--radius-default` for controls, cards and panels;
-`--radius-row` for things that repeat in a list, because 8px on a 28px row reads as a lozenge;
-`--radius-small` for controls under 20px; `--radius-window` for the window itself, which is large
-enough to carry a bigger corner; `--radius-pill` for badges and switches. Nothing else. A header
-flush inside an already-rounded container takes `border-radius: 0` rather than a sixth value.
+**The line box is why `--line-height-ui` is a length.** A ratio cannot deliver a fixed height: 13px
+at 1.2 is 15.6px in one font and something else in the next, and a control that leaves line-height
+at `normal` — which is what an unstyled `<input>` does — comes out several pixels taller than the
+button beside it. Pinning the box at 16px makes every height in §4.3 a sum of numbers the sheet
+states, rather than a guess about font metrics. Declare it on every control, entries included, and
+take the height itself from `--control-height` rather than trusting the padding to add up.
+
+**There are four heights, and each is a different job.** `--control-height` for anything a pointer
+aims at to act — button, entry, select, icon button; `--row-height` for anything that repeats down a
+list — tree rows, tabs, menu items, and the status bar, which is a single row with a border on top;
+`--frame-height` for the strip a row sits in; and `--rail-button-size` for the primary navigation
+target, the one square that is deliberately larger than a control because it is the only thing on its
+row and it is aimed at without looking.
+
+Resist adding a fifth. An earlier draft of this table had seven heights inside a 9px band — a 30px
+menu item, a 30px icon button, a 27px status bar — none of which had a token, a reason, or a
+difference anyone could see, and one of which put a 30px square in the same toolbar row as a 32px
+button, which is the exact defect the first rule in this section exists to prevent. A height with no
+token is a height nobody decided on.
+
+**Two radii, and the question is what a thing is, not how big it is.** `--radius-small` for anything
+a pointer acts on: buttons, entries, selects, icon and rail buttons, rows, menu items, chips, check
+boxes, keyboard keys, inline code, tooltips. `--radius-default` for any surface that holds them:
+cards, panels, menu sheets, popovers, modals, toasts, code blocks, the content pane, and the window
+itself. A header flush inside an already-rounded container takes `border-radius: 0` rather than a
+third value.
+
+The pairing is what makes it legible. A 4px control sitting on an 8px card states the nesting by
+shape alone, in a theme that has already given up shadows and fills for that job — and it states it
+the same way at every size, which a ladder keyed to size cannot. It also settles the cases that used
+to need a rung of their own: a 28px row at 8px reads as a lozenge, and a menu item at 8px crowds the
+corner of the 8px sheet it is inset in. Both are the same defect, and one rung answers both.
+
+The window folds in rather than carrying its own. A 10px window corner against a wallpaper, next to
+an 8px card seen at the same distance, was never a decision anyone could see — only a number to keep
+in sync across five ports.
+
+**There is no pill radius, and badges are chips.** A 9999px token is a tempting rung and a bad one:
+it is not a radius at all but an instruction to round as far as the shape allows, so the same token
+produces a capsule on a badge and a circle on anything square, and two decisions end up sharing one
+name. Cutting it forces the distinction the theme actually wants. A badge takes `--radius-small`,
+like every other small rectangle — a chip, not a lozenge, which also stops it competing with the
+filled accent button for the eye. A round thing that is genuinely round says so with `50%`, which is
+a shape, not a tier, and never appears on something that is not square. And a bar that wants to be a
+capsule gets there by the rule below rather than by a token.
+
+Tabs are the one interactive thing on the larger rung, and the theme had already decided why: a
+selected tab is a raised card (§1.4, §6.4), not a highlighted strip. It carries the content below it,
+so it rounds like the surface it introduces rather than like the control it also is.
+
+Two rungs is the floor, and it took three passes to reach. Earlier drafts ran 4, 5, 6, 8 and 10 plus
+a 9999px pill, and every rung that went was defended in prose that could not survive being asked what
+the eye gained from it. A radius ladder wants to be shorter than it feels.
+
+One family rounds *below* `--radius-small`, and it is the ladder's logic running off its bottom end
+rather than an exception to it: a progress bar, a meter and a scrollbar thumb take 3px, which is
+simply half their 6px thickness, the point at which a bar is a capsule. It gets no token because it
+is not a value but a rule — half the thickness, whatever the thickness is — and a bar of another
+size would compute its own.
+
+One radius is computed rather than chosen: a block flush into a rounded container's bottom corners —
+a menu's footer section, say — takes the container's *inner* radius,
+`calc(var(--radius-default) - var(--border-width))`, because that is the curve the border actually
+leaves behind.
 
 The ladder matters more than any single value: keeping one radius across a 16px checkbox and a
 600px window makes the small things look bulbous and the large ones look sharp.
 
-**Spacing comes off the scale.** If a gap is not a `--space-*` value, it is wrong. The scale is
-deliberately short — eight steps, no 10px, no 20px — because the alternative is a codebase where
-every panel is padded slightly differently and no two agree.
+**Spacing comes off the scale.** Every gap *between* things — stacked controls, groups in a panel,
+sections on a page, the panel's own padding — is a `--space-*` value. The scale is deliberately
+short — eight steps, no 10px, no 20px — because the alternative is a codebase where every panel is
+padded slightly differently and no two agree.
+
+**Element sizes come off the same grid.** A gap between things takes a `--space-*` token; a *size* —
+the box of an icon, a dot, a thumb, a close button, a grid column's minimum — is not a gap and needs
+no token of its own, but it is still a multiple of 4. A size that resolves through a token is
+already governed — `--frame-height` is 34px because §4.3 says a frame is a row plus its surround, and
+that is a decision with a paper trail. Only two kinds of bare number are allowed off the grid,
+and both are produced by a rule rather than chosen by a person: a bar is 6px thick and its track
+10px, per §4.3, and an inset falls out of the box it centres in — a 16px knob in a 24px track leaves
+3px, and nobody picked the 3. A 15px icon, a 19px button or a 26px chip is none of those. It is a
+number nobody decided, and it will be 1px out of step with everything around it forever.
+
+**Layering is a ladder, and only the order on it means anything.** Five rungs, 100 apart:
+`--layer-sticky` for a sticky table header, `--layer-menu` for context menus and popovers,
+`--layer-modal`, `--layer-toast` because a toast has to clear a modal, and `--layer-tooltip` on top,
+since a tooltip can be raised from anything including the other four. The gaps are uniform on
+purpose. An earlier draft ran 60, 80, 90, 95 — where the reader cannot tell that the 20 between menu
+and modal and the 5 between toast and tooltip mean exactly the same thing, which is "one rung." The
+spare 99 between rungs is what lets a port slot its own layer in beside a host application's
+stacking without renumbering anything.
+
+Anything that stacks takes a rung. A sticky header with no `z-index` is not unlayered, it is layered
+by the order it happens to sit in the document, which holds until the day something scrolls under it
+and does not.
+
+The padding *inside* a control is the exception, and §4.3 is its complete list. A 32px control
+holding a 16px line box needs 7px above and below; what it needs left and right is whatever centers
+the label optically, which lands on 11px for an input and 14px for a button. Those numbers fall out of
+the one-control-height arithmetic above, so putting them on the 4px scale would mean giving up either
+the height or the alignment. Treat §4.3 as closed: inside a component, use the value listed there;
+anywhere else, use the scale.
 
 ### 4.3 Component metrics
 
-These are the values in `theme-demo.html`, which is the reference implementation: if a number here
-and a number there ever disagree, the demo is right and this table is stale. Enough to port without
-guessing:
+`theme-demo.html` is the reference implementation, and `scripts/audit.mjs` parses this table back
+and compares every cell against it, so the two cannot disagree for long. **Heights are normative:** a
+port sets the height from the token and derives the padding, never the other way round — padding that
+is left to add up on its own is exactly how a reference drifts four pixels from its own
+specification. Enough to port without guessing:
 
 | Component | Height | Padding | Radius | Text |
 | --------- | ------ | ------- | ------ | ---- |
-| Button | 32px | `8px 14px` | default | 13px / 500 |
-| Icon button | 30px square | `--space-3` | row | icon 14px |
-| Text input, textarea | 32px | `8px 11px` | default | 13px / 400 |
-| Select | 32px | `8px 30px 8px 12px` | default | 13px / 500 |
-| List, tree row | 28px | `5px --space-4` | row | 13px |
-| Menu item | 30px | `6px 9px` | 5px | 13px |
+| Button | `--control-height` = 32px | `7px --control-padding-x` | small | 13px / 500 |
+| Icon button | `--icon-button-size` = 32px square | — | small | — |
+| Text input | `--control-height` = 32px | `7px 11px` | small | 13px / 400 |
+| Textarea | grows from 80px | `7px 11px` | small | 13px / 400 |
+| Select | `--control-height` = 32px | `7px 30px 7px --space-5` | small | 13px / 500 |
+| List, tree row | `--row-height` = 28px | `--space-3 --space-4` | small | 13px |
+| Menu item | `--row-height` = 28px | `--space-3 9px` | small | 13px |
 | Menu sheet, popover | — | `5px` | default | — |
-| Tab | 28px | `6px 10px` | default | 13px |
+| Tab | `--row-height` = 28px | `--space-3 10px` | default | 13px |
 | Card, panel | — | `14px --space-6` | default | — |
 | Card header | — | `10px --space-6` | 0 | 12px / 600 caps |
 | Table cell | — | `9px --space-5` | 0 | 13px |
-| Badge | — | `--space-1 --space-4` | pill | 11px / 600 |
-| Toolbar, headerbar, tab bar | `--frame-height` = 34px | `--space-1 --space-4` | 0 | — |
-| Navigation rail | 52px wide | `--space-4 0` | 0 | icon 17px |
-| Rail button | 36px square | — | default | — |
-| Sidebar | 248px | `0 --space-4` | 0 | 13px |
-| Status bar | 27px | `5px --space-5` | 0 | 12px |
-| Scrollbar | 10px, 8px thumb | 3px transparent border | pill | — |
+| Badge | — | `--space-1 --space-4` | small | 11px / 600 |
+| Toolbar, headerbar, tab bar | `--frame-height` = 34px | `0 --space-2` | 0 | — |
+| Navigation rail | `--rail-width` = 52px wide | `--space-4 0` | 0 | — |
+| Rail button | `--rail-button-size` = 36px square | — | small | — |
+| Sidebar | `--sidebar-width` = 248px wide | `0 --space-4` | 0 | — |
+| Status bar | `--row-height` = 28px | `5px --space-5 6px` | 0 | 12px |
+| Scrollbar | 10px track, 6px thumb | 2px transparent border | 3px | — |
 | Progress, meter | 6px | — | 3px | — |
-| Content padding | — | `28px --space-8` | — | — |
-| Section gap | `--space-7` | — | — | — |
+| Content padding | — | `28px --space-8 80px` | — | — |
+| Section gap | — | `--space-7 0` | — | — |
+
+Every height above is the 16px line box plus the padding plus the borders: 16 + 7 + 7 + 1 + 1 = 32
+for a control, 16 + 6 + 6 = 28 for a row, and 16 + 5 + 6 + 1 = 28 for the status bar, whose padding
+is a pixel deeper below because its top border has already taken one from above. A frame is 34px whatever it holds, and the padding follows from its contents rather
+than the other way round: a tab bar holding 28px tabs surrounds them with `--space-3` split above and
+below, while a headerbar holding full-height 32px controls has only 1px left to give — which is why
+the table's padding cell describes the tab bar and `--frame-height` is the part a port must match. The paddings that are not
+on the 4px scale — 7px on a control, 11px on an entry, 80px of scroll slack under the content — are
+the ones §4.2 sanctions: they are what centers a 16px box inside a 32px one, what optically centers
+the text beside it, and what lets the last section scroll to the top of the viewport.
 
 ### 4.4 Density
 
@@ -612,10 +739,10 @@ target is what keeps it usable.
 
 Density is not the same as cramped, and three things hold the line:
 
-- **Hit targets stay honest.** 26px with a 1px border is still a comfortable pointer target, and
-  icon buttons stay square at 24px rather than shrinking to the glyph.
+- **Hit targets stay honest.** A 32px control and a 28px row are both comfortable pointer targets,
+  and icon buttons stay square at `--icon-button-size` rather than shrinking to the glyph.
 - **Space between groups does not shrink.** The tightening is inside controls and between rows.
-  Gaps between *sections* stay at `--space-6`, because that is what keeps a dense layout readable
+  Gaps between *sections* stay at `--space-7`, because that is what keeps a dense layout readable
   instead of undifferentiated.
 - **Type size does not drop.** 13px controls and 14px prose. Shrinking text to gain density is the
   one move that trades legibility for it, and this theme does not make it.
@@ -642,9 +769,74 @@ targets need more space, not bigger labels.
   across platforms. Broad script coverage needs no entry here — browsers fall back per glyph to
   whatever the operating system provides.
 - **Interface text is 13px, prose is 14px.** Controls, menus, list rows, and tabs take
-  `--text-control`; only running text takes `--text-body`. Mixing the two is what makes an interface
-  feel loose.
+  `--text-control`; only running text takes `--text-prose`. Mixing the two is what makes an interface
+  feel loose. The size token is `--text-prose`, not `--text-body`: that name is already the body
+  *color* in §3.1, and one name cannot mean a hex in one sheet and a pixel count in another.
+- **Two tracking values, and everything else takes neither.** Uppercase micro-labels — section
+  labels, table headers, card headers, badges — take `--letter-spacing-caps`, because capitals set at
+  11px sit too tight at their natural spacing. Display type takes `--letter-spacing-display`, which
+  is negative, because that same natural spacing reads loose once the type is 26px. Interface text
+  and prose take no tracking at all. An earlier draft spread .02, .03, .04 and .05em across seven
+  labels that were all doing the first job — and at 11px, the difference between .03 and .04 is under
+  a pixel across an entire word.
+- **Icons are drawn, not typed.** Every mark is an SVG on a 24px artboard with a 2px stroke,
+  `currentColor`, and round caps — so it inherits the text color it sits beside and its weight scales
+  with its box. Two sizes carry the interface: `--icon-size-small` for menus, rows, toolbars and
+  every close button, `--icon-size-large` for the navigation rail and floating actions. 16 and 20 are
+  where the industry has settled for dense interfaces, and 24 — the common default elsewhere — is
+  already large beside a 28px row.
+- **Do not size an icon with `font-size`.** A unicode glyph is tempting because it costs nothing to
+  type, but it draws at roughly 0.7em, so the number in the sheet is not the mark on the screen: this
+  theme once specified a 17px rail icon that rendered as a 12px mark, and a port reading 17 off the
+  table would have drawn something half again too big. The box is the specification.
 - **Headings are never accent-colored** (§6.8), and prose is capped at `--measure`.
+
+### 4.6 Motion
+
+Motion here is feedback, not narrative. Two durations carry all of it.
+
+**`--duration-fast` is a state changing under the pointer** — a border taking the accent, a label
+going from secondary to heading, a switch knob sliding across, a disclosure triangle turning. The
+user is already looking at the thing; the transition exists only so the change is not a jump cut.
+
+**`--duration-slow` is something that was not there and now is** — a toast arriving or leaving, a
+progress bar travelling to a new value. There is further to go, and the eye has to find it.
+
+That is the whole ladder. An earlier draft ran four values: .12s and .15s doing the first job 30ms
+apart, and .18s and .3s splitting the second. Thirty milliseconds is well below the threshold at
+which anyone can tell two hover responses apart — the second value was not a decision, it was a
+different afternoon.
+
+**Easing is a keyword, not a token.** A state change takes the default `ease`; something entering
+takes `ease-out`, so it arrives decelerating rather than stopping dead. Those words say what they do,
+and a name in front of them would only hide it.
+
+**A looping animation is a period, not a duration,** and does not belong on the ladder. The error dot
+pulses on a 1.6s cycle because that is the speed at which a pulse reads as a heartbeat rather than a
+flicker, which has nothing to do with how fast the interface answers a pointer.
+
+**Honour `prefers-reduced-motion`.** Every transition in the theme is feedback or decoration, and
+none of it carries meaning that fails to survive being switched off — so the reduced setting collapses
+all of it, `scroll-behavior: smooth` included:
+
+```css
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 1ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+```
+
+This is the one place the theme uses `!important`, and the one place it is right to: a user's
+accessibility setting outranks every rule in the sheet by definition. `1ms` rather than `0` because a
+zero-length transition fires no `transitionend`, and any script waiting on one stops working.
+
+Anything scripted waits on the token too, rather than restating it — the demo's toast reads
+`--duration-slow` back out of the computed style to decide when to remove the element. A duration
+duplicated in JavaScript is a duration that will disagree with the sheet eventually.
 
 ---
 
