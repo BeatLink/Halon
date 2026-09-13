@@ -45,13 +45,16 @@ Then put this directory where Millennium looks for themes and pick it from *Stea
 Themes*:
 
 ```sh
-ln -s "$PWD/steam" ~/.steam/steam/steamui/skins/Halon
+ln -s "$PWD/steam" ~/.local/share/Steam/millennium/themes/Halon
 ```
 
+Millennium creates that directory itself the first time it runs, so launch Steam once before
+linking. Note that [Millennium's own file-structure page](https://docs.steambrew.app/users/getting-started/structure)
+still gives the 2.x location, `~/.steam/steam/steamui/skins` — 3.x reads `millennium/themes` beside
+Steam instead, and a theme in the old path is silently ignored.
+
 A symlink rather than a copy is worth it during development: Millennium re-reads the sheets when
-Steam reloads, so `node scripts/build-steam.mjs` and a client reload is the whole edit loop. Note
-that the themes directory lives *inside* `steamui`, which Steam replaces wholesale when it updates
-itself, so expect to recreate the link after a client update.
+Steam reloads, so `node scripts/build-steam.mjs` and a client reload is the whole edit loop.
 
 ### Install with Nix
 
@@ -67,9 +70,9 @@ directory under `share/halon/steam/`:
 }
 ```
 
-It is not wired into the home-manager module, because the only place Millennium will read a theme
-from is a directory Steam itself owns and rewrites on update; linking it there is a step that has to
-survive Steam, not home-manager.
+It is not wired into the home-manager module, because Millennium will only read a theme from a
+directory it creates for itself inside Steam's own; linking it there is a step that has to survive
+Steam, not home-manager.
 
 ## Light and dark
 
