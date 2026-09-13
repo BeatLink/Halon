@@ -1,0 +1,238 @@
+{
+    "_comment": "Steam's client classes are content hashes. `symbol` is the name Steam's own CSS-module map gives the class; `classes` are the hashes that name resolves to in the build below, and a name with several is one component Steam compiled into several bundles. Refresh with: node scripts/build-steam.mjs --refresh",
+    "steamBuild": "10956954",
+    "selectors": {
+        "MainWindow": {
+            "symbol": "Wrapper",
+            "classes": [
+                "_1ENHEsrSLcTRtPQFl1F-wL"
+            ]
+        },
+        "TopBar": {
+            "symbol": "TopBar",
+            "classes": [
+                "_3Z7VQ1IMk4E3HsHvrkLNgo"
+            ]
+        },
+        "TopBarGradient": {
+            "symbol": "TopBar",
+            "classes": [
+                "SEmVpmXrYVl3OxL1sDFTg"
+            ]
+        },
+        "TitleBar": {
+            "symbol": "TitleBar",
+            "classes": [
+                "_39oUCO1OuizVPwcnnv88no"
+            ]
+        },
+        "DragArea": {
+            "symbol": "DragArea",
+            "classes": [
+                "_30vB9DdsPK7VrZAbb5Q1Av"
+            ]
+        },
+        "SuperNavBar": {
+            "symbol": "SuperNavBar",
+            "classes": [
+                "_3Z3ohQ8-1NKnCZkbS6fvy"
+            ]
+        },
+        "SuperNav": {
+            "symbol": "SuperNav",
+            "classes": [
+                "_2D64jIEK7wpUR_NlObDW76"
+            ]
+        },
+        "NavTab": {
+            "symbol": "SuperNavMenu",
+            "classes": [
+                "_7AlhCx3XGzBeIrQaCneUD"
+            ]
+        },
+        "NavTabLabel": {
+            "symbol": "MenuButton",
+            "classes": [
+                "_19axKcqYRuaJ8vdYKYmtTQ"
+            ]
+        },
+        "NavTabSelected": {
+            "symbol": "Selected",
+            "classes": [
+                "_1gqEjB5QsKT_NftD1dEsdZ"
+            ]
+        },
+        "NavTabDisabled": {
+            "symbol": "Disabled",
+            "classes": [
+                "_2cO0HdvLEGAdhosLekWsmo"
+            ]
+        },
+        "NavArrow": {
+            "symbol": "Arrow",
+            "classes": [
+                "_25lBLzuVeYAUG279up4xP8"
+            ]
+        },
+        "ContentFrame": {
+            "symbol": "ContentFrame",
+            "classes": [
+                "_1rDh5rXSFZJOqCa4UpnI4z"
+            ]
+        },
+        "FocusBar": {
+            "symbol": "FocusBar",
+            "classes": [
+                "_3pXasCUulX4jjqO79s4q_F"
+            ]
+        },
+        "FocusBarActive": {
+            "symbol": "Focused",
+            "classes": [
+                "_2MkHZqf7MrgW3f8qGHiI8Z"
+            ]
+        },
+        "BrowserWrapper": {
+            "symbol": "BrowserWrapper",
+            "classes": [
+                "_1bGewp3tfzqAF6fVTFFUOz"
+            ]
+        },
+        "URLBar": {
+            "symbol": "URLBar",
+            "classes": [
+                "UkR3sY319PuaUNuUWks2K"
+            ]
+        },
+        "BottomBarContainer": {
+            "symbol": "BottomBarContainer",
+            "classes": [
+                "_1_yS5UP7el0aN4vntx3dx"
+            ]
+        },
+        "GameListBar": {
+            "symbol": "Container",
+            "classes": [
+                "_3x1HklzyDs4TEjACrRO2tB"
+            ]
+        },
+        "GameListContainer": {
+            "symbol": "Container",
+            "classes": [
+                "_1ijTaXJJA5YWl_fW2IxcaT"
+            ]
+        },
+        "GameListSearchBar": {
+            "symbol": "GameListHomeAndSearch",
+            "classes": [
+                "_2TKEazUUS3TlniZfpc8OOe"
+            ]
+        },
+        "GameListEntry": {
+            "symbol": "Container",
+            "classes": [
+                "_2-O4ZG0KrnSrzISHBKctFQ"
+            ]
+        },
+        "GameListEntryHover": {
+            "symbol": "HoverOverlay",
+            "classes": [
+                "_3cMVyOc-9F9Jvp3uKF7_xj"
+            ]
+        },
+        "GameListEntrySelected": {
+            "symbol": "Selected",
+            "classes": [
+                "_1UBpAXP408Ez_L_mXhW5Q9"
+            ]
+        },
+        "GameListEntryUninstalled": {
+            "symbol": "Uninstalled",
+            "classes": [
+                "_5YTBr7WwIfzVU_3nUtAph"
+            ]
+        },
+        "GameListEntryUpdating": {
+            "symbol": "Updating",
+            "classes": [
+                "_1LVQp3h_vGOZ8TuDUEge0k"
+            ]
+        },
+        "GameListEntryName": {
+            "symbol": "GameListEntryName",
+            "classes": [
+                "_2SXJM0PeFEi3gbC7V3S5pE"
+            ]
+        },
+        "LibraryHome": {
+            "symbol": "LibraryHome",
+            "classes": [
+                "_3Sb2o_mQ30IDRh0C72QUUu"
+            ]
+        },
+        "LibraryContent": {
+            "symbol": "LibraryContent",
+            "classes": [
+                "ybEU2kARViIFGigPw8VQ0"
+            ]
+        },
+        "LibraryHeader": {
+            "symbol": "LibraryHeader",
+            "classes": [
+                "_3rGEUoEnGkGWALEBzbvfef"
+            ]
+        },
+        "LibraryHomeSection": {
+            "symbol": "LibraryHomeSection",
+            "classes": [
+                "_1NCHRjqdjqGE3JbG4b0rLF"
+            ]
+        },
+        "AppDetailsRoot": {
+            "symbol": "AppDetailsRoot",
+            "classes": [
+                "_3fp5y6tdU77MdrCQZt_aS9"
+            ]
+        },
+        "AppDetailsSection": {
+            "symbol": "AppDetailsSection",
+            "classes": [
+                "_2r4TK4BAuU-J4FuF_O7v_5"
+            ]
+        },
+        "ContextMenu": {
+            "symbol": "contextMenu",
+            "classes": [
+                "_2LigNhjmULtkRCXW5237ai",
+                "_12DEITwNCR63H338pFyoji",
+                "BaERlvVMT45z7ZQ-TZiAe",
+                "ZmMzAFCxvwjUFR245iuLe"
+            ]
+        },
+        "ContextMenuItem": {
+            "symbol": "contextMenuItem",
+            "classes": [
+                "_34o03-8cUc3fQX1u650c0L",
+                "_3Gj2wOUvSdrsCfUf7w3k1i",
+                "_30Cfa_RtfCcvNNH7_LcUON",
+                "_17CvBVp1rwECBn2FRb4oMA",
+                "_1n7Wloe5jZ6fSuvV18NNWI"
+            ]
+        },
+        "ContextMenuItemSelected": {
+            "symbol": "Selected",
+            "classes": [
+                "_3fVa8M_7D9Vjz28uYnahhd",
+                "_3GBeBR4aLa-OiGBjWIGQRz",
+                "_3enyx9xVrxt-dv1UENf-XP",
+                "_1Rmvuh4adSSWxOVlDHISQO"
+            ]
+        },
+        "ContextMenuSeparator": {
+            "symbol": "ContextMenuHRSeparator",
+            "classes": [
+                "IjIBR_wDDi2N77Oz4KAT4"
+            ]
+        }
+    }
+}

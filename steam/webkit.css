@@ -1,0 +1,221 @@
+/* Halon for Steam — GENERATED FILE, do not edit.
+ * Built from steam/src/ and gtk/Halon/shared/_tokens-*.css by scripts/build-steam.mjs.
+ */
+/* Layer 1 — the token set, both schemes. Nothing below this block names a colour. */
+:root {
+    color-scheme: var(--halon-color-scheme, light dark);
+
+    --halon-surface-root: light-dark(#f1f5f9, #060b14);
+    --halon-surface-default: light-dark(#ffffff, #16213a);
+    --halon-surface-secondary: light-dark(#f1f5f9, #060b14);
+    --halon-surface-navigation: light-dark(#f1f5f9, #060b14);
+    --halon-surface-navigation-hover: light-dark(#e2e8f0, #101b2d);
+    --halon-surface-overlay: light-dark(rgba(15, 23, 42, 0.45), rgba(0, 0, 0, 0.6));
+    --halon-surface-shell: light-dark(#f1f5f9, #16213a);
+    --halon-surface-shell-hover: light-dark(#e2e8f0, #1f2c4a);
+    --halon-surface-shell-card: light-dark(#ffffff, #2a3a5e);
+    --halon-text-heading: light-dark(#0f172a, #f8fafc);
+    --halon-text-body: light-dark(#1a1a2e, #e2e8f0);
+    --halon-text-secondary: light-dark(#475569, #cbd5e1);
+    --halon-text-tertiary: light-dark(#64748b, #94a3b8);
+    --halon-text-on-navigation: light-dark(#475569, #ffffff);
+    --halon-text-on-fill: light-dark(#ffffff, #0b1220);
+    --halon-text-on-light: #0f172a;
+    --halon-border-default: light-dark(#e2e8f0, #334155);
+    --halon-border-hover: light-dark(#cbd5e1, #475569);
+    --halon-border-control: light-dark(#8792a3, #64748b);
+    --halon-accent: light-dark(#2563eb, #60a5fa);
+    --halon-focus-ring: light-dark(rgba(37, 99, 235, 0.15), rgba(96, 165, 250, 0.28));
+    --halon-border-focus: light-dark(#2563eb, #60a5fa);
+    --halon-syntax-type: light-dark(#0e7490, #22d3ee);
+    --halon-syntax-string: light-dark(#15803d, #4ade80);
+    --halon-syntax-number: light-dark(#a16207, #fcd34d);
+    --halon-status-success: light-dark(#047857, #10b981);
+    --halon-status-warning: #f59e0b;
+    --halon-status-warning-text: light-dark(#c2410c, #f59e0b);
+    --halon-status-danger: light-dark(#dc2626, #f87171);
+    --halon-badge-experimental: light-dark(#7c3aed, #a78bfa);
+    --halon-shadow-base: #0f172a;
+    --halon-shadow-item: light-dark(rgba(15, 23, 42, 0.12), rgba(15, 23, 42, 0.50));
+    --halon-shadow-card: light-dark(rgba(15, 23, 42, 0.08), rgba(15, 23, 42, 0.27));
+    --halon-shadow-tab: light-dark(rgba(15, 23, 42, 0.15), rgba(15, 23, 42, 0.50));
+    --halon-shadow-floating: light-dark(rgba(15, 23, 42, 0.20), rgba(15, 23, 42, 0.60));
+    --halon-shadow-modal: light-dark(rgba(15, 23, 42, 0.25), rgba(15, 23, 42, 0.70));
+}
+
+/* ==========================================================================
+   Ground — the page is content, so it is the raised surface, not the frame.
+   ========================================================================== */
+
+body.v6,
+body.v6.responsive_page,
+.responsive_page_frame,
+.responsive_page_content,
+.responsive_page_template_content,
+.page_content,
+.home_page_content {
+    background-color: var(--halon-surface-root) !important;
+    background-image: none !important;
+    color: var(--halon-text-body) !important;
+}
+
+/* A game's page paints its own artwork behind the fold; the page ground under
+   it still has to be a theme surface, or the fold ends in Steam's navy. */
+.game_page_background {
+    background-color: var(--halon-surface-root) !important;
+    background-image: none !important;
+}
+
+a {
+    color: var(--halon-accent) !important;
+}
+
+a:hover {
+    text-decoration: underline !important;
+}
+
+h1, h2, h3, h4, h5,
+.home_section_title,
+.page_title {
+    color: var(--halon-text-heading) !important;
+}
+
+::selection {
+    background: var(--halon-focus-ring);
+}
+
+/* ==========================================================================
+   The global header — §6.4's frame, in a web page.
+   ========================================================================== */
+
+#global_header,
+.responsive_header,
+.supernav_container,
+.responsive_page_menu_ctn {
+    background-color: var(--halon-surface-navigation) !important;
+    background-image: none !important;
+    border-bottom: 1px solid var(--halon-border-default) !important;
+    box-shadow: none !important;
+}
+
+#global_header .menuitem,
+.supernav_container .menuitem,
+.pulldown.global_action_link {
+    color: var(--halon-text-on-navigation) !important;
+    border-radius: 8px !important;           /* --radius-default */
+}
+
+#global_header .menuitem:hover,
+.supernav_container .menuitem:hover,
+.pulldown.global_action_link:hover {
+    background-color: var(--halon-surface-navigation-hover) !important;
+    color: var(--halon-text-heading) !important;
+    text-decoration: none !important;
+}
+
+/* The current section is the one raised card in the strip (§6.4). */
+#global_header .menuitem.supernav_active,
+.supernav_container .menuitem.supernav_active {
+    background-color: var(--halon-surface-default) !important;
+    color: var(--halon-text-heading) !important;
+    box-shadow: 0 1px 3px var(--halon-shadow-tab) !important;
+}
+
+/* ==========================================================================
+   Panels — anything that frames or groups content on the page.
+   ========================================================================== */
+
+.game_area_purchase_game,
+.queue_actions_ctn,
+.block,
+.home_page_content .home_ctn {
+    background-color: var(--halon-surface-default) !important;
+    background-image: none !important;
+    border: 1px solid var(--halon-border-default) !important;
+    border-radius: 8px !important;
+    color: var(--halon-text-body) !important;
+}
+
+/* ==========================================================================
+   Controls — §6.1's three weights, mapped onto Steam's five button classes.
+   Steam spends a fill on every one of them; here only the buying action keeps
+   one, because a page where three buttons are filled has no primary action.
+   ========================================================================== */
+
+.btnv6_blue_hoverfade,
+.btn_blue_steamui,
+.btnv6_white_transparent,
+.btn_green_steamui,
+.btn_addtocart,
+.header_installsteam_btn {
+    background: transparent !important;
+    background-image: none !important;
+    border: 1px solid var(--halon-border-default) !important;
+    border-radius: 8px !important;
+    color: var(--halon-text-body) !important;
+    box-shadow: none !important;
+}
+
+.btnv6_blue_hoverfade:hover,
+.btn_blue_steamui:hover,
+.btnv6_white_transparent:hover,
+.header_installsteam_btn:hover {
+    background: transparent !important;
+    border-color: var(--halon-accent) !important;
+    color: var(--halon-text-heading) !important;
+    text-decoration: none !important;
+}
+
+.btnv6_blue_hoverfade span,
+.btnv6_white_transparent span,
+.btn_green_steamui span,
+.btn_blue_steamui span,
+.header_installsteam_btn_content {
+    background: transparent !important;
+    background-image: none !important;
+    color: inherit !important;
+}
+
+/* Add to cart and buy are the page's one primary action (§6.1's filled weight). */
+.btn_addtocart,
+.btn_green_steamui {
+    background: var(--halon-accent) !important;
+    border-color: var(--halon-accent) !important;
+    color: var(--halon-text-on-fill) !important;
+}
+
+.btn_addtocart:hover,
+.btn_green_steamui:hover {
+    background: var(--halon-accent) !important;
+    opacity: .85 !important;
+    color: var(--halon-text-on-fill) !important;
+}
+
+/* Discounts are a status, not decoration: they carry a meaning, so they keep a
+   fill — the positive one, since a discount is good news (§6.7). */
+.discount_block,
+.discount_pct {
+    background: var(--halon-status-success) !important;
+    color: var(--halon-text-on-fill) !important;
+    border-radius: 4px !important;           /* --radius-small */
+}
+
+.discount_final_price {
+    color: var(--halon-text-heading) !important;
+}
+
+.discount_original_price {
+    color: var(--halon-text-tertiary) !important;
+}
+
+/* ==========================================================================
+   Footer — the last strip on the page, so it belongs to the frame.
+   ========================================================================== */
+
+#footer,
+#footer_text,
+.footer_content {
+    background-color: var(--halon-surface-secondary) !important;
+    border-top: 1px solid var(--halon-border-default) !important;
+    color: var(--halon-text-secondary) !important;
+}

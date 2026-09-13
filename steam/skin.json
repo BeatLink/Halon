@@ -1,0 +1,46 @@
+{
+    "name": "Halon",
+    "author": "BeatLink",
+    "description": "Slate and blue, one accent, hairline structure. A recessed frame and raised content.",
+    "version": "1.0.0",
+    "github": {
+        "owner": "BeatLink",
+        "repo_name": "Halon"
+    },
+    "header_image": "https://raw.githubusercontent.com/BeatLink/Halon/main/screenshots/demo-dark.png",
+    "splash_image": "https://raw.githubusercontent.com/BeatLink/Halon/main/screenshots/demo-dark.png",
+    "tags": [
+        "Dark",
+        "Light",
+        "Minimal",
+        "Accessible"
+    ],
+    "Steam-WebKit": "webkit.css",
+    "UseDefaultPatches": true,
+    "Conditions": {
+        "Color scheme": {
+            "description": "Dark is the default because Steam's own unthemed corners are dark. System follows the desktop's light/dark setting.",
+            "tab": "Appearance",
+            "default": "Dark",
+            "values": {
+                "Dark": {
+                    "TargetCss": {
+                        "affects": [
+                            ".*"
+                        ],
+                        "src": "scheme-dark.css"
+                    }
+                },
+                "Light": {
+                    "TargetCss": {
+                        "affects": [
+                            ".*"
+                        ],
+                        "src": "scheme-light.css"
+                    }
+                },
+                "System": {}
+            }
+        }
+    }
+}

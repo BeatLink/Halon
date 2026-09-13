@@ -1,0 +1,244 @@
+/* Halon for Steam — the friends list and chat. SOURCE FILE, not the shipped one.
+ *
+ * The friends window is the one part of the client Steam still builds from a
+ * hand-written stylesheet, so every selector below is a real name rather than a
+ * content hash, and none of them move when Steam rebuilds a module.
+ *
+ * Presence is the one place this window earns more than one hue. Online, in a
+ * game, and offline are states a person is in, not decoration, so they take the
+ * accent, `status-success`, and secondary text respectively — §1's rule that a
+ * colour which is not slate, blue or a status signal does not belong.
+ *
+ * Steam draws almost every surface here as a radial gradient fading a slate
+ * centre into near-black corners. They are all replaced by the flat surface
+ * they were fading between.
+ *
+ * Edit this file. Never edit the generated .custom.css.
+ */
+
+/* ==========================================================================
+   The two panes — a list on the frame surface, chats on the content surface.
+   ========================================================================== */
+
+.friendsui-container,
+.friendlist {
+    background: @surface-secondary !important;
+    color: @text-body !important;
+}
+
+.friendlist.collapsed {
+    background-color: @surface-secondary !important;
+}
+
+.friendlistListContainer,
+.ChatRoomList {
+    background: @surface-secondary !important;
+}
+
+.chatDialogs {
+    background: @surface-root !important;
+}
+
+.chatDialogs .emptyChatDialogs {
+    color: @text-secondary !important;
+}
+
+/* ==========================================================================
+   The list's own header and tabs — §6.4's frame, in a second window.
+   ========================================================================== */
+
+.TabPanelHeader {
+    background: @surface-secondary !important;
+    color: @text-on-navigation !important;
+    border-bottom: 1px solid @border-default !important;
+}
+
+.FriendsListTab {
+    color: @text-on-navigation !important;
+    border-radius: 8px !important;           /* --radius-default */
+}
+
+.FriendsListTab:hover {
+    background: @surface-navigation-hover !important;
+    color: @text-heading !important;
+}
+
+.FriendsListTab.Active {
+    background: @surface-default !important;
+    color: @text-heading !important;
+    box-shadow: 0 1px 3px @shadow-tab !important;
+}
+
+.FriendsListTab.Active svg,
+.FriendsListTab svg {
+    color: inherit !important;
+}
+
+.AddFriendButton,
+.NewChatGroupButton,
+.FriendsInvitesButton {
+    border-radius: 6px !important;           /* --radius-row */
+    color: @text-on-navigation !important;
+}
+
+.AddFriendButton:hover,
+.NewChatGroupButton:hover,
+.FriendsInvitesButton:hover {
+    background-color: @surface-navigation-hover !important;
+    color: @text-heading !important;
+}
+
+/* Counts and unread marks are badges: a solid fill, so §6.7's on-fill text. */
+.PendingInviteCount,
+.chatUnreadCircle,
+.chatTab .chatTabUnreadBadge,
+.FriendMessageCount,
+.ChatUnreadMessageIndicator {
+    background-color: @accent !important;
+    color: @text-on-fill !important;
+    border-radius: 9999px !important;        /* --radius-pill */
+    font-size: 11px !important;              /* --text-label */
+    font-weight: 600 !important;
+}
+
+/* ==========================================================================
+   Friends — 28px rows, and presence as the only colour in them.
+   ========================================================================== */
+
+.friendGroup .groupName,
+.friendGroup.onlineFriends .groupName,
+.friendGroup.offlineFriends .groupName {
+    color: @text-secondary !important;
+    font-size: 11px !important;
+    font-weight: 600 !important;
+    letter-spacing: .04em !important;
+    text-transform: uppercase !important;
+}
+
+.friendGroup .groupName .groupCount,
+.friendGroup.onlineFriends .groupName .groupCount,
+.friendGroup.offlineFriends .groupName .groupCount {
+    color: @text-secondary !important;
+}
+
+.friendGroup .groupName hr {
+    border-color: @border-default !important;
+}
+
+.friend {
+    border-radius: 6px !important;
+    color: @text-body !important;
+    box-shadow: none !important;
+}
+
+.friend.online,
+.friend.editNickname.nickNamed.online .labelHolder .mediumName:not(.asNickName) {
+    color: @accent !important;
+}
+
+.friend.ingame,
+.friend.ingame .status,
+.friend.editNickname.nickNamed.ingame .labelHolder .mediumName:not(.asNickName) {
+    color: @status-success !important;
+}
+
+.friend.offline,
+.friend.editNickname .labelHolder .nickNamedAs {
+    color: @text-secondary !important;
+}
+
+/* Broadcasting is a fourth presence, and there is no fourth hue to give it:
+   it reads as online, and the broadcast glyph next to it says which kind. */
+.friend.watchingbroadcast {
+    color: @accent !important;
+}
+
+/* Hover comes after presence on purpose: on the hover fill a green name lands
+   at 4.45 and a blue one at 4.19, both under the 4.5 a name has to clear. The
+   name goes to heading text while the pointer is on the row, and the avatar's
+   status strip and the line under the name still say who is where. */
+.friend:hover {
+    background-color: @surface-navigation-hover !important;
+    color: @text-heading !important;
+}
+
+.friend:hover .status {
+    color: @text-heading !important;
+}
+
+/* ==========================================================================
+   Chat — the conversation is content, the strip of tabs under it is frame.
+   ========================================================================== */
+
+.chatWindow {
+    background: @surface-default !important;
+    color: @text-body !important;
+}
+
+.chatWindow .chatHeader,
+.chatWindow.SingleUserChat .chatHeader {
+    background: @surface-secondary !important;
+    border-bottom: 1px solid @border-default !important;
+}
+
+.chatWindow .chatHeaderGradient {
+    display: none !important;
+}
+
+.chatHistoryScroll {
+    background: @surface-default !important;
+}
+
+/* The composer is an input on the content surface, so §6.2 applies to it as it
+   does to every other field: fill at rest, border on interaction. */
+.chatWindow .chatEntry {
+    background-color: @surface-secondary !important;
+    border-top: 1px solid @border-default !important;
+}
+
+.chatWindow .InsetWindowOpen .chatEntry {
+    background-color: @surface-secondary !important;
+}
+
+.ChatTabs,
+.chatTabList {
+    background: @surface-secondary !important;
+}
+
+.chatTab .chatTabHighlight {
+    display: none !important;
+}
+
+.chatTabList .chatTab.active {
+    color: @text-heading !important;
+}
+
+.chatTab .chatTabClose .SVGIcon_X_Line line {
+    stroke: @text-secondary !important;
+}
+
+.chatTab:hover .chatTabClose:hover .SVGIcon_X_Line line {
+    stroke: @status-danger !important;
+}
+
+.chatRoomGroupHeader,
+.ChatRoomListGroupItem {
+    color: @text-body !important;
+}
+
+.chatRoomTextChannel,
+.chatRoomVoiceChannel {
+    border-radius: 6px !important;
+    color: @text-secondary !important;
+}
+
+.chatRoomTextChannel:hover,
+.chatRoomVoiceChannel:hover {
+    background-color: @surface-navigation-hover !important;
+    color: @text-heading !important;
+}
+
+.chatRoomGroupActiveChat,
+.ActiveVoiceChannel {
+    color: @accent !important;
+}

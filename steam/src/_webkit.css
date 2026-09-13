@@ -1,0 +1,192 @@
+/* Halon for Steam — the store and community pages. SOURCE FILE, not the shipped one.
+ *
+ * Millennium loads this into every Steam web view: the Store and Community tabs
+ * inside the client, and the in-game overlay's browser. These are ordinary web
+ * pages rather than the client's React UI, so the selectors are Steam's own
+ * hand-written class names and have been stable for years.
+ *
+ * This is the broadest surface in the port and the least precise one. Steam's
+ * store is full of per-campaign artwork, promotional capsules and inline styles
+ * that no stylesheet can reach, so the aim here is the page's own chrome —
+ * ground, header, panels, links, controls — rather than every element on it.
+ * §6.4 governs the header, §6.5 the menus, and the rest is content surface.
+ *
+ * Edit this file. Never edit the generated webkit.css.
+ */
+
+/* ==========================================================================
+   Ground — the page is content, so it is the raised surface, not the frame.
+   ========================================================================== */
+
+body.v6,
+body.v6.responsive_page,
+.responsive_page_frame,
+.responsive_page_content,
+.responsive_page_template_content,
+.page_content,
+.home_page_content {
+    background-color: @surface-root !important;
+    background-image: none !important;
+    color: @text-body !important;
+}
+
+/* A game's page paints its own artwork behind the fold; the page ground under
+   it still has to be a theme surface, or the fold ends in Steam's navy. */
+.game_page_background {
+    background-color: @surface-root !important;
+    background-image: none !important;
+}
+
+a {
+    color: @accent !important;
+}
+
+a:hover {
+    text-decoration: underline !important;
+}
+
+h1, h2, h3, h4, h5,
+.home_section_title,
+.page_title {
+    color: @text-heading !important;
+}
+
+::selection {
+    background: @focus-ring;
+}
+
+/* ==========================================================================
+   The global header — §6.4's frame, in a web page.
+   ========================================================================== */
+
+#global_header,
+.responsive_header,
+.supernav_container,
+.responsive_page_menu_ctn {
+    background-color: @surface-navigation !important;
+    background-image: none !important;
+    border-bottom: 1px solid @border-default !important;
+    box-shadow: none !important;
+}
+
+#global_header .menuitem,
+.supernav_container .menuitem,
+.pulldown.global_action_link {
+    color: @text-on-navigation !important;
+    border-radius: 8px !important;           /* --radius-default */
+}
+
+#global_header .menuitem:hover,
+.supernav_container .menuitem:hover,
+.pulldown.global_action_link:hover {
+    background-color: @surface-navigation-hover !important;
+    color: @text-heading !important;
+    text-decoration: none !important;
+}
+
+/* The current section is the one raised card in the strip (§6.4). */
+#global_header .menuitem.supernav_active,
+.supernav_container .menuitem.supernav_active {
+    background-color: @surface-default !important;
+    color: @text-heading !important;
+    box-shadow: 0 1px 3px @shadow-tab !important;
+}
+
+/* ==========================================================================
+   Panels — anything that frames or groups content on the page.
+   ========================================================================== */
+
+.game_area_purchase_game,
+.queue_actions_ctn,
+.block,
+.home_page_content .home_ctn {
+    background-color: @surface-default !important;
+    background-image: none !important;
+    border: 1px solid @border-default !important;
+    border-radius: 8px !important;
+    color: @text-body !important;
+}
+
+/* ==========================================================================
+   Controls — §6.1's three weights, mapped onto Steam's five button classes.
+   Steam spends a fill on every one of them; here only the buying action keeps
+   one, because a page where three buttons are filled has no primary action.
+   ========================================================================== */
+
+.btnv6_blue_hoverfade,
+.btn_blue_steamui,
+.btnv6_white_transparent,
+.btn_green_steamui,
+.btn_addtocart,
+.header_installsteam_btn {
+    background: transparent !important;
+    background-image: none !important;
+    border: 1px solid @border-default !important;
+    border-radius: 8px !important;
+    color: @text-body !important;
+    box-shadow: none !important;
+}
+
+.btnv6_blue_hoverfade:hover,
+.btn_blue_steamui:hover,
+.btnv6_white_transparent:hover,
+.header_installsteam_btn:hover {
+    background: transparent !important;
+    border-color: @accent !important;
+    color: @text-heading !important;
+    text-decoration: none !important;
+}
+
+.btnv6_blue_hoverfade span,
+.btnv6_white_transparent span,
+.btn_green_steamui span,
+.btn_blue_steamui span,
+.header_installsteam_btn_content {
+    background: transparent !important;
+    background-image: none !important;
+    color: inherit !important;
+}
+
+/* Add to cart and buy are the page's one primary action (§6.1's filled weight). */
+.btn_addtocart,
+.btn_green_steamui {
+    background: @accent !important;
+    border-color: @accent !important;
+    color: @text-on-fill !important;
+}
+
+.btn_addtocart:hover,
+.btn_green_steamui:hover {
+    background: @accent !important;
+    opacity: .85 !important;
+    color: @text-on-fill !important;
+}
+
+/* Discounts are a status, not decoration: they carry a meaning, so they keep a
+   fill — the positive one, since a discount is good news (§6.7). */
+.discount_block,
+.discount_pct {
+    background: @status-success !important;
+    color: @text-on-fill !important;
+    border-radius: 4px !important;           /* --radius-small */
+}
+
+.discount_final_price {
+    color: @text-heading !important;
+}
+
+.discount_original_price {
+    color: @text-tertiary !important;
+}
+
+/* ==========================================================================
+   Footer — the last strip on the page, so it belongs to the frame.
+   ========================================================================== */
+
+#footer,
+#footer_text,
+.footer_content {
+    background-color: @surface-secondary !important;
+    border-top: 1px solid @border-default !important;
+    color: @text-secondary !important;
+}

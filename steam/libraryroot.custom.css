@@ -1,0 +1,922 @@
+/* Halon for Steam — GENERATED FILE, do not edit.
+ * Built from steam/src/ and gtk/Halon/shared/_tokens-*.css by scripts/build-steam.mjs.
+ */
+/* Layer 1 — the token set, both schemes. Nothing below this block names a colour. */
+:root {
+    color-scheme: var(--halon-color-scheme, light dark);
+
+    --halon-surface-root: light-dark(#f1f5f9, #060b14);
+    --halon-surface-default: light-dark(#ffffff, #16213a);
+    --halon-surface-secondary: light-dark(#f1f5f9, #060b14);
+    --halon-surface-navigation: light-dark(#f1f5f9, #060b14);
+    --halon-surface-navigation-hover: light-dark(#e2e8f0, #101b2d);
+    --halon-surface-overlay: light-dark(rgba(15, 23, 42, 0.45), rgba(0, 0, 0, 0.6));
+    --halon-surface-shell: light-dark(#f1f5f9, #16213a);
+    --halon-surface-shell-hover: light-dark(#e2e8f0, #1f2c4a);
+    --halon-surface-shell-card: light-dark(#ffffff, #2a3a5e);
+    --halon-text-heading: light-dark(#0f172a, #f8fafc);
+    --halon-text-body: light-dark(#1a1a2e, #e2e8f0);
+    --halon-text-secondary: light-dark(#475569, #cbd5e1);
+    --halon-text-tertiary: light-dark(#64748b, #94a3b8);
+    --halon-text-on-navigation: light-dark(#475569, #ffffff);
+    --halon-text-on-fill: light-dark(#ffffff, #0b1220);
+    --halon-text-on-light: #0f172a;
+    --halon-border-default: light-dark(#e2e8f0, #334155);
+    --halon-border-hover: light-dark(#cbd5e1, #475569);
+    --halon-border-control: light-dark(#8792a3, #64748b);
+    --halon-accent: light-dark(#2563eb, #60a5fa);
+    --halon-focus-ring: light-dark(rgba(37, 99, 235, 0.15), rgba(96, 165, 250, 0.28));
+    --halon-border-focus: light-dark(#2563eb, #60a5fa);
+    --halon-syntax-type: light-dark(#0e7490, #22d3ee);
+    --halon-syntax-string: light-dark(#15803d, #4ade80);
+    --halon-syntax-number: light-dark(#a16207, #fcd34d);
+    --halon-status-success: light-dark(#047857, #10b981);
+    --halon-status-warning: #f59e0b;
+    --halon-status-warning-text: light-dark(#c2410c, #f59e0b);
+    --halon-status-danger: light-dark(#dc2626, #f87171);
+    --halon-badge-experimental: light-dark(#7c3aed, #a78bfa);
+    --halon-shadow-base: #0f172a;
+    --halon-shadow-item: light-dark(rgba(15, 23, 42, 0.12), rgba(15, 23, 42, 0.50));
+    --halon-shadow-card: light-dark(rgba(15, 23, 42, 0.08), rgba(15, 23, 42, 0.27));
+    --halon-shadow-tab: light-dark(rgba(15, 23, 42, 0.15), rgba(15, 23, 42, 0.50));
+    --halon-shadow-floating: light-dark(rgba(15, 23, 42, 0.20), rgba(15, 23, 42, 0.60));
+    --halon-shadow-modal: light-dark(rgba(15, 23, 42, 0.25), rgba(15, 23, 42, 0.70));
+}
+
+/* ==========================================================================
+   Ground — every Steam window is a content surface unless something says
+   otherwise, and §6.4's frame says otherwise for a handful of strips.
+   ========================================================================== */
+
+body {
+    color: var(--halon-text-body);
+}
+
+/* §6.8 — track transparent, thumb the hover border, pill, inset by its own
+   3px border so the thumb reads as 8px in a 10px gutter. */
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+    background: transparent;
+}
+
+::-webkit-scrollbar-track,
+::-webkit-scrollbar-track-piece,
+::-webkit-scrollbar-corner {
+    background: transparent !important;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: var(--halon-border-hover) !important;
+    background-clip: padding-box !important;
+    border: 3px solid transparent !important;
+    border-radius: 9999px !important;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: var(--halon-text-tertiary) !important;
+}
+
+::selection {
+    background: var(--halon-focus-ring);
+}
+
+/* ==========================================================================
+   Buttons — §6.1's three weights. Steam has two classes and a pile of
+   gradients; the gradients all go, because a filled accent is the only fill
+   this theme spends on an action.
+   ========================================================================== */
+
+button.DialogButton {
+    box-sizing: border-box !important;
+    min-height: 32px !important;            /* --control-height */
+    padding: 8px 14px !important;
+    border: 1px solid var(--halon-border-default) !important;
+    border-radius: 8px !important;          /* --radius-default */
+    background: transparent !important;
+    color: var(--halon-text-body) !important;
+    font-family: inherit !important;
+    font-size: 13px !important;
+    font-weight: 500 !important;
+    line-height: 14px !important;
+    text-transform: none !important;
+    letter-spacing: normal !important;
+    box-shadow: none !important;
+    transition: border-color 120ms ease-out, opacity 120ms ease-out;
+}
+
+/* Steam draws its hover as a shadow on a ::before; §6.1 hovers on the border. */
+button.DialogButton::before {
+    display: none !important;
+}
+
+button.DialogButton:hover,
+button.DialogButton.gpfocus {
+    border-color: var(--halon-accent) !important;
+    background: transparent !important;
+    color: var(--halon-text-heading) !important;
+}
+
+button.DialogButton:enabled:active,
+button.DialogButton:enabled:active:hover,
+button.DialogButton:enabled:active.gpfocus {
+    background: var(--halon-surface-secondary) !important;
+    box-shadow: none !important;
+}
+
+button.DialogButton:focus-visible {
+    outline: 3px solid var(--halon-focus-ring) !important;  /* --focus-ring-width */
+    outline-offset: 1px !important;
+}
+
+button.DialogButton:disabled,
+button.DialogButton:disabled:hover,
+button.DialogButton.Disabled,
+button.DialogButton.Disabled:hover {
+    background: transparent !important;
+    border-color: var(--halon-border-default) !important;
+    color: var(--halon-text-body) !important;
+    opacity: .5 !important;
+}
+
+/* The one primary action on a view. Hover moves opacity only, never the fill —
+   the glyph inside is already a second colour (§6.1). */
+button.DialogButton.Primary,
+button.DialogButton.Primary:hover,
+button.DialogButton.Primary.gpfocus:not(.Disabled),
+button.DialogButton.Primary:enabled:active,
+button.DialogButton.Primary:enabled:hover:active {
+    background: var(--halon-accent) !important;
+    border-color: var(--halon-accent) !important;
+    color: var(--halon-text-on-fill) !important;
+}
+
+button.DialogButton.Primary:hover,
+button.DialogButton.Primary.gpfocus:not(.Disabled) {
+    opacity: .85 !important;
+}
+
+/* Play, Install, Resume — Steam's green gradient. It is the primary action of
+   the window it appears in, so it takes the accent like any other primary. */
+button.DialogButton.GreenPlay,
+button.DialogButton.GreenPlay:hover,
+button.DialogButton.GreenPlay.gpfocus,
+button.DialogButton.GreenPlay:active,
+button.DialogButton.GreenPlay:active:hover,
+button.DialogButton.GreenPlay:active.gpfocus {
+    background: var(--halon-accent) !important;
+    border-color: var(--halon-accent) !important;
+    color: var(--halon-text-on-fill) !important;
+}
+
+button.DialogButton.GreenPlay:hover,
+button.DialogButton.GreenPlay.gpfocus {
+    opacity: .85 !important;
+}
+
+/* Repeated and incidental actions — flat until hovered (§6.1). */
+button.DialogButton.Secondary,
+button.DialogButton.Secondary.Off {
+    border-color: transparent !important;
+    color: var(--halon-text-secondary) !important;
+    box-shadow: none !important;
+}
+
+button.DialogButton.Secondary:hover,
+button.DialogButton.Secondary.gpfocus {
+    border-color: var(--halon-border-default) !important;
+    color: var(--halon-text-heading) !important;
+}
+
+button.DialogButton.DialogButtonTall {
+    min-height: 44px !important;
+}
+
+button.TextButton,
+button.TextButton:hover,
+button.TextButton.gpfocus {
+    color: var(--halon-accent) !important;
+    border: none !important;
+    background: transparent !important;
+}
+
+button.TextButton:hover {
+    text-decoration: underline !important;
+}
+
+.DialogButton .SVGIcon_Button {
+    color: currentColor !important;
+}
+
+.DialogButton:disabled .SVGIcon_Button,
+.DialogButton.Disabled .SVGIcon_Button {
+    opacity: 1 !important;                  /* the button already carries the .5 */
+}
+
+/* ==========================================================================
+   Inputs — §6.2: the fill defines the field at rest, the border defines it on
+   interaction. The fill does not move on hover or focus; only the border does.
+   ========================================================================== */
+
+.DialogTextInputBase,
+._DialogInputContainer {
+    box-sizing: border-box !important;
+    background: var(--halon-surface-default) !important;
+    border: 1px solid var(--halon-border-default) !important;
+    border-radius: 8px !important;
+    color: var(--halon-text-body) !important;
+    font-family: inherit !important;
+    font-size: 13px !important;
+    font-weight: 400 !important;
+    box-shadow: none !important;
+}
+
+._DialogInputContainer {
+    min-height: 32px !important;
+    padding: 8px 11px !important;
+    line-height: 14px !important;
+}
+
+.DialogTextInputBase:hover,
+._DialogInputContainer:hover {
+    border-color: var(--halon-border-focus) !important;
+}
+
+.DialogTextInputBase:focus,
+.DialogTextInputBase:focus-within,
+._DialogInputContainer:focus,
+._DialogInputContainer:focus-within,
+.DialogInput_Wrapper > input.DialogInput:focus {
+    border-color: var(--halon-accent) !important;
+    outline: 3px solid var(--halon-focus-ring) !important;
+    outline-offset: -1px !important;
+}
+
+input.DialogInput,
+textarea.DialogInput {
+    background: transparent !important;
+    border: none !important;
+    color: var(--halon-text-body) !important;
+}
+
+.DialogInputPlaceholder::placeholder,
+.DialogInputPlaceholder::-webkit-input-placeholder {
+    color: var(--halon-text-tertiary) !important;   /* 4.76 on the default surface; see §10 */
+    font-style: normal !important;
+}
+
+.DialogInput_ClearAction .SVGIcon_X_Line line {
+    stroke: var(--halon-text-secondary) !important;
+}
+
+.DialogInput_ClearAction:hover .SVGIcon_X_Line line {
+    stroke: var(--halon-text-heading) !important;
+}
+
+.DialogInputRequirementLabel {
+    color: var(--halon-status-danger) !important;
+}
+
+/* ==========================================================================
+   Selects — §6.3: a ghost button that happens to open a list.
+   ========================================================================== */
+
+.DialogDropDown._DialogInputContainer {
+    min-height: 32px !important;
+    padding: 8px 30px 8px 12px !important;
+    font-weight: 500 !important;
+    box-shadow: none !important;
+}
+
+.DialogDropDown:hover {
+    border-color: var(--halon-accent) !important;
+    box-shadow: none !important;
+}
+
+.DialogDropDown.Active,
+.DialogDropDown._DialogInputContainer.Active {
+    border-color: var(--halon-accent) !important;
+}
+
+.DialogDropDown.Disabled,
+.DialogDropDown.Disabled:hover {
+    border-color: var(--halon-border-default) !important;
+    opacity: .5 !important;
+    box-shadow: none !important;
+}
+
+.DialogDropDown_Arrow .SVGIcon_DownArrowContextMenu {
+    fill: var(--halon-text-secondary) !important;
+}
+
+/* ==========================================================================
+   Check boxes, radios and switches — §6.2's boundary colour, which is the one
+   line that has to clear 3:1 on its own.
+   ========================================================================== */
+
+.DialogCheckbox {
+    box-sizing: border-box !important;
+    background-color: var(--halon-surface-default) !important;
+    border: 1px solid var(--halon-border-control) !important;
+    border-radius: 4px !important;          /* --radius-small */
+    box-shadow: none !important;
+}
+
+.DialogCheckbox_Container:hover .DialogCheckbox {
+    border-color: var(--halon-accent) !important;
+}
+
+.DialogCheckbox .SVGIcon_DialogCheck,
+.DialogCheck {
+    color: var(--halon-accent) !important;
+    fill: var(--halon-accent) !important;
+}
+
+.DialogRoundCheckboxField_OuterCircle {
+    border-color: var(--halon-border-control) !important;
+    background: var(--halon-surface-default) !important;
+}
+
+.DialogRoundCheckboxField_InnerCircle {
+    background: var(--halon-accent) !important;
+}
+
+/* Steam's switch is a two-cell segmented control rather than a slider. */
+.DialogToggleField_Control {
+    background: var(--halon-surface-secondary) !important;
+    border: 1px solid var(--halon-border-control) !important;
+    border-radius: 9999px !important;       /* --radius-pill */
+    color: var(--halon-text-secondary) !important;
+    font-size: 11px !important;
+    overflow: hidden !important;
+}
+
+.DialogToggleField_Option {
+    text-transform: uppercase !important;
+    letter-spacing: .02em !important;
+    background: transparent !important;
+    color: var(--halon-text-secondary) !important;
+}
+
+.DialogToggleField_Option:hover:not(.Active) {
+    background: var(--halon-surface-navigation-hover) !important;
+    color: var(--halon-text-heading) !important;
+}
+
+.DialogToggleField_Option.Active {
+    background: var(--halon-accent) !important;
+    color: var(--halon-text-on-fill) !important;
+}
+
+/* Off is a state, not a status: it is the neutral fill, not a second accent. */
+.DialogToggleField_Option.Off.Active {
+    background: var(--halon-border-hover) !important;
+    color: var(--halon-text-on-fill) !important;
+}
+
+.Disabled .DialogToggleField_Option,
+.Disabled .DialogToggleField_Option.Active,
+.Disabled .DialogToggleField_Option.Off.Active,
+.Disabled .DialogToggleField_Option:hover:not(.Active) {
+    opacity: .5 !important;
+}
+
+.DialogToggleField.Disabled .DialogToggle_Label,
+.DialogToggleField.Disabled .DialogToggle_Description {
+    opacity: .5 !important;
+}
+
+/* ==========================================================================
+   Sliders — a 6px bar at half its height in radius (§4.2), accent fill.
+   ========================================================================== */
+
+.DialogSlider_Slider {
+    height: 6px !important;
+    border: none !important;
+    border-radius: 3px !important;
+    background: var(--halon-surface-secondary) !important;
+    box-shadow: inset 0 0 0 1px var(--halon-border-default) !important;
+}
+
+.DialogSlider_Value {
+    background: var(--halon-accent) !important;
+    border-radius: 3px !important;
+}
+
+.DialogSlider_Grabber {
+    width: 14px !important;
+    height: 14px !important;
+    top: -4px !important;
+    bottom: auto !important;
+    background: var(--halon-accent) !important;
+    border: 2px solid var(--halon-surface-default) !important;
+    border-radius: 9999px !important;
+    box-shadow: 0 1px 2px var(--halon-shadow-item) !important;
+}
+
+/* ==========================================================================
+   Labels and section headers — §6.8's last rule: headings are heading text,
+   never the accent. Only links are blue.
+   ========================================================================== */
+
+.DialogLabel,
+.DialogLabelStrong {
+    color: var(--halon-text-secondary) !important;
+    font-size: 11px !important;             /* --text-label */
+    font-weight: 600 !important;
+    letter-spacing: .04em !important;
+}
+
+.DialogLabelStrong .DialogLabel,
+.DialogLabel.DialogLabelStrong {
+    color: var(--halon-text-body) !important;
+    font-size: 13px !important;
+    font-weight: 500 !important;
+    letter-spacing: normal !important;
+    text-transform: none !important;
+}
+
+.disabled .DialogLabelStrong .DialogLabel,
+.disabled .DialogLabel.DialogLabelStrong {
+    opacity: .5 !important;
+}
+
+.DialogLabelExplainer,
+.DialogToggle_Description,
+.DialogBodyText {
+    color: var(--halon-text-secondary) !important;
+}
+
+.DialogHeader {
+    color: var(--halon-text-heading) !important;
+    font-size: 19px !important;             /* --text-h2 */
+    font-weight: 600 !important;
+}
+
+.DialogSubHeader,
+.SettingsDialogSubHeader {
+    color: var(--halon-text-heading) !important;
+    font-size: 15px !important;             /* --text-h3 */
+    font-weight: 600 !important;
+    letter-spacing: normal !important;
+    text-transform: none !important;
+}
+
+.DialogHeaderSubtitle {
+    color: var(--halon-text-secondary) !important;
+}
+
+.DialogHighlight,
+.DialogBody a,
+.textLink,
+.inviteURLLink {
+    color: var(--halon-accent) !important;
+}
+
+.DialogBody a:hover,
+.textLink:hover {
+    color: var(--halon-accent) !important;
+    text-decoration: underline !important;
+}
+
+.DialogHBar,
+.settingsMenuSeparator {
+    background: var(--halon-border-default) !important;
+    border: none !important;
+}
+
+/* ==========================================================================
+   Modals — §6.6: a raised sheet on the content surface, a translucent backdrop,
+   and the frame's own shadow tier.
+   ========================================================================== */
+
+.ModalOverlayBackground,
+.ModalOverlayBackground.NotificationBrowserWarning,
+.FullModalOverlay.NotReadyToRender {
+    background: var(--halon-surface-overlay) !important;
+}
+
+.ModalPosition_Content {
+    border-radius: 10px !important;         /* --radius-window */
+    box-shadow: 0 16px 48px var(--halon-shadow-modal) !important;
+    color: var(--halon-text-body) !important;
+}
+
+/* Steam's dialogs open with a two-stop gradient bar; one accent, no gradient. */
+div.ModalPosition_TopBar,
+.Destructive .ModalPosition_TopBar {
+    background: var(--halon-accent) !important;
+}
+
+.Destructive .ModalPosition_TopBar {
+    background: var(--halon-status-danger) !important;
+}
+
+.DialogContent,
+.DialogContentTransition {
+    background: var(--halon-surface-default) !important;
+    color: var(--halon-text-body) !important;
+}
+
+.DeckVerifiedModalDialogClient .DialogContent,
+.DeckVerifiedModalDialog .DialogContent {
+    background: var(--halon-surface-default) !important;
+    border-color: var(--halon-border-default) !important;
+}
+
+.DialogFooter {
+    border-top: 1px solid var(--halon-border-default) !important;
+}
+
+.ModalPosition_Dismiss .closeButton {
+    background: var(--halon-surface-secondary) !important;
+    border-radius: 6px !important;          /* --radius-row */
+}
+
+.ModalPosition_Dismiss .closeButton .SVGIcon_X_Line line {
+    stroke: var(--halon-text-secondary) !important;
+}
+
+/* The one sanctioned colour-swap hover: a filled accent chip has no glyph to
+   lose, because the glyph inverts with it (§6.6). */
+.ModalPosition_Dismiss .closeButton:hover {
+    background: var(--halon-accent) !important;
+}
+
+.ModalPosition_Dismiss .closeButton:hover .SVGIcon_X_Line line {
+    stroke: var(--halon-text-on-fill) !important;
+}
+
+.DialogBodyNotificationBar {
+    background: color-mix(in srgb, var(--halon-status-warning) 15%, transparent) !important;
+    color: var(--halon-text-body) !important;
+    border-radius: 8px !important;
+}
+
+/* ==========================================================================
+   Context menus — §6.6's menu sheet: content surface, hairline, and rows that
+   round at 5px because they repeat inside an 8px sheet.
+   ========================================================================== */
+
+:is(._2LigNhjmULtkRCXW5237ai, ._12DEITwNCR63H338pFyoji, .BaERlvVMT45z7ZQ-TZiAe, .ZmMzAFCxvwjUFR245iuLe) {
+    background: var(--halon-surface-default) !important;
+    border: 1px solid var(--halon-border-default) !important;
+    border-radius: 8px !important;
+    padding: 5px !important;
+    box-shadow: 0 8px 24px var(--halon-shadow-floating) !important;
+}
+
+:is(._34o03-8cUc3fQX1u650c0L, ._3Gj2wOUvSdrsCfUf7w3k1i, ._30Cfa_RtfCcvNNH7_LcUON, ._17CvBVp1rwECBn2FRb4oMA, ._1n7Wloe5jZ6fSuvV18NNWI) {
+    min-width: 0 !important;
+    padding: 6px 9px !important;
+    border-radius: 5px !important;
+    background: transparent !important;
+    color: var(--halon-text-body) !important;
+    font-size: 13px !important;
+}
+
+:is(._34o03-8cUc3fQX1u650c0L, ._3Gj2wOUvSdrsCfUf7w3k1i, ._30Cfa_RtfCcvNNH7_LcUON, ._17CvBVp1rwECBn2FRb4oMA, ._1n7Wloe5jZ6fSuvV18NNWI):hover,
+:is(._34o03-8cUc3fQX1u650c0L, ._3Gj2wOUvSdrsCfUf7w3k1i, ._30Cfa_RtfCcvNNH7_LcUON, ._17CvBVp1rwECBn2FRb4oMA, ._1n7Wloe5jZ6fSuvV18NNWI):is(._3fVa8M_7D9Vjz28uYnahhd, ._3GBeBR4aLa-OiGBjWIGQRz, ._3enyx9xVrxt-dv1UENf-XP, ._1Rmvuh4adSSWxOVlDHISQO) {
+    background: var(--halon-surface-secondary) !important;
+    color: var(--halon-text-heading) !important;
+}
+
+.IjIBR_wDDi2N77Oz4KAT4 {
+    background: var(--halon-border-default) !important;
+    border: none !important;
+}
+
+.contextMenuCheckMark,
+.menuChecked {
+    color: var(--halon-accent) !important;
+}
+
+/* ==========================================================================
+   Focus — one ring, the same translucent accent as text selection (§6.8).
+   ========================================================================== */
+
+.Focusable:focus-visible,
+.gpfocus {
+    outline: 3px solid var(--halon-focus-ring) !important;   /* --focus-ring-width */
+    outline-offset: 1px !important;
+}
+
+.ScrollList {
+    background: transparent !important;
+}
+
+/* ==========================================================================
+   Throbbers and progress — one accent, no gradient.
+   ========================================================================== */
+
+.SVGIcon_Throbber,
+.throbber,
+.largeThrobber,
+.mediumThrobber,
+.smallThrobber {
+    color: var(--halon-accent) !important;
+}
+
+.DialogProgressBar_ProgressBarContainer {
+    height: 6px !important;
+    border-radius: 3px !important;
+    background: var(--halon-surface-secondary) !important;
+    box-shadow: inset 0 0 0 1px var(--halon-border-default) !important;
+}
+
+.DialogProgressBar_Value {
+    background: var(--halon-accent) !important;
+    border-radius: 3px !important;
+}
+
+/* ==========================================================================
+   The window — content ground, and a hairline instead of Steam's black edge.
+   ========================================================================== */
+
+._1ENHEsrSLcTRtPQFl1F-wL {
+    background: var(--halon-surface-root) !important;
+    border: 1px solid var(--halon-border-default) !important;
+    border-top: none !important;
+}
+
+._1ENHEsrSLcTRtPQFl1F-wL.Maximized,
+.Maximized ._1ENHEsrSLcTRtPQFl1F-wL {
+    border: none !important;
+}
+
+/* ==========================================================================
+   The frame — §6.4. One surface, no inset highlights, no gradient seam.
+   ========================================================================== */
+
+._3Z7VQ1IMk4E3HsHvrkLNgo {
+    background: var(--halon-surface-navigation) !important;
+    box-shadow: none !important;
+    border-bottom: 1px solid var(--halon-border-default) !important;
+}
+
+._3Z7VQ1IMk4E3HsHvrkLNgo.Maximized,
+.Maximized ._3Z7VQ1IMk4E3HsHvrkLNgo {
+    box-shadow: none !important;
+}
+
+/* Steam's cyan-to-blue hairline under the frame, and the focus bar that fades
+   the same two hues across the window: one accent, or nothing. */
+.SEmVpmXrYVl3OxL1sDFTg,
+.BasicUI .SEmVpmXrYVl3OxL1sDFTg {
+    background: var(--halon-border-default) !important;
+}
+
+._3pXasCUulX4jjqO79s4q_F,
+._3pXasCUulX4jjqO79s4q_F._2MkHZqf7MrgW3f8qGHiI8Z {
+    background: var(--halon-accent) !important;
+}
+
+.singleWindowFocusBar,
+.title-area-highlight {
+    background: var(--halon-accent) !important;
+    -webkit-mask: none !important;
+}
+
+._39oUCO1OuizVPwcnnv88no,
+._30vB9DdsPK7VrZAbb5Q1Av {
+    background: transparent !important;
+}
+
+/* Window controls — flat icon buttons on the frame (§6.1's flat weight). */
+.DesktopUI .title-area-icon {
+    border-radius: 6px !important;          /* --radius-row */
+    transition: background-color 120ms ease-out;
+}
+
+.DesktopUI .title-area-icon:hover {
+    background: var(--halon-surface-navigation-hover) !important;
+}
+
+.DesktopUI .title-area-icon .SVGIcon_Button rect,
+.DesktopUI .title-area-icon .SVGIcon_Button line,
+.DesktopUI .title-area-icon .SVGIcon_Button polyline,
+.DesktopUI .title-area-icon .SVGIcon_X_Line line {
+    stroke: var(--halon-text-on-navigation) !important;
+}
+
+.DesktopUI .title-area-icon:hover .SVGIcon_Button rect,
+.DesktopUI .title-area-icon:hover .SVGIcon_Button line,
+.DesktopUI .title-area-icon:hover .SVGIcon_Button polyline,
+.DesktopUI .title-area-icon:hover .SVGIcon_X_Line line {
+    stroke: var(--halon-text-heading) !important;
+}
+
+/* Close is the one control with a destructive hover (§6.4's tab-close rule). */
+.DesktopUI .title-area-icon:hover:has(.SVGIcon_X_Line) {
+    background: var(--halon-status-danger) !important;
+}
+
+.DesktopUI .title-area-icon:hover .SVGIcon_X_Line line {
+    stroke: var(--halon-text-on-fill) !important;
+}
+
+/* ==========================================================================
+   Store / Library / Community — tabs in the frame (§6.4).
+   ========================================================================== */
+
+._3Z3ohQ8-1NKnCZkbS6fvy,
+._2D64jIEK7wpUR_NlObDW76 {
+    background: transparent !important;
+}
+
+._7AlhCx3XGzBeIrQaCneUD {
+    font-family: inherit !important;
+    font-size: 13px !important;             /* --text-control */
+    font-weight: 500 !important;
+    text-transform: none !important;
+    letter-spacing: normal !important;
+    padding: 0 4px !important;
+}
+
+._7AlhCx3XGzBeIrQaCneUD ._19axKcqYRuaJ8vdYKYmtTQ {
+    box-sizing: border-box !important;
+    height: 28px !important;                /* --tab height */
+    padding: 6px 10px !important;
+    border-radius: 8px !important;          /* --radius-default */
+    color: var(--halon-text-on-navigation) !important;
+    text-shadow: none !important;
+    transition: background-color 120ms ease-out, color 120ms ease-out;
+}
+
+._7AlhCx3XGzBeIrQaCneUD:hover:not(._2cO0HdvLEGAdhosLekWsmo) ._19axKcqYRuaJ8vdYKYmtTQ {
+    background: var(--halon-surface-navigation-hover) !important;
+    color: var(--halon-text-heading) !important;
+    text-shadow: none !important;
+}
+
+/* The selected tab is a raised card, and §6.4 says three signals carry it: the
+   lift, the label going to heading text, and the accent line. Steam already
+   draws the line as an ::after; it keeps it, in the accent. */
+._7AlhCx3XGzBeIrQaCneUD._1gqEjB5QsKT_NftD1dEsdZ:not(._2cO0HdvLEGAdhosLekWsmo) ._19axKcqYRuaJ8vdYKYmtTQ {
+    background: var(--halon-surface-default) !important;
+    color: var(--halon-text-heading) !important;
+    text-shadow: none !important;
+    box-shadow: 0 1px 3px var(--halon-shadow-tab) !important;
+}
+
+._7AlhCx3XGzBeIrQaCneUD._1gqEjB5QsKT_NftD1dEsdZ:not(._2cO0HdvLEGAdhosLekWsmo) ._19axKcqYRuaJ8vdYKYmtTQ::after {
+    background: var(--halon-accent) !important;
+    height: 2px !important;
+    border-radius: 9999px !important;
+}
+
+._7AlhCx3XGzBeIrQaCneUD._2cO0HdvLEGAdhosLekWsmo ._19axKcqYRuaJ8vdYKYmtTQ {
+    color: var(--halon-text-on-navigation) !important;
+    opacity: .5 !important;
+}
+
+._25lBLzuVeYAUG279up4xP8 {
+    color: var(--halon-text-on-navigation) !important;
+}
+
+._25lBLzuVeYAUG279up4xP8._2cO0HdvLEGAdhosLekWsmo {
+    opacity: .5 !important;
+}
+
+/* ==========================================================================
+   Content — everything below the frame is raised.
+   ========================================================================== */
+
+._1rDh5rXSFZJOqCa4UpnI4z {
+    background: var(--halon-surface-root) !important;
+}
+
+/* The store and community views are a browser inside the window; Steam tints
+   the wrapper black and forces a dark scheme on it. The wrapper takes the root
+   surface instead, and the scheme follows the theme's own setting. */
+._1bGewp3tfzqAF6fVTFFUOz {
+    background: var(--halon-surface-root) !important;
+    color-scheme: var(--halon-color-scheme, light dark) !important;
+}
+
+.UkR3sY319PuaUNuUWks2K {
+    background: var(--halon-surface-navigation) !important;
+    color: var(--halon-text-on-navigation) !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+/* The update banner and the strip it sits in belong to the frame. */
+._1_yS5UP7el0aN4vntx3dx {
+    background: var(--halon-surface-navigation) !important;
+    border-top: 1px solid var(--halon-border-default) !important;
+}
+
+/* ==========================================================================
+   The game list — a sidebar (§6.5).
+   ========================================================================== */
+
+._3x1HklzyDs4TEjACrRO2tB {
+    background: var(--halon-surface-secondary) !important;
+    background-image: none !important;
+    border-right: 1px solid var(--halon-border-default) !important;
+    color: var(--halon-text-body) !important;
+}
+
+/* The search strip belongs to the list, not to a third surface above it. */
+._2TKEazUUS3TlniZfpc8OOe {
+    background: var(--halon-surface-secondary) !important;
+    box-shadow: none !important;
+    border-bottom: 1px solid var(--halon-border-default) !important;
+    padding: 4px 8px !important;             /* --space-2 --space-4 */
+}
+
+._1ijTaXJJA5YWl_fW2IxcaT {
+    background: transparent !important;
+}
+
+/* ==========================================================================
+   Game rows — 28px list rows on the row radius (§4.3).
+   ========================================================================== */
+
+._2-O4ZG0KrnSrzISHBKctFQ {
+    box-sizing: border-box !important;
+    border: none !important;
+    border-radius: 6px !important;           /* --radius-row */
+    background-color: transparent !important;
+    color: var(--halon-text-body) !important;
+    font-size: 13px !important;
+    font-weight: 400 !important;
+    box-shadow: none !important;
+}
+
+/* A row here is a place you are, not a row you picked, so §6.5 selects it by
+   elevation: a raised card on the sidebar surface rather than an accent fill. */
+._2-O4ZG0KrnSrzISHBKctFQ._1UBpAXP408Ez_L_mXhW5Q9 {
+    background-color: var(--halon-surface-default) !important;
+    color: var(--halon-text-heading) !important;
+    box-shadow: 0 1px 3px var(--halon-shadow-item) !important;
+}
+
+._2-O4ZG0KrnSrzISHBKctFQ._5YTBr7WwIfzVU_3nUtAph,
+._2-O4ZG0KrnSrzISHBKctFQ._5YTBr7WwIfzVU_3nUtAph:hover,
+._2-O4ZG0KrnSrzISHBKctFQ._1UBpAXP408Ez_L_mXhW5Q9._5YTBr7WwIfzVU_3nUtAph {
+    color: var(--halon-text-secondary) !important;
+}
+
+/* Downloading, updating, queued — the accent, because it is one state, not a
+   family of them, and the theme has one accent to spend on it. */
+._2-O4ZG0KrnSrzISHBKctFQ._1LVQp3h_vGOZ8TuDUEge0k,
+._2-O4ZG0KrnSrzISHBKctFQ._1UBpAXP408Ez_L_mXhW5Q9._1LVQp3h_vGOZ8TuDUEge0k {
+    color: var(--halon-accent) !important;
+    font-weight: 400 !important;
+}
+
+/* Hover comes last on purpose. A hovered row takes the frame's hover fill, and
+   on that fill the accent lands at 4.19 and would be status text under 4.5 —
+   §6.1's collapsing-hover hazard in its text form. So the label goes to heading
+   text while the pointer is on the row; the progress glyph beside it is what
+   still says the game is downloading. */
+._2-O4ZG0KrnSrzISHBKctFQ:hover,
+._2-O4ZG0KrnSrzISHBKctFQ._3cMVyOc-9F9Jvp3uKF7_xj {
+    background-color: var(--halon-surface-navigation-hover) !important;
+    color: var(--halon-text-heading) !important;
+}
+
+._2SXJM0PeFEi3gbC7V3S5pE {
+    color: inherit !important;
+}
+
+._2-O4ZG0KrnSrzISHBKctFQ svg:not(.SVGIcon_FriendIcon) {
+    color: var(--halon-text-secondary) !important;
+}
+
+._2-O4ZG0KrnSrzISHBKctFQ svg:not(.SVGIcon_FriendIcon) path,
+._2-O4ZG0KrnSrzISHBKctFQ svg:not(.SVGIcon_FriendIcon) polyline {
+    stroke: var(--halon-text-secondary) !important;
+}
+
+/* ==========================================================================
+   The content pane — raised, flat, and padded off the space scale.
+   ========================================================================== */
+
+._3Sb2o_mQ30IDRh0C72QUUu,
+.ybEU2kARViIFGigPw8VQ0 {
+    background: var(--halon-surface-root) !important;
+    background-image: none !important;
+    color: var(--halon-text-body) !important;
+}
+
+._3rGEUoEnGkGWALEBzbvfef {
+    color: var(--halon-text-heading) !important;
+}
+
+._1NCHRjqdjqGE3JbG4b0rLF {
+    background: transparent !important;
+    color: var(--halon-text-body) !important;
+}
+
+/* A game's page renders over its own artwork, so the page itself stays out of
+   the way; only the panels drawn on top of the artwork take a surface. */
+._3fp5y6tdU77MdrCQZt_aS9 {
+    background: var(--halon-surface-overlay) !important;
+}
+
+._2r4TK4BAuU-J4FuF_O7v_5 {
+    color: var(--halon-text-body) !important;
+}

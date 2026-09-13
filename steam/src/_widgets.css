@@ -1,0 +1,601 @@
+/* Halon for Steam — the shared control layer. SOURCE FILE, not the shipped one.
+ *
+ * Steam builds its client CSS from CSS modules, so nearly every class is a
+ * content hash — but not this family. The `Dialog*` classes come from a hand-
+ * written stylesheet Steam ships unhashed, and they are the whole control
+ * vocabulary of the client: every button, field, select, checkbox, toggle,
+ * slider, modal and settings page in every window is built from them. Theming
+ * them once covers more of Steam than any other file here, and it survives a
+ * client rebuild, because there is no hash to move.
+ *
+ * This file is concatenated into both the main window's sheet and the friends
+ * window's sheet, so it must not assume either.
+ *
+ * Edit this file. Never edit the generated .custom.css.
+ */
+
+/* ==========================================================================
+   Ground — every Steam window is a content surface unless something says
+   otherwise, and §6.4's frame says otherwise for a handful of strips.
+   ========================================================================== */
+
+body {
+    color: @text-body;
+}
+
+/* §6.8 — track transparent, thumb the hover border, pill, inset by its own
+   3px border so the thumb reads as 8px in a 10px gutter. */
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+    background: transparent;
+}
+
+::-webkit-scrollbar-track,
+::-webkit-scrollbar-track-piece,
+::-webkit-scrollbar-corner {
+    background: transparent !important;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: @border-hover !important;
+    background-clip: padding-box !important;
+    border: 3px solid transparent !important;
+    border-radius: 9999px !important;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: @text-tertiary !important;
+}
+
+::selection {
+    background: @focus-ring;
+}
+
+/* ==========================================================================
+   Buttons — §6.1's three weights. Steam has two classes and a pile of
+   gradients; the gradients all go, because a filled accent is the only fill
+   this theme spends on an action.
+   ========================================================================== */
+
+button.DialogButton {
+    box-sizing: border-box !important;
+    min-height: 32px !important;            /* --control-height */
+    padding: 8px 14px !important;
+    border: 1px solid @border-default !important;
+    border-radius: 8px !important;          /* --radius-default */
+    background: transparent !important;
+    color: @text-body !important;
+    font-family: inherit !important;
+    font-size: 13px !important;
+    font-weight: 500 !important;
+    line-height: 14px !important;
+    text-transform: none !important;
+    letter-spacing: normal !important;
+    box-shadow: none !important;
+    transition: border-color 120ms ease-out, opacity 120ms ease-out;
+}
+
+/* Steam draws its hover as a shadow on a ::before; §6.1 hovers on the border. */
+button.DialogButton::before {
+    display: none !important;
+}
+
+button.DialogButton:hover,
+button.DialogButton.gpfocus {
+    border-color: @accent !important;
+    background: transparent !important;
+    color: @text-heading !important;
+}
+
+button.DialogButton:enabled:active,
+button.DialogButton:enabled:active:hover,
+button.DialogButton:enabled:active.gpfocus {
+    background: @surface-secondary !important;
+    box-shadow: none !important;
+}
+
+button.DialogButton:focus-visible {
+    outline: 3px solid @focus-ring !important;  /* --focus-ring-width */
+    outline-offset: 1px !important;
+}
+
+button.DialogButton:disabled,
+button.DialogButton:disabled:hover,
+button.DialogButton.Disabled,
+button.DialogButton.Disabled:hover {
+    background: transparent !important;
+    border-color: @border-default !important;
+    color: @text-body !important;
+    opacity: .5 !important;
+}
+
+/* The one primary action on a view. Hover moves opacity only, never the fill —
+   the glyph inside is already a second colour (§6.1). */
+button.DialogButton.Primary,
+button.DialogButton.Primary:hover,
+button.DialogButton.Primary.gpfocus:not(.Disabled),
+button.DialogButton.Primary:enabled:active,
+button.DialogButton.Primary:enabled:hover:active {
+    background: @accent !important;
+    border-color: @accent !important;
+    color: @text-on-fill !important;
+}
+
+button.DialogButton.Primary:hover,
+button.DialogButton.Primary.gpfocus:not(.Disabled) {
+    opacity: .85 !important;
+}
+
+/* Play, Install, Resume — Steam's green gradient. It is the primary action of
+   the window it appears in, so it takes the accent like any other primary. */
+button.DialogButton.GreenPlay,
+button.DialogButton.GreenPlay:hover,
+button.DialogButton.GreenPlay.gpfocus,
+button.DialogButton.GreenPlay:active,
+button.DialogButton.GreenPlay:active:hover,
+button.DialogButton.GreenPlay:active.gpfocus {
+    background: @accent !important;
+    border-color: @accent !important;
+    color: @text-on-fill !important;
+}
+
+button.DialogButton.GreenPlay:hover,
+button.DialogButton.GreenPlay.gpfocus {
+    opacity: .85 !important;
+}
+
+/* Repeated and incidental actions — flat until hovered (§6.1). */
+button.DialogButton.Secondary,
+button.DialogButton.Secondary.Off {
+    border-color: transparent !important;
+    color: @text-secondary !important;
+    box-shadow: none !important;
+}
+
+button.DialogButton.Secondary:hover,
+button.DialogButton.Secondary.gpfocus {
+    border-color: @border-default !important;
+    color: @text-heading !important;
+}
+
+button.DialogButton.DialogButtonTall {
+    min-height: 44px !important;
+}
+
+button.TextButton,
+button.TextButton:hover,
+button.TextButton.gpfocus {
+    color: @accent !important;
+    border: none !important;
+    background: transparent !important;
+}
+
+button.TextButton:hover {
+    text-decoration: underline !important;
+}
+
+.DialogButton .SVGIcon_Button {
+    color: currentColor !important;
+}
+
+.DialogButton:disabled .SVGIcon_Button,
+.DialogButton.Disabled .SVGIcon_Button {
+    opacity: 1 !important;                  /* the button already carries the .5 */
+}
+
+/* ==========================================================================
+   Inputs — §6.2: the fill defines the field at rest, the border defines it on
+   interaction. The fill does not move on hover or focus; only the border does.
+   ========================================================================== */
+
+.DialogTextInputBase,
+._DialogInputContainer {
+    box-sizing: border-box !important;
+    background: @surface-default !important;
+    border: 1px solid @border-default !important;
+    border-radius: 8px !important;
+    color: @text-body !important;
+    font-family: inherit !important;
+    font-size: 13px !important;
+    font-weight: 400 !important;
+    box-shadow: none !important;
+}
+
+._DialogInputContainer {
+    min-height: 32px !important;
+    padding: 8px 11px !important;
+    line-height: 14px !important;
+}
+
+.DialogTextInputBase:hover,
+._DialogInputContainer:hover {
+    border-color: @border-focus !important;
+}
+
+.DialogTextInputBase:focus,
+.DialogTextInputBase:focus-within,
+._DialogInputContainer:focus,
+._DialogInputContainer:focus-within,
+.DialogInput_Wrapper > input.DialogInput:focus {
+    border-color: @accent !important;
+    outline: 3px solid @focus-ring !important;
+    outline-offset: -1px !important;
+}
+
+input.DialogInput,
+textarea.DialogInput {
+    background: transparent !important;
+    border: none !important;
+    color: @text-body !important;
+}
+
+.DialogInputPlaceholder::placeholder,
+.DialogInputPlaceholder::-webkit-input-placeholder {
+    color: @text-tertiary !important;   /* 4.76 on the default surface; see §10 */
+    font-style: normal !important;
+}
+
+.DialogInput_ClearAction .SVGIcon_X_Line line {
+    stroke: @text-secondary !important;
+}
+
+.DialogInput_ClearAction:hover .SVGIcon_X_Line line {
+    stroke: @text-heading !important;
+}
+
+.DialogInputRequirementLabel {
+    color: @status-danger !important;
+}
+
+/* ==========================================================================
+   Selects — §6.3: a ghost button that happens to open a list.
+   ========================================================================== */
+
+.DialogDropDown._DialogInputContainer {
+    min-height: 32px !important;
+    padding: 8px 30px 8px 12px !important;
+    font-weight: 500 !important;
+    box-shadow: none !important;
+}
+
+.DialogDropDown:hover {
+    border-color: @accent !important;
+    box-shadow: none !important;
+}
+
+.DialogDropDown.Active,
+.DialogDropDown._DialogInputContainer.Active {
+    border-color: @accent !important;
+}
+
+.DialogDropDown.Disabled,
+.DialogDropDown.Disabled:hover {
+    border-color: @border-default !important;
+    opacity: .5 !important;
+    box-shadow: none !important;
+}
+
+.DialogDropDown_Arrow .SVGIcon_DownArrowContextMenu {
+    fill: @text-secondary !important;
+}
+
+/* ==========================================================================
+   Check boxes, radios and switches — §6.2's boundary colour, which is the one
+   line that has to clear 3:1 on its own.
+   ========================================================================== */
+
+.DialogCheckbox {
+    box-sizing: border-box !important;
+    background-color: @surface-default !important;
+    border: 1px solid @border-control !important;
+    border-radius: 4px !important;          /* --radius-small */
+    box-shadow: none !important;
+}
+
+.DialogCheckbox_Container:hover .DialogCheckbox {
+    border-color: @accent !important;
+}
+
+.DialogCheckbox .SVGIcon_DialogCheck,
+.DialogCheck {
+    color: @accent !important;
+    fill: @accent !important;
+}
+
+.DialogRoundCheckboxField_OuterCircle {
+    border-color: @border-control !important;
+    background: @surface-default !important;
+}
+
+.DialogRoundCheckboxField_InnerCircle {
+    background: @accent !important;
+}
+
+/* Steam's switch is a two-cell segmented control rather than a slider. */
+.DialogToggleField_Control {
+    background: @surface-secondary !important;
+    border: 1px solid @border-control !important;
+    border-radius: 9999px !important;       /* --radius-pill */
+    color: @text-secondary !important;
+    font-size: 11px !important;
+    overflow: hidden !important;
+}
+
+.DialogToggleField_Option {
+    text-transform: uppercase !important;
+    letter-spacing: .02em !important;
+    background: transparent !important;
+    color: @text-secondary !important;
+}
+
+.DialogToggleField_Option:hover:not(.Active) {
+    background: @surface-navigation-hover !important;
+    color: @text-heading !important;
+}
+
+.DialogToggleField_Option.Active {
+    background: @accent !important;
+    color: @text-on-fill !important;
+}
+
+/* Off is a state, not a status: it is the neutral fill, not a second accent. */
+.DialogToggleField_Option.Off.Active {
+    background: @border-hover !important;
+    color: @text-on-fill !important;
+}
+
+.Disabled .DialogToggleField_Option,
+.Disabled .DialogToggleField_Option.Active,
+.Disabled .DialogToggleField_Option.Off.Active,
+.Disabled .DialogToggleField_Option:hover:not(.Active) {
+    opacity: .5 !important;
+}
+
+.DialogToggleField.Disabled .DialogToggle_Label,
+.DialogToggleField.Disabled .DialogToggle_Description {
+    opacity: .5 !important;
+}
+
+/* ==========================================================================
+   Sliders — a 6px bar at half its height in radius (§4.2), accent fill.
+   ========================================================================== */
+
+.DialogSlider_Slider {
+    height: 6px !important;
+    border: none !important;
+    border-radius: 3px !important;
+    background: @surface-secondary !important;
+    box-shadow: inset 0 0 0 1px @border-default !important;
+}
+
+.DialogSlider_Value {
+    background: @accent !important;
+    border-radius: 3px !important;
+}
+
+.DialogSlider_Grabber {
+    width: 14px !important;
+    height: 14px !important;
+    top: -4px !important;
+    bottom: auto !important;
+    background: @accent !important;
+    border: 2px solid @surface-default !important;
+    border-radius: 9999px !important;
+    box-shadow: 0 1px 2px @shadow-item !important;
+}
+
+/* ==========================================================================
+   Labels and section headers — §6.8's last rule: headings are heading text,
+   never the accent. Only links are blue.
+   ========================================================================== */
+
+.DialogLabel,
+.DialogLabelStrong {
+    color: @text-secondary !important;
+    font-size: 11px !important;             /* --text-label */
+    font-weight: 600 !important;
+    letter-spacing: .04em !important;
+}
+
+.DialogLabelStrong .DialogLabel,
+.DialogLabel.DialogLabelStrong {
+    color: @text-body !important;
+    font-size: 13px !important;
+    font-weight: 500 !important;
+    letter-spacing: normal !important;
+    text-transform: none !important;
+}
+
+.disabled .DialogLabelStrong .DialogLabel,
+.disabled .DialogLabel.DialogLabelStrong {
+    opacity: .5 !important;
+}
+
+.DialogLabelExplainer,
+.DialogToggle_Description,
+.DialogBodyText {
+    color: @text-secondary !important;
+}
+
+.DialogHeader {
+    color: @text-heading !important;
+    font-size: 19px !important;             /* --text-h2 */
+    font-weight: 600 !important;
+}
+
+.DialogSubHeader,
+.SettingsDialogSubHeader {
+    color: @text-heading !important;
+    font-size: 15px !important;             /* --text-h3 */
+    font-weight: 600 !important;
+    letter-spacing: normal !important;
+    text-transform: none !important;
+}
+
+.DialogHeaderSubtitle {
+    color: @text-secondary !important;
+}
+
+.DialogHighlight,
+.DialogBody a,
+.textLink,
+.inviteURLLink {
+    color: @accent !important;
+}
+
+.DialogBody a:hover,
+.textLink:hover {
+    color: @accent !important;
+    text-decoration: underline !important;
+}
+
+.DialogHBar,
+.settingsMenuSeparator {
+    background: @border-default !important;
+    border: none !important;
+}
+
+/* ==========================================================================
+   Modals — §6.6: a raised sheet on the content surface, a translucent backdrop,
+   and the frame's own shadow tier.
+   ========================================================================== */
+
+.ModalOverlayBackground,
+.ModalOverlayBackground.NotificationBrowserWarning,
+.FullModalOverlay.NotReadyToRender {
+    background: @surface-overlay !important;
+}
+
+.ModalPosition_Content {
+    border-radius: 10px !important;         /* --radius-window */
+    box-shadow: 0 16px 48px @shadow-modal !important;
+    color: @text-body !important;
+}
+
+/* Steam's dialogs open with a two-stop gradient bar; one accent, no gradient. */
+div.ModalPosition_TopBar,
+.Destructive .ModalPosition_TopBar {
+    background: @accent !important;
+}
+
+.Destructive .ModalPosition_TopBar {
+    background: @status-danger !important;
+}
+
+.DialogContent,
+.DialogContentTransition {
+    background: @surface-default !important;
+    color: @text-body !important;
+}
+
+.DeckVerifiedModalDialogClient .DialogContent,
+.DeckVerifiedModalDialog .DialogContent {
+    background: @surface-default !important;
+    border-color: @border-default !important;
+}
+
+.DialogFooter {
+    border-top: 1px solid @border-default !important;
+}
+
+.ModalPosition_Dismiss .closeButton {
+    background: @surface-secondary !important;
+    border-radius: 6px !important;          /* --radius-row */
+}
+
+.ModalPosition_Dismiss .closeButton .SVGIcon_X_Line line {
+    stroke: @text-secondary !important;
+}
+
+/* The one sanctioned colour-swap hover: a filled accent chip has no glyph to
+   lose, because the glyph inverts with it (§6.6). */
+.ModalPosition_Dismiss .closeButton:hover {
+    background: @accent !important;
+}
+
+.ModalPosition_Dismiss .closeButton:hover .SVGIcon_X_Line line {
+    stroke: @text-on-fill !important;
+}
+
+.DialogBodyNotificationBar {
+    background: color-mix(in srgb, @status-warning 15%, transparent) !important;
+    color: @text-body !important;
+    border-radius: 8px !important;
+}
+
+/* ==========================================================================
+   Context menus — §6.6's menu sheet: content surface, hairline, and rows that
+   round at 5px because they repeat inside an 8px sheet.
+   ========================================================================== */
+
+%ContextMenu% {
+    background: @surface-default !important;
+    border: 1px solid @border-default !important;
+    border-radius: 8px !important;
+    padding: 5px !important;
+    box-shadow: 0 8px 24px @shadow-floating !important;
+}
+
+%ContextMenuItem% {
+    min-width: 0 !important;
+    padding: 6px 9px !important;
+    border-radius: 5px !important;
+    background: transparent !important;
+    color: @text-body !important;
+    font-size: 13px !important;
+}
+
+%ContextMenuItem%:hover,
+%ContextMenuItem%%ContextMenuItemSelected% {
+    background: @surface-secondary !important;
+    color: @text-heading !important;
+}
+
+%ContextMenuSeparator% {
+    background: @border-default !important;
+    border: none !important;
+}
+
+.contextMenuCheckMark,
+.menuChecked {
+    color: @accent !important;
+}
+
+/* ==========================================================================
+   Focus — one ring, the same translucent accent as text selection (§6.8).
+   ========================================================================== */
+
+.Focusable:focus-visible,
+.gpfocus {
+    outline: 3px solid @focus-ring !important;   /* --focus-ring-width */
+    outline-offset: 1px !important;
+}
+
+.ScrollList {
+    background: transparent !important;
+}
+
+/* ==========================================================================
+   Throbbers and progress — one accent, no gradient.
+   ========================================================================== */
+
+.SVGIcon_Throbber,
+.throbber,
+.largeThrobber,
+.mediumThrobber,
+.smallThrobber {
+    color: @accent !important;
+}
+
+.DialogProgressBar_ProgressBarContainer {
+    height: 6px !important;
+    border-radius: 3px !important;
+    background: @surface-secondary !important;
+    box-shadow: inset 0 0 0 1px @border-default !important;
+}
+
+.DialogProgressBar_Value {
+    background: @accent !important;
+    border-radius: 3px !important;
+}

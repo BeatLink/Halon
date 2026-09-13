@@ -1,0 +1,127 @@
+/* Halon for Steam — the library. SOURCE FILE, not the shipped one.
+ *
+ * The library is a sidebar and a content pane, so THEME-DESIGN-GUIDE.md §6.5
+ * governs it: the game list sits on `surface-secondary`, the same surface as the
+ * frame above it, because they do the same job — one step back from content.
+ *
+ * Steam paints both the list and the pane behind it as vertical gradients that
+ * fade a lighter slate into a darker one. §1 has no gradients in it: structure
+ * comes from a three-step surface scale and hairlines, so every one of them is
+ * replaced by the flat surface it was fading between.
+ *
+ * Edit this file. Never edit the generated .custom.css.
+ */
+
+/* ==========================================================================
+   The game list — a sidebar (§6.5).
+   ========================================================================== */
+
+%GameListBar% {
+    background: @surface-secondary !important;
+    background-image: none !important;
+    border-right: 1px solid @border-default !important;
+    color: @text-body !important;
+}
+
+/* The search strip belongs to the list, not to a third surface above it. */
+%GameListSearchBar% {
+    background: @surface-secondary !important;
+    box-shadow: none !important;
+    border-bottom: 1px solid @border-default !important;
+    padding: 4px 8px !important;             /* --space-2 --space-4 */
+}
+
+%GameListContainer% {
+    background: transparent !important;
+}
+
+/* ==========================================================================
+   Game rows — 28px list rows on the row radius (§4.3).
+   ========================================================================== */
+
+%GameListEntry% {
+    box-sizing: border-box !important;
+    border: none !important;
+    border-radius: 6px !important;           /* --radius-row */
+    background-color: transparent !important;
+    color: @text-body !important;
+    font-size: 13px !important;
+    font-weight: 400 !important;
+    box-shadow: none !important;
+}
+
+/* A row here is a place you are, not a row you picked, so §6.5 selects it by
+   elevation: a raised card on the sidebar surface rather than an accent fill. */
+%GameListEntry%%GameListEntrySelected% {
+    background-color: @surface-default !important;
+    color: @text-heading !important;
+    box-shadow: 0 1px 3px @shadow-item !important;
+}
+
+%GameListEntry%%GameListEntryUninstalled%,
+%GameListEntry%%GameListEntryUninstalled%:hover,
+%GameListEntry%%GameListEntrySelected%%GameListEntryUninstalled% {
+    color: @text-secondary !important;
+}
+
+/* Downloading, updating, queued — the accent, because it is one state, not a
+   family of them, and the theme has one accent to spend on it. */
+%GameListEntry%%GameListEntryUpdating%,
+%GameListEntry%%GameListEntrySelected%%GameListEntryUpdating% {
+    color: @accent !important;
+    font-weight: 400 !important;
+}
+
+/* Hover comes last on purpose. A hovered row takes the frame's hover fill, and
+   on that fill the accent lands at 4.19 and would be status text under 4.5 —
+   §6.1's collapsing-hover hazard in its text form. So the label goes to heading
+   text while the pointer is on the row; the progress glyph beside it is what
+   still says the game is downloading. */
+%GameListEntry%:hover,
+%GameListEntry%%GameListEntryHover% {
+    background-color: @surface-navigation-hover !important;
+    color: @text-heading !important;
+}
+
+%GameListEntryName% {
+    color: inherit !important;
+}
+
+%GameListEntry% svg:not(.SVGIcon_FriendIcon) {
+    color: @text-secondary !important;
+}
+
+%GameListEntry% svg:not(.SVGIcon_FriendIcon) path,
+%GameListEntry% svg:not(.SVGIcon_FriendIcon) polyline {
+    stroke: @text-secondary !important;
+}
+
+/* ==========================================================================
+   The content pane — raised, flat, and padded off the space scale.
+   ========================================================================== */
+
+%LibraryHome%,
+%LibraryContent% {
+    background: @surface-root !important;
+    background-image: none !important;
+    color: @text-body !important;
+}
+
+%LibraryHeader% {
+    color: @text-heading !important;
+}
+
+%LibraryHomeSection% {
+    background: transparent !important;
+    color: @text-body !important;
+}
+
+/* A game's page renders over its own artwork, so the page itself stays out of
+   the way; only the panels drawn on top of the artwork take a surface. */
+%AppDetailsRoot% {
+    background: @surface-overlay !important;
+}
+
+%AppDetailsSection% {
+    color: @text-body !important;
+}

@@ -1,0 +1,192 @@
+/* Halon for Steam — the main window's frame. SOURCE FILE, not the shipped one.
+ *
+ * Steam's client is a standalone application, so THEME-DESIGN-GUIDE.md §6.4
+ * applies in its first form: the title bar and the Store/Library/Community strip
+ * are the frame, one surface, `surface-navigation` in both schemes. Everything
+ * under them carries content and sits on `surface-default` or `surface-root`.
+ *
+ * Steam paints the frame as three strips in three near-blacks with inset
+ * highlights between them; §6.4 is explicit that a strip of another colour
+ * between a title bar and a toolbar is the tell of a frame member that got
+ * missed, so all three are collapsed onto one value here and the highlights go.
+ *
+ * Edit this file. Never edit the generated .custom.css.
+ */
+
+/* ==========================================================================
+   The window — content ground, and a hairline instead of Steam's black edge.
+   ========================================================================== */
+
+%MainWindow% {
+    background: @surface-root !important;
+    border: 1px solid @border-default !important;
+    border-top: none !important;
+}
+
+%MainWindow%.Maximized,
+.Maximized %MainWindow% {
+    border: none !important;
+}
+
+/* ==========================================================================
+   The frame — §6.4. One surface, no inset highlights, no gradient seam.
+   ========================================================================== */
+
+%TopBar% {
+    background: @surface-navigation !important;
+    box-shadow: none !important;
+    border-bottom: 1px solid @border-default !important;
+}
+
+%TopBar%.Maximized,
+.Maximized %TopBar% {
+    box-shadow: none !important;
+}
+
+/* Steam's cyan-to-blue hairline under the frame, and the focus bar that fades
+   the same two hues across the window: one accent, or nothing. */
+%TopBarGradient%,
+.BasicUI %TopBarGradient% {
+    background: @border-default !important;
+}
+
+%FocusBar%,
+%FocusBar%%FocusBarActive% {
+    background: @accent !important;
+}
+
+.singleWindowFocusBar,
+.title-area-highlight {
+    background: @accent !important;
+    -webkit-mask: none !important;
+}
+
+%TitleBar%,
+%DragArea% {
+    background: transparent !important;
+}
+
+/* Window controls — flat icon buttons on the frame (§6.1's flat weight). */
+.DesktopUI .title-area-icon {
+    border-radius: 6px !important;          /* --radius-row */
+    transition: background-color 120ms ease-out;
+}
+
+.DesktopUI .title-area-icon:hover {
+    background: @surface-navigation-hover !important;
+}
+
+.DesktopUI .title-area-icon .SVGIcon_Button rect,
+.DesktopUI .title-area-icon .SVGIcon_Button line,
+.DesktopUI .title-area-icon .SVGIcon_Button polyline,
+.DesktopUI .title-area-icon .SVGIcon_X_Line line {
+    stroke: @text-on-navigation !important;
+}
+
+.DesktopUI .title-area-icon:hover .SVGIcon_Button rect,
+.DesktopUI .title-area-icon:hover .SVGIcon_Button line,
+.DesktopUI .title-area-icon:hover .SVGIcon_Button polyline,
+.DesktopUI .title-area-icon:hover .SVGIcon_X_Line line {
+    stroke: @text-heading !important;
+}
+
+/* Close is the one control with a destructive hover (§6.4's tab-close rule). */
+.DesktopUI .title-area-icon:hover:has(.SVGIcon_X_Line) {
+    background: @status-danger !important;
+}
+
+.DesktopUI .title-area-icon:hover .SVGIcon_X_Line line {
+    stroke: @text-on-fill !important;
+}
+
+/* ==========================================================================
+   Store / Library / Community — tabs in the frame (§6.4).
+   ========================================================================== */
+
+%SuperNavBar%,
+%SuperNav% {
+    background: transparent !important;
+}
+
+%NavTab% {
+    font-family: inherit !important;
+    font-size: 13px !important;             /* --text-control */
+    font-weight: 500 !important;
+    text-transform: none !important;
+    letter-spacing: normal !important;
+    padding: 0 4px !important;
+}
+
+%NavTab% %NavTabLabel% {
+    box-sizing: border-box !important;
+    height: 28px !important;                /* --tab height */
+    padding: 6px 10px !important;
+    border-radius: 8px !important;          /* --radius-default */
+    color: @text-on-navigation !important;
+    text-shadow: none !important;
+    transition: background-color 120ms ease-out, color 120ms ease-out;
+}
+
+%NavTab%:hover:not(%NavTabDisabled%) %NavTabLabel% {
+    background: @surface-navigation-hover !important;
+    color: @text-heading !important;
+    text-shadow: none !important;
+}
+
+/* The selected tab is a raised card, and §6.4 says three signals carry it: the
+   lift, the label going to heading text, and the accent line. Steam already
+   draws the line as an ::after; it keeps it, in the accent. */
+%NavTab%%NavTabSelected%:not(%NavTabDisabled%) %NavTabLabel% {
+    background: @surface-default !important;
+    color: @text-heading !important;
+    text-shadow: none !important;
+    box-shadow: 0 1px 3px @shadow-tab !important;
+}
+
+%NavTab%%NavTabSelected%:not(%NavTabDisabled%) %NavTabLabel%::after {
+    background: @accent !important;
+    height: 2px !important;
+    border-radius: 9999px !important;
+}
+
+%NavTab%%NavTabDisabled% %NavTabLabel% {
+    color: @text-on-navigation !important;
+    opacity: .5 !important;
+}
+
+%NavArrow% {
+    color: @text-on-navigation !important;
+}
+
+%NavArrow%%NavTabDisabled% {
+    opacity: .5 !important;
+}
+
+/* ==========================================================================
+   Content — everything below the frame is raised.
+   ========================================================================== */
+
+%ContentFrame% {
+    background: @surface-root !important;
+}
+
+/* The store and community views are a browser inside the window; Steam tints
+   the wrapper black and forces a dark scheme on it. The wrapper takes the root
+   surface instead, and the scheme follows the theme's own setting. */
+%BrowserWrapper% {
+    background: @surface-root !important;
+    color-scheme: var(--halon-color-scheme, light dark) !important;
+}
+
+%URLBar% {
+    background: @surface-navigation !important;
+    color: @text-on-navigation !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+/* The update banner and the strip it sits in belong to the frame. */
+%BottomBarContainer% {
+    background: @surface-navigation !important;
+    border-top: 1px solid @border-default !important;
+}

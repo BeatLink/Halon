@@ -1,0 +1,6 @@
+/* Halon for Steam — GENERATED FILE, do not edit. */
+
+/* The whole palette is light-dark() pairs, so pinning color-scheme picks a side. */
+:root {
+    --halon-color-scheme: light;
+}

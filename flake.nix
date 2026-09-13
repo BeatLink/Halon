@@ -176,6 +176,7 @@
             node "$root/scripts/build-cinnamon.mjs" --dark "$@"
             node "$root/scripts/build-vscode.mjs" "$@"
             node "$root/scripts/build-firefox.mjs" "$@"
+            node "$root/scripts/build-steam.mjs" "$@"
             node "$root/scripts/build-qt.mjs" "$@"
             node "$root/scripts/build-lmms.mjs" "$@"
             node "$root/scripts/build-lightdm.mjs" "$@"
@@ -266,6 +267,25 @@
             '';
             meta = {
               description = "Slate and blue Firefox theme; recessed chrome, raised content";
+            };
+          };
+
+          # A Millennium theme is a directory the loader reads whole, so the whole
+          # directory installs — sources included, since Millennium's in-client
+          # CSS editor edits what is on disk and a theme with no sources beside
+          # the generated sheets is one you can only edit in the wrong place.
+          halon-steam-theme = pkgs.stdenvNoCC.mkDerivation {
+            pname = "halon-steam-theme";
+            version = "1.0.0";
+            src = ./steam;
+            dontBuild = true;
+            installPhase = ''
+              mkdir -p "$out/share/halon/steam"
+              cp -r . "$out/share/halon/steam/"
+            '';
+            meta = {
+              description = "Slate and blue Steam client theme for Millennium";
+              platforms = nixpkgs.lib.platforms.linux;
             };
           };
 
