@@ -11,6 +11,12 @@
       let
         pkgs = nixpkgs.legacyPackages.${system};
 
+        # The icon set the metatheme names. Halon draws only its own widget glyphs,
+        # so icons come from Colloid: flat, one blue, hairline-compatible geometry.
+        # It inherits hicolor and breeze, not Adwaita, so Adwaita stays installed
+        # alongside it to catch the names Colloid does not carry.
+        iconTheme = pkgs.colloid-icon-theme;
+
         # Every preview runs the working tree against a throwaway XDG dir, so testing
         # never depends on what is installed in ~/.themes or disturbs the running desktop.
         gtk3Preamble = ''
@@ -143,13 +149,13 @@
           name = "halon-shots";
           runtimeInputs = with pkgs; [
             xorg.xvfb imagemagick xdotool coreutils gnugrep
-            gtk3.dev gtk4.dev adwaita-icon-theme
+            gtk3.dev gtk4.dev adwaita-icon-theme colloid-icon-theme
             gst_all_1.gst-plugins-base gst_all_1.gst-plugins-good
           ];
           text = ''
             root="''${HALON_ROOT:-$PWD}"
             export GST_PLUGIN_SYSTEM_PATH_1_0="${pkgs.gst_all_1.gst-plugins-base}/lib/gstreamer-1.0:${pkgs.gst_all_1.gst-plugins-good}/lib/gstreamer-1.0"
-            export XDG_DATA_DIRS="${pkgs.adwaita-icon-theme}/share:/run/current-system/sw/share:''${XDG_DATA_DIRS:-/usr/share}"
+            export XDG_DATA_DIRS="${iconTheme}/share:${pkgs.adwaita-icon-theme}/share:/run/current-system/sw/share:''${XDG_DATA_DIRS:-/usr/share}"
             exec "$root/scripts/screenshot.sh" "$@"
           '';
         };
@@ -551,6 +557,7 @@
             libadwaita
             glib                      # gsettings, for flipping the system colour-scheme
             gnome-themes-extra        # Adwaita, the base these overrides sit on
+            colloid-icon-theme        # the icon set index.theme names
 
             # The verification scripts
             nodejs
@@ -607,13 +614,16 @@
       nixosModules.default = { config, lib, pkgs, ... }: {
         options.themes.halon.enable = lib.mkEnableOption "the Halon GTK and Cinnamon theme";
         config = lib.mkIf config.themes.halon.enable {
-          environment.systemPackages =
-            [ self.packages.${pkgs.stdenv.hostPlatform.system}.halon-theme ];
+          environment.systemPackages = [
+            self.packages.${pkgs.stdenv.hostPlatform.system}.halon-theme
+            pkgs.colloid-icon-theme   # the icon set index.theme names
+          ];
         };
       };
 
       # home-manager: `imports = [ halon.homeManagerModules.default ];  themes.halon.enable = true;`
-      # setDefaults additionally selects Halon for GTK and the Cinnamon shell.
+      # setDefaults additionally selects Halon for GTK and the Cinnamon shell, and
+      # Colloid for icons.
       homeManagerModules.default = { config, lib, pkgs, ... }:
         let cfg = config.themes.halon;
             packages = self.packages.${pkgs.stdenv.hostPlatform.system};
@@ -642,7 +652,11 @@
             setDefaults = lib.mkOption {
               type = lib.types.bool;
               default = true;
-              description = "Select Halon as the GTK theme and Cinnamon shell theme.";
+              description = ''
+                Select Halon as the GTK theme and Cinnamon shell theme, and Colloid
+                as the icon theme. Colloid is what index.theme names; set
+                gtk.iconTheme yourself, after this, to use a different one.
+              '';
             };
             # Independent of enable: a session can be Halon in Qt without Halon in GTK
             qt = lib.mkEnableOption ''
@@ -671,10 +685,12 @@
               gtk = lib.mkIf cfg.setDefaults {
                 enable = true;
                 theme = { name = "Halon"; package = pkg; };
+                iconTheme = { name = "Colloid"; package = pkgs.colloid-icon-theme; };
               };
               dconf.settings = lib.mkIf cfg.setDefaults {
                 "org/cinnamon/theme".name = "Halon";
                 "org/cinnamon/desktop/interface".gtk-theme = "Halon";
+                "org/cinnamon/desktop/interface".icon-theme = "Colloid";
               };
             })
             (lib.mkIf cfg.lmms {

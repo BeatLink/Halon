@@ -108,4 +108,7 @@ sidebars, lists, tree and column views, popovers, menus, tooltips, dialogs, info
 scrollbars, panes, frames, status bars, text views, calendars.
 
 Not themed: window manager decorations beyond what GTK draws, application-specific
-stylesheets, and icon themes — `index.theme` points at Adwaita for icons and cursors.
+stylesheets, and the icons themselves — `index.theme` names Colloid for icons
+(`Colloid-Dark` in the dark metatheme) and Adwaita for cursors. Colloid inherits
+hicolor and breeze rather than Adwaita, so keep Adwaita installed alongside it to
+cover the names Colloid does not carry.
