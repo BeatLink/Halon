@@ -41,7 +41,7 @@ body {
     background-color: @border-hover !important;
     background-clip: padding-box !important;
     border: 3px solid transparent !important;
-    border-radius: 9999px !important;
+    border-radius: 3px !important;           /* half the thumb's thickness */
 }
 
 ::-webkit-scrollbar-thumb:hover {
@@ -316,7 +316,7 @@ textarea.DialogInput {
 .DialogToggleField_Control {
     background: @surface-secondary !important;
     border: 1px solid @border-control !important;
-    border-radius: 9999px !important;       /* --radius-pill */
+    border-radius: 4px !important;          /* --radius-small */
     color: @text-secondary !important;
     font-size: 11px !important;
     overflow: hidden !important;
@@ -324,7 +324,7 @@ textarea.DialogInput {
 
 .DialogToggleField_Option {
     text-transform: uppercase !important;
-    letter-spacing: .02em !important;
+    letter-spacing: .04em !important;
     background: transparent !important;
     color: @text-secondary !important;
 }
@@ -381,7 +381,7 @@ textarea.DialogInput {
     bottom: auto !important;
     background: @accent !important;
     border: 2px solid @surface-default !important;
-    border-radius: 9999px !important;
+    border-radius: 50% !important;
     box-shadow: 0 1px 2px @shadow-item !important;
 }
 
@@ -468,7 +468,7 @@ textarea.DialogInput {
 }
 
 .ModalPosition_Content {
-    border-radius: 10px !important;         /* --radius-window */
+    border-radius: 8px !important;          /* --radius-default */
     box-shadow: 0 16px 48px @shadow-modal !important;
     color: @text-body !important;
 }
@@ -501,7 +501,7 @@ div.ModalPosition_TopBar,
 
 .ModalPosition_Dismiss .closeButton {
     background: @surface-secondary !important;
-    border-radius: 6px !important;          /* --radius-row */
+    border-radius: 4px !important;          /* --radius-small */
 }
 
 .ModalPosition_Dismiss .closeButton .SVGIcon_X_Line line {

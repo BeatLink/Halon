@@ -102,13 +102,13 @@ expander arrow:hover {
 
 /* Sizes GTK will not infer. */
 switch {
-    min-width: 48px;
+    min-width: 40px;
     min-height: 24px;
 }
 
 switch slider {
-    min-width: 20px;
-    min-height: 20px;
+    min-width: 16px;
+    min-height: 16px;
 }
 
 levelbar block {
@@ -162,7 +162,7 @@ separator {
    ========================================================================== */
 
 decoration {
-    border-radius: 10px;
+    border-radius: 8px;
     box-shadow: 0 3px 14px @shadow-floating,
                 0 0 0 1px @border-default;
 }
@@ -214,8 +214,7 @@ window.csd statusbar:last-child {
     border-bottom-right-radius: 10px;
 }
 
-popover.background,
-tooltip.background {
+popover.background {
     border-radius: 8px;
 }
 
@@ -335,7 +334,7 @@ button {
     /* The card hairline, not the control border: buttons sit quiet at rest and
        gain the accent boundary on interaction. See §6.1–6.2. */
     border: 1px solid @border-default;
-    border-radius: 8px;
+    border-radius: 4px;
     color: @text-body;
     /* 16px line + 7px padding + 1px border = the 32px control height from §4.2 */
     min-height: 16px;
@@ -509,9 +508,9 @@ headerbar button.titlebutton,
 toolbar button.image-button {
     min-width: 16px;
     min-height: 16px;
-    padding: 6px;
+    padding: 7px;
     margin: 0 1px;
-    border-radius: 6px;
+    border-radius: 4px;
 }
 
 /* Titlebuttons are glyphs, not buttons: no border, ever — the hairline reads
@@ -595,8 +594,8 @@ headerbar separator,
 
 button.image-button,
 button.flat.image-button {
-    border-radius: 6px;
-    padding: 6px;
+    border-radius: 4px;
+    padding: 7px;
     min-width: 16px;
     min-height: 16px;
 }
@@ -675,7 +674,7 @@ entry.search {
     background-image: none;
     color: @text-body;
     border: 1px solid @border-default;
-    border-radius: 8px;
+    border-radius: 4px;
     /* Same arithmetic as button, so a toolbar row aligns */
     min-height: 16px;
     padding: 7px 11px;
@@ -814,10 +813,10 @@ switch {
     background-color: @surface-secondary;
     background-image: none;
     border: 1px solid @border-control;
-    border-radius: 9999px;
-    min-width: 44px;
-    min-height: 22px;
-    padding: 1px;
+    border-radius: 4px;
+    min-width: 40px;
+    min-height: 24px;
+    padding: 3px;
     font-size: 0;
     color: transparent;
     box-shadow: none;
@@ -836,10 +835,10 @@ switch slider {
     background-color: @text-tertiary;
     background-image: none;
     border: none;
-    border-radius: 9999px;
+    border-radius: 4px;
     box-shadow: 0 1px 2px @shadow-item;
-    min-width: 18px;
-    min-height: 18px;
+    min-width: 16px;
+    min-height: 16px;
     margin: 0;
 }
 
@@ -1028,7 +1027,7 @@ list {
 list row {
     background-color: transparent;
     color: @text-body;
-    border-radius: 6px;
+    border-radius: 4px;
     min-height: 18px;
     padding: 5px 8px;
 }
@@ -1136,9 +1135,9 @@ menu menuitem:selected > label {
 
 menuitem,
 popover modelbutton {
-    border-radius: 5px;
+    border-radius: 4px;
     color: @text-body;
-    padding: 6px 9px;
+    padding: 5px 9px;
     min-height: 18px;
     font-size: 13px;
 }
@@ -1176,7 +1175,7 @@ tooltip.background {
     background-color: @surface-navigation;
     color: @text-heading;
     border: none;
-    border-radius: 6px;
+    border-radius: 4px;
     box-shadow: 0 2px 8px @shadow-floating;
 }
 
@@ -1241,7 +1240,7 @@ scrollbar {
 scrollbar slider {
     background-color: @border-hover;
     border: 3px solid transparent;
-    border-radius: 9999px;
+    border-radius: 3px;
     background-clip: padding-box;
     min-width: 8px;
     min-height: 8px;
@@ -1336,7 +1335,7 @@ menubar > menuitem,
        by fill alone. */
     box-shadow: none;
     color: @text-body;
-    border-radius: 6px;
+    border-radius: 4px;
     padding: 4px 8px;
     margin: 2px 1px;
     min-height: 16px;
@@ -1407,7 +1406,7 @@ calendar {
 calendar:selected {
     background-color: @accent;
     color: @text-on-fill;
-    border-radius: 6px;
+    border-radius: 4px;
 }
 
 calendar.header {

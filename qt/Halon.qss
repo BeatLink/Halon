@@ -67,7 +67,7 @@ QMenuBar::item {
     background-color: transparent;
     color: #475569;
     padding: 6px 9px;
-    border-radius: 5px;
+    border-radius: 4px;
 }
 
 QMenuBar::item:selected,
@@ -130,7 +130,7 @@ QPushButton:default:disabled {
 QToolButton {
     background-color: transparent;
     border: 1px solid transparent;
-    border-radius: 6px;
+    border-radius: 4px;
     color: #475569;
     min-width: 22px;
     min-height: 22px;
@@ -410,7 +410,7 @@ QListView {
 }
 
 QListView::item {
-    border-radius: 6px;
+    border-radius: 4px;
 }
 
 QTreeView::item,
@@ -530,7 +530,7 @@ QMenu {
 }
 
 QMenu::item {
-    border-radius: 5px;
+    border-radius: 4px;
     min-height: 20px;
     padding: 6px 24px 6px 9px;
 }
@@ -558,7 +558,7 @@ QToolTip,
 QWidget QToolTip {
     background-color: #f1f5f9;
     border: 1px solid #e2e8f0;
-    border-radius: 6px;
+    border-radius: 4px;
     color: #0f172a;
     padding: 5px 9px;
 }

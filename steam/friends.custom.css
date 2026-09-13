@@ -70,7 +70,7 @@ body {
     background-color: var(--halon-border-hover) !important;
     background-clip: padding-box !important;
     border: 3px solid transparent !important;
-    border-radius: 9999px !important;
+    border-radius: 3px !important;           /* half the thumb's thickness */
 }
 
 ::-webkit-scrollbar-thumb:hover {
@@ -345,7 +345,7 @@ textarea.DialogInput {
 .DialogToggleField_Control {
     background: var(--halon-surface-secondary) !important;
     border: 1px solid var(--halon-border-control) !important;
-    border-radius: 9999px !important;       /* --radius-pill */
+    border-radius: 4px !important;          /* --radius-small */
     color: var(--halon-text-secondary) !important;
     font-size: 11px !important;
     overflow: hidden !important;
@@ -353,7 +353,7 @@ textarea.DialogInput {
 
 .DialogToggleField_Option {
     text-transform: uppercase !important;
-    letter-spacing: .02em !important;
+    letter-spacing: .04em !important;
     background: transparent !important;
     color: var(--halon-text-secondary) !important;
 }
@@ -410,7 +410,7 @@ textarea.DialogInput {
     bottom: auto !important;
     background: var(--halon-accent) !important;
     border: 2px solid var(--halon-surface-default) !important;
-    border-radius: 9999px !important;
+    border-radius: 50% !important;
     box-shadow: 0 1px 2px var(--halon-shadow-item) !important;
 }
 
@@ -497,7 +497,7 @@ textarea.DialogInput {
 }
 
 .ModalPosition_Content {
-    border-radius: 10px !important;         /* --radius-window */
+    border-radius: 8px !important;          /* --radius-default */
     box-shadow: 0 16px 48px var(--halon-shadow-modal) !important;
     color: var(--halon-text-body) !important;
 }
@@ -530,7 +530,7 @@ div.ModalPosition_TopBar,
 
 .ModalPosition_Dismiss .closeButton {
     background: var(--halon-surface-secondary) !important;
-    border-radius: 6px !important;          /* --radius-row */
+    border-radius: 4px !important;          /* --radius-small */
 }
 
 .ModalPosition_Dismiss .closeButton .SVGIcon_X_Line line {
@@ -690,7 +690,7 @@ div.ModalPosition_TopBar,
 .AddFriendButton,
 .NewChatGroupButton,
 .FriendsInvitesButton {
-    border-radius: 6px !important;           /* --radius-row */
+    border-radius: 4px !important;           /* --radius-small */
     color: var(--halon-text-on-navigation) !important;
 }
 
@@ -709,7 +709,7 @@ div.ModalPosition_TopBar,
 .ChatUnreadMessageIndicator {
     background-color: var(--halon-accent) !important;
     color: var(--halon-text-on-fill) !important;
-    border-radius: 9999px !important;        /* --radius-pill */
+    border-radius: 4px !important;           /* --radius-small */
     font-size: 11px !important;              /* --text-label */
     font-weight: 600 !important;
 }
@@ -739,7 +739,7 @@ div.ModalPosition_TopBar,
 }
 
 .friend {
-    border-radius: 6px !important;
+    border-radius: 4px !important;
     color: var(--halon-text-body) !important;
     box-shadow: none !important;
 }
@@ -841,7 +841,7 @@ div.ModalPosition_TopBar,
 
 .chatRoomTextChannel,
 .chatRoomVoiceChannel {
-    border-radius: 6px !important;
+    border-radius: 4px !important;
     color: var(--halon-text-secondary) !important;
 }
 

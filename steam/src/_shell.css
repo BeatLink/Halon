@@ -68,7 +68,7 @@
 
 /* Window controls — flat icon buttons on the frame (§6.1's flat weight). */
 .DesktopUI .title-area-icon {
-    border-radius: 6px !important;          /* --radius-row */
+    border-radius: 4px !important;          /* --radius-small */
     transition: background-color 120ms ease-out;
 }
 
@@ -146,7 +146,7 @@
 %NavTab%%NavTabSelected%:not(%NavTabDisabled%) %NavTabLabel%::after {
     background: @accent !important;
     height: 2px !important;
-    border-radius: 9999px !important;
+    border-radius: 1px !important;           /* half the bar's thickness */
 }
 
 %NavTab%%NavTabDisabled% %NavTabLabel% {

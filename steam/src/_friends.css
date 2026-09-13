@@ -77,7 +77,7 @@
 .AddFriendButton,
 .NewChatGroupButton,
 .FriendsInvitesButton {
-    border-radius: 6px !important;           /* --radius-row */
+    border-radius: 4px !important;           /* --radius-small */
     color: @text-on-navigation !important;
 }
 
@@ -96,7 +96,7 @@
 .ChatUnreadMessageIndicator {
     background-color: @accent !important;
     color: @text-on-fill !important;
-    border-radius: 9999px !important;        /* --radius-pill */
+    border-radius: 4px !important;           /* --radius-small */
     font-size: 11px !important;              /* --text-label */
     font-weight: 600 !important;
 }
@@ -126,7 +126,7 @@
 }
 
 .friend {
-    border-radius: 6px !important;
+    border-radius: 4px !important;
     color: @text-body !important;
     box-shadow: none !important;
 }
@@ -228,7 +228,7 @@
 
 .chatRoomTextChannel,
 .chatRoomVoiceChannel {
-    border-radius: 6px !important;
+    border-radius: 4px !important;
     color: @text-secondary !important;
 }
 

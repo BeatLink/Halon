@@ -210,7 +210,10 @@ if (dark) {
         readFileSync(join(root, "gtk/Halon/index.theme"), "utf8")
             .replace(/Name=Halon/, "Name=Halon-Dark")
             .replace(/GtkTheme=Halon/, "GtkTheme=Halon-Dark")
-            .replace(/MetacityTheme=Halon/, "MetacityTheme=Halon-Dark"));
+            .replace(/MetacityTheme=Halon/, "MetacityTheme=Halon-Dark")
+            /* Colloid ships a dark variant; without this the generated file
+               silently reverts the dark theme to the light icon set. */
+            .replace(/IconTheme=Colloid$/m, "IconTheme=Colloid-Dark"));
     /* Entry files mirror Halon's own: base resource, tokens, reset, components.
        The base import is load-bearing — a named theme replaces the default
        stylesheet — and GTK 4's resources are gtk.css / gtk-dark.css only. */

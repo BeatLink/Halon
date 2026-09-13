@@ -103,10 +103,7 @@ const METRICS = `    --font-family-interface:
     --focus-ring-width: 3px;
 
     --radius-small: 4px;
-    --radius-row: 6px;
     --radius-default: 8px;
-    --radius-window: 10px;
-    --radius-pill: 9999px;
 
     --text-label: 11px;
     --text-caption: 12px;

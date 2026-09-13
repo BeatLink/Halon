@@ -42,7 +42,7 @@
 %GameListEntry% {
     box-sizing: border-box !important;
     border: none !important;
-    border-radius: 6px !important;           /* --radius-row */
+    border-radius: 4px !important;           /* --radius-small */
     background-color: transparent !important;
     color: @text-body !important;
     font-size: 13px !important;

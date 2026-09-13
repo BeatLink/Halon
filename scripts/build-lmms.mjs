@@ -128,7 +128,7 @@ QTreeView {
 
 QTreeWidget::item {
 	padding: 5px 8px;
-	border-radius: 6px;
+	border-radius: 4px;
 }
 
 QTreeWidget::item:hover,
@@ -226,7 +226,7 @@ QMenu::item {
 	color: ${t("text-body")};
 	padding: 6px 32px 6px 22px;
 	margin: 1px 0px;
-	border-radius: 5px;
+	border-radius: 4px;
 }
 
 QMenu::item:selected {
@@ -278,7 +278,7 @@ QMenuBar::item {
 	background: transparent;
 	color: ${t("text-on-navigation")};
 	padding: 5px 9px;
-	border-radius: 6px;
+	border-radius: 4px;
 }
 
 QMenuBar::item:selected {
@@ -695,14 +695,14 @@ QScrollBar::add-page, QScrollBar::sub-page {
 QScrollBar::handle:horizontal {
 	background: ${t("border-hover")};
 	border: 3px solid transparent;
-	border-radius: 5px;
+	border-radius: 4px;
 	min-width: 24px;
 }
 
 QScrollBar::handle:vertical {
 	background: ${t("border-hover")};
 	border: 3px solid transparent;
-	border-radius: 5px;
+	border-radius: 4px;
 	min-height: 24px;
 }
 
@@ -717,7 +717,7 @@ QScrollBar::handle:disabled {
 lmms--gui--EffectRackView QScrollBar::handle:vertical:disabled {
 	background: ${t("border-default")};
 	border: 3px solid transparent;
-	border-radius: 5px;
+	border-radius: 4px;
 }
 
 QScrollBar::add-line, QScrollBar::sub-line {
@@ -919,7 +919,7 @@ QToolButton, QToolButton::menu-button {
 	margin: 1px;
 	padding: 3px;
 	border: 1px solid transparent;
-	border-radius: 6px;
+	border-radius: 4px;
 	background: transparent;
 	font-size: 10px;
 	color: ${t("text-on-navigation")};
@@ -1125,13 +1125,13 @@ lmms--gui--SubWindow > QLabel {
 lmms--gui--SubWindow > QPushButton {
 	background-color: transparent;
 	border: 1px solid transparent;
-	border-radius: 6px;
+	border-radius: 4px;
 }
 
 lmms--gui--SubWindow > QPushButton:hover {
 	background-color: ${fade("text-heading", 0.12)};
 	border: 1px solid ${t("border-default")};
-	border-radius: 6px;
+	border-radius: 4px;
 }
 
 lmms--gui--TabWidget {

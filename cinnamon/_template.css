@@ -52,7 +52,7 @@ stage {
 .applet-box {
     color: @text-on-navigation;
     padding: 0 6px;
-    border-radius: 6px;
+    border-radius: 4px;
     transition-duration: 120ms;
 }
 
@@ -90,7 +90,7 @@ stage {
 .grouped-window-list-item-box,
 .window-list-item-box {
     color: @text-on-navigation;
-    border-radius: 6px;
+    border-radius: 4px;
     padding: 1px 8px;
     margin: 2px 1px;
     transition-duration: 120ms;
@@ -121,7 +121,7 @@ stage {
 .grouped-window-list-badge {
     background-color: @accent;
     color: @text-on-fill;
-    border-radius: 9999px;
+    border-radius: 4px;
 }
 
 .grouped-window-list-number-label {
@@ -165,7 +165,7 @@ stage {
 .popup-menu-item {
     padding: 6px 9px;
     spacing: 9px;
-    border-radius: 6px;
+    border-radius: 4px;
     color: @text-body;
     transition-duration: 100ms;
 }
@@ -204,7 +204,7 @@ stage {
    surface and reads as part of the same menu. */
 .popup-sub-menu {
     background-color: @surface-default;
-    border-radius: 6px;
+    border-radius: 4px;
 }
 
 .popup-menu-arrow {
@@ -269,7 +269,7 @@ stage {
 .menu-application-button,
 .menu-category-button {
     padding: 5px 8px;
-    border-radius: 6px;
+    border-radius: 4px;
     color: @text-body;
     spacing: 8px;
 }
@@ -290,7 +290,7 @@ stage {
 
 .menu-favorites-button {
     padding: 6px;
-    border-radius: 6px;
+    border-radius: 4px;
 }
 
 .menu-favorites-button:hover {
@@ -370,7 +370,7 @@ stage {
     background-color: @surface-shell;
     color: @text-heading;
     border: none;
-    border-radius: 6px;
+    border-radius: 4px;
     padding: 5px 9px;
     font-size: 12px;
 }
@@ -435,7 +435,7 @@ stage {
     background-color: @surface-shell-hover;
     background-gradient-direction: none;
     border: none;
-    border-radius: 6px;
+    border-radius: 4px;
     color: @text-heading;
     padding: 6px 12px;
     font-size: 13px;
@@ -523,7 +523,7 @@ stage {
 
 .switcher-list .item-box {
     padding: 8px;
-    border-radius: 6px;
+    border-radius: 4px;
 }
 
 .switcher-list .item-box:outlined,
@@ -544,7 +544,7 @@ stage {
 
 .workspace-thumbnail {
     background-color: @surface-secondary;
-    border-radius: 6px;
+    border-radius: 4px;
 }
 
 .workspace-thumbnail:active,
@@ -562,7 +562,7 @@ stage {
 
 .workspace-button {
     color: @text-on-navigation;
-    border-radius: 6px;
+    border-radius: 4px;
     padding: 2px 6px;
 }
 
@@ -604,7 +604,7 @@ stage {
 .calendar-change-month-back,
 .calendar-change-month-forward {
     color: @text-secondary;
-    border-radius: 6px;
+    border-radius: 4px;
     padding: 4px;
 }
 
@@ -615,7 +615,7 @@ stage {
 }
 
 .calendar-day-base {
-    border-radius: 6px;
+    border-radius: 4px;
     padding: 4px;
     color: @text-body;
     font-size: 12px;
@@ -717,7 +717,7 @@ StScrollView StScrollBar StBin#trough {
 StScrollView StScrollBar StButton#vhandle,
 StScrollView StScrollBar StButton#hhandle {
     background-color: @border-hover;
-    border-radius: 9999px;
+    border-radius: 3px;
     border: none;
     margin: 2px;
 }
@@ -784,7 +784,7 @@ StScrollView StScrollBar StButton#hhandle:active {
 .appmenu-system-button {
     background-color: @surface-default;
     border: 1px solid @border-default;
-    border-radius: 9999px;
+    border-radius: 4px;
     color: @text-secondary;
 }
 
@@ -817,7 +817,7 @@ StScrollView StScrollBar StButton#hhandle:active {
 .appmenu-sidebar-button,
 .appmenu-system-button {
     color: @text-body;
-    border-radius: 6px;
+    border-radius: 4px;
     padding: 5px 8px;
 }
 
@@ -892,7 +892,7 @@ StScrollView StScrollBar StButton#hhandle:active {
 }
 
 .calendar-event-button {
-    border-radius: 6px;
+    border-radius: 4px;
     padding: 6px 8px;
     color: @text-body;
 }
@@ -1038,7 +1038,7 @@ StScrollView StScrollBar StButton#hhandle:active {
 .sound-player-generic-coverart {
     background-color: @surface-secondary;
     color: @text-tertiary;
-    border-radius: 6px;
+    border-radius: 4px;
 }
 
 /* Transient OSDs are toasts and take the frame colours, per §6.6. */
@@ -1089,7 +1089,7 @@ StScrollView StScrollBar StButton#hhandle:active {
 
 .grouped-window-list-notifications-badge {
     background-color: @accent;
-    border-radius: 9999px;
+    border-radius: 4px;
 }
 
 .grouped-window-list-notifications-badge-label {
@@ -1102,7 +1102,7 @@ StScrollView StScrollBar StButton#hhandle:active {
     background-color: @surface-shell;
     color: @text-heading;
     border: none;
-    border-radius: 6px;
+    border-radius: 4px;
     padding: 3px 9px;
     font-size: 12px;
 }
@@ -1126,7 +1126,7 @@ StScrollView StScrollBar StButton#hhandle:active {
     background-color: @surface-shell-hover;
     color: @text-heading;
     border: none;
-    border-radius: 6px;
+    border-radius: 4px;
     font-size: 14px;
 }
 

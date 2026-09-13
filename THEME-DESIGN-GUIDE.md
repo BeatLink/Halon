@@ -616,8 +616,10 @@ produces a capsule on a badge and a circle on anything square, and two decisions
 name. Cutting it forces the distinction the theme actually wants. A badge takes `--radius-small`,
 like every other small rectangle — a chip, not a lozenge, which also stops it competing with the
 filled accent button for the eye. A round thing that is genuinely round says so with `50%`, which is
-a shape, not a tier, and never appears on something that is not square. And a bar that wants to be a
-capsule gets there by the rule below rather than by a token.
+a shape, not a tier, and never appears on something that is not square. A framework with no
+percentage radius — GTK, and Cinnamon's St among them — writes `9999px` there instead; on a square
+the two are the same instruction, and that is the one place the number is still right. And a bar that
+wants to be a capsule gets there by the rule below rather than by a token.
 
 Tabs are the one interactive thing on the larger rung, and the theme had already decided why: a
 selected tab is a raised card (§1.4, §6.4), not a highlighted strip. It carries the content below it,

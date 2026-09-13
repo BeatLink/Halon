@@ -23,14 +23,13 @@
     --halon-space-4: 8px;
     --halon-space-5: 12px;
     --halon-radius-small: 4px;
-    --halon-radius-row: 6px;
     --halon-radius-default: 8px;
     --halon-text-control: 13px;
 
     /* §4.2: one control height across the toolbar row */
     --tab-min-height: var(--halon-row-height) !important;
     --toolbarbutton-inner-padding: var(--halon-space-4) !important;
-    --toolbarbutton-border-radius: var(--halon-radius-row) !important;
+    --toolbarbutton-border-radius: var(--halon-radius-small) !important;
     --urlbar-min-height: var(--halon-control-height) !important;
     --urlbar-icon-padding: var(--halon-space-4);
     --arrowpanel-border-radius: var(--halon-radius-default) !important;
@@ -63,7 +62,7 @@
 }
 
 .tab-background {
-    border-radius: var(--halon-radius-row) !important;
+    border-radius: var(--halon-radius-small) !important;
     margin-block: 2px !important;
 }
 
@@ -98,12 +97,12 @@
 #nav-bar toolbarbutton:not(.titlebar-button) > .toolbarbutton-badge-stack {
     min-width: var(--halon-icon-button-size) !important;
     height: var(--halon-icon-button-size) !important;
-    border-radius: var(--halon-radius-row) !important;
+    border-radius: var(--halon-radius-small) !important;
 }
 
 /* Bookmarks bar — list rows, so the row radius and row padding, not the button ones. */
 #PersonalToolbar {
-    --toolbarbutton-border-radius: var(--halon-radius-row) !important;
+    --toolbarbutton-border-radius: var(--halon-radius-small) !important;
     padding-inline: var(--halon-space-4) !important;
 }
 
