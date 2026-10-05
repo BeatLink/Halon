@@ -47,6 +47,8 @@ permissions:
 jobs:
   publish:
     runs-on: ubuntu-latest
+    # Signing talks to a service that can stall; fail in minutes, not hours.
+    timeout-minutes: 20
 
     env:
       # A tag run always signs, and always to the public listing; a manual run
@@ -108,9 +110,14 @@ jobs:
           # A listed channel needs listing metadata — AMO requires a summary,
           # a category and a license for the first public version, and rejects
           # the submission without them. Unlisted signing has no listing.
-          metadata=()
+          #
+          # --approval-timeout 0 stops web-ext waiting for the review to
+          # finish. Mozilla review takes hours to days, and without this the
+          # step sits there until the job hits its own limit and fails a
+          # submission that in fact succeeded.
+          extra=()
           if [ "$CHANNEL" = "listed" ]; then
-            metadata=(--amo-metadata firefox/amo-metadata.json)
+            extra=(--amo-metadata firefox/amo-metadata.json --approval-timeout 0)
           fi
           npx --yes web-ext@10 sign \
             --source-dir firefox \
@@ -118,7 +125,7 @@ jobs:
             --channel "$CHANNEL" \
             --api-key "$AMO_JWT_ISSUER" \
             --api-secret "$AMO_JWT_SECRET" \
-            "${metadata[@]}"
+            "${extra[@]}"
 
       # `build` writes a .zip and `sign` writes the signed .xpi beside it, so an
       # unsigned run still leaves something installable-by-hand to download.
