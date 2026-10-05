@@ -58,6 +58,11 @@ AMO requires listing metadata for a public version, which lives in
 [`amo-metadata.json`](amo-metadata.json) — summary, category and license. It is listing data, not
 part of the extension, so it is excluded from the package.
 
+The license there is `CC-BY-SA-4.0`, not the GPL-3.0 this repository ships under, because AMO allows
+**only Creative Commons licenses on a theme version** — the SPDX list, GPL included, is for
+extensions, and a GPL slug is rejected outright. CC-BY-SA is the share-alike equivalent, so the
+terms carry over; the repository's own license is unchanged.
+
 Run the workflow **by hand with channel `unlisted`** for a self-hostable signed `.xpi`, attached to
 the release immediately with no review. A manual run defaults to not signing at all, so a fork
 without the secrets can still lint and package.
