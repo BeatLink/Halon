@@ -631,7 +631,7 @@
             echo "  halon-shots-lightdm     render the greeter against its mock and screenshot it"
             echo
             echo "  theme source:  gtk/Halon"
-            echo "  live symlink:  ~/.themes/Halon"
+            echo "  live session:  reads the installed theme, so a repo edit needs a rebuild"
           '';
         };
       }) // {
