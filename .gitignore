@@ -2,3 +2,4 @@ result
 result-*
 .direnv/
 web-ext-artifacts/
+.claude/
