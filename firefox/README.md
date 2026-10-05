@@ -55,8 +55,15 @@ A **tag run goes to the `listed` channel** — the public addons.mozilla.org lis
 enters Mozilla's review queue. Review returns no file, so the tag's GitHub release carries release
 notes pointing at AMO and no `.xpi`; the installable build is the one AMO publishes once it passes.
 AMO requires listing metadata for a public version, which lives in
-[`amo-metadata.json`](amo-metadata.json) — summary, category and license. It is listing data, not
-part of the extension, so it is excluded from the package.
+[`amo-metadata.json`](amo-metadata.json) — summary, description, category, license and the two
+links. It is listing data, not part of the extension, so it is excluded from the package.
+
+AMO applies that file when it **creates** the listing. An add-on that is already listed keeps the
+product page it has, so a later tag run will not push an edited description back; change it in
+*Edit Product Page* on the developer hub as well, and keep the two in step so a first submission
+elsewhere is not bare. The file carries no tags, because AMO's tag vocabulary is a fixed list of
+function words — ad blocker, privacy, shopping and the like — with nothing in it that describes a
+theme.
 
 The license there is `CC-BY-SA-4.0`, not the GPL-3.0 this repository ships under, because AMO allows
 **only Creative Commons licenses on a theme version** — the SPDX list, GPL included, is for

@@ -1,10 +1,16 @@
 {
     "summary": {
-        "en-US": "Slate and blue, one accent, hairline structure. WCAG 2.1 AA in both schemes."
+        "en-US": "Grey with one blue, thin lines, nothing shouting for attention. Light and dark are both in here and both are contrast-checked. Matching themes for GTK, Cinnamon, Tilix and VS Code."
+    },
+    "description": {
+        "en-US": "Grey, with one blue.\n\nThe blue only turns up where it means something: the tab you're on, a focused address bar, an icon asking for attention. Everything else is slate and thin lines. After an hour you stop noticing the browser, which is the point.\n\nLight and dark are both in here, and Firefox follows whatever your system is set to, so there's nothing to choose.\n\nThe dark side has been contrast-checked properly, every text pairing against WCAG 2.1 AA rather than just the obvious ones. A lot of dark themes skip that and you feel it at one in the morning.\n\nIf you also use GTK, Cinnamon, Tilix or VS Code, there are matching versions built from the same colours.\n\nOne thing worth knowing: Firefox themes can change colours but not sizes. The tighter toolbar and tabs this was drawn with need an optional stylesheet, which is in the repo along with everything else.\n\nhttps://github.com/BeatLink/Halon"
     },
     "categories": ["solid"],
     "homepage": {
         "en-US": "https://github.com/BeatLink/Halon"
+    },
+    "support_url": {
+        "en-US": "https://github.com/BeatLink/Halon/issues"
     },
     "version": {
         "license": "CC-BY-SA-4.0"
