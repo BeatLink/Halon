@@ -55,6 +55,23 @@ Finally, point Qt at the configurator, in `~/.profile` or your session environme
 export QT_QPA_PLATFORMTHEME=qt5ct   # qt6ct for Qt 6-only sessions
 ```
 
+**A shell profile does not reach `systemd --user`.** Anything started as a user service — a password
+manager, a tray application, a sync client — inherits the user manager's environment, which gets the
+variable only when the session hands it over with `systemctl --user import-environment` or
+`dbus-update-activation-environment`. A unit that starts before that call runs sees no variable, loads
+no platform theme, and takes neither the palette nor the style sheet, while the same application
+launched from the menu a minute later is themed — so the symptom is an application that is sometimes
+right and sometimes not. Put the variable where the user manager reads it itself, before it starts
+anything:
+
+```sh
+mkdir -p ~/.config/environment.d
+echo QT_QPA_PLATFORMTHEME=qt5ct > ~/.config/environment.d/50-qt-platform-theme.conf
+```
+
+That is read at login, so it does not race the session. Keep the profile export as well: it is what
+covers applications started from a shell.
+
 **The style sheet's asset paths must be absolute.** Qt resolves `url()` against the application's
 working directory, not against the style sheet, so the relative paths as generated only work for a
 program started from this directory. Rewrite them once on install:
@@ -82,6 +99,15 @@ paths to absolute store paths for you:
 ```
 
 The style sheet lands at `<store path>/share/halon/qt/Halon.qss`; give qt5ct that path.
+
+On NixOS, `qt.platformTheme = "qt5ct"` writes the variable into the login session only, which leaves
+the user-service gap above open. Close it in the same place:
+
+```nix
+environment.etc."environment.d/50-qt-platform-theme.conf".text = ''
+  QT_QPA_PLATFORMTHEME=${config.qt.platformTheme}
+'';
+```
 
 ## How the guide maps onto Qt
 
