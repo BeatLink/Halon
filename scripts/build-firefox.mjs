@@ -32,7 +32,7 @@ import { fileURLToPath } from "node:url";
 const root = process.env.HALON_ROOT ?? join(dirname(fileURLToPath(import.meta.url)), "..");
 const check = process.argv.includes("--check");
 
-const VERSION = "1.0.2";
+const VERSION = "1.0.3";
 
 /* ---------- tokens ---------- */
 
@@ -160,7 +160,7 @@ const manifest = () => ({
     manifest_version: 2,
     name: "Halon",
     version: VERSION,
-    description: "Slate and blue, one accent, hairline structure. WCAG 2.1 AA in both schemes.",
+    description: "Grey with one blue, thin lines, nothing shouting for attention. Light and dark are both in here and both are contrast-checked. Matching themes for GTK, Cinnamon, Tilix and VS Code.",
     browser_specific_settings: { gecko: { id: "halon@halon.theme" } },
     icons: { 48: "icon.svg", 96: "icon.svg" },
     theme: variant("light"),

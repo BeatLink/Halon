@@ -1,8 +1,8 @@
 {
     "manifest_version": 2,
     "name": "Halon",
-    "version": "1.0.2",
-    "description": "Slate and blue, one accent, hairline structure. WCAG 2.1 AA in both schemes.",
+    "version": "1.0.3",
+    "description": "Grey with one blue, thin lines, nothing shouting for attention. Light and dark are both in here and both are contrast-checked. Matching themes for GTK, Cinnamon, Tilix and VS Code.",
     "browser_specific_settings": {
         "gecko": {
             "id": "halon@halon.theme"
