@@ -27,14 +27,14 @@ unbranded/Developer/Nightly build with `xpinstall.signatures.required = false`, 
 through [addons.mozilla.org](https://addons.mozilla.org/developers/):
 
 ```sh
-npx web-ext@10 build --source-dir firefox --ignore-files README.md userChrome.css
+npx web-ext@10 build --source-dir firefox --ignore-files README.md userChrome.css amo-metadata.json
 ```
 
 ## Releasing
 
 [`.github/workflows/firefox-release.yml`](../.github/workflows/firefox-release.yml) lints, packages
-and signs the theme, then attaches the signed `.xpi` to a GitHub release. It is driven by a tag
-named for this port, because every port here versions independently:
+and signs the theme, then submits it to [addons.mozilla.org](https://addons.mozilla.org/). It is
+driven by a tag named for this port, because every port here versions independently:
 
 ```sh
 # bump VERSION in scripts/build-firefox.mjs, then
@@ -49,10 +49,18 @@ of a stale manifest is worse than none, because it looks authoritative.
 
 It needs two repository secrets, both from
 [the AMO key page](https://addons.mozilla.org/developers/addon/api/key/): `AMO_JWT_ISSUER` and
-`AMO_JWT_SECRET`. The default channel is `unlisted`, which returns a self-hostable signed `.xpi`
-immediately; run the workflow manually with **channel: listed** to submit it to the public
-addons.mozilla.org listing for review, which returns no file and so attaches nothing. A manual run
-defaults to not signing at all, so a fork without the secrets can still lint and package.
+`AMO_JWT_SECRET`.
+
+A **tag run goes to the `listed` channel** — the public addons.mozilla.org listing, where the version
+enters Mozilla's review queue. Review returns no file, so the tag's GitHub release carries release
+notes pointing at AMO and no `.xpi`; the installable build is the one AMO publishes once it passes.
+AMO requires listing metadata for a public version, which lives in
+[`amo-metadata.json`](amo-metadata.json) — summary, category and license. It is listing data, not
+part of the extension, so it is excluded from the package.
+
+Run the workflow **by hand with channel `unlisted`** for a self-hostable signed `.xpi`, attached to
+the release immediately with no review. A manual run defaults to not signing at all, so a fork
+without the secrets can still lint and package.
 
 ## Install with Nix
 

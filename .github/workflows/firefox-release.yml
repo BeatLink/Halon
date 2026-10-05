@@ -14,6 +14,13 @@
 #   AMO_JWT_SECRET   the JWT secret
 # A tag run needs them and fails without them. A manual run defaults to not
 # signing, so a fork with no secrets can still lint and package the theme.
+#
+# A tag run submits to the `listed` channel: the public addons.mozilla.org
+# listing, where the version enters Mozilla's review queue. Review returns no
+# file, so a tag run attaches nothing to the GitHub release and the installable
+# build is the one AMO publishes once it passes. Run the workflow by hand with
+# channel `unlisted` to get a self-hostable signed .xpi attached to the release
+# instead.
 
 name: Publish Firefox theme
 
@@ -28,6 +35,7 @@ on:
         type: choice
         default: unlisted
         options: [unlisted, listed]
+      # A tag run ignores these inputs: it is always a listed, signed release.
       sign:
         description: "Sign through AMO (needs the AMO secrets)"
         type: boolean
@@ -41,8 +49,9 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      # A tag run always signs; a manual run signs only when asked.
-      CHANNEL: ${{ inputs.channel || 'unlisted' }}
+      # A tag run always signs, and always to the public listing; a manual run
+      # signs only when asked, and defaults to a self-hostable unlisted build.
+      CHANNEL: ${{ github.event_name == 'push' && 'listed' || inputs.channel }}
       SIGN: ${{ github.event_name == 'push' || inputs.sign }}
 
     steps:
@@ -77,13 +86,13 @@ jobs:
         run: >
           npx --yes web-ext@10 lint
           --source-dir firefox
-          --ignore-files README.md userChrome.css
+          --ignore-files README.md userChrome.css amo-metadata.json
 
       - name: Build the unsigned package
         run: >
           npx --yes web-ext@10 build
           --source-dir firefox
-          --ignore-files README.md userChrome.css
+          --ignore-files README.md userChrome.css amo-metadata.json
           --overwrite-dest
 
       - name: Sign through AMO
@@ -96,14 +105,20 @@ jobs:
             echo "::error::AMO_JWT_ISSUER and AMO_JWT_SECRET are not set — cannot sign."
             exit 1
           fi
-          # A listed submission enters review and returns no file, so the
-          # unsigned build from the previous step stays as the artifact.
+          # A listed channel needs listing metadata — AMO requires a summary,
+          # a category and a license for the first public version, and rejects
+          # the submission without them. Unlisted signing has no listing.
+          metadata=()
+          if [ "$CHANNEL" = "listed" ]; then
+            metadata=(--amo-metadata firefox/amo-metadata.json)
+          fi
           npx --yes web-ext@10 sign \
             --source-dir firefox \
-            --ignore-files README.md userChrome.css \
+            --ignore-files README.md userChrome.css amo-metadata.json \
             --channel "$CHANNEL" \
             --api-key "$AMO_JWT_ISSUER" \
-            --api-secret "$AMO_JWT_SECRET"
+            --api-secret "$AMO_JWT_SECRET" \
+            "${metadata[@]}"
 
       # `build` writes a .zip and `sign` writes the signed .xpi beside it, so an
       # unsigned run still leaves something installable-by-hand to download.
@@ -113,24 +128,55 @@ jobs:
           path: web-ext-artifacts/*
           if-no-files-found: error
 
-      # Unlisted signing returns a self-hostable .xpi; that is the file users
-      # install, so it belongs on the release rather than in a CI artifact that
-      # expires. A listed submission has nothing to attach and is skipped.
-      - name: Attach to the release
-        if: github.event_name == 'push' && env.CHANNEL == 'unlisted'
+      # A tag run always gets a GitHub release, so the tag is not a dead end for
+      # anyone who finds it. What goes on it depends on the channel: unlisted
+      # signing returns a self-hostable .xpi, which is the file users install,
+      # while a listed submission is still in review and has no file yet.
+      - name: Publish the release
+        if: github.event_name == 'push'
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
+          version="${GITHUB_REF_NAME#firefox-v}"
+          note=$(mktemp)
+
+          if [ "$CHANNEL" = "listed" ]; then
+            {
+              echo "Submitted to addons.mozilla.org and awaiting Mozilla review."
+              echo "Install it from the AMO listing once it is approved — there is no file attached to this release."
+            } > "$note"
+          else
+            echo "Signed for self-hosting. Download the \`.xpi\` below and open it in Firefox to install." > "$note"
+          fi
+
+          # --generate-notes and --notes-file cannot be combined, so the release
+          # is created with the generated changelog and the channel note is
+          # prepended to it afterwards.
+          if ! gh release view "$GITHUB_REF_NAME" >/dev/null 2>&1; then
+            gh release create "$GITHUB_REF_NAME" \
+              --title "Halon for Firefox $version" \
+              --generate-notes
+          fi
+          # Re-running the workflow must not stack a second copy of the note.
+          current=$(gh release view "$GITHUB_REF_NAME" --json body -q .body)
+          if ! printf '%s' "$current" | grep -qFf "$note"; then
+            body=$(mktemp)
+            { cat "$note"; echo; printf '%s\n' "$current"; } > "$body"
+            gh release edit "$GITHUB_REF_NAME" --notes-file "$body"
+          fi
+          cat "$note" >> "$GITHUB_STEP_SUMMARY"
+
+          # Review has produced no file yet, so there is nothing to attach.
+          if [ "$CHANNEL" = "listed" ]; then
+            exit 0
+          fi
+
           xpi=""
           for candidate in web-ext-artifacts/*.xpi; do
             [ -e "$candidate" ] && xpi="$candidate" && break
           done
           if [ -z "$xpi" ]; then
-            echo "::error::signing produced no .xpi — nothing to attach."
+            echo "::error::unlisted signing produced no .xpi — nothing to attach."
             exit 1
           fi
-          gh release view "$GITHUB_REF_NAME" >/dev/null 2>&1 ||
-            gh release create "$GITHUB_REF_NAME" \
-              --title "Halon for Firefox ${GITHUB_REF_NAME#firefox-v}" \
-              --generate-notes
           gh release upload "$GITHUB_REF_NAME" "$xpi" --clobber

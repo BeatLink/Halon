@@ -1,0 +1,12 @@
+{
+    "summary": {
+        "en-US": "Slate and blue, one accent, hairline structure. WCAG 2.1 AA in both schemes."
+    },
+    "categories": ["solid"],
+    "homepage": {
+        "en-US": "https://github.com/BeatLink/Halon"
+    },
+    "version": {
+        "license": "GPL-3.0-or-later"
+    }
+}
