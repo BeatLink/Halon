@@ -32,7 +32,7 @@ import { fileURLToPath } from "node:url";
 const root = process.env.HALON_ROOT ?? join(dirname(fileURLToPath(import.meta.url)), "..");
 const check = process.argv.includes("--check");
 
-const VERSION = "1.0.1";
+const VERSION = "1.0.2";
 
 /* ---------- tokens ---------- */
 
