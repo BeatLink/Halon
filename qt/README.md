@@ -141,6 +141,17 @@ environment.etc."environment.d/50-qt-platform-theme.conf".text = ''
 - **Indicators need the SVG image plugin.** The check, radio, chevron and branch glyphs are SVGs, so
   an application whose `QT_PLUGIN_PATH` omits `qtsvg` renders every one of them empty — borders and
   fills still paint, so the failure is quiet. Most packaged Qt applications already carry it.
+- **An application that sets its own style sheet keeps only the palette.** `setStyleSheet` on the
+  `QApplication` replaces the sheet rather than adding to it, and qt5ct installs Halon's during
+  `QApplication` construction — so any application that sets one of its own afterwards wins. The
+  palette is untouched, which is §4's named failure: the right colours at the host toolkit's
+  proportions. KeePassXC is the example to hand. Its `Application::applyTheme()` reads
+  `:/styles/base/classicstyle.qss` and calls `setStyleSheet` with it even in the `classic` theme that
+  otherwise defers to the system, so the 32px control height, the 28px rows, the 34px frame, the
+  radius ladder and the SVG indicators are all dropped for twenty-odd lines of its own. There is no
+  hook to load Halon after it; only a port of its own would cover the application, as
+  [`lmms/`](../lmms) does for LMMS.
+
 - **KDE applications are only partly covered.** Plasma reads its own colour scheme format
   (`.colors`), not qt5ct's, so a Plasma session needs that file instead. This port targets the
   qt5ct/qt6ct path, which is what non-Plasma desktops use.
