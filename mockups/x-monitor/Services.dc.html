@@ -1,0 +1,267 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Heimdall running services</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+body{margin:0;background:#060b14}
+a{color:#60a5fa}a:hover{color:#93c5fd}
+.page{background:#060b14;color:#e2e8f0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Noto Sans",Cantarell,sans-serif;padding:24px 16px 48px;box-sizing:border-box}
+.wrap{max-width:1360px;margin:0 auto;display:flex;flex-direction:column;gap:16px}
+.card{background:#16213a;border:1px solid #334155;border-radius:8px;padding:16px;min-width:0;box-sizing:border-box}
+.lbl{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#cbd5e1;font-weight:600;margin:0}
+.muted{color:#94a3b8;font-size:12px}
+.mono{font-family:ui-monospace,"DejaVu Sans Mono",Menlo,monospace}
+.sect{font-size:14px;font-weight:600;margin:12px 0 0;color:#e2e8f0}
+.g3{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:16px}
+.sw{display:inline-block;width:10px;height:3px;border-radius:2px;vertical-align:middle;margin-right:6px}
+.axis{display:flex;justify-content:space-between;color:#94a3b8;font-size:11px;margin-top:4px}
+.head{display:flex;justify-content:space-between;align-items:baseline;gap:8px;flex-wrap:wrap}
+svg.chart{display:block;width:100%;height:110px;margin-top:8px}
+svg.chart path{vector-effect:non-scaling-stroke}
+svg.chart line{vector-effect:non-scaling-stroke;stroke:#334155;stroke-width:1}
+.stack{display:flex;height:14px;border-radius:4px;overflow:hidden;gap:2px;margin-top:12px}
+</style>
+</helmet>
+<div class="page">
+<div class="wrap">
+
+<div style="display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap">
+<h1 style="margin: 0; font-size: 26px; font-weight: 650">Running services</h1>
+<span class="muted">Heimdall · 18 of 19 units active</span>
+</div>
+
+<div class="card">
+<div class="head"><p class="lbl">systemd units</p><span class="muted">tile = unit · colour = state · subtitle = time in state</span></div>
+<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 8px; margin-top: 12px">
+<sc-for list="{{units}}" as="u" hint-placeholder-count="19">
+<div style="border-radius: 6px; padding: 10px 12px; background: {{u.bg}}; border: 1px solid {{u.border}}">
+<div style="display: flex; align-items: center; gap: 6px"><span style="width: 8px; height: 8px; border-radius: 50%; background: {{u.color}}; flex: none"></span><span style="font-size: 13px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{u.name}}</span></div>
+<div class="muted" style="margin-top: 4px">{{u.state}}</div>
+</div>
+</sc-for>
+</div>
+</div>
+
+<h2 class="sect">DNS</h2>
+<div class="g3">
+<div class="card">
+<div class="head"><p class="lbl">Pi-hole · queries today</p><span class="muted">42,118 · 14 clients</span></div>
+<div style="display: flex; align-items: center; gap: 20px; margin-top: 12px; flex-wrap: wrap">
+<svg viewBox="0 0 100 100" style="width: 120px; height: 120px; flex: none" role="img" aria-label="18.4 percent of queries blocked">
+<circle cx="50" cy="50" r="38" style="fill: none; stroke: #60a5fa; stroke-width: 14"></circle>
+<circle cx="50" cy="50" r="38" transform="rotate(-90 50 50)" style="fill: none; stroke: #f59e0b; stroke-width: 14; stroke-dasharray: 43.9 300"></circle>
+<circle cx="50" cy="50" r="38" transform="rotate(-23.8 50 50)" style="fill: none; stroke: #64748b; stroke-width: 14; stroke-dasharray: 14.3 300"></circle>
+<text x="50" y="49" text-anchor="middle" style="fill: #e2e8f0; font-size: 17px; font-weight: 600">18.4%</text>
+<text x="50" y="63" text-anchor="middle" style="fill: #94a3b8; font-size: 9px">blocked</text>
+</svg>
+<div style="display: flex; flex-direction: column; gap: 8px; font-size: 13px">
+<span><span class="sw" style="background: #60a5fa; height: 8px"></span>Forwarded 28,842</span>
+<span><span class="sw" style="background: #f59e0b; height: 8px"></span>Blocked 7,750</span>
+<span><span class="sw" style="background: #64748b; height: 8px"></span>Cached 5,526</span>
+<span class="muted">Blocklist 412,906 domains</span>
+</div>
+</div>
+<svg class="chart" viewBox="0 0 600 140" preserveAspectRatio="none" style="height: 60px" role="img" aria-label="Block rate, last 24 hours">
+<path d="{{pihole}}" style="fill: rgba(245,158,11,.15); stroke: #f59e0b; stroke-width: 1.5"></path>
+</svg>
+<div class="axis"><span>-24h</span><span>block rate</span><span>now</span></div>
+</div>
+<div class="card">
+<div class="head"><p class="lbl">Unbound</p><span class="muted">up 6d 4h · 3.1 q/s</span></div>
+<div style="display: flex; gap: 16px; align-items: center; margin-top: 12px">
+<svg viewBox="0 0 100 100" style="width: 104px; height: 104px; flex: none" role="img" aria-label="Cache hit rate 87 percent">
+<circle cx="50" cy="50" r="40" transform="rotate(135 50 50)" style="fill: none; stroke: #263453; stroke-width: 10; stroke-linecap: round; stroke-dasharray: 188.5 400"></circle>
+<circle cx="50" cy="50" r="40" transform="rotate(135 50 50)" style="fill: none; stroke: #10b981; stroke-width: 10; stroke-linecap: round; stroke-dasharray: 164 400"></circle>
+<text x="50" y="55" text-anchor="middle" style="fill: #e2e8f0; font-size: 19px; font-weight: 600">87%</text>
+</svg>
+<div><p class="lbl">Cache hit rate</p><div class="muted" style="margin-top: 6px">cloudflare.com resolves in 14 ms</div></div>
+</div>
+<svg class="chart" viewBox="0 0 600 140" preserveAspectRatio="none" style="height: 70px" role="img" aria-label="SERVFAIL rate with 2 percent warning line, last 24 hours">
+<line x1="0" y1="56" x2="600" y2="56" style="stroke: #f59e0b; stroke-dasharray: 4 4"></line>
+<path d="{{servfail}}" style="fill: none; stroke: #60a5fa; stroke-width: 1.5"></path>
+</svg>
+<div class="axis"><span>-24h</span><span>SERVFAIL 0.3% · dashed = 2% warning</span><span>now</span></div>
+</div>
+<div class="card">
+<div class="head"><p class="lbl">Endpoint latency</p><span class="muted">HTTP and MQTT probes · 24h</span></div>
+<div style="display: flex; flex-direction: column; gap: 10px; margin-top: 12px">
+<sc-for list="{{probes}}" as="p" hint-placeholder-count="4">
+<div style="display: flex; align-items: center; gap: 12px">
+<span style="width: 110px; font-size: 13px; flex: none">{{p.name}}</span>
+<svg viewBox="0 0 600 140" preserveAspectRatio="none" style="flex: 1; min-width: 0; height: 30px" aria-hidden="true">
+<path d="{{p.path}}" style="fill: none; stroke: {{p.color}}; stroke-width: 1.5; vector-effect: non-scaling-stroke"></path>
+</svg>
+<span class="mono" style="width: 60px; text-align: right; font-size: 13px; color: {{p.color}}">{{p.ms}}</span>
+</div>
+</sc-for>
+</div>
+<div class="muted" style="margin-top: 10px">amber = above its warning latency</div>
+</div>
+</div>
+
+<h2 class="sect">Media and cameras</h2>
+<div class="g3">
+<div class="card">
+<div class="head"><p class="lbl">Frigate · camera FPS</p><span class="muted">inference 11 ms · armed</span></div>
+<div style="display: flex; flex-direction: column; gap: 12px; margin-top: 12px">
+<sc-for list="{{cams}}" as="c" hint-placeholder-count="3">
+<div>
+<div style="display: flex; justify-content: space-between; font-size: 13px"><span>{{c.name}}</span><span class="mono" style="color: {{c.color}}">{{c.fps}} fps</span></div>
+<svg viewBox="0 0 600 140" preserveAspectRatio="none" style="display: block; width: 100%; height: 36px" aria-hidden="true">
+<line x1="0" y1="28" x2="600" y2="28" style="stroke: #334155; vector-effect: non-scaling-stroke"></line>
+<path d="{{c.path}}" style="fill: rgba(96,165,250,.15); stroke: {{c.color}}; stroke-width: 1.5; vector-effect: non-scaling-stroke"></path>
+</svg>
+</div>
+</sc-for>
+</div>
+<div class="axis"><span>-1h</span><span>line = 5 fps target</span><span>now</span></div>
+</div>
+<div class="card">
+<div class="head"><p class="lbl">qBittorrent</p><span class="muted"><span class="sw" style="background: #60a5fa"></span>↓ 3.1 MB/s <span class="sw" style="background: #c4b5fd; margin-left: 8px"></span>↑ 820 KB/s</span></div>
+<svg class="chart" viewBox="0 0 600 140" preserveAspectRatio="none" role="img" aria-label="Download above, upload mirrored below, last hour">
+<path d="{{qb.down}}" style="fill: rgba(96,165,250,.22); stroke: #60a5fa; stroke-width: 1.5"></path>
+<path d="{{qb.up}}" style="fill: rgba(196,181,253,.22); stroke: #c4b5fd; stroke-width: 1.5"></path>
+<line x1="0" y1="70" x2="600" y2="70" style="stroke: #475569"></line>
+</svg>
+<div class="axis"><span>-1h</span><span>now</span></div>
+<p class="lbl" style="margin-top: 14px">34 torrents by state</p>
+<div class="stack">
+<sc-for list="{{torrents}}" as="t" hint-placeholder-count="5"><div style="flex: {{t.n}}; background: {{t.color}}" title="{{t.label}}"></div></sc-for>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 6px 14px; margin-top: 8px">
+<sc-for list="{{torrents}}" as="t" hint-placeholder-count="5"><span class="muted"><span class="sw" style="background: {{t.color}}; height: 8px"></span>{{t.label}} {{t.n}}</span></sc-for>
+</div>
+</div>
+<div class="card">
+<div class="head"><p class="lbl">FreshRSS · 126 feeds</p><span class="muted">refreshed 22 min ago</span></div>
+<div class="stack" style="height: 18px">
+<div style="flex: 118; background: #10b981"></div><div style="flex: 6; background: #f59e0b"></div><div style="flex: 2; background: #f87171"></div>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 6px 14px; margin-top: 8px">
+<span class="muted"><span class="sw" style="background: #10b981; height: 8px"></span>Fresh 118</span>
+<span class="muted"><span class="sw" style="background: #f59e0b; height: 8px"></span>Stale 6</span>
+<span class="muted"><span class="sw" style="background: #f87171; height: 8px"></span>Erroring 2</span>
+</div>
+<p class="lbl" style="margin-top: 18px">Refresh age</p>
+<svg class="chart" viewBox="0 0 600 140" preserveAspectRatio="none" style="height: 70px" role="img" aria-label="Hours since the last refresh, a sawtooth over 24 hours">
+<line x1="0" y1="35" x2="600" y2="35" style="stroke: #f59e0b; stroke-dasharray: 4 4"></line>
+<path d="{{fresh}}" style="fill: rgba(96,165,250,.15); stroke: #60a5fa; stroke-width: 1.5"></path>
+</svg>
+<div class="axis"><span>-24h</span><span>dashed = 3 h stale limit</span><span>now</span></div>
+</div>
+</div>
+
+<h2 class="sect">Sync and tracking</h2>
+<div class="g3">
+<div class="card">
+<div class="head"><p class="lbl">Syncthing · folders</p><span class="muted">4 devices connected · 1.2 GB needed</span></div>
+<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 10px; margin-top: 12px">
+<sc-for list="{{folders}}" as="f" hint-placeholder-count="7">
+<div style="border-radius: 6px; padding: 10px 12px; border: 1px solid {{f.color}}; background: {{f.bg}}">
+<div style="display: flex; justify-content: space-between; font-size: 13px; font-weight: 600"><span>{{f.name}}</span><span style="color: {{f.color}}">{{f.pct}}%</span></div>
+<div style="height: 6px; background: #263453; border-radius: 3px; margin-top: 8px"><div style="width: {{f.pct}}%; height: 6px; background: {{f.color}}; border-radius: 3px"></div></div>
+<div class="muted" style="margin-top: 6px">{{f.note}}</div>
+</div>
+</sc-for>
+</div>
+</div>
+<div class="card">
+<div class="head"><p class="lbl">Traccar · last position</p><span class="muted">stale after 6 h</span></div>
+<div style="display: flex; flex-direction: column; gap: 12px; margin-top: 14px">
+<sc-for list="{{tracker}}" as="t" hint-placeholder-count="3">
+<div>
+<div style="display: flex; justify-content: space-between; font-size: 13px"><span>{{t.name}}</span><span class="mono" style="color: {{t.color}}">{{t.age}}</span></div>
+<div style="position: relative; height: 8px; background: #263453; border-radius: 4px; margin-top: 5px">
+<div style="width: {{t.w}}%; height: 8px; background: {{t.color}}; border-radius: 4px"></div>
+<div style="position: absolute; left: 50%; top: -3px; width: 2px; height: 14px; background: #f59e0b"></div>
+</div>
+</div>
+</sc-for>
+</div>
+<div class="axis" style="margin-top: 10px"><span>0 h</span><span>6 h</span><span>12 h</span></div>
+</div>
+</div>
+
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1560}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const OK = '#10b981', WARN = '#f59e0b', BAD = '#f87171';
+    const rng = (seed) => { let s = seed; return () => { s = (s * 16807) % 2147483647; return (s - 1) / 2147483646; }; };
+    const walk = (seed, n, base, amp, pull) => {
+      const r = rng(seed); let v = base; const out = [];
+      for (let i = 0; i < n; i++) { v += (r() - 0.5) * amp; v = v * (1 - pull) + base * pull; out.push(Math.max(0, v)); }
+      return out;
+    };
+    const pts = (vals, max, top) => vals.map((v, i) => [(i / (vals.length - 1)) * 600, top(Math.min(v / max, 1))]);
+    const line = (p) => p.map((q, i) => (i ? 'L' : 'M') + q[0].toFixed(1) + ',' + q[1].toFixed(1)).join(' ');
+    const lineOf = (vals, max) => line(pts(vals, max, (f) => 140 - f * 140));
+    const areaOf = (vals, max) => lineOf(vals, max) + ' L600,140 L0,140 Z';
+
+    const tile = (name, state, color) => ({
+      name, state, color,
+      bg: color === OK ? 'rgba(16,185,129,.07)' : color === WARN ? 'rgba(245,158,11,.1)' : 'rgba(248,113,113,.1)',
+      border: color === OK ? '#1f4d45' : color,
+    });
+    const units = [
+      ['Mosquitto', 'active · 6d'], ['Calibre Web', 'active · 6d'], ['Unbound', 'active · 6d'], ['Nginx', 'active · 6d'],
+      ['Pi-hole', 'active · 6d'], ['Home Assistant', 'active · 2d'], ['Frigate', 'active · 2d'], ['FreshRSS', 'active · 6d'],
+      ['qBittorrent', 'active · 14h'], ['Traccar', 'active · 6d'], ['Jackett', 'active · 6d'], ['Comet', 'active · 3h'],
+      ['ESPHome', 'active · 6d'], ['Homepage', 'active · 6d'], ['Blockurl', 'active · 6d'], ['Radicale', 'active · 6d'],
+      ['Syncthing', 'active · 6d'], ['Trilium', 'active · 6d'],
+    ].map(([n, s]) => tile(n, s, OK)).concat([tile('VLC', 'failed · 12m ago', BAD)]);
+
+    const pihole = areaOf(walk(3, 48, 18, 8, 0.15), 40);
+    const servfail = lineOf(walk(4, 48, 0.4, 0.5, 0.25), 5);
+
+    const probes = [
+      ['Mosquitto', 4, 9, 'round trip'], ['Calibre Web', 48, 10, 'OPDS'], ['Radicale', 22, 11, 'WebDAV'], ['Blockurl', 310, 12, 'database'],
+    ].map(([name, base, seed]) => {
+      const color = base > 200 ? WARN : '#60a5fa';
+      return { name, color, ms: base + ' ms', path: lineOf(walk(seed, 48, base, base * 0.6, 0.2), base * 2.2) };
+    });
+
+    const cams = [['Camera 1', 5.0, 21], ['Camera 2', 5.0, 22], ['Camera 3', 3.1, 23]].map(([name, fps, seed]) => ({
+      name, fps: fps.toFixed(1), color: fps < 4.5 ? WARN : '#60a5fa',
+      path: areaOf(walk(seed, 60, fps, fps < 4.5 ? 2.5 : 0.3, 0.3), 6.25),
+    }));
+
+    const qd = walk(31, 60, 3100, 2600, 0.12), qu = walk(32, 60, 820, 600, 0.15);
+    const qb = {
+      down: line(pts(qd, 8000, (f) => 70 - f * 70)) + ' L600,70 L0,70 Z',
+      up: line(pts(qu, 8000, (f) => 70 + f * 70)) + ' L600,70 L0,70 Z',
+    };
+    const torrents = [
+      { label: 'Seeding', n: 24, color: '#60a5fa' }, { label: 'Downloading', n: 5, color: '#2dd4bf' },
+      { label: 'Paused', n: 3, color: '#64748b' }, { label: 'Stalled', n: 1, color: WARN }, { label: 'Errored', n: 1, color: BAD },
+    ];
+
+    const saw = []; for (let i = 0; i < 48; i++) saw.push((i % 8) * 0.25 + (i > 40 ? 0.5 : 0));
+    const fresh = areaOf(saw, 4);
+
+    const folders = [
+      ['ActivityWatch', 100, 'up to date'], ['Documents', 100, 'up to date'], ['Downloads', 82, '1.1 GB to sync'],
+      ['eBooks', 100, 'up to date'], ['Music', 100, 'up to date'], ['Pictures', 97, '96 MB to sync'], ['Projects', 100, '2 conflicts'],
+    ].map(([name, pct, note]) => {
+      const color = note.includes('conflict') ? WARN : pct < 100 ? '#60a5fa' : OK;
+      return { name, pct, note, color, bg: color === WARN ? 'rgba(245,158,11,.08)' : 'transparent' };
+    });
+
+    const tracker = [['Phone', 0.2], ['Thor', 1.5], ['Car', 8.4]].map(([name, h]) => ({
+      name, age: h < 1 ? Math.round(h * 60) + ' min' : h.toFixed(1) + ' h', w: Math.min(100, h / 12 * 100), color: h >= 6 ? WARN : '#60a5fa',
+    }));
+
+    return { units, pihole, servfail, probes, cams, qb, torrents, fresh, folders, tracker };
+  }
+}
+</script>
+</body>
+</html>

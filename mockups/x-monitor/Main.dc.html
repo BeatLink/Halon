@@ -1,0 +1,291 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Heimdall host page</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+body{margin:0;background:#060b14}
+a{color:#60a5fa}a:hover{color:#93c5fd}
+.page{background:#060b14;color:#e2e8f0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Noto Sans",Cantarell,sans-serif;padding:24px 16px 48px;box-sizing:border-box}
+.wrap{max-width:1360px;margin:0 auto;display:flex;flex-direction:column;gap:16px}
+.card{background:#16213a;border:1px solid #334155;border-radius:8px;padding:16px;min-width:0;box-sizing:border-box}
+.lbl{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#cbd5e1;font-weight:600;margin:0}
+.muted{color:#94a3b8;font-size:12px}
+.mono{font-family:ui-monospace,"DejaVu Sans Mono",Menlo,monospace}
+.sect{font-size:14px;font-weight:600;margin:12px 0 0;color:#e2e8f0}
+.g4{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:16px}
+.g2{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,440px),1fr));gap:16px}
+.g3{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:16px}
+.strip{display:flex;gap:2px;height:20px;flex:1;min-width:0}
+.strip div{flex:1;border-radius:2px;min-width:2px}
+.sw{display:inline-block;width:10px;height:3px;border-radius:2px;vertical-align:middle;margin-right:6px}
+.axis{display:flex;justify-content:space-between;color:#94a3b8;font-size:11px;margin-top:4px}
+svg.chart{display:block;width:100%;height:140px}
+svg.chart path{vector-effect:non-scaling-stroke}
+svg.chart line{vector-effect:non-scaling-stroke;stroke:#334155;stroke-width:1}
+table{border-collapse:collapse;width:100%;font-size:13px}
+th{color:#94a3b8;font-weight:600;font-size:11px;letter-spacing:.06em;text-transform:uppercase;text-align:left;padding:6px 8px;border-bottom:1px solid #334155}
+td{padding:7px 8px;border-bottom:1px solid #1f2b45}
+</style>
+</helmet>
+<div class="page">
+<div class="wrap">
+
+<div style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px 24px">
+<div style="display: flex; align-items: center; gap: 12px">
+<span style="width: 12px; height: 12px; border-radius: 50%; background: #10b981"></span>
+<h1 style="margin: 0; font-size: 26px; font-weight: 650">Heimdall</h1>
+<span class="muted mono">heimdall.technet</span>
+</div>
+<div style="display: flex; align-items: center; gap: 10px; flex: 1 1 360px; min-width: 0">
+<span class="lbl" style="white-space: nowrap">Availability · 24h</span>
+<div class="strip">
+<sc-for list="{{avail}}" as="c" hint-placeholder-count="90"><div style="background: {{c}}"></div></sc-for>
+</div>
+<span class="mono" style="font-size: 13px; color: #10b981">99.9%</span>
+</div>
+</div>
+
+<h2 class="sect">Compute</h2>
+<div class="g4">
+<sc-for list="{{gauges}}" as="g" hint-placeholder-count="3">
+<div class="card" style="display: flex; align-items: center; gap: 16px">
+<svg viewBox="0 0 100 100" style="width: 104px; height: 104px; flex: none" role="img" aria-label="{{g.aria}}">
+<circle cx="50" cy="50" r="40" transform="rotate(135 50 50)" style="fill: none; stroke: #263453; stroke-width: 10; stroke-linecap: round; stroke-dasharray: 188.5 400"></circle>
+<circle cx="50" cy="50" r="40" transform="rotate(135 50 50)" style="fill: none; stroke: {{g.color}}; stroke-width: 10; stroke-linecap: round; stroke-dasharray: {{g.dash}}"></circle>
+<text x="50" y="55" text-anchor="middle" style="fill: #e2e8f0; font-size: 19px; font-weight: 600">{{g.text}}</text>
+</svg>
+<div style="display: flex; flex-direction: column; gap: 6px; min-width: 0">
+<p class="lbl">{{g.title}}</p>
+<span class="muted">{{g.sub}}</span>
+<svg viewBox="0 0 120 28" preserveAspectRatio="none" style="width: 100%; max-width: 140px; height: 28px" aria-hidden="true">
+<path d="{{g.spark}}" style="fill: none; stroke: {{g.color}}; stroke-width: 1.5; vector-effect: non-scaling-stroke"></path>
+</svg>
+</div>
+</div>
+</sc-for>
+<div class="card">
+<div style="display: flex; justify-content: space-between; align-items: baseline; gap: 8px">
+<p class="lbl">Load average</p>
+<span class="muted"><span class="sw" style="background: #60a5fa"></span>1m <span class="sw" style="background: #c4b5fd; margin-left: 8px"></span>5m <span class="sw" style="background: #64748b; margin-left: 8px"></span>15m</span>
+</div>
+<svg class="chart" viewBox="0 0 600 140" preserveAspectRatio="none" style="height: 96px; margin-top: 8px" role="img" aria-label="Load average, 1, 5 and 15 minute, last hour">
+<line x1="0" y1="35" x2="600" y2="35"></line><line x1="0" y1="70" x2="600" y2="70"></line><line x1="0" y1="105" x2="600" y2="105"></line>
+<path d="{{load.l15}}" style="fill: none; stroke: #64748b; stroke-width: 1.5; stroke-dasharray: 4 3"></path>
+<path d="{{load.l5}}" style="fill: none; stroke: #c4b5fd; stroke-width: 1.5"></path>
+<path d="{{load.l1}}" style="fill: none; stroke: #60a5fa; stroke-width: 2"></path>
+</svg>
+<div class="axis"><span>-60m</span><span>0.42 · 0.38 · 0.35 per core</span><span>now</span></div>
+</div>
+</div>
+
+<h2 class="sect">Network</h2>
+<div class="g2">
+<div class="card">
+<div style="display: flex; justify-content: space-between; align-items: baseline; gap: 8px; flex-wrap: wrap">
+<p class="lbl">Throughput · enp3s0</p>
+<span class="muted"><span class="sw" style="background: #60a5fa"></span>Down 2.4 MB/s <span class="sw" style="background: #c4b5fd; margin-left: 10px"></span>Up 612 KB/s</span>
+</div>
+<svg class="chart" viewBox="0 0 600 140" preserveAspectRatio="none" style="margin-top: 8px" role="img" aria-label="Download above the line, upload mirrored below, last hour">
+<path d="{{net.down}}" style="fill: rgba(96,165,250,.22); stroke: #60a5fa; stroke-width: 1.5"></path>
+<path d="{{net.up}}" style="fill: rgba(196,181,253,.22); stroke: #c4b5fd; stroke-width: 1.5"></path>
+<line x1="0" y1="70" x2="600" y2="70" style="stroke: #475569"></line>
+</svg>
+<div class="axis"><span>-60m</span><span>download ↑ · upload ↓ · peak 5.8 MB/s</span><span>now</span></div>
+</div>
+<div class="card">
+<div style="display: flex; justify-content: space-between; align-items: baseline; gap: 8px; flex-wrap: wrap">
+<p class="lbl">Connections by state</p>
+<span class="muted"><span class="sw" style="background: #60a5fa"></span>Established 142 <span class="sw" style="background: #2dd4bf; margin-left: 10px"></span>Time-wait 58 <span class="sw" style="background: #64748b; margin-left: 10px"></span>Listening 38</span>
+</div>
+<svg class="chart" viewBox="0 0 600 140" preserveAspectRatio="none" style="margin-top: 8px" role="img" aria-label="Stacked connection counts by state, last hour">
+<line x1="0" y1="35" x2="600" y2="35"></line><line x1="0" y1="70" x2="600" y2="70"></line><line x1="0" y1="105" x2="600" y2="105"></line>
+<path d="{{conn.tw}}" style="fill: rgba(45,212,191,.35); stroke: #2dd4bf; stroke-width: 1"></path>
+<path d="{{conn.est}}" style="fill: rgba(96,165,250,.45); stroke: #60a5fa; stroke-width: 1"></path>
+<path d="{{conn.lis}}" style="fill: rgba(100,116,139,.6); stroke: #64748b; stroke-width: 1"></path>
+</svg>
+<div class="axis"><span>-60m</span><span>238 total</span><span>now</span></div>
+</div>
+</div>
+
+<h2 class="sect">Storage</h2>
+<div class="g3">
+<div class="card" style="grid-column: span 1">
+<p class="lbl">Space used</p>
+<div style="display: flex; flex-direction: column; gap: 14px; margin-top: 14px">
+<sc-for list="{{disks}}" as="d" hint-placeholder-count="5">
+<div>
+<div style="display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 5px; gap: 8px">
+<span class="mono">{{d.name}}</span><span class="muted">{{d.used}} of {{d.size}} · <span style="color: {{d.color}}; font-weight: 600">{{d.pct}}%</span></span>
+</div>
+<div style="position: relative; height: 10px; background: #263453; border-radius: 5px">
+<div style="width: {{d.pct}}%; height: 10px; border-radius: 5px; background: {{d.color}}"></div>
+<div style="position: absolute; left: 85%; top: -3px; width: 2px; height: 16px; background: #f59e0b" title="warning at 85%"></div>
+</div>
+</div>
+</sc-for>
+</div>
+<div class="axis" style="margin-top: 10px"><span>amber tick = 85% warning</span><span>ZFS dedup 1.4x</span></div>
+</div>
+<div class="card">
+<div style="display: flex; justify-content: space-between; align-items: baseline; gap: 8px">
+<p class="lbl">Disk I/O</p>
+<span class="muted"><span class="sw" style="background: #60a5fa"></span>Read <span class="sw" style="background: #c4b5fd; margin-left: 8px"></span>Write</span>
+</div>
+<div style="display: flex; flex-direction: column; gap: 10px; margin-top: 10px">
+<sc-for list="{{io}}" as="d" hint-placeholder-count="3">
+<div>
+<div style="display: flex; justify-content: space-between; font-size: 12px"><span>{{d.name}}</span><span class="muted mono">R {{d.r}} · W {{d.w}}</span></div>
+<svg viewBox="0 0 600 140" preserveAspectRatio="none" style="display: block; width: 100%; height: 44px" aria-hidden="true">
+<path d="{{d.rp}}" style="fill: rgba(96,165,250,.18); stroke: #60a5fa; stroke-width: 1.5; vector-effect: non-scaling-stroke"></path>
+<path d="{{d.wp}}" style="fill: none; stroke: #c4b5fd; stroke-width: 1.5; vector-effect: non-scaling-stroke"></path>
+</svg>
+</div>
+</sc-for>
+</div>
+</div>
+<div class="card">
+<p class="lbl">Disks · SMART</p>
+<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 10px; margin-top: 14px">
+<sc-for list="{{smart}}" as="s" hint-placeholder-count="3">
+<div style="border-radius: 6px; padding: 12px; background: {{s.bg}}; border: 1px solid {{s.color}}">
+<div style="display: flex; align-items: center; gap: 6px"><span style="width: 8px; height: 8px; border-radius: 50%; background: {{s.color}}"></span><span style="font-size: 13px; font-weight: 600">{{s.name}}</span></div>
+<div class="mono" style="font-size: 20px; margin-top: 8px">{{s.temp}}</div>
+<div class="muted" style="margin-top: 2px">{{s.note}}</div>
+</div>
+</sc-for>
+</div>
+<div class="muted" style="margin-top: 12px">smartd.service <span style="color: #10b981">active</span> · Btrfs scrub n/a · ZFS pool ONLINE</div>
+</div>
+</div>
+
+<h2 class="sect">Service reachability</h2>
+<div class="card">
+<div style="display: flex; justify-content: space-between; gap: 8px; flex-wrap: wrap">
+<p class="lbl">Last 60 checks · one per minute</p>
+<span class="muted"><span class="sw" style="background: #10b981; height: 8px"></span>up <span class="sw" style="background: #f87171; height: 8px; margin-left: 8px"></span>down <span class="sw" style="background: #334155; height: 8px; margin-left: 8px"></span>no data</span>
+</div>
+<div style="display: flex; flex-direction: column; gap: 8px; margin-top: 12px">
+<sc-for list="{{reach}}" as="r" hint-placeholder-count="10">
+<div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap">
+<span style="width: 130px; font-size: 13px; flex: none">{{r.name}}</span>
+<div class="strip" style="height: 16px; flex: 1 1 260px">
+<sc-for list="{{r.cells}}" as="c"><div style="background: {{c}}"></div></sc-for>
+</div>
+<span class="mono muted" style="width: 64px; text-align: right; flex: none">{{r.ms}}</span>
+</div>
+</sc-for>
+</div>
+</div>
+
+<h2 class="sect">Processes</h2>
+<div class="card" style="overflow-x: auto">
+<table>
+<thead><tr><th>Process</th><th>PID</th><th style="width: 38%">CPU</th><th>Memory</th></tr></thead>
+<tbody>
+<sc-for list="{{procs}}" as="p" hint-placeholder-count="5">
+<tr>
+<td class="mono">{{p.name}}</td>
+<td class="mono muted">{{p.pid}}</td>
+<td><div style="display: flex; align-items: center; gap: 8px"><div style="flex: 1; height: 6px; background: #263453; border-radius: 3px"><div style="width: {{p.cpuw}}%; height: 6px; background: #60a5fa; border-radius: 3px"></div></div><span class="mono" style="width: 44px; text-align: right">{{p.cpu}}</span></div></td>
+<td class="mono">{{p.mem}}</td>
+</tr>
+</sc-for>
+</tbody>
+</table>
+</div>
+
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1640}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const OK = '#10b981', WARN = '#f59e0b', BAD = '#f87171', NONE = '#334155';
+    const rng = (seed) => { let s = seed; return () => { s = (s * 16807) % 2147483647; return (s - 1) / 2147483646; }; };
+    const walk = (seed, n, base, amp, pull) => {
+      const r = rng(seed); let v = base; const out = [];
+      for (let i = 0; i < n; i++) { v += (r() - 0.5) * amp; v = v * (1 - pull) + base * pull; out.push(Math.max(0, v)); }
+      return out;
+    };
+    const pts = (vals, max, w, h, top) => vals.map((v, i) => [(i / (vals.length - 1)) * w, top(v / max)]);
+    const line = (p) => p.map((q, i) => (i ? 'L' : 'M') + q[0].toFixed(1) + ',' + q[1].toFixed(1)).join(' ');
+    const lineOf = (vals, max, w, h) => line(pts(vals, max, w, h, (f) => h - Math.min(f, 1) * h));
+    const areaOf = (vals, max, w, h) => lineOf(vals, max, w, h) + ' L' + w + ',' + h + ' L0,' + h + ' Z';
+    const band = (lo, hi, max) => {
+      const top = pts(hi, max, 600, 140, (f) => 140 - f * 140);
+      const bot = pts(lo, max, 600, 140, (f) => 140 - f * 140).reverse();
+      return line(top) + ' ' + bot.map((q) => 'L' + q[0].toFixed(1) + ',' + q[1].toFixed(1)).join(' ') + ' Z';
+    };
+    const band3 = (pct, warn, fail) => (pct >= fail ? BAD : pct >= warn ? WARN : OK);
+
+    const gauge = (title, pct, text, sub, seed, base, warn, fail, aria) => ({
+      title, text, sub, aria,
+      dash: (188.5 * pct / 100).toFixed(1) + ' 400',
+      color: band3(pct, warn, fail),
+      spark: lineOf(walk(seed, 40, base, base * 0.5, 0.2), base * 2, 120, 28),
+    });
+    const gauges = [
+      gauge('CPU', 23, '23%', '8 cores · 1h trend', 11, 22, 80, 95, 'CPU 23 percent'),
+      gauge('Memory', 61, '61%', '19.5 of 32 GB', 23, 60, 85, 95, 'Memory 61 percent'),
+      gauge('Temperature', 68, '54°', 'max of 6 zones · 80° limit', 37, 52, 85, 95, 'Temperature 54 degrees'),
+    ];
+
+    const l1 = walk(5, 60, 42, 14, 0.15), l5 = walk(6, 60, 38, 5, 0.2), l15 = walk(7, 60, 35, 2, 0.3);
+    const load = { l1: lineOf(l1, 100, 600, 140), l5: lineOf(l5, 100, 600, 140), l15: lineOf(l15, 100, 600, 140) };
+
+    const down = walk(41, 60, 2400, 2200, 0.12), up = walk(42, 60, 600, 500, 0.15);
+    const net = {
+      down: line(pts(down, 6000, 600, 140, (f) => 70 - Math.min(f, 1) * 70)) + ' L600,70 L0,70 Z',
+      up: line(pts(up, 6000, 600, 140, (f) => 70 + Math.min(f, 1) * 70)) + ' L600,70 L0,70 Z',
+    };
+
+    const lis = Array(60).fill(38), est = walk(51, 60, 142, 30, 0.15), tw = walk(52, 60, 58, 30, 0.2);
+    const zero = Array(60).fill(0);
+    const s1 = lis, s2 = lis.map((v, i) => v + est[i]), s3 = s2.map((v, i) => v + tw[i]);
+    const conn = { lis: band(zero, s1, 320), est: band(s1, s2, 320), tw: band(s2, s3, 320) };
+
+    const disks = [
+      { name: '/Storage', pct: 78, used: '5.6 TB', size: '7.2 TB' },
+      { name: 'zpool storage', pct: 76, used: '5.5 TB', size: '7.2 TB' },
+      { name: '/', pct: 41, used: '96 GB', size: '234 GB' },
+      { name: '/nix', pct: 41, used: '96 GB', size: '234 GB' },
+      { name: '/boot', pct: 33, used: '170 MB', size: '511 MB' },
+    ].map((d) => ({ ...d, color: band3(d.pct, 85, 95) }));
+
+    const io = [
+      { name: 'Data 1', r: '1.2 MB/s', w: '340 KB/s', s: 61 },
+      { name: 'Data 2', r: '980 KB/s', w: '310 KB/s', s: 62 },
+      { name: 'Root', r: '42 KB/s', w: '210 KB/s', s: 63 },
+    ].map((d) => ({ ...d, rp: areaOf(walk(d.s, 60, 50, 60, 0.15), 120, 600, 140), wp: lineOf(walk(d.s + 9, 60, 30, 30, 0.2), 120, 600, 140) }));
+
+    const smart = [
+      { name: 'Data 1', temp: '36°C', note: 'PASSED · 21,402 h', color: OK },
+      { name: 'Data 2', temp: '37°C', note: 'PASSED · 21,398 h', color: OK },
+      { name: 'Root', temp: '41°C', note: '3 reallocated', color: WARN },
+    ].map((s) => ({ ...s, bg: s.color === OK ? 'rgba(16,185,129,.08)' : 'rgba(245,158,11,.1)' }));
+
+    const strip = (n, downs, gaps) => Array.from({ length: n }, (_, i) => (downs.includes(i) ? BAD : gaps.includes(i) ? NONE : OK));
+    const avail = strip(90, [], [47]);
+    const reach = [
+      ['Nginx', '2 ms', [], []], ['Home Assistant', '38 ms', [], []], ['Pi-hole', '21 ms', [], []],
+      ['Homepage', '64 ms', [], []], ['Jackett', '112 ms', [], [30]], ['Comet', '89 ms', [17, 18], []],
+      ['Stremio', '45 ms', [], []], ['Stremio Server', '—', [57, 58, 59], []], ['Atuin', '9 ms', [], []], ['Atuin Web', '11 ms', [], []],
+    ].map(([name, ms, d, g]) => ({ name, ms, cells: strip(60, d, g) }));
+
+    const procs = [
+      ['frigate', 2141, 18.4, '1.9 GB'], ['home-assistant', 1877, 6.2, '842 MB'], ['qbittorrent-nox', 2290, 4.8, '611 MB'],
+      ['pihole-FTL', 1402, 1.9, '96 MB'], ['x-monitor', 2533, 1.4, '188 MB'],
+    ].map(([name, pid, cpu, mem]) => ({ name, pid, cpu: cpu + '%', cpuw: Math.min(100, cpu * 4), mem }));
+
+    return { gauges, load, net, conn, disks, io, smart, avail, reach, procs };
+  }
+}
+</script>
+</body>
+</html>

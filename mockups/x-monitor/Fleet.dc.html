@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>TechNet fleet overview</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+body{margin:0;background:#060b14}
+a{color:#60a5fa}a:hover{color:#93c5fd}
+.page{background:#060b14;color:#e2e8f0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Noto Sans",Cantarell,sans-serif;padding:24px 16px 48px;box-sizing:border-box}
+.wrap{max-width:1360px;margin:0 auto;display:flex;flex-direction:column;gap:16px}
+.card{background:#16213a;border:1px solid #334155;border-radius:8px;padding:16px;min-width:0;box-sizing:border-box}
+.lbl{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#cbd5e1;font-weight:600;margin:0}
+.muted{color:#94a3b8;font-size:12px}
+.mono{font-family:ui-monospace,"DejaVu Sans Mono",Menlo,monospace}
+.sect{font-size:14px;font-weight:600;margin:12px 0 0;color:#e2e8f0}
+.g2{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,520px),1fr));gap:16px}
+.head{display:flex;justify-content:space-between;align-items:baseline;gap:8px;flex-wrap:wrap}
+.sw{display:inline-block;width:10px;height:8px;border-radius:2px;vertical-align:middle;margin-right:6px}
+.strip{display:flex;gap:2px;height:16px;flex:1 1 240px;min-width:0}
+.strip div{flex:1;border-radius:2px;min-width:2px}
+.row{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.name{width:150px;font-size:13px;flex:none}
+.scroll{overflow-x:auto}
+</style>
+</helmet>
+<div class="page">
+<div class="wrap">
+
+<div style="display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap">
+<h1 style="margin: 0; font-size: 26px; font-weight: 650">TechNet</h1>
+<span class="muted">5 hosts · 10 IoT devices · 1 warning, 1 failed</span>
+</div>
+
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr)); gap: 12px">
+<sc-for list="{{hosts}}" as="h" hint-placeholder-count="5">
+<div class="card" style="border-color: {{h.border}}">
+<div style="display: flex; align-items: center; gap: 8px"><span style="width: 10px; height: 10px; border-radius: 50%; background: {{h.color}}"></span><span style="font-size: 16px; font-weight: 650">{{h.name}}</span><span class="muted" style="margin-left: auto">{{h.role}}</span></div>
+<svg viewBox="0 0 600 140" preserveAspectRatio="none" style="display: block; width: 100%; height: 40px; margin-top: 10px" aria-hidden="true">
+<path d="{{h.cpu}}" style="fill: rgba(96,165,250,.15); stroke: #60a5fa; stroke-width: 1.5; vector-effect: non-scaling-stroke"></path>
+</svg>
+<div style="display: flex; gap: 14px; margin-top: 8px; font-size: 12px" class="muted"><span>CPU <b style="color: #e2e8f0">{{h.c}}</b></span><span>MEM <b style="color: #e2e8f0">{{h.m}}</b></span><span>DISK <b style="color: #e2e8f0">{{h.d}}</b></span></div>
+<div style="font-size: 12px; margin-top: 6px; color: {{h.noteColor}}">{{h.note}}</div>
+</div>
+</sc-for>
+</div>
+
+<h2 class="sect">IoT sensors</h2>
+<div class="card">
+<div class="head"><p class="lbl">Reachability · last 24 h in 15-minute slots</p><span class="muted"><span class="sw" style="background: #10b981"></span>up <span class="sw" style="background: #f87171; margin-left: 8px"></span>down</span></div>
+<div style="display: flex; flex-direction: column; gap: 8px; margin-top: 12px">
+<sc-for list="{{iot}}" as="r" hint-placeholder-count="10">
+<div class="row">
+<span class="name">{{r.name}}</span>
+<div class="strip"><sc-for list="{{r.cells}}" as="c"><div style="background: {{c}}"></div></sc-for></div>
+<span class="mono muted" style="width: 52px; text-align: right; flex: none">{{r.pct}}</span>
+</div>
+</sc-for>
+</div>
+<div style="display: flex; justify-content: space-between; color: #94a3b8; font-size: 11px; margin-top: 6px; padding-left: 162px"><span>-24h</span><span>-12h</span><span>now</span></div>
+</div>
+
+<div class="g2">
+<div class="card">
+<div class="head"><p class="lbl">Backups · last 30 days</p><span class="muted"><span class="sw" style="background: #10b981"></span>archive made <span class="sw" style="background: #f87171; margin-left: 8px"></span>missed <span class="sw" style="background: #263453; margin-left: 8px"></span>not due</span></div>
+<div class="scroll">
+<div style="display: flex; flex-direction: column; gap: 6px; margin-top: 12px; min-width: 460px">
+<sc-for list="{{backups}}" as="b" hint-placeholder-count="8">
+<div style="display: flex; align-items: center; gap: 10px">
+<span style="width: 170px; font-size: 12px; flex: none"><span style="color: #94a3b8">{{b.host}} · {{b.tool}} →</span> {{b.repo}}</span>
+<div style="display: grid; grid-template-columns: repeat(30, minmax(0, 1fr)); gap: 2px; flex: 1">
+<sc-for list="{{b.days}}" as="d"><div style="aspect-ratio: 1; border-radius: 2px; background: {{d}}"></div></sc-for>
+</div>
+</div>
+</sc-for>
+</div>
+</div>
+<div class="muted" style="margin-top: 10px">Odin's Vorta → Ragnarok missed 3 nights while Ragnarok was off.</div>
+</div>
+
+<div class="card">
+<div class="head"><p class="lbl">NixOS fleet · switches, last 14 days</p><span class="muted">dot = switch · ring = build only</span></div>
+<div class="scroll">
+<div style="display: flex; flex-direction: column; gap: 14px; margin-top: 14px; min-width: 460px">
+<sc-for list="{{deploys}}" as="d" hint-placeholder-count="4">
+<div style="display: flex; align-items: center; gap: 10px">
+<span style="width: 84px; font-size: 13px; flex: none">{{d.name}}</span>
+<div style="position: relative; flex: 1; height: 18px">
+<div style="position: absolute; left: 0; right: 0; top: 8px; height: 2px; background: #334155"></div>
+<sc-for list="{{d.marks}}" as="m"><div style="position: absolute; left: {{m.x}}%; top: 3px; width: 12px; height: 12px; margin-left: -6px; border-radius: 50%; box-sizing: border-box; background: {{m.fill}}; border: 2px solid {{m.color}}"></div></sc-for>
+</div>
+<span style="width: 110px; font-size: 12px; text-align: right; flex: none; color: {{d.color}}">{{d.state}}</span>
+</div>
+</sc-for>
+</div>
+</div>
+<div style="display: flex; justify-content: space-between; color: #94a3b8; font-size: 11px; margin-top: 8px; padding: 0 120px 0 94px"><span>-14d</span><span>-7d</span><span>now</span></div>
+
+<div style="display: flex; gap: 20px; align-items: center; margin-top: 18px; padding-top: 14px; border-top: 1px solid #334155; flex-wrap: wrap">
+<div style="flex: 1 1 200px">
+<p class="lbl">Nix store · Heimdall</p>
+<div style="display: flex; height: 14px; border-radius: 4px; overflow: hidden; margin-top: 8px; background: #263453">
+<div style="width: 46%; background: #60a5fa"></div><div style="width: 12%; background: #64748b"></div>
+</div>
+<div class="muted" style="margin-top: 6px"><span class="sw" style="background: #60a5fa"></span>live 108 GB <span class="sw" style="background: #64748b; margin-left: 8px"></span>collectable 28 GB</div>
+</div>
+<div style="flex: 1 1 200px">
+<p class="lbl">GC yield per run</p>
+<div style="display: flex; align-items: flex-end; gap: 4px; height: 44px; margin-top: 8px">
+<sc-for list="{{gc}}" as="g" hint-placeholder-count="10"><div style="flex: 1; height: {{g}}%; background: #2dd4bf; border-radius: 2px 2px 0 0"></div></sc-for>
+</div>
+<div class="muted" style="margin-top: 6px">last 10 weekly runs · 31 GB freed last time</div>
+</div>
+</div>
+</div>
+</div>
+
+<h2 class="sect">Security</h2>
+<div class="card">
+<div class="head"><p class="lbl">Vulnerability scans · findings per host</p><span class="muted"><span class="sw" style="background: #f87171"></span>vulnerable <span class="sw" style="background: #f59e0b; margin-left: 8px"></span>likely <span class="sw" style="background: #64748b; margin-left: 8px"></span>noted</span></div>
+<div style="display: flex; flex-direction: column; gap: 10px; margin-top: 14px">
+<sc-for list="{{vulns}}" as="v" hint-placeholder-count="5">
+<div class="row">
+<span style="width: 84px; font-size: 13px; flex: none">{{v.name}}</span>
+<div style="display: flex; gap: 2px; height: 16px; flex: 1 1 240px; min-width: 0">
+<div style="width: {{v.vw}}%; background: #f87171; border-radius: 2px"></div>
+<div style="width: {{v.lw}}%; background: #f59e0b; border-radius: 2px"></div>
+<div style="width: {{v.nw}}%; background: #64748b; border-radius: 2px"></div>
+</div>
+<span class="mono muted" style="width: 190px; text-align: right; flex: none">{{v.text}}</span>
+</div>
+</sc-for>
+</div>
+</div>
+
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1500}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const OK = '#10b981', WARN = '#f59e0b', BAD = '#f87171', IDLE = '#263453';
+    const rng = (seed) => { let s = seed; return () => { s = (s * 16807) % 2147483647; return (s - 1) / 2147483646; }; };
+    const walk = (seed, n, base, amp, pull) => {
+      const r = rng(seed); let v = base; const out = [];
+      for (let i = 0; i < n; i++) { v += (r() - 0.5) * amp; v = v * (1 - pull) + base * pull; out.push(Math.max(0, v)); }
+      return out;
+    };
+    const area = (vals, max) => vals.map((v, i) => (i ? 'L' : 'M') + (i / (vals.length - 1) * 600).toFixed(1) + ',' + (140 - Math.min(v / max, 1) * 140).toFixed(1)).join(' ') + ' L600,140 L0,140 Z';
+
+    const hosts = [
+      ['Ragnarok', 'desktop', 31, '12%', '44%', '58%', 'up 3d · Vorta last 02:10', OK],
+      ['Heimdall', 'server', 32, '23%', '61%', '78%', 'VLC unit failed', BAD],
+      ['Odin', 'laptop', 33, '9%', '52%', '63%', 'battery 81% · on AC', OK],
+      ['Thor', 'phone', 34, '6%', '70%', '41%', 'flake 9 days behind', WARN],
+      ['ThorX', 'phone', 35, '—', '—', '—', 'reachable · scan only', OK],
+    ].map(([name, role, seed, c, m, d, note, color]) => ({
+      name, role, c, m, d, note, color,
+      noteColor: color === OK ? '#94a3b8' : color,
+      border: color === OK ? '#334155' : color,
+      cpu: area(walk(seed, 40, 25, 30, 0.15), 100),
+    }));
+
+    const strip = (n, downs) => Array.from({ length: n }, (_, i) => (downs.some(([a, b]) => i >= a && i <= b) ? BAD : OK));
+    const iot = [
+      ['Bedroom Light', []], ['Bedroom Desk Light', []], ['Kitchen Light', []], ['Bathroom Light', [[60, 62]]],
+      ['Outside Light', [[12, 19]]], ['Fan Socket', []], ['Ragnarok Socket', []], ['Fan IR', [[94, 95]]],
+      ['Bedroom Sensor', []], ['Bathroom Sensor', []],
+    ].map(([name, d]) => {
+      const cells = strip(96, d);
+      const pct = (cells.filter((c) => c === OK).length / 96 * 100).toFixed(1) + '%';
+      return { name, cells, pct };
+    });
+
+    const days = (missed, every) => Array.from({ length: 30 }, (_, i) => (missed.includes(i) ? BAD : i % every === 0 || every === 1 ? OK : IDLE));
+    const backups = [
+      ['Heimdall', 'Borgmatic', 'On Disk', [], 1], ['Heimdall', 'Borgmatic', 'Ragnarok', [], 1],
+      ['Odin', 'Vorta', 'On Disk', [], 1], ['Odin', 'Vorta', 'Heimdall', [], 1], ['Odin', 'Vorta', 'Ragnarok', [21, 22, 23], 1],
+      ['Odin', 'Borgmatic', 'On Disk', [], 7], ['Odin', 'Borgmatic', 'Heimdall', [], 7], ['Odin', 'Borgmatic', 'Ragnarok', [], 7],
+    ].map(([host, tool, repo, missed, every]) => ({ host, tool, repo, days: days(missed, every) }));
+
+    const mark = (x, built) => ({ x, fill: built ? '#16213a' : '#60a5fa', color: '#60a5fa' });
+    const deploys = [
+      ['Heimdall', [[7, 0], [36, 0], [64, 0], [93, 0]], 'in sync', OK],
+      ['Odin', [[7, 0], [21, 0], [50, 0], [64, 0], [93, 0]], 'in sync', OK],
+      ['Thor', [[14, 0], [36, 1], [64, 1]], 'drift · 9 days', WARN],
+      ['Ragnarok', [[7, 0], [64, 0], [86, 0]], 'reboot pending', WARN],
+    ].map(([name, ms, state, color]) => ({ name, state, color, marks: ms.map(([x, b]) => mark(x, b)) }));
+
+    const gc = [62, 40, 55, 38, 71, 45, 50, 33, 80, 100];
+
+    const vulns = [
+      ['Heimdall', 0, 2, 9, 14], ['Ragnarok', 0, 1, 4, 6], ['Odin', 0, 0, 3, 3], ['Thor', 1, 1, 2, 4], ['ThorX', 0, 0, 1, 2],
+    ].map(([name, v, l, n, ports]) => ({
+      name, vw: v * 6, lw: l * 6, nw: n * 6,
+      text: v + ' · ' + l + ' · ' + n + '  ·  ' + ports + ' open ports',
+    }));
+
+    return { hosts, iot, backups, deploys, gc, vulns };
+  }
+}
+</script>
+</body>
+</html>
