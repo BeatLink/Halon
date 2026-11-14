@@ -1,5 +1,7 @@
 # Halon
 
+<a href="https://liberapay.com/BeatLink/donate"><img alt="Donate using Liberapay" src="https://liberapay.com/assets/widgets/donate.svg"></a>
+
 A desktop theme in slate and a single blue, ported across a dozen applications from one set of
 colour tokens.
 
